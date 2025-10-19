@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>eBay 国际交易平台 原型概览</title>
+    <style>
+      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
+      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
+      h1 { margin: 0 0 8px 0; font-size: 32px; }
+      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
+      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
+      h2 { margin-top: 0; color: #334155; }
+      .meta p { margin: 0 0 8px 0; }
+      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
+      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+      ul { padding-left: 20px; }
+      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>eBay 国际交易平台 原型</h1>
+      <p class="tagline">连接全球买家卖家的线上拍卖与零售市场。</p>
+    </header>
+    <section class="overview">
+      <h2>整体需求概述</h2>
+      <div class="meta">
+        <p><strong>目标用户：</strong>个人卖家、小型商户、跨境买家</p>
+        <p><strong>核心痛点：</strong>二手与独特商品交易缺少可信平台，跨境物流复杂</p>
+        <p><strong>价值主张：</strong>通过竞拍与一口价模式结合的市场，提供支付、物流与信任保障</p>
+      </div>
+    </section>
+    <section class="scenarios">
+      <h2>核心使用场景</h2>
+      <ol>
+        <li>卖家发布拍卖或一口价商品</li><li>买家出价竞拍或直接购买并付款</li><li>平台协调国际物流与售后纠纷</li>
+      </ol>
+    </section>
+    <section class="modules">
+      <h2>功能模块</h2>
+      
+            <section class="module">
+              <h3>商品刊登</h3>
+              <p class="goal">功能目标：支持多类型商品的上架流程</p>
+              <ul>
+                <li>批量刊登工具与模板</li><li>智能定价、竞拍时长与保留价设置</li><li>商品分类、属性与合规校验</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>交易支付</h3>
+              <p class="goal">功能目标：保障跨境交易安全与便利</p>
+              <ul>
+                <li>eBay Payments 多币种支持</li><li>竞拍流程控制与自动出价</li><li>买家保护与退款争议处理</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>物流履约</h3>
+              <p class="goal">功能目标：解决跨境配送与费用透明问题</p>
+              <ul>
+                <li>全球运输计划与物流标签打印</li><li>运费估算、税费预缴与追踪</li><li>仓储合作与退货管理</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>信任与社区</h3>
+              <p class="goal">功能目标：构建买卖双方的信任机制</p>
+              <ul>
+                <li>评价体系与卖家绩效评分</li><li>买家保障政策与客服体系</li><li>社区论坛与运营公告</li>
+              </ul>
+            </section>
+            
+    </section>
+    <section class="metrics">
+      <h2>关键指标</h2>
+      <ul>
+        <li>成交 GMV 与竞拍成功率</li><li>跨境订单履约时效与纠纷解决时长</li><li>卖家绩效分布与活跃度</li>
+      </ul>
+    </section>
+    <footer>基于 PM Universe README.md 中的目标整理</footer>
+  </body>
+</html>

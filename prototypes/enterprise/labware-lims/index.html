@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS 原型概览</title>
+    <style>
+      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
+      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
+      h1 { margin: 0 0 8px 0; font-size: 32px; }
+      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
+      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
+      h2 { margin-top: 0; color: #334155; }
+      .meta p { margin: 0 0 8px 0; }
+      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
+      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+      ul { padding-left: 20px; }
+      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>LabWare LIMS 原型</h1>
+      <p class="tagline">实验室信息管理系统，支持多行业检验流程。</p>
+    </header>
+    <section class="overview">
+      <h2>整体需求概述</h2>
+      <div class="meta">
+        <p><strong>目标用户：</strong>质量检测实验室、医药研发、食品安全机构</p>
+        <p><strong>核心痛点：</strong>实验流程复杂、样品追踪难、合规要求严格</p>
+        <p><strong>价值主张：</strong>提供样品、测试、数据与合规的一体化管理</p>
+      </div>
+    </section>
+    <section class="scenarios">
+      <h2>核心使用场景</h2>
+      <ol>
+        <li>实验室接收样品并分配测试</li><li>分析人员录入结果并复核</li><li>质量主管生成报告与合规审计</li>
+      </ol>
+    </section>
+    <section class="modules">
+      <h2>功能模块</h2>
+      
+            <section class="module">
+              <h3>样品与批次管理</h3>
+              <p class="goal">功能目标：确保样品全流程可追溯</p>
+              <ul>
+                <li>样品登记、条码与链路</li><li>批次、批号与状态跟踪</li><li>存储条件与保留管理</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>测试与工作流程</h3>
+              <p class="goal">功能目标：标准化实验操作流程</p>
+              <ul>
+                <li>测试方法、SOP 与模板</li><li>任务分配、排程与仪器管理</li><li>结果录入、复核与异常处理</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>数据管理与报告</h3>
+              <p class="goal">功能目标：保证数据质量与合规</p>
+              <ul>
+                <li>数据审核、电子签名与审计轨迹</li><li>自定义报告与证书生成</li><li>与 ELN、ERP 系统集成</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>合规与质量</h3>
+              <p class="goal">功能目标：满足行业法规与认证</p>
+              <ul>
+                <li>ISO、GMP、FDA 等合规支持</li><li>偏差、CAPA 与质量指标</li><li>仪器校准与资产管理</li>
+              </ul>
+            </section>
+            
+    </section>
+    <section class="metrics">
+      <h2>关键指标</h2>
+      <ul>
+        <li>样品处理周期与准时率</li><li>数据审核通过率与异常闭环</li><li>合规审计发现与整改效率</li>
+      </ul>
+    </section>
+    <footer>基于 PM Universe README.md 中的目标整理</footer>
+  </body>
+</html>
