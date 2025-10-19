@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>AVEVA PI System 原型概览</title>
+    <style>
+      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
+      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
+      h1 { margin: 0 0 8px 0; font-size: 32px; }
+      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
+      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
+      h2 { margin-top: 0; color: #334155; }
+      .meta p { margin: 0 0 8px 0; }
+      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
+      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+      ul { padding-left: 20px; }
+      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>AVEVA PI System 原型</h1>
+      <p class="tagline">工业实时数据采集与运营智能平台。</p>
+    </header>
+    <section class="overview">
+      <h2>整体需求概述</h2>
+      <div class="meta">
+        <p><strong>目标用户：</strong>工业企业运维、生产调度、数据分析团队</p>
+        <p><strong>核心痛点：</strong>现场设备数据分散、难以实时监控与分析</p>
+        <p><strong>价值主张：</strong>通过高性能时序数据库与可视化，支撑工业实时决策</p>
+      </div>
+    </section>
+    <section class="scenarios">
+      <h2>核心使用场景</h2>
+      <ol>
+        <li>现场设备数据采集并传输至 PI</li><li>调度中心监控指标与报警</li><li>数据科学团队构建预测模型</li>
+      </ol>
+    </section>
+    <section class="modules">
+      <h2>功能模块</h2>
+      
+            <section class="module">
+              <h3>数据采集</h3>
+              <p class="goal">功能目标：接入多种工业数据源</p>
+              <ul>
+                <li>接口连接器与边缘网关</li><li>数据压缩与清洗</li><li>安全传输与高可用</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>数据存储与建模</h3>
+              <p class="goal">功能目标：构建统一的实时数据平台</p>
+              <ul>
+                <li>时序数据库与资产框架</li><li>元数据建模与层级结构</li><li>事件框架与计算</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>可视化与监控</h3>
+              <p class="goal">功能目标：提供实时监控能力</p>
+              <ul>
+                <li>PI Vision 仪表盘</li><li>报警管理与通知</li><li>移动访问与协作</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>分析与集成</h3>
+              <p class="goal">功能目标：支持高级分析与外部系统集成</p>
+              <ul>
+                <li>PI DataLink、PI Integrator</li><li>API、SDK 与数据导出</li><li>与机器学习平台集成</li>
+              </ul>
+            </section>
+            
+    </section>
+    <section class="metrics">
+      <h2>关键指标</h2>
+      <ul>
+        <li>数据采集成功率与延迟</li><li>报警响应时间与处理率</li><li>数据使用率与分析模型部署量</li>
+      </ul>
+    </section>
+    <footer>基于 PM Universe README.md 中的目标整理</footer>
+  </body>
+</html>
