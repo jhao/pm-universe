@@ -27,3 +27,5 @@
 
 ---
 © 2025 PM Universe. Created by Jin Hao.
+
+本项目基于 [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/deed.zh-Hans) 许可协议发布，允许复制与商业使用，修改时需保留原始许可信息并以相同方式共享。
