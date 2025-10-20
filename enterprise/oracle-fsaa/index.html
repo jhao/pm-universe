@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Oracle FSAA 原型概览</title>
+    <style>
+      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
+      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
+      h1 { margin: 0 0 8px 0; font-size: 32px; }
+      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
+      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
+      h2 { margin-top: 0; color: #334155; }
+      .meta p { margin: 0 0 8px 0; }
+      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
+      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+      ul { padding-left: 20px; }
+      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Oracle FSAA 原型</h1>
+      <p class="tagline">面向金融行业的风险、合规与盈利分析平台。</p>
+    </header>
+    <section class="overview">
+      <h2>整体需求概述</h2>
+      <div class="meta">
+        <p><strong>目标用户：</strong>银行风险管理、财务、合规团队</p>
+        <p><strong>核心痛点：</strong>监管要求频繁变化、数据孤岛严重、风险与绩效分析复杂</p>
+        <p><strong>价值主张：</strong>提供统一的数据模型、监管报送与风险盈利分析能力</p>
+      </div>
+    </section>
+    <section class="scenarios">
+      <h2>核心使用场景</h2>
+      <ol>
+        <li>风险团队进行资产负债表压力测试</li><li>财务团队编制监管报表</li><li>管理层查看盈利性分析与资本规划</li>
+      </ol>
+    </section>
+    <section class="modules">
+      <h2>功能模块</h2>
+      
+            <section class="module">
+              <h3>数据基础与建模</h3>
+              <p class="goal">功能目标：构建金融风险统一数据平台</p>
+              <ul>
+                <li>数据整合、质量校验与血缘</li><li>金融数据模型与元数据</li><li>数据治理与权限控制</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>风险管理</h3>
+              <p class="goal">功能目标：满足多监管框架的风险分析</p>
+              <ul>
+                <li>信用、市场、流动性风险模型</li><li>压力测试与情景分析</li><li>风险调整资本 (RAROC) 计算</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>监管合规</h3>
+              <p class="goal">功能目标：自动化监管报送流程</p>
+              <ul>
+                <li>报表模板与监管更新</li><li>报送流程、审批与审计</li><li>与监管平台接口</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>盈利与资金管理</h3>
+              <p class="goal">功能目标：洞察产品与客户盈利能力</p>
+              <ul>
+                <li>资金转移定价 (FTP)</li><li>成本分摊与利润分析</li><li>仪表盘与情景模拟</li>
+              </ul>
+            </section>
+            
+    </section>
+    <section class="metrics">
+      <h2>关键指标</h2>
+      <ul>
+        <li>监管报送准确率与及时率</li><li>风险模型覆盖率与验证频次</li><li>盈利分析周期与资本回报率</li>
+      </ul>
+    </section>
+    <footer>基于 PM Universe README.md 中的目标整理</footer>
+      <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

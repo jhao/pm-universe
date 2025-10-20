@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reddit 社区论坛 原型概览</title>
+    <style>
+      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
+      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
+      h1 { margin: 0 0 8px 0; font-size: 32px; }
+      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
+      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
+      h2 { margin-top: 0; color: #334155; }
+      .meta p { margin: 0 0 8px 0; }
+      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
+      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+      ul { padding-left: 20px; }
+      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Reddit 社区论坛 原型</h1>
+      <p class="tagline">主题驱动的讨论社区，汇聚全球兴趣小组。</p>
+    </header>
+    <section class="overview">
+      <h2>整体需求概述</h2>
+      <div class="meta">
+        <p><strong>目标用户：</strong>兴趣社区成员、版主、广告主</p>
+        <p><strong>核心痛点：</strong>用户需要深入讨论的社区，广告主希望触达垂直兴趣人群</p>
+        <p><strong>价值主张：</strong>通过 Subreddit 结构与投票机制，维持高质量讨论并形成社区文化</p>
+      </div>
+    </section>
+    <section class="scenarios">
+      <h2>核心使用场景</h2>
+      <ol>
+        <li>用户订阅 Subreddit 并参与讨论</li><li>版主管理社区规则与内容</li><li>广告主投放赞助帖子触达目标人群</li>
+      </ol>
+    </section>
+    <section class="modules">
+      <h2>功能模块</h2>
+      
+            <section class="module">
+              <h3>社区结构与导航</h3>
+              <p class="goal">功能目标：帮助用户找到并加入感兴趣的社群</p>
+              <ul>
+                <li>Subreddit 目录、搜索与推荐</li><li>首页 Feed 与热门/新帖过滤</li><li>多社区订阅管理与消息提醒</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>内容发布与互动</h3>
+              <p class="goal">功能目标：支持不同类型的帖子并保持讨论秩序</p>
+              <ul>
+                <li>文本、图片、视频、投票等多格式发布</li><li>Upvote/Downvote、评论层级展示</li><li>版主置顶、锁帖与违规处理</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>社区治理</h3>
+              <p class="goal">功能目标：保障社区健康发展</p>
+              <ul>
+                <li>自动化审核工具与关键词过滤</li><li>违规举报、申诉与仲裁</li><li>版主协作看板与任务分配</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>商业化工具</h3>
+              <p class="goal">功能目标：连接广告主与社区用户</p>
+              <ul>
+                <li>广告投放管理与定位</li><li>品牌 Takeover 与社区活动合作</li><li>绩效分析与转化追踪</li>
+              </ul>
+            </section>
+            
+    </section>
+    <section class="metrics">
+      <h2>关键指标</h2>
+      <ul>
+        <li>Subreddit 活跃度与新增订阅数</li><li>帖子互动率与违规处理效率</li><li>广告点击率与品牌活动参与度</li>
+      </ul>
+    </section>
+    <footer>基于 PM Universe README.md 中的目标整理</footer>
+      <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,216 @@
+{
+  "categories": [
+    {
+      "id": "consumer",
+      "name": "Consumer 消费级",
+      "items": [
+        {
+          "name": "Amazon 全球电商 原型",
+          "path": "consumer/amazon/"
+        },
+        {
+          "name": "BeReal 真实社交 原型",
+          "path": "consumer/bereal/"
+        },
+        {
+          "name": "CapCut 视频剪辑 原型",
+          "path": "consumer/capcut/"
+        },
+        {
+          "name": "Depop 潮流二手 原型",
+          "path": "consumer/depop/"
+        },
+        {
+          "name": "Dropbox 云协作 原型",
+          "path": "consumer/dropbox/"
+        },
+        {
+          "name": "Etsy 手作电商 原型",
+          "path": "consumer/etsy/"
+        },
+        {
+          "name": "Glossier DTC 美妆 原型",
+          "path": "consumer/glossier/"
+        },
+        {
+          "name": "Google Drive 云端硬盘 原型",
+          "path": "consumer/google-drive/"
+        },
+        {
+          "name": "Instagram 社交平台 原型",
+          "path": "consumer/instagram/"
+        },
+        {
+          "name": "Medium 写作平台 原型",
+          "path": "consumer/medium/"
+        },
+        {
+          "name": "Pinterest 灵感发现 原型",
+          "path": "consumer/pinterest/"
+        },
+        {
+          "name": "Poshmark 时尚转售 原型",
+          "path": "consumer/poshmark/"
+        },
+        {
+          "name": "Reddit 社区论坛 原型",
+          "path": "consumer/reddit/"
+        },
+        {
+          "name": "SHEIN 跨境快时尚 原型",
+          "path": "consumer/shein/"
+        },
+        {
+          "name": "Shopify 跨境电商平台 原型",
+          "path": "consumer/shopify/"
+        },
+        {
+          "name": "Temu 跨境折扣平台 原型",
+          "path": "consumer/temu/"
+        },
+        {
+          "name": "TikTok / 抖音 短视频 原型",
+          "path": "consumer/tiktok-douyin/"
+        },
+        {
+          "name": "WhatsApp 即时通信 原型",
+          "path": "consumer/whatsapp/"
+        },
+        {
+          "name": "YouTube 视频平台 原型",
+          "path": "consumer/youtube/"
+        },
+        {
+          "name": "eBay 国际交易平台 原型",
+          "path": "consumer/ebay/"
+        }
+      ]
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise 企业级",
+      "items": [
+        {
+          "name": "ADP Workforce Now 原型",
+          "path": "enterprise/adp-workforce-now/"
+        },
+        {
+          "name": "AVEVA PI System 原型",
+          "path": "enterprise/aveva-pi-system/"
+        },
+        {
+          "name": "Asana 协同工作平台 原型",
+          "path": "enterprise/asana/"
+        },
+        {
+          "name": "Aspen HYSYS 原型",
+          "path": "enterprise/aspen-hysys/"
+        },
+        {
+          "name": "Blue Yonder SCM Cloud 原型",
+          "path": "enterprise/blue-yonder-scm-cloud/"
+        },
+        {
+          "name": "Epicor ERP 原型",
+          "path": "enterprise/epicor-erp/"
+        },
+        {
+          "name": "Honeywell PHD 原型",
+          "path": "enterprise/honeywell-phd/"
+        },
+        {
+          "name": "HubSpot CRM 原型",
+          "path": "enterprise/hubspot-crm/"
+        },
+        {
+          "name": "IBM Maximo EAM 原型",
+          "path": "enterprise/ibm-maximo-eam/"
+        },
+        {
+          "name": "Infor CloudSuite Industrial (SyteLine) 原型",
+          "path": "enterprise/infor-cloudsuite-industrial/"
+        },
+        {
+          "name": "Jira Software 原型",
+          "path": "enterprise/jira-software/"
+        },
+        {
+          "name": "LabWare LIMS 原型",
+          "path": "enterprise/labware-lims/"
+        },
+        {
+          "name": "Microsoft Dynamics 365 原型",
+          "path": "enterprise/microsoft-dynamics-365/"
+        },
+        {
+          "name": "Microsoft Power BI 原型",
+          "path": "enterprise/power-bi/"
+        },
+        {
+          "name": "Odoo Open ERP 原型",
+          "path": "enterprise/odoo-open-erp/"
+        },
+        {
+          "name": "Oracle ERP Cloud 原型",
+          "path": "enterprise/oracle-erp-cloud/"
+        },
+        {
+          "name": "Oracle FSAA 原型",
+          "path": "enterprise/oracle-fsaa/"
+        },
+        {
+          "name": "Oracle NetSuite ERP 原型",
+          "path": "enterprise/netsuite-erp/"
+        },
+        {
+          "name": "Oracle Primavera P6 原型",
+          "path": "enterprise/oracle-primavera-p6/"
+        },
+        {
+          "name": "SAP Public Sector 原型",
+          "path": "enterprise/sap-public-sector/"
+        },
+        {
+          "name": "SAP S/4HANA 原型",
+          "path": "enterprise/sap-s4hana/"
+        },
+        {
+          "name": "SAP SuccessFactors 原型",
+          "path": "enterprise/sap-successfactors/"
+        },
+        {
+          "name": "Salesforce CRM 原型",
+          "path": "enterprise/salesforce-crm/"
+        },
+        {
+          "name": "Siemens Opcenter 原型",
+          "path": "enterprise/siemens-opcenter/"
+        },
+        {
+          "name": "Siemens SIPROTEC 数字化保护 原型",
+          "path": "enterprise/siemens-siprotec/"
+        },
+        {
+          "name": "Siemens Teamcenter 原型",
+          "path": "enterprise/siemens-teamcenter/"
+        },
+        {
+          "name": "Smartsheet 协作表格 原型",
+          "path": "enterprise/smartsheet/"
+        },
+        {
+          "name": "Tableau BI 原型",
+          "path": "enterprise/tableau-bi/"
+        },
+        {
+          "name": "Workday HCM 原型",
+          "path": "enterprise/workday-hcm/"
+        },
+        {
+          "name": "Zendesk Support Suite 原型",
+          "path": "enterprise/zendesk-support-suite/"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Honeywell PHD 原型概览</title>
+    <style>
+      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
+      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
+      h1 { margin: 0 0 8px 0; font-size: 32px; }
+      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
+      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
+      h2 { margin-top: 0; color: #334155; }
+      .meta p { margin: 0 0 8px 0; }
+      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
+      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+      ul { padding-left: 20px; }
+      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Honeywell PHD 原型</h1>
+      <p class="tagline">过程工业的历史数据管理与高级分析平台。</p>
+    </header>
+    <section class="overview">
+      <h2>整体需求概述</h2>
+      <div class="meta">
+        <p><strong>目标用户：</strong>炼化、化工、能源企业的工艺工程师与运维团队</p>
+        <p><strong>核心痛点：</strong>DCS/SCADA 数据难以长期存储与分析，流程优化需要历史数据</p>
+        <p><strong>价值主张：</strong>提供高性能历史数据库、分析工具与建模能力，支撑工艺优化</p>
+      </div>
+    </section>
+    <section class="scenarios">
+      <h2>核心使用场景</h2>
+      <ol>
+        <li>现场数据采集至历史数据库</li><li>工程师分析过程波动与能耗</li><li>管理层查看生产绩效与报警</li>
+      </ol>
+    </section>
+    <section class="modules">
+      <h2>功能模块</h2>
+      
+            <section class="module">
+              <h3>数据采集与存储</h3>
+              <p class="goal">功能目标：稳定采集大规模实时数据</p>
+              <ul>
+                <li>与 Experion 等控制系统集成</li><li>高压缩率与冗余架构</li><li>数据质量校验与修正</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>可视化与报表</h3>
+              <p class="goal">功能目标：快速洞察生产运行情况</p>
+              <ul>
+                <li>Trend 浏览器与自定义图表</li><li>报警分析与事件回放</li><li>报表调度与发布</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>高级分析</h3>
+              <p class="goal">功能目标：支持过程优化与预测</p>
+              <ul>
+                <li>Profile、Uniformance Insight 工具</li><li>建模、回归与多变量分析</li><li>与第三方高级分析集成</li>
+              </ul>
+            </section>
+            
+            <section class="module">
+              <h3>集成与治理</h3>
+              <p class="goal">功能目标：确保数据安全与共享</p>
+              <ul>
+                <li>企业数据总线与 API</li><li>用户权限、审计与合规</li><li>与 ERP、MES、LIMS 等系统对接</li>
+              </ul>
+            </section>
+            
+    </section>
+    <section class="metrics">
+      <h2>关键指标</h2>
+      <ul>
+        <li>数据采集可用率与完整性</li><li>分析模型部署数量与节能收益</li><li>报警响应时间与合规报告完成率</li>
+      </ul>
+    </section>
+    <footer>基于 PM Universe README.md 中的目标整理</footer>
+      <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

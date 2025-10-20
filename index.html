@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PM Universe 原型索引</title>
+    <style>
+      body {
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
+        color: #0f172a;
+      }
+      header {
+        padding: 72px 24px 48px;
+        text-align: center;
+      }
+      header h1 {
+        font-size: 44px;
+        margin: 0 0 16px;
+      }
+      header p {
+        margin: 8px auto;
+        font-size: 18px;
+        max-width: 640px;
+        color: #475569;
+      }
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+      }
+      .category {
+        margin-bottom: 48px;
+      }
+      .category h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 18px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 18px;
+        padding: 20px;
+        text-decoration: none;
+        color: inherit;
+        min-height: 120px;
+        box-shadow: 0 18px 40px rgba(79, 70, 229, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        backdrop-filter: blur(6px);
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 52px rgba(79, 70, 229, 0.18);
+      }
+      .card span {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 14px;
+        color: #6366f1;
+      }
+      .about {
+        background: rgba(15, 23, 42, 0.85);
+        color: #e2e8f0;
+        border-radius: 24px;
+        padding: 32px;
+        margin-bottom: 56px;
+        box-shadow: 0 20px 42px rgba(15, 23, 42, 0.2);
+      }
+      .about h2 {
+        margin-top: 0;
+        font-size: 26px;
+      }
+      .about a {
+        color: #a855f7;
+        text-decoration: none;
+      }
+      .about a:hover {
+        text-decoration: underline;
+      }
+      footer {
+        text-align: center;
+        padding: 32px;
+        color: #64748b;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>PM Universe 原型索引</h1>
+      <p>快速浏览 50 款企业级与消费级软件的产品原型，支持部署到 GitHub Pages 或任意静态站点。</p>
+    </header>
+    <main>
+      <section class="about">
+        <h2>关于项目</h2>
+        <p>PM Universe 致力于为产品经理提供系统化的产品原型资料库，覆盖企业级与消费级标杆产品。</p>
+        <p>
+          项目仓库：<a href="https://github.com/haojin-dev/pm-universe" target="_blank" rel="noopener">https://github.com/haojin-dev/pm-universe</a><br />
+          作者主页：<a href="http://haoj.in" target="_blank" rel="noopener">http://haoj.in</a>
+        </p>
+        <p>发布到 GitHub Pages 后，即可通过此索引页快速跳转至任意原型页面。</p>
+      </section>
+      <div id="catalog"></div>
+    </main>
+    <footer>© 2025 PM Universe. 保留署名与共享协议。</footer>
+    <script type="module">
+      const container = document.getElementById('catalog');
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      const prototypesIndex = pathSegments.indexOf('prototypes');
+      const rootSegments = prototypesIndex === -1 ? [] : pathSegments.slice(0, prototypesIndex + 1);
+      const rootPath = prototypesIndex === -1 ? './' : `/${rootSegments.join('/')}/`;
+
+      fetch(`${rootPath}prototype-index.json`)
+        .then((response) => response.json())
+        .then((data) => {
+          data.categories.forEach((category) => {
+            const section = document.createElement('section');
+            section.className = 'category';
+
+            const heading = document.createElement('h2');
+            heading.textContent = category.name;
+            section.appendChild(heading);
+
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+
+            category.items.forEach((item) => {
+              const link = document.createElement('a');
+              link.className = 'card';
+              link.href = `${rootPath}${item.path}`;
+              link.innerHTML = `<strong>${item.name}</strong><span>点击进入原型</span>`;
+              grid.appendChild(link);
+            });
+
+            section.appendChild(grid);
+            container.appendChild(section);
+          });
+        })
+        .catch((error) => {
+          container.innerHTML = '<p>原型目录加载失败，请刷新页面重试。</p>';
+          console.error('无法加载原型目录', error);
+        });
+    </script>
+    <script type="module" src="./menu.js"></script>
+  </body>
+</html>
