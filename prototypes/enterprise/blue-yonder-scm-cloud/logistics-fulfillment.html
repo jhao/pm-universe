@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>物流履约监控 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .grid { display: grid; gap: 20px; }
+      .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .panel { padding: 16px; border-radius: 14px; background: #f1f5f9; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .panel strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .kpi-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+      .kpi { background: rgba(37, 99, 235, 0.12); border-radius: 14px; padding: 16px; }
+      .kpi span { display: block; font-size: 12px; color: var(--text-sub); }
+      .kpi strong { display: block; margin-top: 8px; font-size: 20px; }
+      .table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+      .table th, .table td { padding: 12px; border: 1px solid #e2e8f0; font-size: 13px; text-align: left; }
+      .table thead { background: #f8fafc; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #ecfdf5; border: 1px solid #6ee7b7; font-size: 13px; color: #065f46; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .grid.two { grid-template-columns: repeat(1, minmax(0, 1fr)); } .kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>物流履约 / 控制台</span>
+            <h1>物流履约监控控制台</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">物流运营经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>履约 KPI 仪表板</h2>
+                <p>实时监控订单、运输与仓储表现</p>
+              </div>
+              <div class="actions">
+                <a class="btn primary" href="logistics-order-detail.html">查看订单详情</a>
+                <a class="btn secondary" href="replenishment-network-sim.html">查看调拨线路</a>
+              </div>
+            </header>
+            <div class="kpi-strip">
+              <div class="kpi"><span>准时率</span><strong>96.6%</strong><span>重点关注 DC-03</span></div>
+              <div class="kpi"><span>在途订单</span><strong>12,480</strong><span>延误 132 单</span></div>
+              <div class="kpi"><span>仓储利用率</span><strong>82%</strong><span>北美仓库 91%</span></div>
+              <div class="kpi"><span>运输异常</span><strong>27 起</strong><span>已处理 18 起</span></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>订单状态表</h2>
+                <p>按优先级排序的关键订单列表</p>
+              </div>
+            </header>
+            <table class="table" id="orderTable"></table>
+          </section>
+
+          <section class="grid two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>运输网络状态</h2>
+                  <p>关注主要线路与承运商表现</p>
+                </div>
+                <a class="btn secondary" href="logistics-order-detail.html">查看线路详情</a>
+              </header>
+              <div class="panel" id="networkPanel"></div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>仓储作业看板</h2>
+                  <p>实时掌握仓库作业与人力情况</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">派发仓储任务</a>
+              </header>
+              <div class="panel" id="warehousePanel"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注</h2>
+                <p>切换角色查看履约监控关注点</p>
+              </div>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>物流履约监控控制台进入即展示 KPI 与订单状态表，确保观众第一时间看到核心信息。运输网络与仓储看板补充关键运营细节，角色切换可演示不同职能的关注点，同时按钮可跳转至订单详情、调拨线路及任务派发页面。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'logistics';
+      document.querySelectorAll('.menu a').forEach((link) => { if (link.dataset.page === currentPage) link.classList.add('active'); });
+
+      const orderTable = document.getElementById('orderTable');
+      const orders = [
+        { order: '#SO-1203', customer: '北美零售商 A', status: '延误 1 天', eta: '5 月 20 日', action: '通知客户' },
+        { order: '#SO-1210', customer: '欧洲分销商 B', status: '在途', eta: '5 月 18 日', action: '追踪运输' },
+        { order: '#SO-1215', customer: '亚太渠道 C', status: '待发货', eta: '5 月 22 日', action: '安排仓储' },
+        { order: '#SO-1222', customer: '北美电商平台', status: '延误 2 天', eta: '5 月 21 日', action: '升级处理' }
+      ];
+      orderTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>订单号</th>
+            <th>客户</th>
+            <th>状态</th>
+            <th>预计到达</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orders
+            .map(
+              (row) => `
+                <tr>
+                  <td><a href="logistics-order-detail.html" style="color:#1d4ed8;">${row.order}</a></td>
+                  <td>${row.customer}</td>
+                  <td>${row.status}</td>
+                  <td>${row.eta}</td>
+                  <td><a href="logistics-order-detail.html" style="color:#2563eb;">${row.action}</a></td>
+                </tr>
+              `
+            )
+            .join('')}
+        </tbody>`;
+
+      const networkPanel = document.getElementById('networkPanel');
+      const networkItems = [
+        '太平洋航线：港口拥堵导致延误 2-3 天，已启动替代航线。',
+        '北美干线：与承运商 X 协调增派夜班运输。',
+        '欧洲陆运：天气影响小，交付保持准时。'
+      ];
+      networkPanel.innerHTML = networkItems.map((item) => `<p>· ${item}</p>`).join('');
+
+      const warehousePanel = document.getElementById('warehousePanel');
+      const warehouseItems = [
+        'DC-03：利用率 91%，需追加夜班人力。',
+        '欧洲中心仓：库存周转改善至 5.6 天。',
+        '亚太分拨中心：本周需处理逆向调拨 3 批。'
+      ];
+      warehousePanel.innerHTML = warehouseItems.map((item) => `<p>· ${item}</p>`).join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '需求变化反馈', text: '关注延误订单对需求预测的影响。' },
+          { title: '促销保障', text: '确保促销订单优先发货。' },
+          { title: '库存回写', text: '与补货团队共享履约结果。' }
+        ],
+        'supply-planner': [
+          { title: '产能对接', text: '确认履约异常是否需要调整排产。' },
+          { title: '补货计划', text: '根据履约速度调整补货节奏。' },
+          { title: '风险协调', text: '与物流协同解决瓶颈路线。' }
+        ],
+        'logistics-manager': [
+          { title: '异常处置', text: '优先处理延误订单与异常线路。' },
+          { title: '资源调度', text: '安排仓储与运输资源满足高峰需求。' },
+          { title: '客户沟通', text: '及时与客服团队同步最新 ETA。' }
+        ],
+        executive: [
+          { title: '服务水平', text: '关注准时率与客户满意度。' },
+          { title: '成本控制', text: '评估紧急运输与仓储成本。' },
+          { title: '供应链韧性', text: '推动多承运商与备用路线策略。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'logistics-manager';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const config = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = config
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>

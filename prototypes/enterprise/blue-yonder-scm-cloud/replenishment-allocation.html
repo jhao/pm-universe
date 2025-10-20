@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>渠道分配方案 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .table { width: 100%; border-collapse: collapse; }
+      .table th, .table td { padding: 12px; border: 1px solid #e2e8f0; font-size: 13px; text-align: left; }
+      .table thead { background: #f8fafc; }
+      .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+      .panel { padding: 16px; border-radius: 14px; background: #f8fafc; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .panel strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #ecfdf5; border: 1px solid #6ee7b7; font-size: 13px; color: #065f46; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .grid-two, .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>补货与库存 / 分配方案</span>
+            <h1>渠道分配方案审核</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">供应计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>方案摘要</h2>
+                <p>自动优化的补货与调拨方案，请确认与锁定</p>
+              </div>
+              <div class="actions">
+                <a class="btn primary" href="replenishment-inventory.html">返回补货工作台</a>
+                <a class="btn secondary" href="logistics-fulfillment.html">同步执行团队</a>
+              </div>
+            </header>
+            <div class="panel">
+              <strong>目标</strong>
+              <p>在满足服务水平 ≥ 95% 的前提下降低库存成本 6%。</p>
+              <strong>优化结果</strong>
+              <p>建议补货 12,800 件、跨区域调拨 4,600 件，可减少过量库存 ¥0.8M。</p>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>分配明细</h2>
+                <p>按 SKU 与渠道展示的补货 / 调拨建议</p>
+              </div>
+            </header>
+            <table class="table" id="allocationTable"></table>
+          </section>
+
+          <section class="grid-two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>约束校验</h2>
+                  <p>确保产能、运输、预算限制均满足</p>
+                </div>
+              </header>
+              <div class="panel" id="constraintPanel"></div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>审批流转</h2>
+                  <p>追踪方案审批状态与备注</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">查看任务详情</a>
+              </header>
+              <div class="panel" id="approvalPanel"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注</h2>
+                <p>切换角色了解各自的审核要点</p>
+              </div>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>渠道分配方案页面首先展示优化目标与整体收益，随后提供可审核的分配明细。约束校验与审批信息帮助用户确认方案可执行性，通过角色切换可演示不同职能的审核重点，支持跳转回补货工作台或物流执行页面继续操作。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'replenishment';
+      document.querySelectorAll('.menu a').forEach((link) => { if (link.dataset.page === currentPage) link.classList.add('active'); });
+
+      const allocationTable = document.getElementById('allocationTable');
+      const rows = [
+        { sku: 'XG-200', channel: '北美电商', type: '补货', qty: '6,000 件', source: '越南工厂', eta: '4 天', note: '优先发货' },
+        { sku: 'LZ-410', channel: '欧洲区域仓', type: '调拨', qty: '2,800 件', source: '墨西哥工厂', eta: '6 天', note: '紧急' },
+        { sku: 'AC-150', channel: '亚太分销', type: '减少补货', qty: '-1,500 件', source: '系统建议', eta: '-', note: '库存过高' },
+        { sku: 'KF-330', channel: '南美门店', type: '补货', qty: '1,600 件', source: '巴西工厂', eta: '5 天', note: '按计划' }
+      ];
+      allocationTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>渠道 / 节点</th>
+            <th>类型</th>
+            <th>数量</th>
+            <th>来源</th>
+            <th>预计到货</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map(
+              (row) => `
+                <tr>
+                  <td><a href="demand-forecast-sku.html" style="color:#1d4ed8;">${row.sku}</a></td>
+                  <td>${row.channel}</td>
+                  <td>${row.type}</td>
+                  <td>${row.qty}</td>
+                  <td>${row.source}</td>
+                  <td>${row.eta}</td>
+                  <td>${row.note}</td>
+                </tr>
+              `
+            )
+            .join('')}
+        </tbody>`;
+
+      const constraintPanel = document.getElementById('constraintPanel');
+      const constraints = [
+        { title: '产能限制', text: '越南工厂剩余产能 8,000 件，满足补货要求。' },
+        { title: '运输能力', text: '已预留两班海运舱位与一班空运应急。' },
+        { title: '预算限制', text: '总成本 ¥3.2M，低于预算上限 ¥3.6M。' }
+      ];
+      constraintPanel.innerHTML = constraints
+        .map((item) => `<p><strong>${item.title}</strong>${item.text}</p>`)
+        .join('');
+
+      const approvalPanel = document.getElementById('approvalPanel');
+      const approvals = [
+        '需求计划：已确认预测逻辑与补货需求一致。',
+        '供应计划：待确认情景 B 产能锁定。',
+        '财务：关注调拨成本变化，需要高管批准。'
+      ];
+      approvalPanel.innerHTML = approvals.map((item) => `<p>· ${item}</p>`).join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '需求一致性', text: '确保补货量与最新预测版本对齐。' },
+          { title: '促销覆盖', text: '确认促销 SKU 获得优先资源。' },
+          { title: '异常跟踪', text: '关注调拨后的需求变化反馈。' }
+        ],
+        'supply-planner': [
+          { title: '产能承诺', text: '评估各工厂的产能与物料是否满足。' },
+          { title: '约束调整', text: '如有不足，及时在情景模拟中调整。' },
+          { title: '跨职能协同', text: '与物流、财务同步计划变更。' }
+        ],
+        'logistics-manager': [
+          { title: '运输窗口', text: '确认运输计划与调拨时效。' },
+          { title: '仓储调度', text: '调整仓库收货与拣货安排。' },
+          { title: '交付风险', text: '针对紧急任务制定应急方案。' }
+        ],
+        executive: [
+          { title: '财务影响', text: '评估库存成本与调拨费用。' },
+          { title: '服务目标', text: '确认方案能达成服务水平目标。' },
+          { title: '战略对齐', text: '确保资源投入符合战略重点渠道。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'supply-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const config = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = config
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>

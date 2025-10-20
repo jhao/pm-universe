@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>风险缓解手册 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .grid { display: grid; gap: 20px; }
+      .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .panel { padding: 16px; border-radius: 14px; background: #f1f5f9; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .panel strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .list { display: flex; flex-direction: column; gap: 12px; }
+      .list-item { padding: 16px; border-radius: 14px; background: #eef2ff; border: 1px solid #cbd5f5; }
+      .list-item strong { display: block; margin-bottom: 6px; color: #1d4ed8; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #fef3c7; border: 1px solid #fcd34d; font-size: 13px; color: #92400e; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .grid.two, .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>全局风险 / 缓解手册</span>
+            <h1>风险缓解手册</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">供应计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>风险总览</h2>
+                <p>列出当前影响供应链的主要风险及严重程度</p>
+              </div>
+              <a class="btn primary" href="collaboration-workbench.html">派发缓解任务</a>
+            </header>
+            <div class="list" id="riskList"></div>
+          </section>
+
+          <section class="grid two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>缓解策略库</h2>
+                  <p>为不同风险提供标准缓解动作</p>
+                </div>
+              </header>
+              <div class="panel" id="strategyPanel"></div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>实时状态</h2>
+                  <p>跟踪缓解措施的执行进度</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">查看执行详情</a>
+              </header>
+              <div class="panel" id="statusPanel"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注</h2>
+                <p>查看不同角色在风险管理中的重点</p>
+              </div>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>风险缓解手册汇总当前风险及缓解策略，帮助演示人员快速说明如何管理供应链风险。角色切换展示各职能的应对重点，按钮可跳转至协同任务，形成端到端的风险闭环。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'dashboard';
+      document.querySelectorAll('.menu a').forEach((link) => {
+        if (link.dataset.page === currentPage) link.classList.add('active');
+      });
+
+      const riskList = document.getElementById('riskList');
+      const risks = [
+        { title: '越南工厂零件短缺', level: '高', impact: '影响 SKU LZ-410 产能，需启用替代供应商。' },
+        { title: '太平洋航线拥堵', level: '中', impact: '导致订单延误，需改用空运或其他港口。' },
+        { title: '欧洲能源限电', level: '中', impact: '可能影响波兰工厂产能，需评估备选工厂。' }
+      ];
+      riskList.innerHTML = risks
+        .map(
+          (item) => `
+            <div class="list-item">
+              <strong>${item.title} · ${item.level}风险</strong>
+              <p>${item.impact}</p>
+              <a href="collaboration-workbench.html" style="color:#1d4ed8; font-size: 12px;">查看缓解计划 →</a>
+            </div>
+          `
+        )
+        .join('');
+
+      const strategyPanel = document.getElementById('strategyPanel');
+      const strategies = [
+        '启用备用供应商并预先采购关键零件。',
+        '针对拥堵航线启动空运或多式联运应急方案。',
+        '调整产能分配，将订单切换至富余产能工厂。'
+      ];
+      strategyPanel.innerHTML = strategies.map((item) => `<p>· ${item}</p>`).join('');
+
+      const statusPanel = document.getElementById('statusPanel');
+      const status = [
+        '零件紧缺缓解计划：采购已下单，预计 5 天到货。',
+        '航线拥堵：替代航线已启用，延误缩短至 12 小时。',
+        '产能调整：波兰工厂夜班增加中，等待能源审批。'
+      ];
+      statusPanel.innerHTML = status.map((item) => `<p>· ${item}</p>`).join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '需求应急', text: '根据风险调整需求预测与共识计划。' },
+          { title: '沟通机制', text: '与销售、市场沟通风险对客户的影响。' }
+        ],
+        'supply-planner': [
+          { title: '供应保障', text: '协调替代供应商与外协产能。' },
+          { title: 'S&OP 协调', text: '在会议中汇报风险对产能与财务的影响。' }
+        ],
+        'logistics-manager': [
+          { title: '运输应对', text: '制定改道或加急运输方案。' },
+          { title: '仓储预案', text: '调整仓库作业应对潜在波动。' }
+        ],
+        executive: [
+          { title: '战略决策', text: '判断风险对业务的整体影响与投资需求。' },
+          { title: '资源授权', text: '为关键风险缓解项目提供资金与决策支持。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'supply-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const config = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = config
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>

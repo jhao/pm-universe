@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>补货与库存优化 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+        --accent-soft: rgba(37, 99, 235, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .grid { display: grid; gap: 20px; }
+      .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .panel { padding: 16px; border-radius: 14px; background: #f8fafc; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .panel strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .kpi-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+      .kpi { background: var(--accent-soft); border-radius: 14px; padding: 16px; }
+      .kpi span { display: block; font-size: 12px; color: var(--text-sub); }
+      .kpi strong { display: block; margin-top: 8px; font-size: 20px; }
+      .table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+      .table th, .table td { padding: 12px; border: 1px solid #e2e8f0; font-size: 13px; text-align: left; }
+      .table thead { background: #f8fafc; }
+      .actions { display: flex; gap: 12px; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #ecfdf5; border: 1px solid #6ee7b7; font-size: 13px; color: #065f46; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .grid.two, .grid.three { grid-template-columns: repeat(1, minmax(0, 1fr)); } .kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>补货与库存 / 优化工作台</span>
+            <h1>补货与库存优化工作台</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">供应计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>库存健康仪表板</h2>
+                <p>掌握各渠道库存覆盖与缺货风险</p>
+              </div>
+              <div class="actions">
+                <a class="btn primary" href="replenishment-allocation.html">生成分配方案</a>
+                <a class="btn secondary" href="demand-planning.html">回看需求预测</a>
+              </div>
+            </header>
+            <div class="kpi-strip">
+              <div class="kpi"><span>总体库存覆盖</span><strong>6.2 周</strong><span>目标 6 周</span></div>
+              <div class="kpi"><span>缺货门店</span><strong>32</strong><span>本周下降 12%</span></div>
+              <div class="kpi"><span>过量库存</span><strong>¥ 3.4M</strong><span>重点关注欧洲区域</span></div>
+              <div class="kpi"><span>调拨建议</span><strong>18 条</strong><span>待审核</span></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>补货建议清单</h2>
+                <p>根据需求预测与库存策略自动生成的补货订单</p>
+              </div>
+            </header>
+            <table class="table" id="replenishmentTable"></table>
+          </section>
+
+          <section class="grid two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>网络调拨建议</h2>
+                  <p>跨区域调拨以缓解缺货与过量库存</p>
+                </div>
+                <a class="btn secondary" href="replenishment-network-sim.html">查看网络模拟</a>
+              </header>
+              <div class="panel" id="transferPanel"></div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>执行进度</h2>
+                  <p>追踪补货与调拨任务状态</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">打开任务看板</a>
+              </header>
+              <div class="panel" id="progressPanel"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注点</h2>
+                <p>切换角色查看补货优化关注事项</p>
+              </div>
+              <a class="btn primary" href="logistics-fulfillment.html">通知物流准备</a>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>补货与库存优化页面展示核心的库存健康指标与补货建议列表，用户可直接生成渠道分配方案或回看需求预测。网络调拨与执行进度面板说明关键业务流程，通过角色切换可演示不同职能在补货环节的关注点，并可跳转到调拨模拟、任务看板或物流页面继续操作。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'replenishment';
+      document.querySelectorAll('.menu a').forEach((link) => { if (link.dataset.page === currentPage) link.classList.add('active'); });
+
+      const table = document.getElementById('replenishmentTable');
+      const tableRows = [
+        { sku: 'XG-200', location: '北美电商仓', demand: '14,660', stock: '5,300', recommendation: '补货 6,000 件', eta: '4 天', action: '审核' },
+        { sku: 'LZ-410', location: '欧洲区域仓', demand: '8,450', stock: '2,100', recommendation: '调拨 2,800 件', eta: '6 天', action: '调拨' },
+        { sku: 'AC-150', location: '亚太分销中心', demand: '16,050', stock: '12,400', recommendation: '减少补货 1,500 件', eta: '-', action: '确认' },
+        { sku: 'KF-330', location: '南美门店', demand: '3,420', stock: '1,100', recommendation: '补货 1,600 件', eta: '5 天', action: '审核' }
+      ];
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>补货节点</th>
+            <th>需求量</th>
+            <th>现有库存</th>
+            <th>系统建议</th>
+            <th>预计到货</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows
+            .map(
+              (row) => `
+                <tr>
+                  <td><a href="demand-forecast-sku.html" style="color:#1d4ed8;">${row.sku}</a></td>
+                  <td>${row.location}</td>
+                  <td>${row.demand}</td>
+                  <td>${row.stock}</td>
+                  <td>${row.recommendation}</td>
+                  <td>${row.eta}</td>
+                  <td><a href="replenishment-allocation.html" style="color:#2563eb;">${row.action}</a></td>
+                </tr>
+              `
+            )
+            .join('')}
+        </tbody>`;
+
+      const transferPanel = document.getElementById('transferPanel');
+      const transfers = [
+        '将欧洲仓多余 2,400 件 AC-150 调拨至北美电商仓。',
+        '建议在亚太区域执行跨店调拨，减少过量库存。',
+        '针对 LZ-410 的缺货门店，启用墨西哥工厂直发。'
+      ];
+      transferPanel.innerHTML = transfers.map((item) => `<p>· ${item}</p>`).join('');
+
+      const progressPanel = document.getElementById('progressPanel');
+      const progress = [
+        '补货订单 #RP-1023 已提交供应商，等待确认。',
+        '调拨任务 #TR-568 正在装运，预计 2 天到达。',
+        '门店执行反馈 86% 已完成陈列调整。'
+      ];
+      progressPanel.innerHTML = progress.map((item) => `<p>· ${item}</p>`).join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '需求侧验证', text: '确认补货建议与最新预测保持一致，避免过量。' },
+          { title: '促销同步', text: '针对促销 SKU 提前锁定补货量。' },
+          { title: '异常处理', text: '快速识别需求激增导致的缺货风险。' }
+        ],
+        'supply-planner': [
+          { title: '产能匹配', text: '确保工厂排产满足补货计划，必要时调整排程。' },
+          { title: '调拨策略', text: '权衡跨区域调拨的成本与服务水平。' },
+          { title: '供应商协同', text: '与关键供应商共享补货计划，锁定交期。' }
+        ],
+        'logistics-manager': [
+          { title: '运输排程', text: '根据补货量安排干线与末端运力。' },
+          { title: '仓储容量', text: '确认仓库有足够空间与人力处理补货。' },
+          { title: '门店执行', text: '跟踪门店收货与陈列进度，避免积压。' }
+        ],
+        executive: [
+          { title: '库存效率', text: '关注库存周转与现金占用的改善。' },
+          { title: '服务水平', text: '确保缺货率维持在目标范围内。' },
+          { title: '成本优化', text: '评估调拨与紧急补货的成本影响。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'supply-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const config = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = config
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>

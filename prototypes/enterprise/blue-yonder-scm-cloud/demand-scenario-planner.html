@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>需求情景模拟器 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+        --accent-soft: rgba(37, 99, 235, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--bg);
+        color: var(--text-main);
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .layout { display: flex; min-height: 100vh; }
+
+      .sidebar {
+        width: 248px;
+        background: var(--sidebar-bg);
+        color: #fff;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .brand span.logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        font-weight: 700;
+      }
+
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+
+      .menu a {
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.72);
+        transition: background 0.2s, color 0.2s;
+      }
+
+      .menu a.active, .menu a:hover {
+        background: rgba(37, 99, 235, 0.16);
+        color: #fff;
+      }
+
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+
+      .main { flex: 1; display: flex; flex-direction: column; }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 32px 0 32px;
+      }
+
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+
+      .role-switcher {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+
+      main.content {
+        padding: 24px 32px 40px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06);
+      }
+
+      .card header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+
+      .scenario-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .scenario {
+        border-radius: 16px;
+        padding: 16px;
+        border: 1px solid #bfdbfe;
+        background: rgba(191, 219, 254, 0.35);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .scenario strong { font-size: 16px; }
+      .scenario span { font-size: 13px; color: var(--text-sub); }
+
+      .scenario-actions { display: flex; gap: 12px; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+
+      .chart-panel {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+      }
+
+      .chart {
+        border-radius: 16px;
+        border: 1px dashed #93c5fd;
+        padding: 16px;
+        background: #f8fbff;
+        min-height: 220px;
+      }
+
+      .metrics-list { display: flex; flex-direction: column; gap: 12px; }
+      .metric-item {
+        padding: 14px;
+        border-radius: 12px;
+        background: #f1f5f9;
+        border: 1px solid #dbeafe;
+      }
+
+      .metric-item strong { display: block; margin-bottom: 6px; }
+      .metric-item span { font-size: 13px; color: var(--text-sub); }
+
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #fff7ed; border: 1px solid #fed7aa; font-size: 13px; color: #92400e; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+
+      .page-notes {
+        padding: 18px;
+        border-radius: 16px;
+        background: #fefce8;
+        border: 1px solid #facc15;
+        font-size: 14px;
+        color: #78350f;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 1200px) {
+        .scenario-grid, .chart-panel { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>需求规划 / 情景模拟</span>
+            <h1>需求情景模拟器</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">需求计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>情景版本对比</h2>
+                <p>快速评估不同需求假设下的库存与营收影响</p>
+              </div>
+              <div class="scenario-actions">
+                <a class="btn primary" href="demand-planning.html">返回工作台</a>
+                <a class="btn secondary" href="supply-planning.html">同步至供应计划</a>
+              </div>
+            </header>
+            <div class="scenario-grid" id="scenarioGrid"></div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>情景指标仪表板</h2>
+                <p>以图表与指标量化情景差异，支持快速决策</p>
+              </div>
+              <a class="btn secondary" href="executive-analytics.html">推送给高管</a>
+            </header>
+            <div class="chart-panel">
+              <div class="chart">
+                <strong>库存与需求走向</strong>
+                <p style="margin-top: 8px; color: var(--text-sub);">折线图占位：展示基线与情景 B、C 的需求预测与库存水平</p>
+              </div>
+              <div class="metrics-list" id="scenarioMetrics"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注点</h2>
+                <p>切换角色查看其在情景模拟中的关键信息</p>
+              </div>
+              <a class="btn primary" href="collaboration-workbench.html">发起情景评审任务</a>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>情景模拟器页面核心展示不同情景的主要指标对比，上方为版本卡片，点击按钮可返回需求工作台或同步至供应计划。仪表板区域用于说明库存、营收、服务水平等关键指标的变化。底部提供角色视角说明，满足演示不同角色关注点的需求。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'demand';
+      document.querySelectorAll('.menu a').forEach((link) => {
+        if (link.dataset.page === currentPage) link.classList.add('active');
+      });
+
+      const scenarios = [
+        {
+          name: '基线情景',
+          revenue: '+0%',
+          inventory: '安全库存 120%',
+          service: '96.2%',
+          note: '历史趋势 + 已确认促销',
+          link: 'demand-forecast-sku.html'
+        },
+        {
+          name: '情景 B · 促销增强',
+          revenue: '+3.2%',
+          inventory: '安全库存 135%',
+          service: '95.4%',
+          note: '针对北美电商渠道加码促销',
+          link: 'replenishment-inventory.html'
+        },
+        {
+          name: '情景 C · 供应受限',
+          revenue: '-1.6%',
+          inventory: '安全库存 98%',
+          service: '92.1%',
+          note: '越南工厂短缺导致的保守预测',
+          link: 'risk-mitigation-playbook.html'
+        }
+      ];
+
+      const scenarioGrid = document.getElementById('scenarioGrid');
+      scenarioGrid.innerHTML = scenarios
+        .map(
+          (item) => `
+            <div class="scenario">
+              <strong>${item.name}</strong>
+              <span>营收影响：${item.revenue}</span>
+              <span>库存覆盖：${item.inventory}</span>
+              <span>服务水平：${item.service}</span>
+              <p style="font-size: 13px; color: var(--text-sub);">${item.note}</p>
+              <a class="btn secondary" href="${item.link}">查看详细 →</a>
+            </div>
+          `
+        )
+        .join('');
+
+      const scenarioMetrics = document.getElementById('scenarioMetrics');
+      const metricData = [
+        { title: '需求峰值周', text: '第 23 周 · 情景 B 峰值较基线高 12%。' },
+        { title: '缺货风险 SKU', text: 'LZ-410、AC-150 在情景 C 中触发红色预警。' },
+        { title: '产能利用率', text: '越南工厂在情景 B 达到 104%，需协调外协。' }
+      ];
+      scenarioMetrics.innerHTML = metricData
+        .map((item) => `<div class="metric-item"><strong>${item.title}</strong><span>${item.text}</span></div>`)
+        .join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '促销增幅调参', text: '评估不同促销强度对需求与库存的影响。' },
+          { title: '共识锁定', text: '将选定情景推送给销售、财务确认。' },
+          { title: '预测模型重跑', text: '针对重大偏差的 SKU 重新训练模型。' }
+        ],
+        'supply-planner': [
+          { title: '产能压力验证', text: '检查各工厂产能利用率与加班需求。' },
+          { title: '物料约束', text: '识别关键零件短缺并制定缓解策略。' },
+          { title: '同步 S&OP', text: '将情景推送至 S&OP 会议做财务对齐。' }
+        ],
+        'logistics-manager': [
+          { title: '仓储容量预测', text: '为需求峰值预留仓库与作业资源。' },
+          { title: '运输资源规划', text: '核对干线与末端运力是否足够。' },
+          { title: '客户沟通节奏', text: '提前通知关键客户关于库存与交期的变化。' }
+        ],
+        executive: [
+          { title: '营收-成本平衡', text: '比较不同情景对利润率与现金流的影响。' },
+          { title: '风险承受度', text: '评估服务水平下降是否可接受。' },
+          { title: '战略决策', text: '选择最符合业务目标的情景并授权执行。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'demand-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        badge.textContent = roleConfig[role] ? `${select.options[select.selectedIndex].text}视角` : '';
+        highlights.innerHTML = (roleConfig[role] || [])
+          .map((item) => `<div class="highlight"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>
