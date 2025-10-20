@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>薪酬批次 · 发薪流程</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="payroll">
+    <main class="layout">
+      <a class="back-link" href="index.html">← 返回 ADP Workforce Now</a>
+      <div class="top-bar" style="margin-bottom:24px;">
+        <div>
+          <div class="breadcrumbs">ADP Workforce Now · 薪酬与税务</div>
+          <h1>双周薪资批次</h1>
+          <p class="subtitle">通过分步指南检查工时、扣减与报表，确保发薪合规。</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="secondary-button">下载历史批次</button>
+          <button class="primary-button">创建新批次</button>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">流程进度</h2>
+          <div class="badge-group">
+            <span class="badge">当前周期：2024/03/01 - 2024/03/15</span>
+            <span class="badge warning">2 个待处理事项</span>
+          </div>
+        </div>
+        <div class="stepper" data-stepper></div>
+        <div class="step-content" data-step-content></div>
+      </section>
+    </main>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

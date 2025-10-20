@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>人事核心 · 员工目录</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="employees">
+    <main class="layout">
+      <a class="back-link" href="index.html">← 返回 ADP Workforce Now</a>
+      <div class="top-bar" style="margin-bottom:24px;">
+        <div>
+          <div class="breadcrumbs">ADP Workforce Now · 人事核心</div>
+          <h1>员工 360° 档案</h1>
+          <p class="subtitle">实时掌握员工状态、异动记录与薪酬信息，支持一键发起操作。</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="secondary-button">批量导入</button>
+          <button class="primary-button">新增员工</button>
+        </div>
+      </div>
+
+      <section class="layout two-column">
+        <aside class="panel" style="gap:16px;">
+          <div class="panel-header" style="margin-bottom:0;">
+            <h2 class="section-title">员工列表</h2>
+          </div>
+          <input class="search-input" type="search" placeholder="搜索姓名、部门、职位..." data-employee-search />
+          <div class="list" data-employee-list></div>
+        </aside>
+        <section class="panel" data-employee-detail>
+          <div class="empty-state">请选择左侧的员工查看详情</div>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
