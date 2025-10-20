@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Asana · 成员任务中心</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <div class="top-bar">
+        <div>
+          <div class="breadcrumbs">Asana 原型 · 团队协作</div>
+          <h1>成员任务中心</h1>
+          <p class="subtitle">统一的个人效率面板，帮助不同职能成员聚焦优先级、协作与知识沉淀。</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a class="ghost-button" href="index.html">返回概览</a>
+          <button class="primary-button">同步到日历</button>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">今日概览</h2>
+          <span class="badge">智能助手</span>
+        </div>
+        <div class="metrics-grid">
+          <article class="metric-card">
+            <div class="label">今日需完成</div>
+            <div class="value">5 个任务</div>
+            <div class="trend"><span>自动排序优先级</span></div>
+            <p class="subtitle">结合截止日期与工作量自动排定。</p>
+          </article>
+          <article class="metric-card">
+            <div class="label">未读更新</div>
+            <div class="value">7 条</div>
+            <div class="trend"><span>已聚合至收件箱</span></div>
+            <p class="subtitle">评论、审批与表单请求一处处理。</p>
+          </article>
+          <article class="metric-card">
+            <div class="label">跨部门依赖</div>
+            <div class="value">3 个</div>
+            <div class="trend warning"><span>需 PM 关注</span></div>
+            <p class="subtitle">系统已通知相关负责人确认时间。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">角色工作模式</h2>
+          <div class="role-switcher" data-role-switcher data-target="#member-role-panels">
+            <button data-role="designer">设计师</button>
+            <button data-role="engineer">工程师</button>
+            <button data-role="ops">运营</button>
+          </div>
+        </div>
+        <div class="role-panels" id="member-role-panels">
+          <div class="role-panel" data-role-panel="designer">
+            <h3>设计师视角</h3>
+            <p class="subtitle">聚焦交付里程碑、评审反馈与协作资产。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>资产清单</h4>
+                <ul class="feature-list">
+                  <li>Figma 链接自动关联至任务</li>
+                  <li>最新反馈摘要由 AI 抽取</li>
+                  <li>状态改变时通知评审人</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>评审追踪</h4>
+                <div class="timeline">
+                  <div class="timeline-event">
+                    <strong>交互稿评审</strong>
+                    <span class="status-pill success">完成</span>
+                    <p>4 位评审者意见已整合，生成修改任务。</p>
+                  </div>
+                  <div class="timeline-event">
+                    <strong>视觉走查</strong>
+                    <span class="status-pill warning">待确认</span>
+                    <p>等待品牌团队确认色彩规范，自动提醒中。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>协作节奏</h4>
+                <p>系统建议今日安排：上午完成剩余稿件，下午跟进评审反馈。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="engineer">
+            <h3>工程师视角</h3>
+            <p class="subtitle">整合开发任务、代码审查与部署流水线。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>我的分支</h4>
+                <ul class="feature-list">
+                  <li>GitHub PR #248「支付入口优化」待 Review</li>
+                  <li>CI 通过，部署窗口为今晚 22:00</li>
+                  <li>自动同步至 Asana 任务状态</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>阻塞提醒</h4>
+                <div class="timeline">
+                  <div class="timeline-event">
+                    <strong>接口联调</strong>
+                    <span class="status-pill warning">等待后端</span>
+                    <p>超过 24 小时未更新，已通知接口负责人。</p>
+                  </div>
+                  <div class="timeline-event">
+                    <strong>测试反馈</strong>
+                    <span class="status-pill">处理中</span>
+                    <p>自动生成缺陷任务 3 条，优先级已排序。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>自动化助手</h4>
+                <ul class="feature-list">
+                  <li>PR 合并后自动勾选完成</li>
+                  <li>构建失败发送 Slack 提醒</li>
+                  <li>部署成功推送至监控频道</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="ops">
+            <h3>运营视角</h3>
+            <p class="subtitle">集中查看营销活动、内容计划与跨团队协同。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>活动日历</h4>
+                <div class="timeline">
+                  <div class="timeline-event">
+                    <strong>邮件营销发布</strong>
+                    <span class="status-pill success">已上线</span>
+                    <p>数据回传到 Asana，自动生成复盘任务。</p>
+                  </div>
+                  <div class="timeline-event">
+                    <strong>直播活动筹备</strong>
+                    <span class="status-pill warning">进度滞后</span>
+                    <p>等待设计提供 KV，系统建议请求支援。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>内容协作</h4>
+                <ul class="feature-list">
+                  <li>内容表单自动生成任务并分配审稿人</li>
+                  <li>审批通过后同步到 CMS</li>
+                  <li>关键节点通知销售团队</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>结果追踪</h4>
+                <div class="table-preview">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>活动</th>
+                        <th>目标</th>
+                        <th>进度</th>
+                        <th>下一步</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>新品邮件</td>
+                        <td>开启率 35%</td>
+                        <td><span class="status-pill success">达成</span></td>
+                        <td>生成复盘报告</td>
+                      </tr>
+                      <tr>
+                        <td>线下沙龙</td>
+                        <td>报名 60 人</td>
+                        <td><span class="status-pill warning">需加速</span></td>
+                        <td>启动社群推广</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">沟通与反馈闭环</h2>
+          <span class="badge">统一入口</span>
+        </div>
+        <div class="dual-column">
+          <div>
+            <h3>收件箱智能聚合</h3>
+            <ul class="feature-list">
+              <li>自动分类：审批、评论、系统提醒、自动化消息</li>
+              <li>AI 摘要帮助快速回复或将信息转为任务</li>
+              <li>支持设定“专注时间”，集中处理通知</li>
+            </ul>
+          </div>
+          <div>
+            <h3>反馈驱动改进</h3>
+            <div class="stepper">
+              <div class="step">
+                <strong>记录</strong>
+                <p>会议纪要与录音自动转录，标注行动项。</p>
+              </div>
+              <div class="step">
+                <strong>追踪</strong>
+                <p>反馈转化为任务后，自动关联原讨论串。</p>
+              </div>
+              <div class="step">
+                <strong>回放</strong>
+                <p>复盘报告生成总结，沉淀为知识库模板。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>页面展示团队成员在 Asana 中的个人效率与协作体验。</footer>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

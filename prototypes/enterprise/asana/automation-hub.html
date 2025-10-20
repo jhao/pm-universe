@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Asana · 自动化与集成中心</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <div class="top-bar">
+        <div>
+          <div class="breadcrumbs">Asana 原型 · 效率提升</div>
+          <h1>自动化与集成中心</h1>
+          <p class="subtitle">以规则、集成和自定义应用连接企业工具链，让跨团队协作信息实时流动。</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a class="ghost-button" href="index.html">返回概览</a>
+          <button class="primary-button">创建新规则</button>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">典型场景</h2>
+          <div class="role-switcher" data-role-switcher data-target="#automation-role-panels">
+            <button data-role="pm">项目经理</button>
+            <button data-role="ops">运营</button>
+            <button data-role="it">IT 管理员</button>
+          </div>
+        </div>
+        <div class="role-panels" id="automation-role-panels">
+          <div class="role-panel" data-role-panel="pm">
+            <h3>项目经理自动化模板</h3>
+            <p class="subtitle">减少手动跟进，确保任务状态与沟通同步。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>里程碑提醒</h4>
+                <ul class="feature-list">
+                  <li>提前 3 天提醒负责人更新进度</li>
+                  <li>未按时更新触发 Slack 提醒</li>
+                  <li>风险标记后自动创建缓解任务</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>跨项目依赖</h4>
+                <p>当依赖任务完成时自动更新本项目状态。</p>
+                <div class="stepper">
+                  <div class="step">
+                    <strong>触发</strong>
+                    <p>依赖任务状态=完成</p>
+                  </div>
+                  <div class="step">
+                    <strong>动作</strong>
+                    <p>当前任务状态更新为“可执行”，通知相关人</p>
+                  </div>
+                  <div class="step">
+                    <strong>记录</strong>
+                    <p>写入项目时间线，生成追踪日志</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>会议摘要</h4>
+                <p>与 Zoom 集成，会议结束后自动生成纪要任务。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="ops">
+            <h3>运营自动化</h3>
+            <p class="subtitle">联动营销、客服与内容系统，确保信息闭环。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>营销活动流水线</h4>
+                <ul class="feature-list">
+                  <li>HubSpot 线索达到阈值 → 自动生成活动任务</li>
+                  <li>内容审批通过 → 自动更新 CMS 与社媒排期</li>
+                  <li>活动结束 → 调用 BI 数据生成复盘报告</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>客服反馈闭环</h4>
+                <div class="timeline">
+                  <div class="timeline-event">
+                    <strong>Zendesk 工单创建</strong>
+                    <span class="status-pill">触发</span>
+                    <p>自动在 Asana 创建问题任务并指定负责人。</p>
+                  </div>
+                  <div class="timeline-event">
+                    <strong>解决方案确认</strong>
+                    <span class="status-pill success">完成</span>
+                    <p>同步状态到客服系统并发送满意度调查。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>内容审批流程</h4>
+                <div class="table-preview">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>阶段</th>
+                        <th>责任人</th>
+                        <th>自动动作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>草稿提交</td>
+                        <td>运营</td>
+                        <td>通知审稿人并附带模板</td>
+                      </tr>
+                      <tr>
+                        <td>审稿</td>
+                        <td>品牌</td>
+                        <td>审批通过后更新状态并归档版本</td>
+                      </tr>
+                      <tr>
+                        <td>发布</td>
+                        <td>市场</td>
+                        <td>同步到社媒排程并提醒客服</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="it">
+            <h3>IT 管理员能力</h3>
+            <p class="subtitle">通过 API、SCIM 与安全策略保障企业级可控性。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>身份与权限</h4>
+                <ul class="feature-list">
+                  <li>SCIM 自动同步员工入离转</li>
+                  <li>基于角色的权限模板</li>
+                  <li>关键项目启用访客控制与审计日志</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>自定义应用</h4>
+                <p>调用 Asana API 构建内部仪表盘与自动化。</p>
+                <div class="stepper">
+                  <div class="step">
+                    <strong>Webhooks</strong>
+                    <p>监听任务变更，触发外部系统流程。</p>
+                  </div>
+                  <div class="step">
+                    <strong>自定义字段</strong>
+                    <p>与数据仓库同步，支持高级报表。</p>
+                  </div>
+                  <div class="step">
+                    <strong>安全策略</strong>
+                    <p>统一密钥管理与 API 限额监控。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>监控与审计</h4>
+                <ul class="feature-list">
+                  <li>实时审计日志，支持导出 SIEM</li>
+                  <li>异常行为检测并发送安全告警</li>
+                  <li>自动生成合规报告与数据保留策略</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">自动化编排流程</h2>
+          <span class="badge">低代码</span>
+        </div>
+        <div class="dual-column">
+          <div>
+            <h3>规则设计器</h3>
+            <ul class="feature-list">
+              <li>拖拽式条件、动作、延时与分支</li>
+              <li>内置模板库：审批、通知、任务分派等</li>
+              <li>实时预览执行日志与失败重试</li>
+            </ul>
+          </div>
+          <div>
+            <h3>跨系统集成</h3>
+            <div class="stepper">
+              <div class="step">
+                <strong>连接器</strong>
+                <p>支持 Slack、Teams、Salesforce、Jira、Zoom、ServiceNow 等。</p>
+              </div>
+              <div class="step">
+                <strong>数据同步</strong>
+                <p>双向同步任务与状态，保证信息一致。</p>
+              </div>
+              <div class="step">
+                <strong>监控与警报</strong>
+                <p>失败重试并推送运维告警，确保流程稳定。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>页面展示 Asana 在企业自动化与集成方面的能力与角色分工。</footer>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
