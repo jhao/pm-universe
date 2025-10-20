@@ -2,276 +2,275 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Aspen HYSYS 原型概览</title>
+    <title>Aspen HYSYS · 系统概览</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header>
-      <h1>Aspen HYSYS 原型套件</h1>
-      <p class="tagline">覆盖流程建模、动态模拟、优化与协同的端到端原型。支持角色切换以展示不同团队的核心工作流。</p>
-      <div class="meta-grid">
-        <div class="meta-card">
-          <strong>目标用户</strong>
-          <p>流程工程师、运营优化师、项目经理</p>
+    <div class="app-shell">
+      <aside class="app-menu">
+        <div class="menu-logo">
+          <span>Aspen HYSYS</span>
+          <strong>流程优化系统</strong>
         </div>
-        <div class="meta-card">
-          <strong>关键痛点</strong>
-          <p>模型搭建复杂、动态行为不可见、优化闭环困难、跨团队协同弱</p>
-        </div>
-        <div class="meta-card">
-          <strong>产品愿景</strong>
-          <p>以数据驱动流程模拟与优化决策，提升能效与交付速度</p>
-        </div>
+        <nav class="menu-nav">
+          <a class="menu-link active" href="index.html">系统概览</a>
+          <a class="menu-link" href="role-dashboard.html">统一指挥舱<span class="menu-link-note">Dashboard</span></a>
+          <a class="menu-link" href="modeling-workspace.html">建模工作台<span class="menu-link-note">Modeling</span></a>
+          <a class="menu-link" href="dynamic-simulation.html">动态模拟监控<span class="menu-link-note">Simulation</span></a>
+          <a class="menu-link" href="optimization-center.html">优化闭环中心<span class="menu-link-note">Optimization</span></a>
+          <a class="menu-link" href="collaboration-hub.html">协同控制塔<span class="menu-link-note">Collaboration</span></a>
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <header class="page-header">
+          <div class="header-top">
+            <div>
+              <span class="menu-group-label">系统蓝图</span>
+              <h1>Aspen HYSYS 原型套件</h1>
+              <p class="subtitle">覆盖流程建模、动态模拟、优化闭环与协同治理的端到端体验，支持角色切换呈现不同团队的核心工作流。</p>
+            </div>
+            <div class="header-role-switch">
+              <button class="active" data-role="engineer">流程工程师</button>
+              <button data-role="optimizer">运营优化师</button>
+              <button data-role="manager">项目经理</button>
+            </div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>目标用户</strong>
+              <p>流程工程师、运营优化师、项目经理</p>
+            </div>
+            <div class="meta-card">
+              <strong>关键痛点</strong>
+              <p>模型搭建复杂、动态行为不可见、优化闭环困难、跨团队协同弱</p>
+            </div>
+            <div class="meta-card">
+              <strong>产品愿景</strong>
+              <p>以数据驱动流程模拟与优化决策，提升能效与交付速度</p>
+            </div>
+          </div>
+        </header>
+
+        <main class="page">
+          <section class="core-section">
+            <h2>核心界面速览</h2>
+            <div class="core-preview">
+              <div class="core-panel">
+                <strong>导航</strong>
+                <h3>模块化菜单</h3>
+                <p>左侧系统菜单分层承载建模、模拟、优化、协同等功能模块，支持快速切换。</p>
+                <div class="core-lanes">
+                  <div class="core-lane">统一指挥舱</div>
+                  <div class="core-lane">建模工作台</div>
+                  <div class="core-lane">动态模拟</div>
+                  <div class="core-lane">优化闭环</div>
+                </div>
+              </div>
+              <div class="core-panel">
+                <strong>画布</strong>
+                <h3>流程模拟主屏</h3>
+                <div class="core-canvas">
+                  <div class="core-lane">实时 KPI 看板</div>
+                  <div class="core-lane">流程图画布</div>
+                  <div class="core-lane">属性/求解面板</div>
+                </div>
+                <p>首屏聚焦模型画布与指标，以真实系统界面感展示关键操作路径。</p>
+              </div>
+              <div class="core-panel">
+                <strong>角色视角</strong>
+                <h3>右上角角色切换</h3>
+                <p>通过右上角角色切换，预设不同角色的关注点、指标与提醒，驱动跨团队协同。</p>
+                <ul>
+                  <li>流程工程师：模型与求解状态</li>
+                  <li>运营优化师：收益与执行闭环</li>
+                  <li>项目经理：进度、审批、风险</li>
+                </ul>
+              </div>
+            </div>
+            <div class="core-description">
+              <h3>主要业务说明</h3>
+              <p>系统概览页面用于讲解 Aspen HYSYS 数字化平台的整体结构，突出统一菜单导航与角色切换的框架。通过点击下方链接，可进入各功能页面继续演示不同业务场景。</p>
+              <div class="core-actions">
+                <a class="cta-link" href="role-dashboard.html">打开统一指挥舱</a>
+                <a class="cta-link" href="modeling-workspace.html">跳转建模工作台</a>
+                <a class="cta-link" href="dynamic-simulation.html">查看动态模拟</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>产品策略地图</h2>
+            <div class="overview-list">
+              <div class="overview-card">
+                <span>01 · 建模体验</span>
+                <h3>模块化流程建模</h3>
+                <p>通过模板、推荐模型与校核清单加速从 PFD 到 HYSYS 模型的搭建。</p>
+              </div>
+              <div class="overview-card">
+                <span>02 · 动态洞察</span>
+                <h3>稳态到动态一键切换</h3>
+                <p>将稳态模型快速转化为动态模拟，支持启动、停车、事故等场景推演。</p>
+              </div>
+              <div class="overview-card">
+                <span>03 · 优化闭环</span>
+                <h3>实时优化与 APC 联动</h3>
+                <p>把线下求解结果同步至现场 APC 与 DCS，持续校准模型与建议。</p>
+              </div>
+              <div class="overview-card">
+                <span>04 · 数据协作</span>
+                <h3>多角色协同与知识沉淀</h3>
+                <p>版本对比、批注、审批流程与知识库构建，保障模型复用与合规。</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>角色视角演示</h2>
+            <div data-role-container>
+              <div class="role-switch" data-role-switch>
+                <button class="active" data-role="engineer">流程工程师</button>
+                <button data-role="optimizer">运营优化师</button>
+                <button data-role="manager">项目经理</button>
+              </div>
+              <div class="role-panels">
+                <div class="role-panel active" data-role="engineer">
+                  <h3>流程工程师仪表盘</h3>
+                  <p>关注模型结构、物性参数与求解状态，提供操作指导。</p>
+                  <ul>
+                    <li>今日任务：装置扩能项目建模校核</li>
+                    <li>关键指标：收敛迭代次数、物料平衡偏差</li>
+                    <li>推荐操作：使用换热器模板、一键生成流程图报告</li>
+                  </ul>
+                  <a class="cta-link" href="modeling-workspace.html">进入建模工作台 →</a>
+                </div>
+                <div class="role-panel" data-role="optimizer">
+                  <h3>运营优化师仪表盘</h3>
+                  <p>关注能耗、产量与优化方案执行情况，联动 APC / DCS 数据。</p>
+                  <ul>
+                    <li>实时监控：蒸汽平衡、关键瓶颈单元负荷</li>
+                    <li>优化案例：丙烷脱氢装置能效提升 3.2%</li>
+                    <li>下一步：推送节能方案至现场并跟踪执行</li>
+                  </ul>
+                  <a class="cta-link" href="optimization-center.html">查看优化闭环 →</a>
+                </div>
+                <div class="role-panel" data-role="manager">
+                  <h3>项目经理仪表盘</h3>
+                  <p>聚焦项目进度、风险与干系人协同，快速掌握交付态势。</p>
+                  <ul>
+                    <li>项目阶段：动态模拟验证</li>
+                    <li>风险预警：冷箱切换场景需额外 HAZOP 审查</li>
+                    <li>协同事项：批注流程审批、外部顾问查看权限</li>
+                  </ul>
+                  <a class="cta-link" href="collaboration-hub.html">跳转协同中心 →</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>典型实施旅程</h2>
+            <div data-stage-container>
+              <div class="role-switch" data-stage-switch style="margin-bottom: 16px;">
+                <button class="active" data-stage-target="implementation-stage1">阶段一</button>
+                <button data-stage-target="implementation-stage2">阶段二</button>
+                <button data-stage-target="implementation-stage3">阶段三</button>
+              </div>
+              <div class="stage-panel active" data-stage="implementation-stage1">
+                <div class="layout-two-columns">
+                  <div class="card">
+                    <h3>建模准备</h3>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <strong>需求评审</strong>
+                        <span>导入 PFD / P&ID，识别关键单元</span>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>数据准备</strong>
+                        <span>物性库选择、实验数据校准</span>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>模板应用</strong>
+                        <span>流程图模板、单元操作模板匹配</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>角色协同亮点</h3>
+                    <ul>
+                      <li><span class="badge">工程师</span> 建模清单一键分派</li>
+                      <li><span class="badge">优化师</span> 预估瓶颈单元 KPI</li>
+                      <li><span class="badge">经理</span> 审批建模假设与边界条件</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="implementation-stage2">
+                <div class="layout-two-columns">
+                  <div class="card">
+                    <h3>动态模拟验证</h3>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <strong>模型转换</strong>
+                        <span>稳态至动态参数自动映射</span>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>情景推演</strong>
+                        <span>冷启动、事故与应急切换流程</span>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>控制逻辑校核</strong>
+                        <span>PID 参数建议、联锁策略验证</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>角色协同亮点</h3>
+                    <ul>
+                      <li><span class="badge">工程师</span> 调整模型参数，查看收敛情况</li>
+                      <li><span class="badge">优化师</span> 导入历史工况验证模型准确性</li>
+                      <li><span class="badge">经理</span> 审核关键情景报告与合规文档</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="implementation-stage3">
+                <div class="layout-two-columns">
+                  <div class="card">
+                    <h3>优化闭环与协同</h3>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <strong>收益评估</strong>
+                        <span>量化节能、增产、合规收益</span>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>执行跟踪</strong>
+                        <span>对接 APC / DCS，跟踪现场差异</span>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>知识沉淀</strong>
+                        <span>形成标准模板与案例库</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>角色协同亮点</h3>
+                    <ul>
+                      <li><span class="badge">工程师</span> 记录模型经验并分享模板</li>
+                      <li><span class="badge">优化师</span> 更新收益仪表盘与计划</li>
+                      <li><span class="badge">经理</span> 管理审批、风险与资源</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer>系统概览页用于连接各功能原型，展示 Aspen HYSYS 平台的整体蓝图。</footer>
       </div>
-    </header>
+    </div>
 
-    <main class="page">
-      <section>
-        <h2>产品策略概览</h2>
-        <div class="overview-list">
-          <div class="overview-card">
-            <span>01 · 建模体验</span>
-            <h3>模块化流程建模</h3>
-            <p>通过模板、推荐模型与校核清单加速从 PFD 到 HYSYS 模型的搭建。</p>
-          </div>
-          <div class="overview-card">
-            <span>02 · 动态洞察</span>
-            <h3>稳态到动态一键切换</h3>
-            <p>将稳态模型快速转化为动态模拟，支持启动、停车、事故等场景推演。</p>
-          </div>
-          <div class="overview-card">
-            <span>03 · 优化闭环</span>
-            <h3>实时优化与 APC 联动</h3>
-            <p>把线下求解结果同步至现场 APC 与 DCS，持续校准模型与建议。</p>
-          </div>
-          <div class="overview-card">
-            <span>04 · 数据协作</span>
-            <h3>多角色协同与知识沉淀</h3>
-            <p>版本对比、批注、审批流程与知识库构建，保障模型复用与合规。</p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>角色视角演示</h2>
-        <div data-role-container>
-        <div class="role-switch" data-role-switch>
-          <button class="active" data-role="engineer">流程工程师</button>
-          <button data-role="optimizer">运营优化师</button>
-          <button data-role="manager">项目经理</button>
-        </div>
-        <div class="role-panels">
-          <div class="role-panel active" data-role="engineer">
-            <h3>流程工程师仪表盘</h3>
-            <p>关注模型结构、物性参数与求解状态，提供操作指导。</p>
-            <ul>
-              <li>今日任务：装置扩能项目建模校核</li>
-              <li>关键指标：收敛迭代次数、物料平衡偏差</li>
-              <li>推荐操作：使用换热器模板、一键生成流程图报告</li>
-            </ul>
-            <a class="cta" href="modeling-workspace.html">进入建模工作台 →</a>
-          </div>
-          <div class="role-panel" data-role="optimizer">
-            <h3>运营优化师仪表盘</h3>
-            <p>关注能耗、产量与优化方案执行情况，联动 APC / DCS 数据。</p>
-            <ul>
-              <li>实时监控：蒸汽平衡、关键瓶颈单元负荷</li>
-              <li>优化案例：丙烷脱氢装置能效提升 3.2%</li>
-              <li>下一步：推送节能方案至现场并跟踪执行</li>
-            </ul>
-            <a class="cta" href="optimization-center.html">查看优化闭环 →</a>
-          </div>
-          <div class="role-panel" data-role="manager">
-            <h3>项目经理仪表盘</h3>
-            <p>聚焦项目进度、风险与干系人协同，快速掌握交付态势。</p>
-            <ul>
-              <li>项目阶段：动态模拟验证</li>
-              <li>风险预警：冷箱切换场景需额外 HAZOP 审查</li>
-              <li>协同事项：批注流程审批、外部顾问查看权限</li>
-            </ul>
-            <a class="cta" href="collaboration-hub.html">跳转协同中心 →</a>
-          </div>
-        </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>典型实施旅程</h2>
-        <div data-stage-container>
-          <div class="role-switch" data-stage-switch style="margin-bottom: 16px;">
-            <button class="active" data-stage-target="implementation-stage1">阶段一</button>
-            <button data-stage-target="implementation-stage2">阶段二</button>
-            <button data-stage-target="implementation-stage3">阶段三</button>
-          </div>
-        <div class="stage-panel active" data-stage="implementation-stage1">
-          <div class="layout-two-columns">
-            <div class="card">
-              <h3>建模准备</h3>
-              <div class="timeline">
-                <div class="timeline-item">
-                  <strong>需求评审</strong>
-                  <span>导入 PFD / P&ID，识别关键单元</span>
-                </div>
-                <div class="timeline-item">
-                  <strong>数据准备</strong>
-                  <span>物性库选择、实验数据校准</span>
-                </div>
-                <div class="timeline-item">
-                  <strong>模板应用</strong>
-                  <span>流程图模板、单元操作模板匹配</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <h3>角色协同亮点</h3>
-              <ul>
-                <li><span class="badge">工程师</span> 建模清单一键分派</li>
-                <li><span class="badge">优化师</span> 预估瓶颈单元 KPI</li>
-                <li><span class="badge">经理</span> 审批建模假设与边界条件</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="stage-panel" data-stage="implementation-stage2">
-          <div class="layout-two-columns">
-            <div class="card">
-              <h3>动态模拟验证</h3>
-              <div class="timeline">
-                <div class="timeline-item">
-                  <strong>模型转换</strong>
-                  <span>稳态至动态参数自动映射</span>
-                </div>
-                <div class="timeline-item">
-                  <strong>情景推演</strong>
-                  <span>冷启动、事故与应急切换流程</span>
-                </div>
-                <div class="timeline-item">
-                  <strong>控制逻辑校核</strong>
-                  <span>PID 参数建议、联锁策略验证</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <h3>角色协同亮点</h3>
-              <ul>
-                <li><span class="badge">工程师</span> 调整模型参数，查看收敛情况</li>
-                <li><span class="badge">优化师</span> 导入历史工况验证模型准确性</li>
-                <li><span class="badge">经理</span> 审核关键情景报告与合规文档</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="stage-panel" data-stage="implementation-stage3">
-          <div class="layout-two-columns">
-            <div class="card">
-              <h3>优化部署与复盘</h3>
-              <div class="timeline">
-                <div class="timeline-item">
-                  <strong>方案求解</strong>
-                  <span>多目标优化、敏感性分析与收益评估</span>
-                </div>
-                <div class="timeline-item">
-                  <strong>上线执行</strong>
-                  <span>推送建议至 APC，配置执行监控</span>
-                </div>
-                <div class="timeline-item">
-                  <strong>经验沉淀</strong>
-                  <span>版本归档、知识库撰写、经验分享</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <h3>角色协同亮点</h3>
-              <ul>
-                <li><span class="badge">工程师</span> 更新模型基线与案例库</li>
-                <li><span class="badge">优化师</span> 跟踪 KPI 与节能收益</li>
-                <li><span class="badge">经理</span> 输出复盘报告与 ROI 结论</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>功能模块导航</h2>
-        <p>点击进入具体页面查看交互原型细节。</p>
-        <div class="module-grid">
-          <a class="module-card" href="modeling-workspace.html">
-            <span class="label">流程建模</span>
-            <h3>建模工作台</h3>
-            <p>核心流程图、属性面板、求解监控、知识推荐。</p>
-            <span class="cta">查看页面 →</span>
-          </a>
-          <a class="module-card" href="dynamic-simulation.html">
-            <span class="label">动态模拟</span>
-            <h3>动态模拟监控</h3>
-            <p>情景时间轴、变量趋势、控制逻辑校核与报警。</p>
-            <span class="cta">查看页面 →</span>
-          </a>
-          <a class="module-card" href="optimization-center.html">
-            <span class="label">优化与敏感性</span>
-            <h3>优化闭环中心</h3>
-            <p>多目标求解、节能收益评估与方案发布。</p>
-            <span class="cta">查看页面 →</span>
-          </a>
-          <a class="module-card" href="collaboration-hub.html">
-            <span class="label">协作与治理</span>
-            <h3>协同控制塔</h3>
-            <p>版本对比、批注审批、外部共享与知识库。</p>
-            <span class="cta">查看页面 →</span>
-          </a>
-          <a class="module-card" href="role-dashboard.html">
-            <span class="label">角色视图</span>
-            <h3>统一指挥舱</h3>
-            <p>演示跨角色切换后的 KPI、任务与提醒。</p>
-            <span class="cta">查看页面 →</span>
-          </a>
-        </div>
-      </section>
-
-      <section>
-        <h2>衡量指标与数据闭环</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>指标</th>
-              <th>目标值</th>
-              <th>数据来源</th>
-              <th>负责角色</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>模型交付周期</td>
-              <td><strong>↓ 30%</strong></td>
-              <td>建模任务看板、工时记录</td>
-              <td>流程工程师 & 项目经理</td>
-            </tr>
-            <tr>
-              <td>能耗优化收益</td>
-              <td><strong>↑ 3-5%</strong></td>
-              <td>实时数据接口、优化案例库</td>
-              <td>运营优化师</td>
-            </tr>
-            <tr>
-              <td>模型复用率</td>
-              <td><strong>↑ 40%</strong></td>
-              <td>知识库访问记录、版本对比</td>
-              <td>全角色</td>
-            </tr>
-            <tr>
-              <td>风险闭环时效</td>
-              <td><strong>&lt; 48 小时</strong></td>
-              <td>审批流程、报警日志</td>
-              <td>项目经理</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
-
-    <footer>原型集合用于展示 Aspen HYSYS 在不同行业场景下的端到端价值。</footer>
     <script src="app.js" type="module"></script>
     <script type="module" src="../../menu.js"></script>
   </body>

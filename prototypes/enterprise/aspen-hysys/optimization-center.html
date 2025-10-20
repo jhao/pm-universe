@@ -6,185 +6,235 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header>
-      <nav class="breadcrumb">
-        <a href="index.html">Aspen HYSYS</a>
-        <span>/</span>
-        <span>优化闭环中心</span>
-      </nav>
-      <h1>优化闭环中心</h1>
-      <p class="tagline">串联模型求解、收益评估、方案发布与执行跟踪，强化模拟到生产的闭环管理。</p>
-      <div class="meta-grid">
-        <div class="meta-card">
-          <strong>优化目标</strong>
-          <p>产量 +5%、能耗 -4%、丙烯收率 +1.2%</p>
+    <div class="app-shell">
+      <aside class="app-menu">
+        <div class="menu-logo">
+          <span>Aspen HYSYS</span>
+          <strong>流程优化系统</strong>
         </div>
-        <div class="meta-card">
-          <strong>求解状态</strong>
-          <p>最新求解成功 · 2024-05-18 14:32</p>
-        </div>
-        <div class="meta-card">
-          <strong>执行进度</strong>
-          <p>方案 3 已在现场实施 60%，待确认收益</p>
-        </div>
+        <nav class="menu-nav">
+          <a class="menu-link" href="index.html">系统概览</a>
+          <a class="menu-link" href="role-dashboard.html">统一指挥舱<span class="menu-link-note">Dashboard</span></a>
+          <a class="menu-link" href="modeling-workspace.html">建模工作台<span class="menu-link-note">Modeling</span></a>
+          <a class="menu-link" href="dynamic-simulation.html">动态模拟监控<span class="menu-link-note">Simulation</span></a>
+          <a class="menu-link active" href="optimization-center.html">优化闭环中心<span class="menu-link-note">Optimization</span></a>
+          <a class="menu-link" href="collaboration-hub.html">协同控制塔<span class="menu-link-note">Collaboration</span></a>
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <header class="page-header">
+          <div class="header-top">
+            <div>
+              <nav class="breadcrumb">
+                <a href="index.html">Aspen HYSYS</a>
+                <span>/</span>
+                <span>优化闭环中心</span>
+              </nav>
+              <h1>优化闭环中心</h1>
+              <p class="subtitle">串联模型求解、收益评估、方案发布与执行跟踪，首屏呈现优化结果、收益指标与执行状态。</p>
+            </div>
+            <div class="header-role-switch">
+              <button class="active" data-role="engineer">流程工程师</button>
+              <button data-role="optimizer">运营优化师</button>
+              <button data-role="manager">项目经理</button>
+            </div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>优化目标</strong>
+              <p>产量 +5%、能耗 -4%、丙烯收率 +1.2%</p>
+            </div>
+            <div class="meta-card">
+              <strong>求解状态</strong>
+              <p>最新求解成功 · 2024-05-18 14:32</p>
+            </div>
+            <div class="meta-card">
+              <strong>执行进度</strong>
+              <p>方案 3 已在现场实施 60%，待确认收益</p>
+            </div>
+          </div>
+        </header>
+
+        <main class="page">
+          <section class="core-section">
+            <h2>优化核心界面</h2>
+            <div class="core-preview">
+              <div class="core-panel">
+                <strong>方案对比</strong>
+                <h3>多方案评估</h3>
+                <ul>
+                  <li>方案 1：稳健优化，收益 2.4%</li>
+                  <li>方案 2：能耗优先，收益 3.6%</li>
+                  <li>方案 3：综合优化，收益 4.1%</li>
+                </ul>
+              </div>
+              <div class="core-panel">
+                <strong>收益图层</strong>
+                <h3>KPI 仪表盘</h3>
+                <div class="core-canvas">
+                  <div class="core-lane">收益趋势</div>
+                  <div class="core-lane">能耗对比</div>
+                  <div class="core-lane">执行状态</div>
+                </div>
+                <p>以图形化方式展示收益、能耗、执行进度三大指标，便于沟通。</p>
+              </div>
+              <div class="core-panel">
+                <strong>闭环执行</strong>
+                <h3>角色协同入口</h3>
+                <p>角色切换后显示审批、执行与复盘的任务，链接到协同控制塔与现场执行看板。</p>
+                <div class="core-lanes">
+                  <div class="core-lane">审批状态</div>
+                  <div class="core-lane">执行工单</div>
+                  <div class="core-lane">收益复盘</div>
+                </div>
+              </div>
+            </div>
+            <div class="core-description">
+              <h3>主要业务说明</h3>
+              <p>优化闭环中心用于演示如何从求解结果到现场执行形成闭环管理。结合角色切换，可以展示工程师校核、优化师发布方案、项目经理审批与跟踪收益的全过程。可继续查看协同控制塔了解审批治理，或回到统一指挥舱查看跨角色指标。</p>
+              <div class="core-actions">
+                <a class="cta-link" href="collaboration-hub.html">跳转协同控制塔</a>
+                <a class="cta-link" href="role-dashboard.html">回到统一指挥舱</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>角色切换体验</h2>
+            <div data-role-container>
+              <div class="role-switch" data-role-switch>
+                <button class="active" data-role="engineer">流程工程师</button>
+                <button data-role="optimizer">运营优化师</button>
+                <button data-role="manager">项目经理</button>
+              </div>
+              <div class="role-panels">
+                <div class="role-panel active" data-role="engineer">
+                  <h3>工程师关注点</h3>
+                  <ul>
+                    <li>确认模型假设、求解器设置与约束合理性</li>
+                    <li>更新模型版本并同步至知识库</li>
+                    <li>为实施阶段提供操作上下限参考</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="optimizer">
+                  <h3>优化师关注点</h3>
+                  <ul>
+                    <li>挑选最优方案并生成现场执行指令</li>
+                    <li>配置 KPI 跟踪与差异分析看板</li>
+                    <li>协调 APC / DCS 参数调整与验证</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="manager">
+                  <h3>经理关注点</h3>
+                  <ul>
+                    <li>评估 ROI、资源需求与风险等级</li>
+                    <li>审批方案并安排跨部门沟通会</li>
+                    <li>跟踪执行进度与收益兑现情况</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>闭环追踪</h2>
+            <div data-stage-container>
+              <div class="role-switch" data-stage-switch>
+                <button class="active" data-stage-target="optimization-plan">方案发布</button>
+                <button data-stage-target="optimization-execute">现场执行</button>
+                <button data-stage-target="optimization-review">收益复盘</button>
+              </div>
+              <div class="stage-panel active" data-stage="optimization-plan">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>方案确认</strong>
+                    <span>多目标求解完成，工程师与优化师共同复核假设</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>审批流程</strong>
+                    <span>项目经理审批，生成执行计划与风险控制清单</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>交付输出</strong>
+                    <span>推送操作指导书、APC 参数建议与 KPI 基线</span>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="optimization-execute">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>上线准备</strong>
+                    <span>现场确认设备工况、调整控制回路、培训操作员</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>执行监控</strong>
+                    <span>实时采集 KPI，对比模拟结果与现场数据</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>差异处理</strong>
+                    <span>自动创建工单，跟踪偏差并反馈至模型</span>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="optimization-review">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>收益分析</strong>
+                    <span>生成节能、增产、排放等多维收益报告</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>经验沉淀</strong>
+                    <span>整理成功案例、关键参数设定与教训</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>二次迭代</strong>
+                    <span>识别新机会并创建后续优化项目</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>收益看板</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>方案</th>
+                  <th>预计收益</th>
+                  <th>实施状态</th>
+                  <th>下一步行动</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>方案 1 · 稳健优化</td>
+                  <td>年化节省 180 万元</td>
+                  <td><span class="badge">备选</span></td>
+                  <td>保留作对照方案，持续监控现场数据</td>
+                </tr>
+                <tr>
+                  <td>方案 2 · 能耗优先</td>
+                  <td>年化节省 260 万元</td>
+                  <td><span class="badge">评估中</span></td>
+                  <td>确认蒸汽网络改造可行性</td>
+                </tr>
+                <tr>
+                  <td>方案 3 · 综合优化</td>
+                  <td>年化节省 295 万元</td>
+                  <td><span class="badge">执行中</span></td>
+                  <td>跟踪现场执行情况，收集实时 KPI</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </main>
+
+        <footer>优化闭环中心原型串联求解、审批、执行与复盘，突出收益量化与责任分工。</footer>
       </div>
-    </header>
+    </div>
 
-    <main class="page">
-      <section>
-        <h2>求解结果概览</h2>
-        <div class="layout-two-columns">
-          <div class="card">
-            <h3>方案对比</h3>
-            <ul>
-              <li>方案 1：稳健优化，收益 2.4%，风险低</li>
-              <li>方案 2：能耗优先，收益 3.6%，需额外控制策略</li>
-              <li>方案 3：综合优化，收益 4.1%，推荐实施</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>敏感性分析</h3>
-            <ul>
-              <li>关键变量：再沸器热负荷、压缩机效率、进料组成</li>
-              <li>灵敏度：热负荷 ±5% 对收益影响 0.8%</li>
-              <li>建议：为关键变量配置在线监测与报警</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>角色切换体验</h2>
-        <div data-role-container>
-          <div class="role-switch" data-role-switch>
-            <button class="active" data-role="engineer">流程工程师</button>
-            <button data-role="optimizer">运营优化师</button>
-            <button data-role="manager">项目经理</button>
-          </div>
-          <div class="role-panels">
-            <div class="role-panel active" data-role="engineer">
-              <h3>工程师关注点</h3>
-              <ul>
-                <li>确认模型假设、求解器设置与约束合理性</li>
-                <li>更新模型版本并同步至知识库</li>
-                <li>为实施阶段提供操作上下限参考</li>
-              </ul>
-            </div>
-            <div class="role-panel" data-role="optimizer">
-              <h3>优化师关注点</h3>
-              <ul>
-                <li>挑选最优方案并生成现场执行指令</li>
-                <li>配置 KPI 跟踪与差异分析看板</li>
-                <li>协调 APC / DCS 参数调整与验证</li>
-              </ul>
-            </div>
-            <div class="role-panel" data-role="manager">
-              <h3>经理关注点</h3>
-              <ul>
-                <li>评估 ROI、资源需求与风险等级</li>
-                <li>审批方案并安排跨部门沟通会</li>
-                <li>跟踪执行进度与收益兑现情况</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>闭环追踪</h2>
-        <div data-stage-container>
-          <div class="role-switch" data-stage-switch>
-            <button class="active" data-stage-target="optimization-plan">方案发布</button>
-            <button data-stage-target="optimization-execute">现场执行</button>
-            <button data-stage-target="optimization-review">收益复盘</button>
-          </div>
-          <div class="stage-panel active" data-stage="optimization-plan">
-            <div class="timeline">
-              <div class="timeline-item">
-                <strong>方案确认</strong>
-                <span>多目标求解完成，工程师与优化师共同复核假设</span>
-              </div>
-              <div class="timeline-item">
-                <strong>审批流程</strong>
-                <span>项目经理审批，生成执行计划与风险控制清单</span>
-              </div>
-              <div class="timeline-item">
-                <strong>交付输出</strong>
-                <span>推送操作指导书、APC 参数建议与 KPI 基线</span>
-              </div>
-            </div>
-          </div>
-          <div class="stage-panel" data-stage="optimization-execute">
-            <div class="timeline">
-              <div class="timeline-item">
-                <strong>上线准备</strong>
-                <span>现场确认设备工况、调整控制回路、培训操作员</span>
-              </div>
-              <div class="timeline-item">
-                <strong>执行监控</strong>
-                <span>实时采集 KPI，对比模拟结果与现场数据</span>
-              </div>
-              <div class="timeline-item">
-                <strong>差异处理</strong>
-                <span>自动创建工单，跟踪偏差并反馈至模型</span>
-              </div>
-            </div>
-          </div>
-          <div class="stage-panel" data-stage="optimization-review">
-            <div class="timeline">
-              <div class="timeline-item">
-                <strong>收益分析</strong>
-                <span>生成节能、增产、排放等多维收益报告</span>
-              </div>
-              <div class="timeline-item">
-                <strong>经验沉淀</strong>
-                <span>整理成功案例、关键参数设定与教训</span>
-              </div>
-              <div class="timeline-item">
-                <strong>二次迭代</strong>
-                <span>识别新机会并创建后续优化项目</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>收益看板</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>方案</th>
-              <th>预计收益</th>
-              <th>实施状态</th>
-              <th>下一步行动</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>方案 1 · 稳健优化</td>
-              <td>年化节省 180 万元</td>
-              <td><span class="badge">备选</span></td>
-              <td>保留作对照方案，持续监控现场数据</td>
-            </tr>
-            <tr>
-              <td>方案 2 · 能耗优先</td>
-              <td>年化节省 260 万元</td>
-              <td><span class="badge">评估中</span></td>
-              <td>确认蒸汽网络改造可行性</td>
-            </tr>
-            <tr>
-              <td>方案 3 · 综合优化</td>
-              <td>年化节省 295 万元</td>
-              <td><span class="badge">执行中</span></td>
-              <td>跟踪现场执行情况，收集实时 KPI</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
-
-    <footer>优化闭环中心原型串联求解、审批、执行与复盘，突出收益量化与责任分工。</footer>
     <script src="app.js" type="module"></script>
     <script type="module" src="../../menu.js"></script>
   </body>
