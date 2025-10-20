@@ -251,6 +251,10 @@
         font-size: 28px;
       }
 
+      #primeBenefits {
+        cursor: pointer;
+      }
+
       footer {
         text-align: center;
         padding: 24px;
@@ -262,20 +266,78 @@
         background: var(--admin-bg);
         color: var(--admin-text);
         min-height: 100vh;
-        padding: 24px;
         display: none;
+      }
+
+      .admin-layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 100vh;
+      }
+
+      .admin-sidebar {
+        background: #0b1220;
+        padding: 28px 20px;
+        border-right: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .admin-sidebar h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .admin-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .admin-menu button {
+        text-align: left;
+        background: transparent;
+        border: none;
+        color: rgba(226, 232, 240, 0.85);
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.2s ease;
+      }
+
+      .admin-menu button:hover,
+      .admin-menu button.active {
+        background: rgba(56, 189, 248, 0.16);
+        color: #f8fafc;
+      }
+
+      .admin-menu small {
+        font-size: 11px;
+        opacity: 0.65;
+      }
+
+      .admin-body {
+        padding: 32px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
       }
 
       .admin-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 24px;
+        gap: 24px;
       }
 
       .admin-header h1 {
-        margin: 0;
-        font-size: 26px;
+        margin: 0 0 8px 0;
+        font-size: 28px;
       }
 
       .admin-actions {
@@ -299,6 +361,16 @@
       .admin-actions .secondary {
         background: rgba(148, 163, 184, 0.2);
         color: #e2e8f0;
+      }
+
+      .admin-section {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .admin-section.active {
+        display: flex;
       }
 
       .admin-grid {
@@ -377,10 +449,79 @@
       }
 
       .admin-footer {
-        margin-top: 40px;
+        margin-top: 12px;
         text-align: center;
         color: rgba(148, 163, 184, 0.7);
         font-size: 12px;
+      }
+
+      .sub-tabs {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .sub-tabs button {
+        background: rgba(148, 163, 184, 0.18);
+        border: none;
+        color: #e2e8f0;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .sub-tabs button.active {
+        background: #38bdf8;
+        color: #0f172a;
+      }
+
+      .sub-panel {
+        display: none;
+      }
+
+      .sub-panel.active {
+        display: block;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.65);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 1100;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 24px;
+        max-width: 420px;
+        width: 100%;
+        color: #111827;
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+        position: relative;
+      }
+
+      .modal-card h3 {
+        margin-top: 0;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
       }
 
       .role-hint {
@@ -434,13 +575,13 @@
             <option>家居</option>
           </select>
           <input type="text" placeholder="搜索全球好物" />
-          <button>搜索</button>
+          <button id="searchButton" data-open-modal="search">搜索</button>
         </div>
         <nav class="nav-links">
-          <a href="#">你好，请登录</a>
-          <a href="#">我的Prime</a>
-          <a href="#">订单</a>
-          <a href="#">购物车</a>
+          <a href="#" data-open-modal="login">你好，请登录</a>
+          <a href="#" data-open-modal="prime">我的Prime</a>
+          <a href="#" data-open-modal="orders">订单</a>
+          <a href="#" id="cartShortcut" data-open-modal="cart">购物车</a>
         </nav>
       </div>
       <div class="secondary-bar">
@@ -461,7 +602,7 @@
             以会员身份畅享超过 1 亿件商品的免费配送、精选 Prime Video 影片与
             Amazon Music 音乐，体验 Amazon 打造的全球一站式购物平台。
           </p>
-          <button>立即体验 Prime</button>
+          <button id="exploreCategories">立即体验 Prime</button>
         </div>
         <div class="hero-illustration">
           <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Amazon hero" />
@@ -534,7 +675,7 @@
         </article>
       </section>
 
-      <div class="section-title">
+      <div class="section-title" id="primeBenefits">
         <h2>Prime 会员尊享</h2>
       </div>
       <section class="deal-banner">
@@ -552,184 +693,853 @@
     </main>
 
     <section class="admin-wrapper" id="adminView">
-      <div class="admin-header">
-        <div>
-          <h1>Amazon 卖家与运营控制台</h1>
-          <p>统一管理全球站点的商品、订单、广告与客户体验。</p>
-        </div>
-        <div class="admin-actions">
-          <button class="secondary">创建报表</button>
-          <button class="primary">发布新品</button>
-        </div>
-      </div>
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>实时运营指标</h3>
-          <div class="metrics-grid">
-            <div class="metric">
-              <span>GMV (24h)</span>
-              <strong>$12.8M</strong>
-              <small>较昨日 +8.4%</small>
+      <div class="admin-layout">
+        <aside class="admin-sidebar">
+          <div>
+            <h2>Amazon 控制台</h2>
+            <p>管理员菜单</p>
+          </div>
+          <nav class="admin-menu" id="adminMenu">
+            <button class="active" data-section="dashboard" data-label="总览仪表板">总览仪表板 <small>实时指标</small></button>
+            <button data-section="catalog" data-label="商品与内容">商品与内容 <small>SKU / 图文 / 审核</small></button>
+            <button data-section="orders" data-label="订单与履约">订单与履约 <small>跨站点流程</small></button>
+            <button data-section="inventory" data-label="库存与供应链">库存与供应链 <small>仓配调度</small></button>
+            <button data-section="marketing" data-label="营销广告中心">营销广告中心 <small>预算 / 自动化</small></button>
+            <button data-section="customer" data-label="客服与体验">客服与体验 <small>工单 / 评价</small></button>
+            <button data-section="logistics" data-label="物流网络监控">物流网络监控 <small>FBA / 自发货</small></button>
+            <button data-section="finance" data-label="财务与结算">财务与结算 <small>发票 / 税务</small></button>
+            <button data-section="analytics" data-label="数据分析洞察">数据分析洞察 <small>BI / 预测</small></button>
+            <button data-section="security" data-label="权限与合规">权限与合规 <small>团队 / 安全</small></button>
+            <button data-section="settings" data-label="系统设置中心">系统设置中心 <small>自动化策略</small></button>
+          </nav>
+        </aside>
+        <div class="admin-body">
+          <div class="admin-header">
+            <div>
+              <h1>Amazon 卖家与运营控制台</h1>
+              <p>统一管理全球站点的商品、订单、广告与客户体验。</p>
             </div>
-            <div class="metric">
-              <span>Prime 新会员</span>
-              <strong>32,640</strong>
-              <small>全球市场 · 今日</small>
-            </div>
-            <div class="metric">
-              <span>履约准时率</span>
-              <strong>98.7%</strong>
-              <small>FBA 仓配网络</small>
-            </div>
-            <div class="metric">
-              <span>客服满意度</span>
-              <strong>4.8 / 5</strong>
-              <small>过去 7 天</small>
+            <div class="admin-actions">
+              <button class="secondary" data-open-modal="report">创建报表</button>
+              <button class="primary" data-open-modal="newProduct">发布新品</button>
             </div>
           </div>
-        </div>
-        <div class="admin-card">
-          <h3>订单履约预警</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>订单号</th>
-                <th>站点</th>
-                <th>状态</th>
-                <th>处理动作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#CN-762193</td>
-                <td>中国</td>
-                <td>等待揽收</td>
-                <td>升级物流优先级</td>
-              </tr>
-              <tr>
-                <td>#US-612840</td>
-                <td>美国</td>
-                <td>库存不足</td>
-                <td>触发补货自动化</td>
-              </tr>
-              <tr>
-                <td>#JP-880421</td>
-                <td>日本</td>
-                <td>客户改址</td>
-                <td>客服确认新地址</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="admin-card">
-          <h3>广告与营销 ROI</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>广告组</th>
-                <th>曝光</th>
-                <th>ACOS</th>
-                <th>预算使用</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Prime Day 手机</td>
-                <td>12.6M</td>
-                <td>12%</td>
-                <td>64%</td>
-              </tr>
-              <tr>
-                <td>智能家居定投</td>
-                <td>8.1M</td>
-                <td>15%</td>
-                <td>48%</td>
-              </tr>
-              <tr>
-                <td>跨境图书推广</td>
-                <td>5.2M</td>
-                <td>9%</td>
-                <td>36%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="admin-card">
-          <h3>库存与供应链</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>SKU</th>
-                <th>仓库</th>
-                <th>库存周转</th>
-                <th>建议动作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Kindle Oasis</td>
-                <td>深圳 · FBA</td>
-                <td>7.5 周</td>
-                <td>启动闪购清库存</td>
-              </tr>
-              <tr>
-                <td>Echo Dot 5</td>
-                <td>宁波 · FBA</td>
-                <td>2.1 周</td>
-                <td>追加采购订单</td>
-              </tr>
-              <tr>
-                <td>Amazon Basics</td>
-                <td>广州 · 3PL</td>
-                <td>5.4 周</td>
-                <td>优化补货节奏</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="admin-card">
-          <h3>跨团队协作</h3>
-          <div class="kanban">
-            <div class="kanban-column">
-              <h4>待处理</h4>
-              <div class="kanban-card">
-                Prime Day 主视觉确认 · 品牌部
+
+          <div class="admin-section active" data-section="dashboard">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>实时运营指标</h3>
+                <div class="metrics-grid">
+                  <div class="metric">
+                    <span>GMV (24h)</span>
+                    <strong>$12.8M</strong>
+                    <small>较昨日 +8.4%</small>
+                  </div>
+                  <div class="metric">
+                    <span>Prime 新会员</span>
+                    <strong>32,640</strong>
+                    <small>全球市场 · 今日</small>
+                  </div>
+                  <div class="metric">
+                    <span>履约准时率</span>
+                    <strong>98.7%</strong>
+                    <small>FBA 仓配网络</small>
+                  </div>
+                  <div class="metric">
+                    <span>客服满意度</span>
+                    <strong>4.8 / 5</strong>
+                    <small>过去 7 天</small>
+                  </div>
+                </div>
               </div>
-              <div class="kanban-card">
-                CN 站点税费调研 · 财务
+              <div class="admin-card">
+                <h3>站点健康评分</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>站点</th>
+                      <th>评分</th>
+                      <th>警报</th>
+                      <th>跟进人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>美国</td>
+                      <td>92 / 100</td>
+                      <td>Prime Day 库存风险</td>
+                      <td>运营 · Alice</td>
+                    </tr>
+                    <tr>
+                      <td>英国</td>
+                      <td>88 / 100</td>
+                      <td>VAT 发票延迟</td>
+                      <td>财务 · Henry</td>
+                    </tr>
+                    <tr>
+                      <td>日本</td>
+                      <td>94 / 100</td>
+                      <td>暂无</td>
+                      <td>-</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
-            <div class="kanban-column">
-              <h4>进行中</h4>
-              <div class="kanban-card">
-                FBA 仓库容量扩容方案 · 运营
-              </div>
-              <div class="kanban-card">
-                Alexa 语音下单文案本地化 · 产品
-              </div>
-            </div>
-            <div class="kanban-column">
-              <h4>已完成</h4>
-              <div class="kanban-card">
-                Prime 会员权益页面翻新 · 设计
+              <div class="admin-card">
+                <h3>跨团队协作</h3>
+                <div class="kanban">
+                  <div class="kanban-column">
+                    <h4>待处理</h4>
+                    <div class="kanban-card">Prime Day 主视觉确认 · 品牌部</div>
+                    <div class="kanban-card">CN 站点税费调研 · 财务</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>进行中</h4>
+                    <div class="kanban-card">FBA 仓库容量扩容方案 · 运营</div>
+                    <div class="kanban-card">Alexa 语音下单文案本地化 · 产品</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>已完成</h4>
+                    <div class="kanban-card">Prime 会员权益页面翻新 · 设计</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="admin-card">
-          <h3>客户体验追踪</h3>
-          <p>
-            实时监控 NPS、退换货原因与客服工单 SLA，重点关注 Prime 会员留存率和跨境购体验反馈。
-          </p>
-          <ul>
-            <li>退换货触达率：92% · 已接入智能客服</li>
-            <li>负面评价预警：36 条 · 自动派单处理</li>
-            <li>Alexa 语音购物满意度：4.6 / 5</li>
-          </ul>
+
+          <div class="admin-section" data-section="catalog">
+            <div class="admin-card">
+              <h3>商品生命周期管理</h3>
+              <div class="sub-tabs" data-group="catalog">
+                <button class="active" data-subtarget="catalog:listings">商品列表</button>
+                <button data-subtarget="catalog:content">图文与媒体</button>
+                <button data-subtarget="catalog:review">合规审核</button>
+              </div>
+              <div class="sub-panel active" data-subpanel="catalog:listings">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>标题</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>AMZ-KIN-001</td>
+                      <td>Kindle Scribe 2024</td>
+                      <td>待同步 EU 站</td>
+                      <td>编辑 · 提交审核</td>
+                    </tr>
+                    <tr>
+                      <td>AMZ-ECHO-008</td>
+                      <td>Echo Pop 智能音箱</td>
+                      <td>上线中</td>
+                      <td>优化 SEO 关键词</td>
+                    </tr>
+                    <tr>
+                      <td>AMZ-BAS-129</td>
+                      <td>Amazon Basics 电源插线板</td>
+                      <td>库存预警</td>
+                      <td>关联补货任务</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="sub-panel" data-subpanel="catalog:content">
+                <p>协同设计高清主图、A+ 内容与 360° 视频，预览多终端呈现效果。</p>
+                <ul>
+                  <li>待处理素材：12 套 · 设计部</li>
+                  <li>AI 文案助手草稿：5 条 · 支持多语言</li>
+                  <li>品牌旗舰店更新：预计上线 05/20</li>
+                </ul>
+              </div>
+              <div class="sub-panel" data-subpanel="catalog:review">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>提交时间</th>
+                      <th>责任人</th>
+                      <th>风险级别</th>
+                      <th>需要动作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>05/08 10:22</td>
+                      <td>法务 · Grace</td>
+                      <td>高</td>
+                      <td>补充 CE 认证文件</td>
+                    </tr>
+                    <tr>
+                      <td>05/08 13:47</td>
+                      <td>品控 · Leo</td>
+                      <td>中</td>
+                      <td>更新包装警示语</td>
+                    </tr>
+                    <tr>
+                      <td>05/09 09:18</td>
+                      <td>运营 · Ming</td>
+                      <td>低</td>
+                      <td>等待自动复审</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="orders">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>全球订单流转</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>订单号</th>
+                      <th>站点</th>
+                      <th>当前节点</th>
+                      <th>超时</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#CN-762193</td>
+                      <td>中国</td>
+                      <td>等待揽收</td>
+                      <td>+2h</td>
+                    </tr>
+                    <tr>
+                      <td>#US-612840</td>
+                      <td>美国</td>
+                      <td>库存不足</td>
+                      <td>-</td>
+                    </tr>
+                    <tr>
+                      <td>#JP-880421</td>
+                      <td>日本</td>
+                      <td>客户改址</td>
+                      <td>+1h</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>履约 SLA 仪表</h3>
+                <ul>
+                  <li>一日达准时率：96.2% · 目标 98%</li>
+                  <li>客服首次响应：8 分钟 · 目标 &lt; 5 分钟</li>
+                  <li>退货审批平均用时：3.4 小时 · 目标 2 小时</li>
+                  <li>异常订单处理效率：72% · 同比 +6%</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>自动化流程</h3>
+                <p>基于订单状态自动触发补货、客服通知与物流商 SLA 处罚。</p>
+                <div class="sub-tabs" data-group="orders">
+                  <button class="active" data-subtarget="orders:robot">智能指派</button>
+                  <button data-subtarget="orders:exception">异常处理</button>
+                  <button data-subtarget="orders:return">退换货</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="orders:robot">
+                  <ul>
+                    <li>海外仓库存 &lt; 5 天：自动生成 FBA 补货计划</li>
+                    <li>客户多次催促：升级至高级客服队列</li>
+                    <li>物流延误 &gt; 24h：触发运费补偿流程</li>
+                  </ul>
+                </div>
+                <div class="sub-panel" data-subpanel="orders:exception">
+                  <p>异常分类面板展示最新待处理任务：</p>
+                  <ul>
+                    <li>地址校验失败：18 单 · 已推送短信确认</li>
+                    <li>支付失败：9 单 · 等待客户重新支付</li>
+                    <li>跨境关税待确认：6 单 · 报关团队处理中</li>
+                  </ul>
+                </div>
+                <div class="sub-panel" data-subpanel="orders:return">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>退货原因</th>
+                        <th>占比</th>
+                        <th>改进措施</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>尺寸/规格不符</td>
+                        <td>34%</td>
+                        <td>优化商品详情页尺码助手</td>
+                      </tr>
+                      <tr>
+                        <td>物流损坏</td>
+                        <td>22%</td>
+                        <td>升级缓冲包装材料</td>
+                      </tr>
+                      <tr>
+                        <td>性能体验不佳</td>
+                        <td>18%</td>
+                        <td>上线体验评价收集问卷</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="inventory">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>仓储容量与周转</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>仓库</th>
+                      <th>利用率</th>
+                      <th>周转天数</th>
+                      <th>下一动作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>深圳 FBA</td>
+                      <td>84%</td>
+                      <td>18 天</td>
+                      <td>释放滞销库容</td>
+                    </tr>
+                    <tr>
+                      <td>宁波 FBA</td>
+                      <td>62%</td>
+                      <td>7 天</td>
+                      <td>补充热销 SKU</td>
+                    </tr>
+                    <tr>
+                      <td>德国 3PL</td>
+                      <td>71%</td>
+                      <td>12 天</td>
+                      <td>安排中转运输</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>供应商协同</h3>
+                <ul>
+                  <li>华南制造 · 本周交付率 96%</li>
+                  <li>越南代工厂 · 生产排期延迟 3 天</li>
+                  <li>环保材质供应商 · 交付批次已签收</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>补货预测模型</h3>
+                <p>基于销量、广告投放与季节性计算 30/60/90 天补货建议。</p>
+                <div class="sub-tabs" data-group="inventory">
+                  <button class="active" data-subtarget="inventory:30">30 天</button>
+                  <button data-subtarget="inventory:60">60 天</button>
+                  <button data-subtarget="inventory:90">90 天</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="inventory:30">
+                  <p>需立即补货 SKU：11 个 · 预计缺货日期 05/20</p>
+                </div>
+                <div class="sub-panel" data-subpanel="inventory:60">
+                  <p>中期备货建议：关注新品推广带来的需求波动。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="inventory:90">
+                  <p>旺季储备计划：Prime Day + Q4 节日促销资源锁定。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="marketing">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>广告投放概览</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>广告组</th>
+                      <th>曝光</th>
+                      <th>ACOS</th>
+                      <th>预算使用</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Prime Day 手机</td>
+                      <td>12.6M</td>
+                      <td>12%</td>
+                      <td>64%</td>
+                    </tr>
+                    <tr>
+                      <td>智能家居定投</td>
+                      <td>8.1M</td>
+                      <td>15%</td>
+                      <td>48%</td>
+                    </tr>
+                    <tr>
+                      <td>跨境图书推广</td>
+                      <td>5.2M</td>
+                      <td>9%</td>
+                      <td>36%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>活动排期</h3>
+                <ul>
+                  <li>5/15-5/20 · Prime Day 预热 · 站内 Banner & 推送</li>
+                  <li>6 月 · 音乐节主题活动 · Alexa 音箱联合营销</li>
+                  <li>7 月 · 学季返校 · 文具 & Kindle 捆绑优惠</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>营销自动化剧本</h3>
+                <div class="sub-tabs" data-group="marketing">
+                  <button class="active" data-subtarget="marketing:email">邮件触达</button>
+                  <button data-subtarget="marketing:push">站内推送</button>
+                  <button data-subtarget="marketing:live">直播带货</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="marketing:email">
+                  <p>Prime 新客欢迎邮件 · 预计打开率 48% · 转化 8.2%</p>
+                </div>
+                <div class="sub-panel" data-subpanel="marketing:push">
+                  <p>App 推送 4 条 · 支持地理围栏 · 实时 ROI 监控。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="marketing:live">
+                  <p>Amazon Live 直播排期：每周三 20:00 · 主推智能家居。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="customer">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>客服工单实时队列</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>渠道</th>
+                      <th>排队工单</th>
+                      <th>SLA</th>
+                      <th>优先级</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>在线聊天</td>
+                      <td>34</td>
+                      <td>5 分钟</td>
+                      <td>高</td>
+                    </tr>
+                    <tr>
+                      <td>邮件</td>
+                      <td>58</td>
+                      <td>4 小时</td>
+                      <td>中</td>
+                    </tr>
+                    <tr>
+                      <td>电话</td>
+                      <td>12</td>
+                      <td>即刻</td>
+                      <td>高</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>评价监控</h3>
+                <ul>
+                  <li>新增五星好评：+126 · 自动转化为素材</li>
+                  <li>差评预警：34 条 · 已派单至专项小组</li>
+                  <li>问答互动：16 条待回复 · 建议 2 小时内完成</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>体验优化地图</h3>
+                <div class="sub-tabs" data-group="customer">
+                  <button class="active" data-subtarget="customer:nps">NPS</button>
+                  <button data-subtarget="customer:return">退换货</button>
+                  <button data-subtarget="customer:voice">语音购物</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="customer:nps">
+                  <p>NPS：67 · 核心驱动：配送时效、Prime 视频权益。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="customer:return">
+                  <p>退货满意度：92% · AI 质检助手覆盖 80% 工单。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="customer:voice">
+                  <p>Alexa 语音购物满意度 4.6 / 5 · 新增语音指令 12 条。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="logistics">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>物流商 SLA 面板</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>物流商</th>
+                      <th>准时率</th>
+                      <th>延误订单</th>
+                      <th>跟进人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>亚马逊物流</td>
+                      <td>97%</td>
+                      <td>28</td>
+                      <td>运营 · Joy</td>
+                    </tr>
+                    <tr>
+                      <td>DHL 跨境</td>
+                      <td>89%</td>
+                      <td>42</td>
+                      <td>物流 · Ken</td>
+                    </tr>
+                    <tr>
+                      <td>顺丰速运</td>
+                      <td>95%</td>
+                      <td>16</td>
+                      <td>运营 · Lia</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>跨境节点地图</h3>
+                <p>实时可视化展示港口、海关与末端配送节点的吞吐情况。</p>
+                <ul>
+                  <li>上海港口：通关时长 16h · 正常</li>
+                  <li>洛杉矶码头：通关 28h · 拥堵预警</li>
+                  <li>东京站点：末端派送负载 68%</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>成本监控</h3>
+                <div class="sub-tabs" data-group="logistics">
+                  <button class="active" data-subtarget="logistics:fba">FBA</button>
+                  <button data-subtarget="logistics:mf">自发货</button>
+                  <button data-subtarget="logistics:return">逆向物流</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="logistics:fba">
+                  <p>FBA 单均履约成本：$3.26 · 环比下降 4%。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="logistics:mf">
+                  <p>自发货订单履约成本：$4.82 · 建议导入混合履约。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="logistics:return">
+                  <p>逆向物流成本：$1.12 · 退货集中在家居品类。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="finance">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>结算中心</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>周期</th>
+                      <th>应付商家</th>
+                      <th>已结金额</th>
+                      <th>待处理</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>本周</td>
+                      <td>$8.2M</td>
+                      <td>$6.7M</td>
+                      <td>$1.5M</td>
+                    </tr>
+                    <tr>
+                      <td>上周</td>
+                      <td>$7.9M</td>
+                      <td>$7.9M</td>
+                      <td>-</td>
+                    </tr>
+                    <tr>
+                      <td>本月累计</td>
+                      <td>$24.6M</td>
+                      <td>$17.9M</td>
+                      <td>$6.7M</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>发票与税务</h3>
+                <ul>
+                  <li>VAT 报表：英国、德国已提交 · 法国待补资料</li>
+                  <li>电子发票开具：本周 12,480 张 · 自动发送率 98%</li>
+                  <li>税收优惠政策：跨境出口退税方案审核中</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>预算控制台</h3>
+                <div class="sub-tabs" data-group="finance">
+                  <button class="active" data-subtarget="finance:opex">运营成本</button>
+                  <button data-subtarget="finance:capex">资本开支</button>
+                  <button data-subtarget="finance:forecast">现金流预测</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="finance:opex">
+                  <p>本月运营成本预算执行：72% · 较目标节省 6%。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="finance:capex">
+                  <p>仓储自动化升级项目 · 投资回收期预计 18 个月。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="finance:forecast">
+                  <p>滚动 13 周现金流预测：可覆盖库存采购 + 营销投放。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="analytics">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>BI 指标大屏</h3>
+                <p>关键指标：GMV、留存率、Prime 渗透率、广告 ROI 实时更新。</p>
+              </div>
+              <div class="admin-card">
+                <h3>预测模型中心</h3>
+                <ul>
+                  <li>销量预测：XGBoost · MAE 2.4%</li>
+                  <li>客户流失预测：AUC 0.91 · 重点关注 Prime 老客</li>
+                  <li>价格弹性分析：支持跨品类模拟</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>数据资产</h3>
+                <div class="sub-tabs" data-group="analytics">
+                  <button class="active" data-subtarget="analytics:dataset">数据集</button>
+                  <button data-subtarget="analytics:dashboard">仪表板</button>
+                  <button data-subtarget="analytics:experiment">实验</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="analytics:dataset">
+                  <p>公共数据集：订单事实表、客户维表、广告投放表。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="analytics:dashboard">
+                  <p>已发布仪表板：高管日报、Prime 运营周报、活动复盘。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="analytics:experiment">
+                  <p>AB 测试平台：进行中实验 6 个 · 预计 05/30 出结果。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="security">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>团队权限矩阵</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>角色</th>
+                      <th>功能范围</th>
+                      <th>审批人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>超级管理员</td>
+                      <td>全量访问 + 审批权限</td>
+                      <td>CTO</td>
+                    </tr>
+                    <tr>
+                      <td>运营经理</td>
+                      <td>商品 / 订单 / 广告</td>
+                      <td>运营总监</td>
+                    </tr>
+                    <tr>
+                      <td>客服主管</td>
+                      <td>客服工单 / 评价管理</td>
+                      <td>客户体验负责人</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>安全事件中心</h3>
+                <ul>
+                  <li>登录异常：2 起 · 已完成二次验证</li>
+                  <li>API 调用峰值：1 次 · 触发限流保护</li>
+                  <li>数据导出申请：4 个 · 等待审批</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>合规流程</h3>
+                <div class="sub-tabs" data-group="security">
+                  <button class="active" data-subtarget="security:gdpr">GDPR</button>
+                  <button data-subtarget="security:ccpa">CCPA</button>
+                  <button data-subtarget="security:iso">ISO27001</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="security:gdpr">
+                  <p>GDPR 数据清除请求：本周 12 个 · 平均处理 20 小时。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="security:ccpa">
+                  <p>CCPA 访问请求：8 个 · 已同步给美国法务团队。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="security:iso">
+                  <p>ISO27001 年度审计 · 待提交证据项 3 个。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="settings">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>通知与提醒</h3>
+                <ul>
+                  <li>短信通知：订单异常、库存告警</li>
+                  <li>邮件摘要：每日高管运营日报</li>
+                  <li>Slack 集成：跨团队协同频道</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>自动化策略</h3>
+                <div class="sub-tabs" data-group="settings">
+                  <button class="active" data-subtarget="settings:rule">规则引擎</button>
+                  <button data-subtarget="settings:webhook">Webhook</button>
+                  <button data-subtarget="settings:approval">审批流</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="settings:rule">
+                  <p>新增规则：库存低于 20% 自动锁定广告预算。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="settings:webhook">
+                  <p>对接 ERP、WMS、CRM 的实时回调状态。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="settings:approval">
+                  <p>审批链路：新品上线 → 法务 → 品控 → 运营。</p>
+                </div>
+              </div>
+              <div class="admin-card">
+                <h3>环境配置</h3>
+                <p>支持生产、测试与沙箱环境快速切换与数据脱敏策略。</p>
+                <button class="secondary" data-open-modal="environment">查看环境切换流程</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-footer">Amazon 内部运营控制台 · 原型演示</div>
         </div>
       </div>
-      <div class="admin-footer">Amazon 内部运营控制台 · 原型演示</div>
     </section>
+
+    <div class="modal" id="modal-login">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>登录 Amazon 账号</h3>
+        <p>输入邮箱和密码，或使用手机验证码快捷登录。</p>
+        <ul>
+          <li>支持微信 / 支付宝快捷登录</li>
+          <li>Prime 会员尊享免邮、视频和音乐福利</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-prime">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>Prime 会员权益</h3>
+        <p>30 天免费试用，体验无限次极速达配送与 Prime Video / Music。</p>
+        <ul>
+          <li>海外购跨境物流加速</li>
+          <li>Prime Gaming 月度游戏礼包</li>
+          <li>Prime Reading 免费电子书</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-orders">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>我的订单中心</h3>
+        <p>查看正在进行的订单、配送状态与售后申请。</p>
+        <ul>
+          <li>最近订单：Prime Day 预热促销 · 预计 2 日送达</li>
+          <li>售后服务：支持 7 天无理由退换</li>
+          <li>票据管理：开具增值税电子发票</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-cart">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>购物车预览</h3>
+        <p>快速查看已添加的商品、配送站点与预计到货时间。</p>
+        <ul>
+          <li>Echo Dot (第 5 代) · ¥349 · Prime 次日达</li>
+          <li>Amazon Basics 行李箱 · ¥589 · 跨境免邮</li>
+          <li>勾选即可开启礼品包装与电子贺卡</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-search">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>智能搜索助手</h3>
+        <p>基于 AI 的搜索推荐，自动匹配 Prime 优惠、跨境物流与语音助手建议。</p>
+        <ul>
+          <li>支持语音输入与图片识别找同款</li>
+          <li>结合历史浏览记录个性化推荐</li>
+          <li>一键切换全球站点比价</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-report">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>创建运营报表</h3>
+        <p>选择站点、时间区间与指标，生成 PDF/Excel 供团队共享。</p>
+        <ul>
+          <li>支持 GMV、广告、库存、客服多指标组合</li>
+          <li>可配置每日定时发送</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-newProduct">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>发布新品流程</h3>
+        <p>准备商品基本信息、认证文件、媒体素材，提交至多区域站点。</p>
+        <ul>
+          <li>内置 AI 翻译多语言详情</li>
+          <li>审核节点可实时跟踪</li>
+          <li>与广告投放自动关联</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-environment">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>环境切换流程</h3>
+        <p>选择目标环境并自动完成数据同步与脱敏校验。</p>
+        <ol>
+          <li>提交切换申请并指定窗口</li>
+          <li>系统校验依赖与资源状态</li>
+          <li>完成切换并生成审计日志</li>
+        </ol>
+      </div>
+    </div>
 
     <footer class="customer-view">
       © 2024 Amazon 原型体验 · 包含消费者与管理端视角
@@ -740,6 +1550,12 @@
       const adminView = document.getElementById('adminView');
       const customerSections = document.querySelectorAll('.customer-view');
       const roleHint = document.getElementById('roleHint');
+      const adminMenuButtons = document.querySelectorAll('#adminMenu button');
+      const adminSections = document.querySelectorAll('.admin-section');
+      const modals = document.querySelectorAll('.modal');
+      const exploreCategories = document.getElementById('exploreCategories');
+      const categoryGrid = document.querySelector('.category-grid');
+      const primeBenefits = document.getElementById('primeBenefits');
       let currentRole = 'customer';
 
       function updateRoleUI() {
@@ -754,6 +1570,8 @@
           adminView.style.display = 'block';
           document.body.style.background = varComputed('--admin-bg');
           roleToggle.textContent = '切换为消费者视角';
+          const activeButton = document.querySelector('#adminMenu button.active');
+          activateAdminSection(activeButton ? activeButton.dataset.section : 'dashboard', false);
           showHint('当前：管理员控制台');
         }
       }
@@ -773,11 +1591,98 @@
         }, 2000);
       }
 
+      function activateAdminSection(target, withHint = true) {
+        adminSections.forEach((section) => {
+          section.classList.toggle('active', section.dataset.section === target);
+        });
+        adminMenuButtons.forEach((btn) => {
+          const isActive = btn.dataset.section === target;
+          btn.classList.toggle('active', isActive);
+          if (isActive && currentRole === 'admin' && withHint) {
+            showHint(`模块：${btn.dataset.label}`);
+          }
+        });
+      }
+
       roleToggle.addEventListener('click', () => {
         currentRole = currentRole === 'customer' ? 'admin' : 'customer';
         updateRoleUI();
       });
 
+      adminMenuButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activateAdminSection(button.dataset.section);
+        });
+      });
+
+      document.querySelectorAll('.sub-tabs').forEach((group) => {
+        const groupName = group.dataset.group;
+        const buttons = group.querySelectorAll('button');
+        const panels = document.querySelectorAll(`.sub-panel[data-subpanel^="${groupName}:"]`);
+        buttons.forEach((button) => {
+          button.addEventListener('click', () => {
+            buttons.forEach((btn) => btn.classList.remove('active'));
+            button.classList.add('active');
+            panels.forEach((panel) => {
+              panel.classList.toggle('active', panel.dataset.subpanel === button.dataset.subtarget);
+            });
+          });
+        });
+      });
+
+      function openModal(id) {
+        const modal = document.getElementById(`modal-${id}`);
+        if (!modal) return;
+        modals.forEach((item) => item.classList.remove('active'));
+        modal.classList.add('active');
+        showHint(`打开：${modal.querySelector('h3').textContent}`);
+      }
+
+      function closeModal(modal) {
+        const target = modal || document.querySelector('.modal.active');
+        if (target) {
+          target.classList.remove('active');
+        }
+      }
+
+      document.querySelectorAll('[data-open-modal]').forEach((trigger) => {
+        trigger.addEventListener('click', (event) => {
+          event.preventDefault();
+          openModal(trigger.dataset.openModal);
+        });
+      });
+
+      modals.forEach((modal) => {
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            closeModal(modal);
+          }
+        });
+        modal.querySelectorAll('[data-close]').forEach((closeButton) => {
+          closeButton.addEventListener('click', () => closeModal(modal));
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      });
+
+      if (exploreCategories && categoryGrid) {
+        exploreCategories.addEventListener('click', () => {
+          categoryGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setTimeout(() => showHint('已定位：热门分类精选'), 400);
+        });
+      }
+
+      if (primeBenefits) {
+        primeBenefits.addEventListener('click', () => {
+          showHint('Prime 会员福利已在下方展示');
+        });
+      }
+
+      activateAdminSection('dashboard', false);
       updateRoleUI();
     </script>
     <script type="module" src="../../menu.js"></script>
