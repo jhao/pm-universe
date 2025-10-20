@@ -2,83 +2,2010 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>AVEVA PI System 原型概览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AVEVA PI System 交互原型工作台</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --nav-bg: #0b1220;
+        --nav-hover: rgba(148, 197, 255, 0.12);
+        --nav-active: rgba(59, 130, 246, 0.2);
+        --border-subtle: rgba(148, 163, 184, 0.16);
+        --card-bg: rgba(15, 23, 42, 0.82);
+        --surface: #0f172a;
+        --surface-alt: #111d36;
+        --text-primary: #e2e8f0;
+        --text-secondary: rgba(226, 232, 240, 0.7);
+        --accent: #60a5fa;
+        --accent-strong: #3b82f6;
+        --success: #34d399;
+        --warning: #fbbf24;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        background: radial-gradient(circle at top, #1e293b, #0f172a 58%);
+        color: var(--text-primary);
+        min-height: 100vh;
+      }
+
+      .layout {
+        display: flex;
+        min-height: 100vh;
+        backdrop-filter: blur(20px);
+      }
+
+      .sidebar {
+        width: 292px;
+        background: linear-gradient(180deg, #0b1220 0%, #0b1426 100%);
+        border-right: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        padding: 28px 24px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        font-size: 18px;
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.28);
+      }
+
+      .brand-info h1 {
+        font-size: 20px;
+        margin: 0;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-info p {
+        margin: 4px 0 0;
+        color: var(--text-secondary);
+        font-size: 12px;
+      }
+
+      .nav-group {
+        margin-bottom: 28px;
+      }
+
+      .nav-label {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(148, 197, 255, 0.68);
+        margin-bottom: 10px;
+      }
+
+      .nav-item {
+        width: 100%;
+        padding: 12px 14px;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        color: var(--text-secondary);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        font-size: 14px;
+      }
+
+      .nav-item span {
+        font-size: 12px;
+        color: rgba(148, 163, 184, 0.7);
+      }
+
+      .nav-item:hover {
+        background: var(--nav-hover);
+        color: #dbeafe;
+        transform: translateX(4px);
+      }
+
+      .nav-item.active {
+        background: var(--nav-active);
+        border-color: rgba(59, 130, 246, 0.35);
+        color: #e0f2fe;
+        box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.25);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding-top: 24px;
+        border-top: 1px solid rgba(148, 163, 184, 0.12);
+        font-size: 12px;
+        color: rgba(148, 163, 184, 0.6);
+        line-height: 1.6;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: linear-gradient(160deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.72));
+        backdrop-filter: blur(24px);
+      }
+
+      .topbar {
+        height: 72px;
+        padding: 18px 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+        background: rgba(11, 18, 32, 0.7);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+
+      .breadcrumb span:last-child {
+        color: #f1f5f9;
+        font-weight: 600;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .search-box {
+        position: relative;
+      }
+
+      .search-box input {
+        width: 220px;
+        padding: 10px 14px 10px 38px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        background: rgba(15, 23, 42, 0.6);
+        color: #e2e8f0;
+      }
+
+      .search-box svg {
+        position: absolute;
+        top: 9px;
+        left: 12px;
+        width: 18px;
+        height: 18px;
+        stroke: rgba(148, 163, 184, 0.8);
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.12);
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #0b1220;
+      }
+
+      .page-shell {
+        padding: 28px 40px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+      }
+
+      .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .page-title {
+        font-size: 32px;
+        margin: 0 0 8px;
+        letter-spacing: 0.01em;
+      }
+
+      .page-tagline {
+        margin: 0;
+        font-size: 16px;
+        color: var(--text-secondary);
+      }
+
+      .page-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .page-actions button {
+        border-radius: 12px;
+        padding: 12px 18px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        background: rgba(15, 23, 42, 0.45);
+        color: #bfdbfe;
+        cursor: pointer;
+        font-size: 13px;
+        letter-spacing: 0.01em;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .page-actions button.primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border-color: transparent;
+        color: #f8fafc;
+        box-shadow: 0 12px 26px rgba(37, 99, 235, 0.35);
+      }
+
+      .page-actions button:hover {
+        transform: translateY(-1px);
+        background: rgba(59, 130, 246, 0.18);
+      }
+
+      .page-meta {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+        color: rgba(148, 163, 184, 0.72);
+        font-size: 13px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+      }
+
+      .stat-card {
+        padding: 18px;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .stat-value {
+        font-size: 22px;
+        font-weight: 600;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: rgba(148, 163, 184, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .page-description {
+        line-height: 1.7;
+        color: rgba(226, 232, 240, 0.82);
+        font-size: 15px;
+      }
+
+      .page-tabs {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .page-tab {
+        border-radius: 999px;
+        padding: 10px 18px;
+        background: rgba(15, 23, 42, 0.45);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        color: rgba(226, 232, 240, 0.75);
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s ease;
+      }
+
+      .page-tab.active {
+        background: rgba(96, 165, 250, 0.18);
+        color: #bfdbfe;
+        border-color: rgba(96, 165, 250, 0.5);
+        box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.3);
+      }
+
+      .content-stage {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .preview-stage {
+        background: rgba(15, 23, 42, 0.65);
+        border-radius: 24px;
+        padding: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        min-height: 360px;
+        box-shadow: 0 32px 48px rgba(15, 23, 42, 0.35);
+      }
+
+      .preview-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .preview-header h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .preview-header span {
+        font-size: 13px;
+        color: rgba(148, 163, 184, 0.7);
+      }
+
+      .preview-body {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .mock-window {
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        background: rgba(10, 16, 28, 0.95);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.45);
+        position: relative;
+      }
+
+      .mock-topbar {
+        height: 44px;
+        background: linear-gradient(90deg, rgba(15, 23, 42, 0.8), rgba(22, 78, 199, 0.45));
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+        gap: 12px;
+        color: rgba(226, 232, 240, 0.8);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+
+      .mock-body {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr) 220px;
+        gap: 0;
+        min-height: 260px;
+      }
+
+      .mock-sidebar {
+        background: rgba(12, 19, 33, 0.92);
+        border-right: 1px solid rgba(148, 163, 184, 0.12);
+        padding: 16px;
+      }
+
+      .mock-sidebar h4,
+      .mock-panel h4 {
+        margin: 0 0 12px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(148, 197, 255, 0.7);
+      }
+
+      .mock-tree {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.78);
+      }
+
+      .mock-tree span {
+        display: block;
+        padding: 6px 8px;
+        border-radius: 8px;
+        background: rgba(59, 130, 246, 0.15);
+      }
+
+      .mock-main {
+        padding: 18px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        background: rgba(15, 23, 42, 0.86);
+      }
+
+      .mock-chart {
+        border-radius: 14px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.45), rgba(15, 23, 42, 0.8));
+        border: 1px solid rgba(59, 130, 246, 0.25);
+      }
+
+      .mock-chart.large {
+        grid-column: span 2;
+        min-height: 160px;
+        background: radial-gradient(circle at top, rgba(96, 165, 250, 0.4), rgba(15, 23, 42, 0.9));
+      }
+
+      .mock-chart h5 {
+        margin: 0;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      .mock-chart .chart-line,
+      .mock-chart .chart-bar {
+        height: 64px;
+        border-radius: 8px;
+        background: linear-gradient(90deg, rgba(191, 219, 254, 0.1), rgba(59, 130, 246, 0.35));
+      }
+
+      .mock-panel {
+        background: rgba(12, 19, 33, 0.92);
+        border-left: 1px solid rgba(148, 163, 184, 0.12);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .mock-panel .panel-item {
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: rgba(30, 41, 59, 0.66);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .mock-panel .panel-item strong {
+        color: #f8fafc;
+      }
+
+      .mock-timeline {
+        height: 140px;
+        border-radius: 12px;
+        border: 1px solid rgba(59, 130, 246, 0.24);
+        background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(15, 23, 42, 0.85));
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 16px;
+      }
+
+      .mock-timeline span {
+        display: block;
+        width: 12px;
+        height: 48px;
+        border-radius: 6px;
+        background: linear-gradient(180deg, rgba(96, 165, 250, 0.72), rgba(59, 130, 246, 0.22));
+      }
+
+      .mock-mobile {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 18px;
+      }
+
+      .mock-phone {
+        width: 140px;
+        aspect-ratio: 9 / 18;
+        border-radius: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        padding: 12px;
+        background: rgba(13, 22, 38, 0.95);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .mock-phone .phone-chart {
+        flex: 1;
+        border-radius: 12px;
+        background: radial-gradient(circle at top, rgba(14, 165, 233, 0.32), rgba(15, 23, 42, 0.9));
+      }
+
+      .mock-mobile-details {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .mock-mobile-details .detail-card {
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .highlight-panel {
+        background: rgba(15, 23, 42, 0.62);
+        border-radius: 24px;
+        padding: 22px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .highlight-panel h3 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.04em;
+      }
+
+      .highlight-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .highlight-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: rgba(226, 232, 240, 0.82);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .highlight-list strong {
+        color: #f8fafc;
+      }
+
+      .highlight-bullet {
+        width: 10px;
+        height: 10px;
+        margin-top: 6px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(147, 197, 253, 0.8));
+        flex-shrink: 0;
+      }
+
+      footer {
+        margin-top: auto;
+        padding: 24px 40px;
+        border-top: 1px solid rgba(148, 163, 184, 0.12);
+        color: rgba(148, 163, 184, 0.55);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 1080px) {
+        .layout {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: static;
+          flex-direction: row;
+          overflow-x: auto;
+          gap: 18px;
+        }
+
+        .nav-group {
+          min-width: 220px;
+        }
+
+        .main {
+          min-height: auto;
+        }
+
+        .content-stage {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .page-actions {
+          width: 100%;
+        }
+
+        .page-actions button {
+          flex: 1;
+        }
+
+        .mock-body {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .mock-panel {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>AVEVA PI System 原型</h1>
-      <p class="tagline">工业实时数据采集与运营智能平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>工业企业运维、生产调度、数据分析团队</p>
-        <p><strong>核心痛点：</strong>现场设备数据分散、难以实时监控与分析</p>
-        <p><strong>价值主张：</strong>通过高性能时序数据库与可视化，支撑工业实时决策</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>现场设备数据采集并传输至 PI</li><li>调度中心监控指标与报警</li><li>数据科学团队构建预测模型</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>数据采集</h3>
-              <p class="goal">功能目标：接入多种工业数据源</p>
-              <ul>
-                <li>接口连接器与边缘网关</li><li>数据压缩与清洗</li><li>安全传输与高可用</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>数据存储与建模</h3>
-              <p class="goal">功能目标：构建统一的实时数据平台</p>
-              <ul>
-                <li>时序数据库与资产框架</li><li>元数据建模与层级结构</li><li>事件框架与计算</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>可视化与监控</h3>
-              <p class="goal">功能目标：提供实时监控能力</p>
-              <ul>
-                <li>PI Vision 仪表盘</li><li>报警管理与通知</li><li>移动访问与协作</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>分析与集成</h3>
-              <p class="goal">功能目标：支持高级分析与外部系统集成</p>
-              <ul>
-                <li>PI DataLink、PI Integrator</li><li>API、SDK 与数据导出</li><li>与机器学习平台集成</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>数据采集成功率与延迟</li><li>报警响应时间与处理率</li><li>数据使用率与分析模型部署量</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-logo">PI</div>
+          <div class="brand-info">
+            <h1>AVEVA PI System</h1>
+            <p>实时数据与工业智能平台</p>
+          </div>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">实时运营</div>
+          <button class="nav-item active" data-page="pi-vision">
+            PI Vision 仪表板
+            <span>实时可视化与协作</span>
+          </button>
+          <button class="nav-item" data-page="pi-event-frames">
+            事件框架洞察
+            <span>关键事件检测与追踪</span>
+          </button>
+          <button class="nav-item" data-page="pi-notifications">
+            PI Notifications
+            <span>告警策略与通知</span>
+          </button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">资产建模</div>
+          <button class="nav-item" data-page="pi-system-explorer">
+            PI System Explorer
+            <span>资产框架建模</span>
+          </button>
+          <button class="nav-item" data-page="pi-asset-analytics">
+            Asset Analytics
+            <span>实时计算与派生属性</span>
+          </button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">数据基础设施</div>
+          <button class="nav-item" data-page="pi-data-archive">
+            PI Data Archive
+            <span>高性能时序数据库</span>
+          </button>
+          <button class="nav-item" data-page="pi-interfaces">
+            PI Interfaces &amp; Connectors
+            <span>数据采集与边缘接入</span>
+          </button>
+          <button class="nav-item" data-page="pi-integrator">
+            PI Integrator &amp; DataLink
+            <span>外部系统集成与分析</span>
+          </button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">运维管理</div>
+          <button class="nav-item" data-page="pi-system-management">
+            System Management Tools
+            <span>集群运维与健康状态</span>
+          </button>
+        </div>
+        <div class="sidebar-footer">
+          原型中呈现的界面布局参考 AVEVA PI System 常见功能页面，帮助产品与研发团队快速对齐业务场景与交互细节。
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div class="breadcrumb">
+            <span>企业级原型</span>
+            <span>›</span>
+            <span>AVEVA PI System</span>
+            <span>›</span>
+            <span id="breadcrumb-current">PI Vision 仪表板</span>
+          </div>
+          <div class="top-actions">
+            <div class="search-box">
+              <input type="search" placeholder="搜索 PI 资源、点位或模板" />
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                <circle cx="11" cy="11" r="6"></circle>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+              </svg>
+            </div>
+            <div class="user-profile">
+              <div class="avatar">DL</div>
+              <div>
+                <div style="font-size: 13px; font-weight: 600; color: #f8fafc;">David Lee</div>
+                <div style="font-size: 11px; color: rgba(226, 232, 240, 0.6);">PI Admin</div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section class="page-shell">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">PI Vision 仪表板</h1>
+              <p class="page-tagline">实时可视化、协作与移动端随时访问。</p>
+              <div class="page-meta">
+                <span>服务器：PIVISION-PROD-01</span>
+                <span>最近发布：2024/04/18</span>
+                <span>权限：运营中心可编辑，现场用户仅查看</span>
+              </div>
+            </div>
+            <div class="page-actions" id="page-actions">
+              <button class="primary">新建显示</button>
+              <button>共享设置</button>
+            </div>
+          </div>
+          <div class="stats-grid" id="stats-grid"></div>
+          <div class="page-description" id="page-description"></div>
+          <div class="page-tabs" id="page-tabs"></div>
+          <div class="content-stage">
+            <div class="preview-stage">
+              <div class="preview-header">
+                <h2 id="preview-title">运营仪表板</h2>
+                <span id="preview-subtitle">实时监控生产关键指标</span>
+              </div>
+              <div class="preview-body" id="preview-body"></div>
+            </div>
+            <aside class="highlight-panel">
+              <h3>关键能力亮点</h3>
+              <ul class="highlight-list" id="highlight-list"></ul>
+            </aside>
+          </div>
+        </section>
+        <footer>原型预览 · AVEVA PI System · 2024</footer>
+      </main>
+    </div>
+
+    <script>
+      const pages = {
+        'pi-vision': {
+          title: 'PI Vision 仪表板',
+          tagline: '实时可视化、协作与移动端随时访问。',
+          description:
+            'PI Vision 提供拖拽式仪表板构建体验，将 PI Data Archive 与 Asset Framework 的实时数据以多种图表呈现，并支持多方协同标注、事件对比及移动端访问。',
+          stats: [
+            { label: '活跃显示面板', value: '128', trend: '+12% MoM' },
+            { label: '连接数据源', value: '46', trend: '8 条接口稳定运行' },
+            { label: '并发查看用户', value: '312', trend: '昨日峰值' },
+            { label: '共享团队', value: '12', trend: '跨厂区协同' }
+          ],
+          actions: [
+            { label: '新建显示', variant: 'primary' },
+            { label: '共享设置', variant: 'default' }
+          ],
+          sections: [
+            {
+              id: 'pi-vision-overview',
+              name: '运营仪表板',
+              subtitle: '实时监控生产关键指标',
+              summary:
+                '通过多轴趋势图、组合图表及状态卡片呈现关键 KPI，支持多工厂对比与快速诊断。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Vision · Operations Overview · 自动刷新中</div>
+                  <div class="mock-body">
+                    <div class="mock-sidebar">
+                      <h4>资产层级</h4>
+                      <div class="mock-tree">
+                        <span>华东厂区</span>
+                        <span> ├─ 1# 机组</span>
+                        <span> ├─ 2# 机组</span>
+                        <span> └─ 输送系统</span>
+                      </div>
+                    </div>
+                    <div class="mock-main">
+                      <div class="mock-chart large">
+                        <h5>机组实时负荷 &amp; 蒸汽压力</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>冷却水流量</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>锅炉排烟温度</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>状态汇总</h4>
+                      <div class="panel-item">
+                        <strong>报警：3 条</strong>
+                        <span>高优先级 1 · 已确认 2</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>性能预测</strong>
+                        <span>机组效率 97.2% · 未来 4h 稳定</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>协同注释</strong>
+                        <span>运维-王工：建议检查循环水泵</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>多视角展示</strong>：组合趋势、过程值卡片与地图图层实时切换。',
+                '<strong>关联注释</strong>：支持视频标注、语音备注和自动留痕。',
+                '<strong>权限细粒度</strong>：按资产或显示分配查看/编辑权限。'
+              ]
+            },
+            {
+              id: 'pi-vision-events',
+              name: '事件分析视图',
+              subtitle: '对比历史事件与当前运行状态',
+              summary:
+                '通过事件播放与时间轴对比，快速定位异常发生的上下文，结合 AF 模型中的计算属性进行根因分析。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Vision · Event Frames Playback</div>
+                  <div class="mock-body">
+                    <div class="mock-sidebar">
+                      <h4>事件库</h4>
+                      <div class="mock-tree">
+                        <span>锅炉燃烧偏差</span>
+                        <span>燃料波动告警</span>
+                        <span>历史高温事件</span>
+                        <span>设备启停记录</span>
+                      </div>
+                    </div>
+                    <div class="mock-main">
+                      <div class="mock-chart large">
+                        <h5>事件回放：燃烧偏差 2024-05-12</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>事件对比窗口</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>关键变量散点</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>上下文信息</h4>
+                      <div class="panel-item">
+                        <strong>触发条件</strong>
+                        <span>炉膛氧量连续 3 分钟 &lt; 2.5%</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>操作记录</strong>
+                        <span>2024-05-12 10:32 调整三次风门</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>推荐措施</strong>
+                        <span>回顾喷煤量曲线，复用模板</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mock-timeline">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>事件对齐</strong>：时间轴标准化，支持多事件重放与差异对比。',
+                '<strong>上下文融合</strong>：自动关联操作票、维护记录与文档。',
+                '<strong>协作共享</strong>：一键导出事件报告，支持与 PI Vision 仪表板互联。'
+              ]
+            },
+            {
+              id: 'pi-vision-mobile',
+              name: '移动巡检视图',
+              subtitle: '移动端离线缓存与任务到位',
+              summary:
+                '适配 iOS / Android 的移动巡检界面，支持二维码定位、离线缓存及即时上传照片/音频。',
+              preview: `
+                <div class="mock-window" style="padding: 24px;">
+                  <div class="mock-mobile">
+                    <div class="mock-phone">
+                      <div style="height: 8px; width: 60px; background: rgba(148,163,184,0.4); border-radius: 999px; margin: 0 auto;"></div>
+                      <div class="phone-chart"></div>
+                      <div class="phone-chart"></div>
+                    </div>
+                    <div class="mock-mobile-details">
+                      <div class="detail-card">
+                        <strong>今日巡检任务</strong>
+                        <p style="margin: 6px 0 0; color: rgba(226,232,240,0.75);">12 / 15 已完成 · 预计 17:30 结束</p>
+                      </div>
+                      <div class="detail-card">
+                        <strong>现场照片即时上传</strong>
+                        <p style="margin: 6px 0 0; color: rgba(226,232,240,0.75);">支持批注、语音转换文字</p>
+                      </div>
+                      <div class="detail-card">
+                        <strong>离线缓存</strong>
+                        <p style="margin: 6px 0 0; color: rgba(226,232,240,0.75);">无网络状态保留 72h 数据</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>移动适配</strong>：支持深色模式、现场扫码快速定位资产。',
+                '<strong>任务闭环</strong>：与 PI Notifications 联动，自动创建巡检任务。',
+                '<strong>数据回传</strong>：离线数据自动同步至 PI Asset Framework。'
+              ]
+            }
+          ]
+        },
+        'pi-event-frames': {
+          title: '事件框架洞察',
+          tagline: '定义、捕捉与分析生产过程中的关键事件。',
+          description:
+            'Event Frames 与 Asset Framework 联动，支持以事件为核心聚合时序数据。通过模板化定义触发条件、阶段划分及上下文，帮助运维团队快速复盘关键事件。',
+          stats: [
+            { label: '活跃事件模板', value: '42', trend: '覆盖 9 类业务场景' },
+            { label: '月度事件数量', value: '1,268', trend: '95% 自动识别' },
+            { label: '平均确认时长', value: '11min', trend: '-23% QoQ' }
+          ],
+          sections: [
+            {
+              id: 'event-template',
+              name: '事件模板设计器',
+              subtitle: '统一定义触发条件和阶段',
+              summary:
+                '通过图形化界面设置触发条件、阶段划分、参考属性以及派生指标，支持版本管理与测试。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">Event Frames · Template Designer</div>
+                  <div class="mock-body">
+                    <div class="mock-sidebar">
+                      <h4>模板列表</h4>
+                      <div class="mock-tree">
+                        <span>锅炉启停流程</span>
+                        <span>机组负荷波动</span>
+                        <span>燃烧偏差</span>
+                        <span>换热器结垢</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0, 1fr);">
+                      <div class="mock-chart large">
+                        <h5>触发逻辑配置</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>阶段定义</h4>
+                      <div class="panel-item">
+                        <strong>阶段 1：预热</strong>
+                        <span>蒸汽压力 &gt; 0.6MPa 持续 5 分钟</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>阶段 2：稳定</strong>
+                        <span>主汽温度 530℃±5℃</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>计算输出</strong>
+                        <span>阶段持续时间、平均效率</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>图形化编辑</strong>：支持逻辑表达式与拖拽式阶段编排。',
+                '<strong>版本管理</strong>：模板上线前可模拟验证与回放历史数据。',
+                '<strong>多资产复用</strong>：与 AF 模板绑定，一处配置全站复用。'
+              ]
+            },
+            {
+              id: 'event-analysis',
+              name: '事件分析报表',
+              subtitle: '自动生成事件性能与影响报告',
+              summary:
+                '结合 PI Integrator 将事件信息导出至 BI 平台，生成事件影响、持续时间及恢复措施的综合报表。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">Event Frames · Analytics Report</div>
+                  <div class="mock-body" style="grid-template-columns: minmax(0,1fr) 220px;">
+                    <div class="mock-main" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                      <div class="mock-chart large">
+                        <h5>事件频次与持续时间分布</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>影响产量 (t)</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>恢复时间箱线图</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>关键指标</h4>
+                      <div class="panel-item">
+                        <strong>MTTR</strong>
+                        <span>均值 26 分钟 · 最佳 11 分钟</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>产量影响</strong>
+                        <span>-1.8% · 本周减少 0.4%</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>责任分配</strong>
+                        <span>运维 58% · 仪控 32%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>多维分析</strong>：支持按资产、班组、班次等维度聚合统计。',
+                '<strong>自动化导出</strong>：与 Power BI、Tableau 直接同步。',
+                '<strong>闭环追踪</strong>：事件处理状态与通知联动，追踪整改完成度。'
+              ]
+            }
+          ]
+        },
+        'pi-notifications': {
+          title: 'PI Notifications',
+          tagline: '实时告警策略与全渠道通知。',
+          description:
+            'PI Notifications 基于 AF 属性与事件框架创建告警规则，支持多通道发送、升级策略和排班管理。',
+          stats: [
+            { label: '活跃告警规则', value: '86', trend: '含 12 条关键告警' },
+            { label: '平均响应时间', value: '6min', trend: '-18% 同比' },
+            { label: '通知渠道', value: '5', trend: '邮件 / SMS / Teams / 钉钉 / 声光' }
+          ],
+          sections: [
+            {
+              id: 'notification-strategy',
+              name: '告警策略编排',
+              subtitle: '按资产与班组配置告警策略',
+              summary:
+                '通过图形化策略面板，将 AF 属性与事件框架条件组合，设置告警阈值与推送节奏。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Notifications · Strategy Builder</div>
+                  <div class="mock-body" style="grid-template-columns: 200px minmax(0,1fr) 220px;">
+                    <div class="mock-sidebar">
+                      <h4>策略列表</h4>
+                      <div class="mock-tree">
+                        <span>锅炉系统高温</span>
+                        <span>冷却水异常</span>
+                        <span>设备启停提醒</span>
+                        <span>维护到期提示</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>阈值设定与升级路径</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>排班时间表</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>通知渠道</h4>
+                      <div class="panel-item">
+                        <strong>一级告警</strong>
+                        <span>短信 + 电话语音</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>二级告警</strong>
+                        <span>Teams + 钉钉群机器人</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>值班人</strong>
+                        <span>按排班表轮值</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>多通道</strong>：邮件、短信、语音、企业 IM 与第三方 API。',
+                '<strong>升级策略</strong>：未确认告警自动升级并通知主管。',
+                '<strong>排班管理</strong>：与外部 HR 系统同步班次。'
+              ]
+            },
+            {
+              id: 'notification-dashboard',
+              name: '告警监控总览',
+              subtitle: '实时掌握告警状态与响应',
+              summary:
+                '集中展示告警分布、处理进度与责任人状态，支持按班次、区域筛选。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Notifications · Monitoring Center</div>
+                  <div class="mock-body" style="grid-template-columns: minmax(0,1fr) 220px;">
+                    <div class="mock-main" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                      <div class="mock-chart large">
+                        <h5>告警趋势与确认率</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>责任人响应时间</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>告警来源 Top5</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>告警队列</h4>
+                      <div class="panel-item">
+                        <strong>高优先级</strong>
+                        <span>3 条 · 平均等待 2 分钟</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>处理中</strong>
+                        <span>6 条 · 责任人：王工</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>已关闭</strong>
+                        <span>今日 42 条 · SLA 100%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>实时跟踪</strong>：可视化展示确认率、响应时长与重复告警。',
+                '<strong>一键协同</strong>：从告警面板直接打开 PI Vision 关联显示。',
+                '<strong>历史归档</strong>：自动沉淀为事件框架，便于复盘。'
+              ]
+            }
+          ]
+        },
+        'pi-system-explorer': {
+          title: 'PI System Explorer',
+          tagline: '构建资产框架与元数据模型。',
+          description:
+            'PI System Explorer (PSE) 是 Asset Framework 的主要建模工具，支持资产层级、模板、属性、参照数据以及分析配置等操作。',
+          stats: [
+            { label: '资产层级节点', value: '4,820', trend: '覆盖 12 个工艺段' },
+            { label: '模板数量', value: '76', trend: '复用率 89%' },
+            { label: '实时计算', value: '514', trend: '含 62 条派生 KPI' }
+          ],
+          sections: [
+            {
+              id: 'pse-hierarchy',
+              name: '资产层级管理',
+              subtitle: '拖拽式组织资产与模板',
+              summary:
+                '通过树状结构管理企业、厂区、生产线与设备，支持批量导入与模板继承。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI System Explorer · Asset Hierarchy</div>
+                  <div class="mock-body">
+                    <div class="mock-sidebar">
+                      <h4>企业资产</h4>
+                      <div class="mock-tree">
+                        <span>集团总部</span>
+                        <span> ├─ 华东基地</span>
+                        <span> │   ├─ 1# 机组</span>
+                        <span> │   └─ 2# 机组</span>
+                        <span> └─ 西南基地</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0, 1fr);">
+                      <div class="mock-chart large">
+                        <h5>资产属性概览</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>继承关系</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>模板引用</h4>
+                      <div class="panel-item">
+                        <strong>锅炉模板 v3.2</strong>
+                        <span>属性：70 · 事件：6</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>实时状态</strong>
+                        <span>更新频率 1s · 数据质量 99.9%</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>审计日志</strong>
+                        <span>最近修改：张伟 2024/05/02</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>批量建模</strong>：支持 Excel/CSV 导入与模板绑定。',
+                '<strong>继承机制</strong>：子资产自动继承模板属性与分析。',
+                '<strong>审计追踪</strong>：记录每次修改以满足合规。'
+              ]
+            },
+            {
+              id: 'pse-attributes',
+              name: '属性与单位',
+              subtitle: '集中管理资产属性、数据引用与单位集',
+              summary:
+                '配置属性数据源、转换公式、单位集及默认显示方式，支持 PI 点位批量映射。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI System Explorer · Attributes</div>
+                  <div class="mock-body" style="grid-template-columns: 220px minmax(0,1fr) 200px;">
+                    <div class="mock-sidebar">
+                      <h4>属性分类</h4>
+                      <div class="mock-tree">
+                        <span>运行数据</span>
+                        <span>能耗指标</span>
+                        <span>维护信息</span>
+                        <span>预测模型</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>属性明细与数据引用</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>单位与格式</h4>
+                      <div class="panel-item">
+                        <strong>蒸汽压力</strong>
+                        <span>PI 点位：AF1.BOILER.PV</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>默认单位</strong>
+                        <span>MPa · 自动转换至 bar</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>显示格式</strong>
+                        <span>小数位：2 · 颜色阈值：2.5</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>属性类型丰富</strong>：支持静态值、PI 点位、表格查询与公式。',
+                '<strong>单位集管理</strong>：按资产类型统一单位并自动换算。',
+                '<strong>批量映射</strong>：引用规则加速点位关联。'
+              ]
+            },
+            {
+              id: 'pse-analytics',
+              name: '分析配置',
+              subtitle: '实时计算与结果写回',
+              summary:
+                '配置 Asset Analytics 计算，定义表达式、调度频率、回写点位以及错误处理策略。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI System Explorer · Analytics</div>
+                  <div class="mock-body" style="grid-template-columns: 220px minmax(0,1fr) 200px;">
+                    <div class="mock-sidebar">
+                      <h4>分析列表</h4>
+                      <div class="mock-tree">
+                        <span>锅炉效率计算</span>
+                        <span>热耗 KPI</span>
+                        <span>启停检测</span>
+                        <span>预测模型结果</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>表达式编辑器</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>调度与依赖</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>输出点位</h4>
+                      <div class="panel-item">
+                        <strong>写回：AF1.BOILER.EFF</strong>
+                        <span>更新频率：1 分钟</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>错误处理</strong>
+                        <span>异常写入通知 PI Admin</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>版本记录</strong>
+                        <span>v2.4 由李娜发布</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>在线调试</strong>：内置表达式测试与示例数据回放。',
+                '<strong>依赖管理</strong>：可视化展示计算链路与调度优先级。',
+                '<strong>写回控制</strong>：支持写回至 PI 点或 SQL 目标。'
+              ]
+            }
+          ]
+        },
+        'pi-asset-analytics': {
+          title: 'Asset Analytics',
+          tagline: '实时计算、派生属性与结果服务化。',
+          description:
+            'Asset Analytics 将业务计算公式配置在 AF 中，支持定时、触发或事件驱动执行，结果写回至 PI 或外部系统，支撑 KPI、能耗及预测模型。',
+          stats: [
+            { label: '活跃计算', value: '514', trend: '平均耗时 0.7s' },
+            { label: '写回点位', value: '286', trend: '含 34 个外部 SQL' },
+            { label: '失败率', value: '0.2%', trend: '自动重试成功率 98%' }
+          ],
+          sections: [
+            {
+              id: 'analytics-scheduler',
+              name: '调度监控',
+              subtitle: '掌握计算执行状态',
+              summary:
+                '监控分析计算的执行频率、成功率与延迟，支持快速排查异常。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">Asset Analytics · Scheduler Monitor</div>
+                  <div class="mock-body" style="grid-template-columns: minmax(0,1fr) 220px;">
+                    <div class="mock-main" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                      <div class="mock-chart large">
+                        <h5>计算执行时间轴</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>成功率与重试次数</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>延迟分布</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>最新告警</h4>
+                      <div class="panel-item">
+                        <strong>热耗计算延迟</strong>
+                        <span>2024-06-12 14:32 · 自动重试成功</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>预测模型未写回</strong>
+                        <span>已通知数据科学团队</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>可观测性</strong>：跟踪执行耗时、重试和失败原因。',
+                '<strong>告警联动</strong>：异常自动触发 Notifications 与工单。',
+                '<strong>依赖视图</strong>：可视化上下游数据依赖。'
+              ]
+            },
+            {
+              id: 'analytics-library',
+              name: '计算模板库',
+              subtitle: '沉淀行业最佳实践公式',
+              summary:
+                '内置常见 KPI 与行业计算模板，支持一键应用至多个资产。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">Asset Analytics · Template Library</div>
+                  <div class="mock-body" style="grid-template-columns: 200px minmax(0,1fr) 200px;">
+                    <div class="mock-sidebar">
+                      <h4>模板类别</h4>
+                      <div class="mock-tree">
+                        <span>电力 · 热耗</span>
+                        <span>石化 · 能效</span>
+                        <span>水务 · 产销差</span>
+                        <span>冶金 · 炉温</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>模板说明与预览</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>适用资产</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>版本与作者</h4>
+                      <div class="panel-item">
+                        <strong>热耗 KPI v4.1</strong>
+                        <span>作者：工艺优化团队</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>变更说明</strong>
+                        <span>新增低负荷修正项</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>模板复用</strong>：一处维护，多资产同步更新。',
+                '<strong>行业覆盖</strong>：内置能源、石化、水务等行业案例。',
+                '<strong>审批流程</strong>：模板发布需通过多级审核。'
+              ]
+            }
+          ]
+        },
+        'pi-data-archive': {
+          title: 'PI Data Archive',
+          tagline: '高性能时序数据库与历史记录。',
+          description:
+            'PI Data Archive 负责接收接口数据、执行压缩、提供历史查询与高可用集群能力，是整个 PI System 的实时数据中枢。',
+          stats: [
+            { label: '活跃 PI 点', value: '1,286,420', trend: '+8,640 本月新增' },
+            { label: '日均写入', value: '4.2B', trend: '压缩比 13:1' },
+            { label: '系统可用性', value: '99.996%', trend: '近 12 个月' }
+          ],
+          sections: [
+            {
+              id: 'data-archive-health',
+              name: '系统健康监控',
+              subtitle: '掌握接口、存储与集群状态',
+              summary:
+                '通过控制台监控接口延迟、归档文件容量、集群同步状态及安全策略。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Data Archive · System Health</div>
+                  <div class="mock-body" style="grid-template-columns: minmax(0,1fr) 220px;">
+                    <div class="mock-main" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                      <div class="mock-chart large">
+                        <h5>接口延迟与吞吐</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>归档容量趋势</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>集群同步状态</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>运行快照</h4>
+                      <div class="panel-item">
+                        <strong>接口健康</strong>
+                        <span>96/96 正常 · 平均延迟 1.2s</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>归档磁盘</strong>
+                        <span>使用率 68% · 剩余 42 天</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>冗余状态</strong>
+                        <span>主备同步正常</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>冗余监控</strong>：实时查看主备同步与 failover 状态。',
+                '<strong>容量预警</strong>：预测归档文件增长趋势并提醒扩容。',
+                '<strong>接口可用性</strong>：延迟与丢包情况图形化展示。'
+              ]
+            },
+            {
+              id: 'data-archive-compression',
+              name: '压缩与存储策略',
+              subtitle: '配置压缩参数、存储周期与备份',
+              summary:
+                '调优压缩、异常检测与归档策略，平衡数据精度与存储成本。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Data Archive · Compression Settings</div>
+                  <div class="mock-body" style="grid-template-columns: 220px minmax(0,1fr) 220px;">
+                    <div class="mock-sidebar">
+                      <h4>点位组</h4>
+                      <div class="mock-tree">
+                        <span>关键过程值</span>
+                        <span>辅助设备</span>
+                        <span>实验数据</span>
+                        <span>安环数据</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>压缩前后曲线对比</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>压缩误差分布</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>策略参数</h4>
+                      <div class="panel-item">
+                        <strong>死区：0.15</strong>
+                        <span>最大压缩误差</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>归档周期</strong>
+                        <span>按日归档 · 90 天在线</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>备份状态</strong>
+                        <span>增量备份成功 · 上次 02:30</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>模拟调优</strong>：压缩前后曲线对比，快速评估误差。',
+                '<strong>策略模板</strong>：不同点位组应用差异化策略。',
+                '<strong>备份治理</strong>：集成自动备份与恢复验证。'
+              ]
+            }
+          ]
+        },
+        'pi-interfaces': {
+          title: 'PI Interfaces &amp; Connectors',
+          tagline: '连接现场数据与云端平台。',
+          description:
+            'PI Interfaces 与 Connectors 将现场 PLC、DCS、OPC 及云系统数据接入 PI System，支持冗余部署、边缘缓冲与安全加固。',
+          stats: [
+            { label: '在线接口', value: '96', trend: '含 12 个冗余对' },
+            { label: '平均延迟', value: '1.2s', trend: '满足 SLA &lt; 2s' },
+            { label: '边缘缓冲', value: '72h', trend: '断网自动补传' }
+          ],
+          sections: [
+            {
+              id: 'interfaces-topology',
+              name: '接口拓扑',
+              subtitle: '可视化展示采集链路',
+              summary:
+                '查看现场接口节点、边缘网关与 PI 集群之间的连通性，快速定位数据延迟。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Interfaces · Topology View</div>
+                  <div class="mock-body" style="grid-template-columns: minmax(0,1fr) 220px;">
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>接口节点拓扑</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>带宽利用率</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>告警摘要</h4>
+                      <div class="panel-item">
+                        <strong>OPC-UA-GW03</strong>
+                        <span>延迟 3.4s · 已触发通知</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>边缘缓冲</strong>
+                        <span>已缓存 12,430 条待补传</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>实时拓扑</strong>：接口、缓冲节点、集群关系一目了然。',
+                '<strong>延迟热力图</strong>：定位瓶颈链路与丢包节点。',
+                '<strong>自动补传</strong>：断链后自动缓冲与补数据。'
+              ]
+            },
+            {
+              id: 'interfaces-management',
+              name: '接口管理控制台',
+              subtitle: '配置、发布与监控接口',
+              summary:
+                '集中管理接口配置、服务状态、冗余切换及证书策略，支持批量部署。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Interfaces · Management Console</div>
+                  <div class="mock-body" style="grid-template-columns: 220px minmax(0,1fr) 220px;">
+                    <div class="mock-sidebar">
+                      <h4>接口清单</h4>
+                      <div class="mock-tree">
+                        <span>OPC-DA</span>
+                        <span>Modbus TCP</span>
+                        <span>MQTT Connector</span>
+                        <span>PI Adapter</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>配置详情与日志</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>冗余状态</h4>
+                      <div class="panel-item">
+                        <strong>主：运行</strong>
+                        <span>更新：2024-06-12 12:40</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>备：待命</strong>
+                        <span>心跳延迟 0.2s</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>证书有效期</strong>
+                        <span>2025-02-18 · 自动提醒</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>模板化配置</strong>：快速复制部署到新现场。',
+                '<strong>日志联动</strong>：接口日志集中查看、支持过滤检索。',
+                '<strong>安全加固</strong>：证书、白名单与加密策略集中管理。'
+              ]
+            }
+          ]
+        },
+        'pi-integrator': {
+          title: 'PI Integrator &amp; DataLink',
+          tagline: '将工业数据延展至 BI 与数据科学平台。',
+          description:
+            'PI Integrator 提供数据集成、清洗与发布能力，支持将 AF 数据集推送至云数据仓库、BI 与数据科学平台；PI DataLink 则面向 Excel 提供自助分析。',
+          stats: [
+            { label: '发布数据集', value: '64', trend: '连接 5 个目标系统' },
+            { label: '刷新频率', value: '15min', trend: '支持实时流式' },
+            { label: '订阅用户', value: '420', trend: '覆盖分析 / 财务 / 运营' }
+          ],
+          sections: [
+            {
+              id: 'integrator-flow',
+              name: '数据流编排',
+              subtitle: '构建从 AF 到 BI 的数据管道',
+              summary:
+                '以可视化方式选择资产、事件及属性，定义数据处理规则并发布到外部系统。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI Integrator · Publish Dataflow</div>
+                  <div class="mock-body" style="grid-template-columns: 220px minmax(0,1fr) 220px;">
+                    <div class="mock-sidebar">
+                      <h4>源数据集</h4>
+                      <div class="mock-tree">
+                        <span>AF 资产视图</span>
+                        <span>事件框架</span>
+                        <span>计算结果</span>
+                        <span>原始 PI 点位</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>字段选择与转换</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>发布计划</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>目标系统</h4>
+                      <div class="panel-item">
+                        <strong>Azure Data Lake</strong>
+                        <span>增量 · 每 15 分钟</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>Power BI 工作区</strong>
+                        <span>运营分析团队</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>发布状态</strong>
+                        <span>最近成功 2024-06-12 13:15</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>拖拽编排</strong>：选择资产、属性、事件并定义转换。',
+                '<strong>多目标同步</strong>：支持 Azure、AWS、SQL、Power BI 等。',
+                '<strong>数据血缘</strong>：追踪字段来源与同步日志。'
+              ]
+            },
+            {
+              id: 'integrator-datalink',
+              name: 'DataLink 模板',
+              subtitle: 'Excel 自助分析模板中心',
+              summary:
+                '提供预置的 DataLink 模板，帮助业务人员快速搭建日报、对比分析与自定义报表。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">PI DataLink · Template Center</div>
+                  <div class="mock-body" style="grid-template-columns: minmax(0,1fr) 220px;">
+                    <div class="mock-main" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                      <div class="mock-chart large">
+                        <h5>日报模板预览</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>多站点对比</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>异常值筛选</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>下载与发布</h4>
+                      <div class="panel-item">
+                        <strong>Excel 插件版本</strong>
+                        <span>v2024.2</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>模板评分</strong>
+                        <span>4.8 / 5 · 320 次使用</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>模板市场</strong>：预置 KPI、对比、平衡表等模板。',
+                '<strong>一键刷新</strong>：Excel 中自动刷新最新数据。',
+                '<strong>权限控制</strong>：模板分享遵循 AD 权限。'
+              ]
+            }
+          ]
+        },
+        'pi-system-management': {
+          title: 'System Management Tools',
+          tagline: '统一运维 PI 集群与安全策略。',
+          description:
+            'PI System Management Tools (SMT) 为 PI 管理员提供统一的配置、监控、安全策略与日志工具，覆盖归档、点位、安全、备份等核心能力。',
+          stats: [
+            { label: '管理服务器', value: '8', trend: '双中心容灾架构' },
+            { label: '健康检查通过率', value: '99.1%', trend: '每日自动巡检' },
+            { label: '安全策略', value: '34', trend: '与 AD 域同步' }
+          ],
+          sections: [
+            {
+              id: 'smt-operations',
+              name: '系统操作面板',
+              subtitle: '集中执行配置与维护',
+              summary:
+                '通过分区面板管理归档、点位、安全设置及备份计划，支持脚本化自动化。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">SMT · Operations Console</div>
+                  <div class="mock-body" style="grid-template-columns: 220px minmax(0,1fr) 220px;">
+                    <div class="mock-sidebar">
+                      <h4>配置模块</h4>
+                      <div class="mock-tree">
+                        <span>归档管理</span>
+                        <span>点位编辑器</span>
+                        <span>安全设置</span>
+                        <span>备份计划</span>
+                      </div>
+                    </div>
+                    <div class="mock-main" style="grid-template-columns: minmax(0,1fr);">
+                      <div class="mock-chart large">
+                        <h5>配置详情</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>任务计划</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>执行记录</h4>
+                      <div class="panel-item">
+                        <strong>归档切换</strong>
+                        <span>2024-06-12 00:00 成功</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>备份完成</strong>
+                        <span>最近 02:15 · 校验通过</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>统一入口</strong>：常用配置模块集中管理。',
+                '<strong>自动化任务</strong>：支持 PowerShell 脚本与调度。',
+                '<strong>审计日志</strong>：操作全程留痕，可追踪。'
+              ]
+            },
+            {
+              id: 'smt-security',
+              name: '安全与访问控制',
+              subtitle: '基于域账户与策略的安全体系',
+              summary:
+                '管理用户、组、信任、映射与防火墙策略，确保 PI System 在企业网络中的安全运行。',
+              preview: `
+                <div class="mock-window">
+                  <div class="mock-topbar">SMT · Security Management</div>
+                  <div class="mock-body" style="grid-template-columns: minmax(0,1fr) 220px;">
+                    <div class="mock-main" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                      <div class="mock-chart large">
+                        <h5>用户与角色分布</h5>
+                        <div class="chart-line"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>权限矩阵</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                      <div class="mock-chart">
+                        <h5>登录审计</h5>
+                        <div class="chart-bar"></div>
+                      </div>
+                    </div>
+                    <div class="mock-panel">
+                      <h4>安全提醒</h4>
+                      <div class="panel-item">
+                        <strong>即将过期信任</strong>
+                        <span>PICollectiveTrust · 14 天后</span>
+                      </div>
+                      <div class="panel-item">
+                        <strong>失败登录</strong>
+                        <span>近 24h：5 次 · 均来自 DMZ</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+              highlights: [
+                '<strong>域集成</strong>：与 Active Directory 同步用户与组。',
+                '<strong>细粒度权限</strong>：点位级、AF 对象级访问控制。',
+                '<strong>安全审计</strong>：实时监控登录、访问与策略变更。'
+              ]
+            }
+          ]
+        }
+      };
+
+      const navItems = document.querySelectorAll('.nav-item');
+      const pageTitle = document.querySelector('.page-title');
+      const pageTagline = document.querySelector('.page-tagline');
+      const breadcrumbCurrent = document.getElementById('breadcrumb-current');
+      const statsGrid = document.getElementById('stats-grid');
+      const pageDescription = document.getElementById('page-description');
+      const pageTabs = document.getElementById('page-tabs');
+      const previewTitle = document.getElementById('preview-title');
+      const previewSubtitle = document.getElementById('preview-subtitle');
+      const previewBody = document.getElementById('preview-body');
+      const highlightList = document.getElementById('highlight-list');
+      const pageActions = document.getElementById('page-actions');
+
+      const renderStats = (stats = []) => {
+        statsGrid.innerHTML = stats
+          .map(
+            (stat) => `
+              <div class="stat-card">
+                <div class="stat-value">${stat.value}</div>
+                <div class="stat-label">${stat.label}</div>
+                <div style="font-size: 12px; color: rgba(148,163,184,0.7);">${stat.trend || ''}</div>
+              </div>
+            `
+          )
+          .join('');
+      };
+
+      const renderActions = (actions = []) => {
+        pageActions.innerHTML = actions
+          .map((action) => `
+            <button class="${action.variant === 'primary' ? 'primary' : ''}">${action.label}</button>
+          `)
+          .join('');
+      };
+
+      const renderSection = (page, sectionId) => {
+        const section = page.sections.find((item) => item.id === sectionId) || page.sections[0];
+        if (!section) return;
+
+        previewTitle.textContent = section.name;
+        previewSubtitle.textContent = section.subtitle || '';
+        previewBody.innerHTML = `
+          <p style="margin: 0; font-size: 14px; color: rgba(226,232,240,0.78); line-height: 1.7;">
+            ${section.summary || ''}
+          </p>
+          ${section.preview}
+        `;
+        highlightList.innerHTML = (section.highlights || [])
+          .map(
+            (item) => `
+              <li>
+                <span class="highlight-bullet"></span>
+                <span>${item}</span>
+              </li>
+            `
+          )
+          .join('');
+
+        pageTabs.querySelectorAll('.page-tab').forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.section === section.id);
+        });
+      };
+
+      const renderTabs = (page) => {
+        pageTabs.innerHTML = page.sections
+          .map(
+            (section, index) => `
+              <button class="page-tab ${index === 0 ? 'active' : ''}" data-section="${section.id}">${section.name}</button>
+            `
+          )
+          .join('');
+
+        pageTabs.querySelectorAll('.page-tab').forEach((tab) => {
+          tab.addEventListener('click', (event) => {
+            renderSection(page, event.currentTarget.dataset.section);
+          });
+        });
+      };
+
+      const renderPage = (pageId) => {
+        const page = pages[pageId];
+        if (!page) return;
+
+        pageTitle.textContent = page.title;
+        pageTagline.textContent = page.tagline;
+        breadcrumbCurrent.textContent = page.title;
+        pageDescription.textContent = page.description;
+
+        renderStats(page.stats);
+        renderActions(page.actions || []);
+        renderTabs(page);
+        renderSection(page, page.sections?.[0]?.id);
+      };
+
+      navItems.forEach((item) => {
+        item.addEventListener('click', () => {
+          navItems.forEach((btn) => btn.classList.remove('active'));
+          item.classList.add('active');
+          renderPage(item.dataset.page);
+        });
+      });
+
+      renderPage('pi-vision');
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
