@@ -3,82 +3,441 @@
   <head>
     <meta charset="utf-8" />
     <title>BeReal 真实社交 原型概览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --brand-primary: #2563eb;
+        --brand-accent: #f97316;
+        --surface: #ffffff;
+        --surface-muted: #f3f4f6;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --border: #e2e8f0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        margin: 0;
+        background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
+        color: var(--text-primary);
+        padding-bottom: 80px;
+      }
+
+      header {
+        padding: 64px 24px 40px;
+        text-align: center;
+      }
+
+      header h1 {
+        margin: 0 0 12px;
+        font-size: clamp(32px, 4vw, 48px);
+      }
+
+      .tagline {
+        margin: 0 auto;
+        max-width: 720px;
+        font-size: 18px;
+        color: var(--text-secondary);
+      }
+
+      .role-switch {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 10;
+      }
+
+      .role-switch button {
+        border: none;
+        background: var(--surface);
+        padding: 12px 20px;
+        border-radius: 999px;
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.2);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .role-switch button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 38px rgba(37, 99, 235, 0.28);
+      }
+
+      .role-switch strong {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--brand-primary);
+      }
+
+      .role-switch span {
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .role-switch small {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      main.view {
+        display: none;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px 40px;
+      }
+
+      main.view.active {
+        display: block;
+      }
+
+      .section {
+        background: var(--surface);
+        border-radius: 24px;
+        padding: 32px;
+        margin-bottom: 28px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .section h2 {
+        margin-top: 0;
+        font-size: 26px;
+      }
+
+      .section p {
+        margin-bottom: 16px;
+        color: var(--text-secondary);
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid.cols-2 {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .grid.cols-3 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .card {
+        background: var(--surface-muted);
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .card ul,
+      .details ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--text-secondary);
+      }
+
+      .card li,
+      .details li {
+        margin-bottom: 6px;
+      }
+
+      .pill-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .pill {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--brand-primary);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .experience-flow {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        margin-top: 20px;
+      }
+
+      .flow-step {
+        border-radius: 20px;
+        padding: 24px;
+        background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(59, 130, 246, 0.16));
+        color: var(--text-primary);
+      }
+
+      .flow-step strong {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 18px;
+      }
+
+      .split-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        align-items: start;
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, rgba(249, 115, 22, 0.1), rgba(250, 204, 21, 0.2));
+        border-radius: 20px;
+        padding: 24px;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-top: 32px;
+        font-size: 14px;
+      }
+
+      @media (max-width: 640px) {
+        header {
+          padding: 48px 16px 32px;
+        }
+
+        .section {
+          padding: 24px;
+          border-radius: 20px;
+        }
+
+        .role-switch button {
+          padding: 10px 16px;
+        }
+      }
     </style>
   </head>
   <body>
+    <div class="role-switch">
+      <button id="roleToggle" type="button">
+        <strong>角色体验</strong>
+        <span>当前：用户端</span>
+        <small>切换为管理端</small>
+      </button>
+    </div>
     <header>
       <h1>BeReal 真实社交 原型</h1>
-      <p class="tagline">鼓励用户分享日常真实瞬间的社交应用。</p>
+      <p class="tagline">
+        通过每日随机提醒与双摄捕捉真实瞬间，BeReal 同时面向普通用户与平台运营人员提供高效的互动体验与安全治理能力。
+      </p>
     </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>年轻人、校园用户、亲密好友</p>
-        <p><strong>核心痛点：</strong>主流社交中过度修饰的内容导致信任感下降</p>
-        <p><strong>价值主张：</strong>通过每日随机提醒、双摄同时拍摄，重建真实分享与亲密关系</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>用户收到提醒后拍摄并发布 BeReal</li><li>好友查看并评论彼此的真实瞬间</li><li>平台管理 Discovery 流与安全审核</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>BeReal 拍摄体验</h3>
-              <p class="goal">功能目标：确保用户在限定时间内轻松记录</p>
-              <ul>
-                <li>双摄同步拍摄与倒计时</li><li>迟到发布提醒与二次拍摄限制</li><li>滤镜、位置标记与标签</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>好友互动</h3>
-              <p class="goal">功能目标：加强真实关系链的互动</p>
-              <ul>
-                <li>好友列表与推荐</li><li>评论、RealMoji 表情互动</li><li>聊天私信与回顾</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>探索与社区</h3>
-              <p class="goal">功能目标：展示全球用户的真实生活</p>
-              <ul>
-                <li>Discovery 流审核与推荐</li><li>特别活动与主题挑战</li><li>隐私控制与举报机制</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>安全与成长</h3>
-              <p class="goal">功能目标：维护真实分享的健康生态</p>
-              <ul>
-                <li>年龄验证与反欺诈</li><li>使用时长提示与健康提醒</li><li>数据分析与增长策略</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>每日拍摄参与率与准时率</li><li>好友互动次数与RealMoji 使用</li><li>Discovery 内容审核通过率</li>
-      </ul>
-    </section>
+
+    <main class="view active" data-role="user">
+      <section class="section">
+        <h2>用户端体验地图</h2>
+        <p>围绕「真实分享」的核心价值，设计从入门、拍摄到互动的完整旅程，确保发布效率与社交反馈的平衡。</p>
+        <div class="experience-flow">
+          <div class="flow-step">
+            <strong>01 · 入门激活</strong>
+            <p>手机号 / Snap 登录、好友导入、规则说明，引导完成首个 BeReal。</p>
+          </div>
+          <div class="flow-step">
+            <strong>02 · 拍摄提示</strong>
+            <p>每日随机通知 + 2 分钟倒计时，允许一次补拍，支持滤镜与定位贴纸。</p>
+          </div>
+          <div class="flow-step">
+            <strong>03 · 互动动态</strong>
+            <p>好友时间线、RealMoji 表情、评论、回放归档，突出真实关系链互动。</p>
+          </div>
+          <div class="flow-step">
+            <strong>04 · 发现世界</strong>
+            <p>通过审核的 Discovery 流展示全球精选内容，配合话题挑战提升参与。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>核心功能模块</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>实时拍摄</h3>
+            <ul>
+              <li>前后摄像头同步拍摄与倒计时控制</li>
+              <li>补拍限制、迟到提醒、曝光控制</li>
+              <li>动态滤镜、位置分享、隐私开关</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>关系链互动</h3>
+            <ul>
+              <li>好友列表、推荐与隐私分组</li>
+              <li>RealMoji 表情、评论、提醒@好友</li>
+              <li>群组分享与合拍挑战</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>发现与回顾</h3>
+            <ul>
+              <li>Discovery 流精选、主题挑战页</li>
+              <li>地图模式与热门地点合集</li>
+              <li>年度回顾、收藏与本地下载</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pill-group">
+          <span class="pill">DAU & 准时率</span>
+          <span class="pill">内容真实度</span>
+          <span class="pill">好友互动次数</span>
+          <span class="pill">话题参与度</span>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>体验保障</h2>
+        <div class="split-layout">
+          <div class="card">
+            <h3>安全策略</h3>
+            <ul>
+              <li>设备指纹 + 行为识别，防多账号作弊</li>
+              <li>图片敏感内容检测、AI 审核预警</li>
+              <li>社区举报与人工复核流程</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>成长机制</h3>
+            <ul>
+              <li>连续打卡徽章、迟到提醒 push</li>
+              <li>好友互拍成就与真粉榜</li>
+              <li>运营活动：真实世界日、校友赛道</li>
+            </ul>
+          </div>
+          <div class="highlight">
+            <h3>关键指标仪表</h3>
+            <p>监控新手 7 日留存、每日发布准时率、RealMoji 使用率与 Discovery 点击率，保证内容生态的真实与活跃。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <main class="view" data-role="admin">
+      <section class="section">
+        <h2>平台运营工作台</h2>
+        <p>为运营与审核团队设计的多面板控制台，支撑内容治理、增长投放与社区安全。</p>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>实时看板</h3>
+            <ul>
+              <li>系统状态：提醒发送成功率、延迟监控</li>
+              <li>核心指标：发布量、迟到率、举报量</li>
+              <li>异常告警：Spam 激增、AI 审核积压</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>运营任务队列</h3>
+            <ul>
+              <li>Discovery 推荐位编排与 A/B 测试</li>
+              <li>主题挑战配置：话题、奖励、周期</li>
+              <li>校园大使、KOL 活动效果追踪</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>内容审核流程</h2>
+        <div class="split-layout">
+          <div class="card details">
+            <h3>AI 预审层</h3>
+            <ul>
+              <li>图像识别：nudity、危险行为、广告</li>
+              <li>文本分析：评论敏感词、仇恨言论</li>
+              <li>可信度评分触发不同审核路径</li>
+            </ul>
+          </div>
+          <div class="card details">
+            <h3>人工复核层</h3>
+            <ul>
+              <li>按优先级排队，支持键盘快捷操作</li>
+              <li>模版回复与处罚建议、二次申诉管理</li>
+              <li>历史决策与用户信用分追踪</li>
+            </ul>
+          </div>
+          <div class="highlight">
+            <h3>风险响应</h3>
+            <p>当举报量异常时自动触发跨区域联动，冻结账号、通知法务与 PR，并生成事件时间线备档。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>后台支撑能力</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>用户与权限</h3>
+            <ul>
+              <li>分角色账号、单点登录、操作日志</li>
+              <li>权限矩阵：审核员 / 运营 / 技术支持</li>
+              <li>敏感操作双人复核、审批流</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>数据洞察</h3>
+            <ul>
+              <li>漏斗分析：提醒 → 发布 → 互动</li>
+              <li>用户分层：新手、活跃、沉睡、风险</li>
+              <li>导出报表与 API 数据接口</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>系统运营</h3>
+            <ul>
+              <li>通知模板、延迟补偿机制配置</li>
+              <li>容灾策略：提醒补发、内容回滚</li>
+              <li>隐私合规：GDPR / COPPA 审计记录</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
     <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <script>
+      const toggleButton = document.getElementById('roleToggle');
+      const views = document.querySelectorAll('main.view');
+      let currentRole = 'user';
+
+      const updateView = () => {
+        views.forEach((view) => {
+          const isActive = view.dataset.role === currentRole;
+          view.classList.toggle('active', isActive);
+        });
+
+        const roleLabel = currentRole === 'user' ? '用户端' : '管理端';
+        const nextRoleLabel = currentRole === 'user' ? '管理端' : '用户端';
+        toggleButton.querySelector('span').textContent = `当前：${roleLabel}`;
+        toggleButton.querySelector('small').textContent = `切换为${nextRoleLabel}`;
+      };
+
+      toggleButton.addEventListener('click', () => {
+        currentRole = currentRole === 'user' ? 'admin' : 'user';
+        updateView();
+      });
+
+      updateView();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
