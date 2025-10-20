@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>S&OP 协同会议室 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .grid { display: grid; gap: 20px; }
+      .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .panel { padding: 16px; border-radius: 14px; background: #f8fafc; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .panel strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .agenda { display: flex; flex-direction: column; gap: 12px; }
+      .agenda-item { padding: 16px; border-radius: 14px; background: #eef2ff; border: 1px solid #cbd5f5; }
+      .agenda-item strong { display: block; margin-bottom: 6px; color: #1d4ed8; }
+      .decision-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .decision { padding: 16px; border-radius: 16px; background: #e0f2fe; border: 1px solid #93c5fd; font-size: 13px; color: #0c4a6e; }
+      .decision strong { display: block; margin-bottom: 6px; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #fef3c7; border: 1px solid #fcd34d; font-size: 13px; color: #92400e; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .grid.two, .decision-board, .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>供应计划 / S&OP 会议</span>
+            <h1>S&OP 协同会议室</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">供应计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>会议议程</h2>
+                <p>跨职能团队在 60 分钟内完成供需决策</p>
+              </div>
+              <a class="btn primary" href="supply-planning.html">返回供应计划工作台</a>
+            </header>
+            <div class="agenda" id="agenda"></div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>决策看板</h2>
+                <p>待确认的关键决策点与责任人</p>
+              </div>
+              <div class="actions">
+                <a class="btn secondary" href="demand-scenario-planner.html">查看情景数据</a>
+                <a class="btn secondary" href="replenishment-allocation.html">查看库存方案</a>
+              </div>
+            </header>
+            <div class="decision-board" id="decisionBoard"></div>
+          </section>
+
+          <section class="grid two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>会议资料</h2>
+                  <p>会议前需准备的指标与报告</p>
+                </div>
+              </header>
+              <div class="panel" id="materialPanel"></div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>行动追踪</h2>
+                  <p>会议之后的跟进事项</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">同步至任务看板</a>
+              </header>
+              <div class="panel" id="actionPanel"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注</h2>
+                <p>不同角色在会议中的发言要点</p>
+              </div>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>S&OP 会议室页面呈现议程、决策看板、资料与行动追踪，模拟真实会议的核心内容。观众可以通过按钮跳转到相关数据页面，角色切换则展示各职能在会议中的关注点与发言重点，满足演示需求。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'supply';
+      document.querySelectorAll('.menu a').forEach((link) => { if (link.dataset.page === currentPage) link.classList.add('active'); });
+
+      const agendaData = [
+        { time: '00:00 - 00:10', topic: '需求回顾', owner: '需求计划经理', detail: '回顾预测准确率、促销假设与需求变化。' },
+        { time: '00:10 - 00:30', topic: '供应与产能', owner: '供应计划经理', detail: '讨论产能缺口、物料约束与调拨方案。' },
+        { time: '00:30 - 00:45', topic: '财务评估', owner: '财务负责人', detail: '对比情景的成本、利润与现金流影响。' },
+        { time: '00:45 - 01:00', topic: '决策与行动', owner: '首席供应链官', detail: '确认最终情景、责任人和执行时间表。' }
+      ];
+      const agenda = document.getElementById('agenda');
+      agenda.innerHTML = agendaData
+        .map(
+          (item) => `
+            <div class="agenda-item">
+              <strong>${item.time} · ${item.topic}</strong>
+              <p>主持人：${item.owner}</p>
+              <p style="margin: 6px 0 0 0; color: var(--text-sub);">${item.detail}</p>
+            </div>
+          `
+        )
+        .join('');
+
+      const decisions = [
+        { title: '是否执行情景 B', owner: '首席供应链官', status: '待定', note: '需确认财务目标达成情况。' },
+        { title: '越南工厂加班审批', owner: '供应计划经理', status: '待定', note: '确认加班成本与交付收益。' },
+        { title: '高价值客户承诺', owner: '销售副总裁', status: '待确认', note: '是否优先保障北美零售客户库存。' }
+      ];
+      const decisionBoard = document.getElementById('decisionBoard');
+      decisionBoard.innerHTML = decisions
+        .map((item) => `<div class=\"decision\"><strong>${item.title}</strong><p>责任人：${item.owner}</p><p>状态：${item.status}</p><p>${item.note}</p></div>`)
+        .join('');
+
+      const materialPanel = document.getElementById('materialPanel');
+      const materials = [
+        '最新需求预测版本（含情景对比）。',
+        '产能利用率与瓶颈报告。',
+        '财务影响分析（利润、现金流、库存成本）。',
+        '客户服务水平与订单履约指标。'
+      ];
+      materialPanel.innerHTML = materials.map((item) => `<p>· ${item}</p>`).join('');
+
+      const actionPanel = document.getElementById('actionPanel');
+      const actions = [
+        '将会议决议发布到协同任务。',
+        '在 24 小时内更新供应与补货计划。',
+        '向客户团队通报承诺变化。'
+      ];
+      actionPanel.innerHTML = actions.map((item) => `<p>· ${item}</p>`).join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '需求陈述', text: '解释需求波动与模型假设，提出风险提示。' },
+          { title: '共识推进', text: '协调销售与市场对预测的意见。' },
+          { title: '行动跟踪', text: '会后更新需求基线并同步至系统。' }
+        ],
+        'supply-planner': [
+          { title: '产能方案', text: '展示各工厂产能与外协策略。' },
+          { title: '物料保障', text: '说明关键物料的缓解计划。' },
+          { title: '执行节奏', text: '确认排产调整与物流配合。' }
+        ],
+        'logistics-manager': [
+          { title: '履约风险', text: '评估运输与仓储对情景的支撑能力。' },
+          { title: '客户承诺', text: '明确关键订单的交付窗口。' },
+          { title: '资源需求', text: '提出运力、人力等资源的增补计划。' }
+        ],
+        executive: [
+          { title: '战略对齐', text: '判断情景是否支持战略目标。' },
+          { title: '财务达成', text: '确认利润、现金流等指标是否满足。' },
+          { title: '风险授权', text: '为关键风险缓解措施提供授权。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'supply-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const config = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = config
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>协同工作台 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .grid { display: grid; gap: 20px; }
+      .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .panel { padding: 16px; border-radius: 14px; background: #f8fafc; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .panel strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .task-column { display: flex; flex-direction: column; gap: 12px; }
+      .task-card { padding: 16px; border-radius: 14px; background: #eef2ff; border: 1px solid #cbd5f5; }
+      .task-card strong { display: block; margin-bottom: 6px; color: #1d4ed8; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #ecfdf5; border: 1px solid #6ee7b7; font-size: 13px; color: #065f46; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .grid.two, .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>跨职能协同 / 工作台</span>
+            <h1>协同工作台</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">协同视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>任务看板</h2>
+                <p>按阶段展示正在协同的关键任务</p>
+              </div>
+              <a class="btn primary" href="collaboration-workbench.html">新建协同任务</a>
+            </header>
+            <div class="grid two" id="taskBoard"></div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>会议与沟通</h2>
+                <p>同步跨团队会议纪要与即将到来的沟通节点</p>
+              </div>
+              <a class="btn secondary" href="sop-meeting.html">进入 S&OP 会议室</a>
+            </header>
+            <div class="panel" id="communicationPanel"></div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注</h2>
+                <p>了解每个角色在协同中的关键诉求</p>
+              </div>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>协同工作台聚合任务、沟通与角色关注点，让演示者展示跨团队协作的全过程。任务看板连接各业务页面，角色切换帮助说明不同职能的诉求与责任。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'dashboard';
+      document.querySelectorAll('.menu a').forEach((link) => {
+        if (link.dataset.page === currentPage) link.classList.add('active');
+      });
+
+      const taskBoard = document.getElementById('taskBoard');
+      const tasks = {
+        '待处理': [
+          { title: '确认促销情景 B', detail: '需求计划与销售讨论促销量，等待财务评估。', link: 'demand-scenario-planner.html' },
+          { title: '调拨方案审批', detail: '供应计划需要物流与财务确认调拨成本。', link: 'replenishment-allocation.html' }
+        ],
+        '进行中': [
+          { title: '越南产能缓解', detail: '供应计划协调外协工厂，预计 3 天内确认。', link: 'supply-schedule-detail.html' },
+          { title: '物流延误通知', detail: '物流团队同步客户 ETA 并提供补偿方案。', link: 'logistics-order-detail.html' }
+        ]
+      };
+      taskBoard.innerHTML = Object.entries(tasks)
+        .map(
+          ([stage, items]) => `
+            <div class="task-column">
+              <div class="panel" style="background:#e0f2fe; border-color:#93c5fd;"><strong>${stage}</strong></div>
+              ${items
+                .map(
+                  (item) => `
+                    <div class="task-card">
+                      <strong>${item.title}</strong>
+                      <p>${item.detail}</p>
+                      <a href="${item.link}" style="color:#1d4ed8; font-size: 12px;">打开相关页面 →</a>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          `
+        )
+        .join('');
+
+      const communicationPanel = document.getElementById('communicationPanel');
+      const communications = [
+        'S&OP 预备会议 · 2024-05-18 · 需要需求、供应、财务参加。',
+        '物流异常通报会 · 2024-05-17 · 协调港口拥堵解决方案。',
+        '高价值客户沟通 · 2024-05-19 · 销售与客服同步最新交付承诺。'
+      ];
+      communicationPanel.innerHTML = communications.map((item) => `<p>· ${item}</p>`).join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '预测对齐', text: '确保任务反馈及时回写到预测与共识。' },
+          { title: '促销确认', text: '与销售确认促销假设，避免信息延迟。' }
+        ],
+        'supply-planner': [
+          { title: '产能保障', text: '跟踪外协与调拨任务的完成情况。' },
+          { title: 'S&OP 输出', text: '准备会议材料，确保决策快速落地。' }
+        ],
+        'logistics-manager': [
+          { title: '异常闭环', text: '与供应与客服同步异常处理进展。' },
+          { title: '资源协调', text: '安排仓储与运输资源支撑协同任务。' }
+        ],
+        executive: [
+          { title: '决策节奏', text: '关注关键任务的决策瓶颈。' },
+          { title: '业务影响', text: '评估协同结果对客户与财务的影响。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'demand-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const config = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = config
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>

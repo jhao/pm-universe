@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Blue Yonder SCM Cloud · 需求规划工作台</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --border: #e2e8f0;
+        --accent: #2563eb;
+        --accent-soft: rgba(37, 99, 235, 0.14);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--bg);
+        color: var(--text-main);
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .layout { display: flex; min-height: 100vh; }
+
+      .sidebar {
+        width: 248px;
+        background: var(--sidebar-bg);
+        color: #fff;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .brand span.logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        font-weight: 700;
+      }
+
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+
+      .menu a {
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.72);
+        transition: background 0.2s, color 0.2s;
+      }
+
+      .menu a.active, .menu a:hover {
+        background: rgba(37, 99, 235, 0.16);
+        color: #fff;
+      }
+
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+
+      .main { flex: 1; display: flex; flex-direction: column; }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 32px 0 32px;
+      }
+
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+
+      .role-switcher {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill {
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      main.content {
+        padding: 24px 32px 40px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06);
+      }
+
+      .card header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+
+      .forecast-grid {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+
+      .forecast-grid th, .forecast-grid td {
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        font-size: 13px;
+        text-align: left;
+      }
+
+      .forecast-grid thead { background: #f8fafc; }
+      .forecast-grid tbody tr:hover { background: rgba(37, 99, 235, 0.05); }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: #1d4ed8;
+        font-size: 12px;
+      }
+
+      .actions { display: flex; gap: 12px; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+      }
+
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+
+      .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+      .grid-three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+
+      .panel { padding: 16px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0; }
+      .panel h3 { margin: 0 0 8px 0; font-size: 16px; }
+      .panel p { margin: 0; font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+
+      .scenario-card {
+        padding: 16px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(191, 219, 254, 0.32));
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .scenario-card strong { font-size: 16px; }
+
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #fff7ed; border: 1px solid #fed7aa; font-size: 13px; color: #b45309; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+
+      .page-notes {
+        padding: 18px;
+        border-radius: 16px;
+        background: #ecfeff;
+        border: 1px solid #67e8f9;
+        font-size: 14px;
+        color: #0f172a;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 1200px) {
+        .grid-two, .grid-three { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>需求规划 / 工作台</span>
+            <h1>需求规划工作台</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">需求计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>机器学习预测面板</h2>
+                <p>对比基线预测、促销情景与共识结果</p>
+              </div>
+              <div class="actions">
+                <a class="btn primary" href="demand-scenario-planner.html">打开情景模拟器</a>
+                <a class="btn secondary" href="demand-forecast-sku.html">查看 SKU 明细</a>
+              </div>
+            </header>
+            <table class="forecast-grid">
+              <thead>
+                <tr>
+                  <th>品类</th>
+                  <th>SKU</th>
+                  <th>基线预测</th>
+                  <th>促销调整</th>
+                  <th>共识预测</th>
+                  <th>预测误差</th>
+                  <th>信号</th>
+                </tr>
+              </thead>
+              <tbody id="forecastBody"></tbody>
+            </table>
+          </section>
+
+          <section class="grid-two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>影响因子分析</h2>
+                  <p>识别导致预测偏差的关键驱动因素</p>
+                </div>
+                <a class="btn secondary" href="demand-factor-analysis.html">查看因子详情</a>
+              </header>
+              <div class="grid-three" id="factorGrid"></div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>协同共识进度</h2>
+                  <p>跟踪跨职能对预测结果的审批与反馈</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">进入协同工作台</a>
+              </header>
+              <div class="panel" id="consensusPanel"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>未来 12 周预测亮点</h2>
+                <p>快速掌握高风险 SKU 与渠道</p>
+              </div>
+              <a class="btn primary" href="replenishment-inventory.html">推送补货建议</a>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>需求规划工作台进入即展示机器学习预测的核心表格，支持即时跳转至情景模拟器或 SKU 明细查看。下方提供影响因子分析与共识审批状态，便于不同角色协同。通过右上角角色切换，可演示需求计划经理、供应计划经理、物流经理及高管在该页面关注的亮点与操作，符合端到端业务流程的演示需求。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'demand';
+      const menuLinks = document.querySelectorAll('.menu a');
+      menuLinks.forEach((link) => {
+        if (link.dataset.page === currentPage) link.classList.add('active');
+      });
+
+      const roleConfig = {
+        'demand-planner': {
+          label: '需求计划经理视角',
+          highlights: [
+            { title: 'SKU XG-200', text: '促销上调 18%，需在共识会确认是否锁定情景 B。' },
+            { title: '渠道：北美电商', text: '流量激增导致预测误差 -6%，建议重新训练模型。' },
+            { title: '安全库存校准', text: '触发库存阈值的 SKU 将推送给补货优化。' }
+          ],
+          consensus: [
+            '销售团队：等待确认 5 个促销方案。',
+            '财务团队：关注毛利率变化，需提供最新预测版本。',
+            '供应团队：要求锁定情景 B 以便排产。'
+          ]
+        },
+        'supply-planner': {
+          label: '供应计划经理视角',
+          highlights: [
+            { title: '产能受限 SKU', text: 'LZ-410 因零件短缺无法满足需求，需要情景模拟协调产能。' },
+            { title: '跨区域调拨建议', text: '建议将欧洲富余库存调拨至北美仓。' },
+            { title: '需求冻结窗口', text: '关注即将冻结的四周需求，以保障排产稳定。' }
+          ],
+          consensus: [
+            '工厂排产：等待最新共识预测锁定。',
+            '采购：同步缺料清单，准备紧急补货。',
+            '物流：需要提前知晓波动以安排运输资源。'
+          ]
+        },
+        'logistics-manager': {
+          label: '物流运营经理视角',
+          highlights: [
+            { title: '交付压力品类', text: '家电类预测增长 12%，需提前规划仓储与干线运输。' },
+            { title: '高优先级客户', text: '零售客户 Top10 将收到需求变更提醒。' },
+            { title: '履约时段规划', text: '建议提前锁定末端配送时段以避免拥堵。' }
+          ],
+          consensus: [
+            '运输团队：确认新增运力需求。',
+            '仓储团队：调配夜班人力以应对高峰。',
+            '客服团队：准备更新 ETA 信息。'
+          ]
+        },
+        executive: {
+          label: '首席供应链官视角',
+          highlights: [
+            { title: '预测准确率趋势', text: '整体准确率 92.4%，关注 APAC 区域偏差。' },
+            { title: '营收影响测算', text: '情景 B 可带来 +3.2% 收入，但库存压力上升。' },
+            { title: '风险预警', text: '监控超过阈值的 SKU 与渠道，确保服务水平。' }
+          ],
+          consensus: [
+            '确认季度预测是否满足财务目标。',
+            '评估促销计划对利润率的影响。',
+            '审批重大需求调整与客户承诺。'
+          ]
+        }
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlightContainer = document.getElementById('roleHighlights');
+      const consensusPanel = document.getElementById('consensusPanel');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'demand-planner';
+      select.value = savedRole;
+
+      const sampleForecast = [
+        { category: '智能家居', sku: 'XG-200', base: '12,430', promo: '+18%', consensus: '14,660', error: '-6.2%', signal: '高优先级' },
+        { category: '生活电器', sku: 'LZ-410', base: '8,120', promo: '+4%', consensus: '8,450', error: '+2.1%', signal: '供应受限' },
+        { category: '厨房电器', sku: 'KF-330', base: '6,980', promo: '0%', consensus: '7,020', error: '+0.6%', signal: '稳定' },
+        { category: '配件耗材', sku: 'AC-150', base: '15,200', promo: '+8%', consensus: '16,050', error: '-3.5%', signal: '关注补货' }
+      ];
+
+      const forecastBody = document.getElementById('forecastBody');
+      forecastBody.innerHTML = sampleForecast
+        .map(
+          (row) => `
+            <tr>
+              <td>${row.category}</td>
+              <td><a class="tag" href="demand-forecast-sku.html">${row.sku}</a></td>
+              <td>${row.base}</td>
+              <td>${row.promo}</td>
+              <td>${row.consensus}</td>
+              <td>${row.error}</td>
+              <td>${row.signal}</td>
+            </tr>
+          `
+        )
+        .join('');
+
+      const factorData = [
+        { title: '促销活动', text: '占偏差贡献 42%，重点关注 618 电商节。' },
+        { title: '季节性', text: '夏季需求增长 18%，与历史规律一致。' },
+        { title: '竞品动态', text: '竞争对手新品发布导致需求波动。' }
+      ];
+      const factorGrid = document.getElementById('factorGrid');
+      factorGrid.innerHTML = factorData
+        .map(
+          (item) => `
+            <div class="panel">
+              <h3>${item.title}</h3>
+              <p>${item.text}</p>
+              <a href="demand-factor-analysis.html" style="font-size: 12px; color: #1d4ed8;">查看详细图表 →</a>
+            </div>
+          `
+        )
+        .join('');
+
+      const renderRole = (role) => {
+        const config = roleConfig[role];
+        badge.textContent = config.label;
+        highlightContainer.innerHTML = config.highlights
+          .map((item) => `<div class="highlight"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        consensusPanel.innerHTML = config.consensus
+          .map((item) => `<p>· ${item}</p>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+  </body>
+</html>

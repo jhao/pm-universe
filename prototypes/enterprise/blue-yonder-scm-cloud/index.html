@@ -2,83 +2,489 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Blue Yonder SCM Cloud 原型概览</title>
+    <title>Blue Yonder SCM Cloud · 控制塔概览</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --sidebar-active: #2563eb;
+        --card-bg: #ffffff;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --border: #e2e8f0;
+        --pill-bg: #eff6ff;
+        --pill-text: #1d4ed8;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--bg);
+        color: var(--text-main);
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .layout { display: flex; min-height: 100vh; }
+
+      .sidebar {
+        width: 248px;
+        background: var(--sidebar-bg);
+        color: #fff;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .brand span.logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        font-weight: 700;
+      }
+
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+
+      .menu a {
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.72);
+        transition: background 0.2s, color 0.2s;
+      }
+
+      .menu a.active, .menu a:hover {
+        background: rgba(37, 99, 235, 0.16);
+        color: #fff;
+      }
+
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+
+      .main { flex: 1; display: flex; flex-direction: column; }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 32px 0 32px;
+      }
+
+      .breadcrumbs {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .breadcrumbs span {
+        font-size: 13px;
+        color: var(--text-sub);
+      }
+
+      .breadcrumbs h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .role-switcher {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+
+      .role-switcher select {
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background: transparent;
+      }
+
+      .role-pill {
+        background: var(--pill-bg);
+        color: var(--pill-text);
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      main.content {
+        padding: 24px 32px 40px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+      }
+
+      .card header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .card h2 { margin: 0; font-size: 18px; }
+      .card p { margin: 0; color: var(--text-sub); font-size: 14px; }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .kpi {
+        border-radius: 16px;
+        padding: 16px;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.92));
+      }
+
+      .kpi span { display: block; font-size: 13px; color: var(--text-sub); }
+      .kpi strong { display: block; margin-top: 8px; font-size: 22px; }
+
+      .timeline { display: flex; gap: 16px; align-items: stretch; }
+      .timeline-step {
+        flex: 1;
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 16px;
+        border: 1px dashed #cbd5f5;
+      }
+
+      .alerts { display: flex; flex-direction: column; gap: 12px; }
+      .alert-item {
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(248, 113, 113, 0.12);
+        border: 1px solid rgba(248, 113, 113, 0.3);
+      }
+
+      .alert-item strong { display: block; margin-bottom: 6px; }
+
+      .actions { display: flex; gap: 12px; }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+      }
+
+      .btn.primary {
+        background: #2563eb;
+        color: #fff;
+      }
+
+      .btn.secondary {
+        border-color: #cbd5f5;
+        color: #1d4ed8;
+        background: #eef2ff;
+      }
+
+      .role-highlights {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .highlight {
+        padding: 16px;
+        border-radius: 16px;
+        background: #f1f5f9;
+        border: 1px solid #dbeafe;
+      }
+
+      .highlight h3 { margin: 0 0 8px 0; font-size: 15px; }
+      .highlight p { margin: 0; font-size: 13px; color: var(--text-sub); }
+
+      .page-notes {
+        padding: 18px;
+        border-radius: 16px;
+        background: #fff7ed;
+        border: 1px solid #fdba74;
+        font-size: 14px;
+        color: #92400e;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 1200px) {
+        .grid.two, .grid.three { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Blue Yonder SCM Cloud 原型</h1>
-      <p class="tagline">AI 驱动的供应链规划与履约平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>供应链计划、物流、零售运营团队</p>
-        <p><strong>核心痛点：</strong>需求预测不准、库存不平衡、跨渠道履约复杂</p>
-        <p><strong>价值主张：</strong>通过机器学习预测、补货与履约优化，提升供应链敏捷性</p>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>控制塔 / 全局态势</span>
+            <h1>全球供应链控制塔</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">需求计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>端到端 KPI 监控</h2>
+                <p>掌控需求、供应、履约核心指标，识别风险</p>
+              </div>
+              <div class="actions">
+                <a class="btn primary" href="demand-planning.html">查看需求预测详情</a>
+                <a class="btn secondary" href="logistics-fulfillment.html">进入履约监控</a>
+              </div>
+            </header>
+            <div class="kpi-grid">
+              <div class="kpi">
+                <span>预测准确率</span>
+                <strong>92.4%</strong>
+                <span>环比 +2.1%</span>
+              </div>
+              <div class="kpi">
+                <span>全球库存周转天数</span>
+                <strong>43 天</strong>
+                <span>目标 40 天</span>
+              </div>
+              <div class="kpi">
+                <span>缺货率</span>
+                <strong>1.8%</strong>
+                <span>3 个渠道触发阈值</span>
+              </div>
+              <div class="kpi">
+                <span>订单准时履约率</span>
+                <strong>96.6%</strong>
+                <span>重点关注 北美 DC-03</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="grid two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>供应链风险雷达</h2>
+                  <p>实时识别需求波动、供应约束与运输异常</p>
+                </div>
+                <a class="btn secondary" href="risk-mitigation-playbook.html">打开缓解方案</a>
+              </header>
+              <div class="timeline">
+                <div class="timeline-step">
+                  <strong>需求激增 · 欧洲电商渠道</strong>
+                  <p>促销触发预测偏差 +8%，建议立即重新运算预测模型</p>
+                </div>
+                <div class="timeline-step">
+                  <strong>供应受限 · 越南工厂</strong>
+                  <p>核心零件短缺 2 周，需协调备用供应商</p>
+                </div>
+                <div class="timeline-step">
+                  <strong>运输延迟 · 太平洋航线</strong>
+                  <p>港口拥堵导致 ETA 推迟 3 天，触发客户通知</p>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>跨职能协同事项</h2>
+                  <p>推动快速闭环与场景模拟决策</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">进入协同工作台</a>
+              </header>
+              <div class="alerts" id="roleCollaboration"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>端到端执行时间线</h2>
+                <p>将计划-执行关键节点串联，形成可视化管控</p>
+              </div>
+              <a class="btn primary" href="supply-planning.html">进入供应计划排程</a>
+            </header>
+            <div class="timeline">
+              <div class="timeline-step">
+                <strong>预测共识会</strong>
+                <p>上次会议 2024-04-12 · 预测偏差 -1.6%，待确认促销调整</p>
+              </div>
+              <div class="timeline-step">
+                <strong>S&OP 情景评审</strong>
+                <p>需在 48 小时内锁定情景 B · 满足北美需求激增</p>
+              </div>
+              <div class="timeline-step">
+                <strong>订单履约窗口</strong>
+                <p>本周需完成 12,400 单，当前准时率 96.6%</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="role-highlights" id="roleHighlights"></section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>控制塔页面聚合供应链端到端的监控卡片，进入即展示核心 KPI、风险雷达与执行时间线。通过顶部角色切换，可模拟需求计划经理、供应计划经理、物流运营经理以及首席供应链官的关注点。页面中的“查看需求预测详情”“进入履约监控”等操作，可跳转至对应的功能页面或详情视图，实现原型之间的串联演示。
+          </section>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>需求计划团队生成预测并协同</li><li>补货计划优化库存与分配</li><li>物流团队监控订单履约</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>需求规划</h3>
-              <p class="goal">功能目标：提升预测准确度</p>
-              <ul>
-                <li>机器学习预测与异常检测</li><li>协同计划与共识流程</li><li>促销、季节性与因子分析</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>补货与库存优化</h3>
-              <p class="goal">功能目标：平衡库存与服务水平</p>
-              <ul>
-                <li>多级库存优化</li><li>补货策略与安全库存</li><li>供应约束与产能分析</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>供应计划与 S&OP</h3>
-              <p class="goal">功能目标：协同供应与需求</p>
-              <ul>
-                <li>生产计划、分配与订单承诺</li><li>S&OP 协调会议支持</li><li>情景模拟与财务影响分析</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>物流与履约</h3>
-              <p class="goal">功能目标：提升交付效率</p>
-              <ul>
-                <li>运输管理、路由优化</li><li>仓储作业与劳动力规划</li><li>订单跟踪与异常处理</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>预测准确率与库存周转</li><li>缺货率与服务水平</li><li>履约成本与订单准时率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script>
+      const currentPage = 'dashboard';
+      const roleOptions = {
+        'demand-planner': {
+          label: '需求计划经理视角',
+          collaboration: [
+            '等待促销团队确认 618 活动需求上调 12%。',
+            '为 SKU XG-200 重新训练预测模型并通知采购团队。',
+            '审阅拉美渠道的共识预测，确认锁定情景 C。'
+          ],
+          highlights: [
+            { title: '关注偏差最高的 5 个 SKU', text: '按机器学习模型置信度排序，快速定位需人工干预的商品。' },
+            { title: '重跑促销影响分析', text: '促销波动导致的预测失真将同步推送到补货计划。' },
+            { title: '协同提交预测共识', text: '与销售、财务在共识会中统一基线预测。' }
+          ]
+        },
+        'supply-planner': {
+          label: '供应计划经理视角',
+          collaboration: [
+            '越南工厂产能受限，需与采购协调备用供应商。',
+            '确认情景 B 的产能分配，锁定北美优先供应。',
+            '检查关键零件的安全库存阈值，准备补货提案。'
+          ],
+          highlights: [
+            { title: '产能告警优先级', text: '根据产能利用率与订单承诺，智能排序待处理工厂。' },
+            { title: '跨工厂调拨建议', text: '自动生成的调拨方案可直接推送至执行团队。' },
+            { title: 'S&OP 情景驱动', text: '快速比较多个计划情景的库存与成本影响。' }
+          ]
+        },
+        'logistics-manager': {
+          label: '物流运营经理视角',
+          collaboration: [
+            '北美 DC-03 出现迟到订单 24 单，需协调承运商。',
+            '检查亚洲-欧洲航线拥堵风险，制定改道方案。',
+            '与客服团队同步高优先级订单的沟通计划。'
+          ],
+          highlights: [
+            { title: '运输延误分布', text: '集中展示各承运商的迟到率与异常原因。' },
+            { title: '仓储作业负荷', text: '实时监控各仓库的拣货量与人力排班。' },
+            { title: '客户承诺可视化', text: '基于 ETA 预测提醒客服提前通知客户。' }
+          ]
+        },
+        executive: {
+          label: '首席供应链官视角',
+          collaboration: [
+            '准备季度业务回顾，确认服务水平与成本达成。',
+            '评估新市场扩张对供应网络的影响。',
+            '审批高价值客户的定制履约方案。'
+          ],
+          highlights: [
+            { title: '战略 KPI 趋势', text: '聚焦利润率、库存周转与客户满意度的季度表现。' },
+            { title: '投资回报追踪', text: '衡量机器学习预测、仓库自动化的投入产出比。' },
+            { title: '风险与韧性评估', text: '评估供应网络弹性，制定多源化策略。' }
+          ]
+        }
+      };
+
+      const menuLinks = document.querySelectorAll('.menu a');
+      menuLinks.forEach((link) => {
+        if (link.dataset.page === currentPage) {
+          link.classList.add('active');
+        }
+      });
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const collab = document.getElementById('roleCollaboration');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'demand-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const conf = roleOptions[role];
+        badge.textContent = conf.label;
+        collab.innerHTML = conf.collaboration
+          .map((item) => `<div class="alert-item"><strong>待协同</strong><p>${item}</p></div>`)
+          .join('');
+        highlights.innerHTML = conf.highlights
+          .map(
+            (item) => `
+              <div class="highlight">
+                <h3>${item.title}</h3>
+                <p>${item.text}</p>
+              </div>
+            `
+          )
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
   </body>
 </html>
