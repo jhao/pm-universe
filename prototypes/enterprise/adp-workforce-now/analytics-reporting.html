@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>报表与洞察 · HR 指标</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="analytics">
+    <main class="layout">
+      <a class="back-link" href="index.html">← 返回 ADP Workforce Now</a>
+      <div class="top-bar" style="margin-bottom:24px;">
+        <div>
+          <div class="breadcrumbs">ADP Workforce Now · 报表与洞察</div>
+          <h1>HR 数据看板</h1>
+          <p class="subtitle">监控薪酬成本、离职趋势与员工体验指标，支持多维分析与导出。</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="secondary-button">订阅周报</button>
+          <button class="primary-button">创建自定义报表</button>
+        </div>
+      </div>
+
+      <section class="panel" style="gap:20px;">
+        <div class="panel-header">
+          <h2 class="section-title">核心指标</h2>
+          <div class="filters">
+            <select class="select" data-period-select>
+              <option value="monthly">本月</option>
+              <option value="quarterly" selected>本季度</option>
+              <option value="yearly">年度</option>
+            </select>
+            <button class="secondary-button">筛选团队</button>
+          </div>
+        </div>
+        <div data-analytics></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">自动化报表</h2>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <span class="badge">薪酬</span>
+            <h3>Payroll Health</h3>
+            <p class="subtitle">监控净薪资、税费与福利支出，包含季度对比。</p>
+            <div class="cta"><button class="secondary-button">打开报表</button></div>
+          </article>
+          <article class="card">
+            <span class="badge">合规</span>
+            <h3>Tax Filing Tracker</h3>
+            <p class="subtitle">自动跟踪多州税务申报状态与风险提醒。</p>
+            <div class="cta"><button class="secondary-button">查看详情</button></div>
+          </article>
+          <article class="card">
+            <span class="badge">人员</span>
+            <h3>Workforce Pulse</h3>
+            <p class="subtitle">追踪员工流失率、招聘周期与敬业度指数。</p>
+            <div class="cta"><button class="secondary-button">打开看板</button></div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
