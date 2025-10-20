@@ -218,6 +218,53 @@
         grid-template-rows: 160px 1fr;
       }
 
+      .journey-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .journey-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(17, 24, 39, 0.05);
+      }
+
+      .journey-card span {
+        font-size: 28px;
+      }
+
+      .journey-card h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .journey-card p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #4b5563;
+      }
+
+      .journey-card button {
+        margin-top: auto;
+        align-self: flex-start;
+        background: var(--amazon-orange);
+        border: none;
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #111827;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(249, 115, 22, 0.25);
+      }
+
       .product-card img {
         width: 100%;
         height: 100%;
@@ -672,6 +719,55 @@
             <div class="rating">★★★★★ (9,134)</div>
             <span>¥589 · Prime 视频联合特典</span>
           </div>
+        </article>
+      </section>
+
+      <div class="section-title">
+        <h2>核心页面体验速览</h2>
+        <a href="#" data-open-modal="journey">查看完整流程</a>
+      </div>
+      <section class="journey-grid">
+        <article class="journey-card">
+          <span>🛍️</span>
+          <h3>商品详情页</h3>
+          <p>沉浸式图文、规格对比与 Prime 服务承诺，帮助用户快速决策。</p>
+          <button data-open-modal="product">预览页面</button>
+        </article>
+        <article class="journey-card">
+          <span>🧾</span>
+          <h3>下单结算</h3>
+          <p>从购物车到提交订单的关键步骤，校验地址、配送与优惠。</p>
+          <button data-open-modal="checkout">查看流程</button>
+        </article>
+        <article class="journey-card">
+          <span>💳</span>
+          <h3>支付选择</h3>
+          <p>支持多币种与分期付款，付款成功实时同步订单状态。</p>
+          <button data-open-modal="payment">查看详情</button>
+        </article>
+        <article class="journey-card">
+          <span>🛒</span>
+          <h3>购物车页</h3>
+          <p>跨设备同步购物清单，可直接调整数量、应用优惠码。</p>
+          <button data-open-modal="cart">立即查看</button>
+        </article>
+        <article class="journey-card">
+          <span>📦</span>
+          <h3>订单中心</h3>
+          <p>聚合订单进度、售后入口与发票下载，便于用户跟踪。</p>
+          <button data-open-modal="orders">进入预览</button>
+        </article>
+        <article class="journey-card">
+          <span>🚚</span>
+          <h3>物流追踪</h3>
+          <p>全链路节点地图与异常提醒，实时掌握包裹动态。</p>
+          <button data-open-modal="tracking">实时查看</button>
+        </article>
+        <article class="journey-card">
+          <span>🗂️</span>
+          <h3>全部分类导航</h3>
+          <p>智能分类索引与搜索联想，让用户快速找到目标品类。</p>
+          <button data-open-modal="categories">浏览结构</button>
         </article>
       </section>
 
@@ -1467,12 +1563,75 @@
     <div class="modal" id="modal-orders">
       <div class="modal-card">
         <button class="modal-close" data-close>&times;</button>
-        <h3>我的订单中心</h3>
-        <p>查看正在进行的订单、配送状态与售后申请。</p>
+        <h3>用户订单中心</h3>
+        <p>按照时间分组展示订单，提供快速操作入口与售后闭环。</p>
         <ul>
-          <li>最近订单：Prime Day 预热促销 · 预计 2 日送达</li>
-          <li>售后服务：支持 7 天无理由退换</li>
-          <li>票据管理：开具增值税电子发票</li>
+          <li>顶部筛选：近 6 个月 / 数字订单 / 订阅省 / 退货换货</li>
+          <li>每个订单卡片包含进度条、配送节点、联系客服与发票下载</li>
+          <li>支持一键再次购买、修改地址、申请退换货</li>
+          <li>异常订单自动展示提醒条，例如支付待确认、关税待补缴</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-journey">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>Amazon 购物流程地图</h3>
+        <p>从发现商品到收货的典型用户路径，每个节点都对应高保真页面原型。</p>
+        <ol>
+          <li>浏览「全部分类」或搜索定位目标品类</li>
+          <li>进入「商品详情页」了解规格、评价与配送承诺</li>
+          <li>加入「购物车」并完成优惠核算</li>
+          <li>在「下单结算页」确认地址、配送与发票</li>
+          <li>通过「支付页」完成付款并获得实时确认</li>
+          <li>前往「订单中心」查看状态与售后入口</li>
+          <li>使用「物流追踪」监控包裹节点与异常提醒</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-product">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>商品详情页（PDP）</h3>
+        <p>三栏布局突出商品主图、购买模块与增强内容，支持多终端自适应。</p>
+        <ul>
+          <li>左侧 7 张高清图片 + 360° 旋转，支持 AR 预览</li>
+          <li>中部展示标题、星级评价、价格、优惠信息与 Prime 徽章</li>
+          <li>右侧「立即购买 / 加入购物车」浮动卡片，含配送、库存与保障</li>
+          <li>下方「A+ 内容」模块展示对比表、细节图与用户问答</li>
+          <li>尺码助手、适配检测（如电子产品兼容性）即时反馈</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-checkout">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>下单结算页</h3>
+        <p>采用分区卡片模式，减少表单干扰，突出关键信息校验。</p>
+        <ol>
+          <li>顶部进度条：购物车 → 填写信息 → 支付 → 完成</li>
+          <li>「送货地址」卡片：支持默认地址与新增地址弹窗</li>
+          <li>「配送与发票」卡片：Prime 极速、预约配送、电子发票选项</li>
+          <li>「优惠与礼品」卡片：应用优惠码、礼品包装与留言</li>
+          <li>右侧结算摘要：商品金额、税费、运费、应付总计实时更新</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-payment">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>支付页面</h3>
+        <p>强调安全信任与多场景付款体验，支持国际站统一组件。</p>
+        <ul>
+          <li>主选项：信用卡 / 储蓄卡、花呗分期、Amazon Pay 余额</li>
+          <li>支持多币种显示与实时汇率提示，自动识别发卡地区</li>
+          <li>双重验证入口：短信验证码 / 生物识别（App 内）</li>
+          <li>付款完成后的确认页展示订单号、预计到货、分享按钮</li>
+          <li>异常处理：失败原因提示 + 一键切换备用支付方式</li>
         </ul>
       </div>
     </div>
@@ -1480,12 +1639,43 @@
     <div class="modal" id="modal-cart">
       <div class="modal-card">
         <button class="modal-close" data-close>&times;</button>
-        <h3>购物车预览</h3>
-        <p>快速查看已添加的商品、配送站点与预计到货时间。</p>
+        <h3>购物车页面</h3>
+        <p>分为「可购买」「稍后再买」与「订阅省」区域，帮助用户管理购物计划。</p>
         <ul>
-          <li>Echo Dot (第 5 代) · ¥349 · Prime 次日达</li>
-          <li>Amazon Basics 行李箱 · ¥589 · 跨境免邮</li>
-          <li>勾选即可开启礼品包装与电子贺卡</li>
+          <li>列表内直接调整数量、选择商品保障、查看跨境税费</li>
+          <li>顶部提醒凑单满减、Prime 免费配送门槛、发票批量选择</li>
+          <li>侧边栏即时计算订单金额，支持输入优惠码与勾选礼品选项</li>
+          <li>移动端底部固定 CTA：继续结算 / 查看推荐搭配</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-tracking">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>物流追踪页</h3>
+        <p>结合地图与时间轴的双视角，强化跨境链路透明度。</p>
+        <ol>
+          <li>顶部显示包裹编号、预计送达时间与当前节点</li>
+          <li>中部地图标注仓库、海关、转运中心与末端派送</li>
+          <li>时间轴记录揽收、起飞、清关、派送中、派送成功等状态</li>
+          <li>异常提醒：延误补偿、改约配送、联系物流商入口</li>
+          <li>下方提供问题自助：包裹丢失、退货取件、海关支持</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-categories">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>全部分类导航页</h3>
+        <p>四栏 mega-menu + 搜索联想的组合式分类入口。</p>
+        <ul>
+          <li>左栏展示一级品类（图书、数码、家居、母婴、服饰…）</li>
+          <li>中间两栏根据所选一级品类动态展示二/三级目录与精选品牌</li>
+          <li>右栏提供「热门榜单」「Prime 独家」「本地生活」等快捷入口</li>
+          <li>顶部搜索框支持拼音/英文模糊匹配与历史记录</li>
+          <li>移动端使用底部抽屉形式，支持滑动切换分类</li>
         </ul>
       </div>
     </div>
