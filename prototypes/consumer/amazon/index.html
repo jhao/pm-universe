@@ -2,83 +2,784 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Amazon 全球电商 原型概览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Amazon 电商平台原型体验</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --amazon-blue: #131921;
+        --amazon-orange: #ffa41c;
+        --amazon-light: #f3f3f3;
+        --admin-bg: #0f172a;
+        --admin-card: #1e293b;
+        --admin-text: #e2e8f0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--amazon-light);
+        color: #1f2933;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .role-toggle {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 1000;
+        background: var(--amazon-orange);
+        color: #111827;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .role-toggle:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      header {
+        background: var(--amazon-blue);
+        color: #fff;
+      }
+
+      .top-bar {
+        display: flex;
+        align-items: center;
+        padding: 12px 24px;
+        gap: 24px;
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .search-box {
+        flex: 1;
+        display: flex;
+        max-width: 640px;
+      }
+
+      .search-box select,
+      .search-box input,
+      .search-box button {
+        border: none;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .search-box select {
+        background: #f3f3f3;
+        border-radius: 6px 0 0 6px;
+        color: #111827;
+      }
+
+      .search-box input {
+        flex: 1;
+      }
+
+      .search-box button {
+        background: var(--amazon-orange);
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 18px;
+        font-size: 13px;
+      }
+
+      .secondary-bar {
+        background: #232f3e;
+        padding: 8px 24px;
+        display: flex;
+        gap: 18px;
+        font-size: 13px;
+      }
+
+      main {
+        max-width: 1280px;
+        margin: 32px auto;
+        padding: 0 24px 48px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #fef3c7, #fde68a, #f97316);
+        border-radius: 16px;
+        padding: 32px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+        align-items: center;
+        color: #1f2937;
+        box-shadow: 0 12px 30px rgba(249, 115, 22, 0.25);
+      }
+
+      .hero h1 {
+        margin: 0 0 12px 0;
+        font-size: 32px;
+      }
+
+      .hero p {
+        margin: 0 0 18px 0;
+        line-height: 1.6;
+      }
+
+      .hero button {
+        background: var(--amazon-blue);
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .hero-illustration {
+        text-align: center;
+      }
+
+      .hero-illustration img {
+        max-width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .section-title {
+        margin: 48px 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .section-title a {
+        font-size: 14px;
+        color: var(--amazon-blue);
+      }
+
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 16px;
+      }
+
+      .category-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      }
+
+      .category-card span {
+        font-size: 28px;
+      }
+
+      .category-card strong {
+        font-size: 15px;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+      }
+
+      .product-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+        display: grid;
+        grid-template-rows: 160px 1fr;
+      }
+
+      .product-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .product-info {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .rating {
+        color: #f59e0b;
+        font-size: 14px;
+      }
+
+      .deal-banner {
+        background: #111827;
+        color: #facc15;
+        border-radius: 16px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        box-shadow: 0 12px 28px rgba(17, 24, 39, 0.35);
+      }
+
+      .deal-banner strong {
+        font-size: 28px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 24px;
+        color: #6b7280;
+      }
+
+      /* Admin dashboard */
+      .admin-wrapper {
+        background: var(--admin-bg);
+        color: var(--admin-text);
+        min-height: 100vh;
+        padding: 24px;
+        display: none;
+      }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .admin-header h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      .admin-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .admin-actions button {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .admin-actions .primary {
+        background: #38bdf8;
+        color: #0f172a;
+      }
+
+      .admin-actions .secondary {
+        background: rgba(148, 163, 184, 0.2);
+        color: #e2e8f0;
+      }
+
+      .admin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .admin-card {
+        background: var(--admin-card);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 20px 35px rgba(8, 12, 24, 0.45);
+      }
+
+      .admin-card h3 {
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .metric {
+        background: rgba(148, 163, 184, 0.15);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .metric strong {
+        font-size: 22px;
+        display: block;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        text-align: left;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+      }
+
+      .kanban-column {
+        background: rgba(148, 163, 184, 0.15);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .kanban-column h4 {
+        margin-top: 0;
+      }
+
+      .kanban-card {
+        background: rgba(14, 165, 233, 0.15);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 10px;
+      }
+
+      .admin-footer {
+        margin-top: 40px;
+        text-align: center;
+        color: rgba(148, 163, 184, 0.7);
+        font-size: 12px;
+      }
+
+      .role-hint {
+        position: fixed;
+        top: 70px;
+        right: 16px;
+        background: rgba(17, 24, 39, 0.95);
+        color: #f9fafb;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.28);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-12px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .role-hint.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        .top-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .search-box {
+          width: 100%;
+        }
+
+        .secondary-bar {
+          flex-wrap: wrap;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Amazon 全球电商 原型</h1>
-      <p class="tagline">全球最大的电商平台，覆盖零售、物流与云服务生态。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>消费者、第三方卖家、品牌商</p>
-        <p><strong>核心痛点：</strong>消费者需要丰富商品与可靠物流，卖家需要高效运营工具</p>
-        <p><strong>价值主张：</strong>通过海量商品与 Prime 会员体系，提供一站式购物体验</p>
+    <button class="role-toggle" id="roleToggle">切换为管理员视角</button>
+    <div class="role-hint" id="roleHint">当前：消费者体验</div>
+    <header class="customer-view">
+      <div class="top-bar">
+        <div class="logo">amazon.cn</div>
+        <div class="search-box">
+          <select>
+            <option>全部</option>
+            <option>电子产品</option>
+            <option>图书</option>
+            <option>家居</option>
+          </select>
+          <input type="text" placeholder="搜索全球好物" />
+          <button>搜索</button>
+        </div>
+        <nav class="nav-links">
+          <a href="#">你好，请登录</a>
+          <a href="#">我的Prime</a>
+          <a href="#">订单</a>
+          <a href="#">购物车</a>
+        </nav>
       </div>
+      <div class="secondary-bar">
+        <span>全部分类</span>
+        <span>Prime会员日</span>
+        <span>图书</span>
+        <span>电子产品</span>
+        <span>家居家装</span>
+        <span>生鲜</span>
+        <span>客户服务</span>
+      </div>
+    </header>
+    <main class="customer-view">
+      <section class="hero">
+        <div>
+          <h1>全球好物，Prime 极速送达</h1>
+          <p>
+            以会员身份畅享超过 1 亿件商品的免费配送、精选 Prime Video 影片与
+            Amazon Music 音乐，体验 Amazon 打造的全球一站式购物平台。
+          </p>
+          <button>立即体验 Prime</button>
+        </div>
+        <div class="hero-illustration">
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Amazon hero" />
+        </div>
+      </section>
+
+      <div class="section-title">
+        <h2>热门分类精选</h2>
+        <a href="#">查看全部</a>
+      </div>
+      <section class="category-grid">
+        <article class="category-card">
+          <span>📚</span>
+          <strong>海外原版图书</strong>
+          <p>精选畅销书、教材与专业书籍，一键购入。</p>
+        </article>
+        <article class="category-card">
+          <span>🎧</span>
+          <strong>智能数码</strong>
+          <p>耳机、音箱与智能家居设备，享受科技生活。</p>
+        </article>
+        <article class="category-card">
+          <span>🍳</span>
+          <strong>家居厨卫</strong>
+          <p>品质厨具、家装好物，打造舒适空间。</p>
+        </article>
+        <article class="category-card">
+          <span>🧴</span>
+          <strong>美妆个护</strong>
+          <p>全球口碑品牌直采，海淘必备精选。</p>
+        </article>
+      </section>
+
+      <div class="section-title">
+        <h2>今日闪购</h2>
+        <a href="#">全部优惠</a>
+      </div>
+      <section class="product-grid">
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Laptop" />
+          <div class="product-info">
+            <strong>华硕轻薄本 14"</strong>
+            <div class="rating">★★★★★ (2,381)</div>
+            <span>¥4,999 起 · Prime 次日达</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80" alt="Headphones" />
+          <div class="product-info">
+            <strong>Sony WH-1000XM5</strong>
+            <div class="rating">★★★★★ (18,024)</div>
+            <span>¥2,199 · 限时立减 15%</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?auto=format&fit=crop&w=800&q=80" alt="Kitchen" />
+          <div class="product-info">
+            <strong>德龙半自动咖啡机</strong>
+            <div class="rating">★★★★☆ (6,482)</div>
+            <span>¥1,299 · 海外购直邮</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80" alt="Books" />
+          <div class="product-info">
+            <strong>哈利·波特典藏套装</strong>
+            <div class="rating">★★★★★ (9,134)</div>
+            <span>¥589 · Prime 视频联合特典</span>
+          </div>
+        </article>
+      </section>
+
+      <div class="section-title">
+        <h2>Prime 会员尊享</h2>
+      </div>
+      <section class="deal-banner">
+        <strong>Prime Day 独家福利</strong>
+        <p>
+          超过 60% 用户在 Prime Day 获得心仪好物。提前加入购物车，享受尖货限时抢购、
+          Amazon Fresh 生鲜 2 小时极速配送，以及 Prime Video 首映剧集抢先看。
+        </p>
+        <div class="bullet-points">
+          <p>· 会员专属折扣与提前购</p>
+          <p>· 跨境商品快速通关 & 关税补贴</p>
+          <p>· Alexa 设备语音下单体验</p>
+        </div>
+      </section>
+    </main>
+
+    <section class="admin-wrapper" id="adminView">
+      <div class="admin-header">
+        <div>
+          <h1>Amazon 卖家与运营控制台</h1>
+          <p>统一管理全球站点的商品、订单、广告与客户体验。</p>
+        </div>
+        <div class="admin-actions">
+          <button class="secondary">创建报表</button>
+          <button class="primary">发布新品</button>
+        </div>
+      </div>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>实时运营指标</h3>
+          <div class="metrics-grid">
+            <div class="metric">
+              <span>GMV (24h)</span>
+              <strong>$12.8M</strong>
+              <small>较昨日 +8.4%</small>
+            </div>
+            <div class="metric">
+              <span>Prime 新会员</span>
+              <strong>32,640</strong>
+              <small>全球市场 · 今日</small>
+            </div>
+            <div class="metric">
+              <span>履约准时率</span>
+              <strong>98.7%</strong>
+              <small>FBA 仓配网络</small>
+            </div>
+            <div class="metric">
+              <span>客服满意度</span>
+              <strong>4.8 / 5</strong>
+              <small>过去 7 天</small>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h3>订单履约预警</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>订单号</th>
+                <th>站点</th>
+                <th>状态</th>
+                <th>处理动作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#CN-762193</td>
+                <td>中国</td>
+                <td>等待揽收</td>
+                <td>升级物流优先级</td>
+              </tr>
+              <tr>
+                <td>#US-612840</td>
+                <td>美国</td>
+                <td>库存不足</td>
+                <td>触发补货自动化</td>
+              </tr>
+              <tr>
+                <td>#JP-880421</td>
+                <td>日本</td>
+                <td>客户改址</td>
+                <td>客服确认新地址</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="admin-card">
+          <h3>广告与营销 ROI</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>广告组</th>
+                <th>曝光</th>
+                <th>ACOS</th>
+                <th>预算使用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Prime Day 手机</td>
+                <td>12.6M</td>
+                <td>12%</td>
+                <td>64%</td>
+              </tr>
+              <tr>
+                <td>智能家居定投</td>
+                <td>8.1M</td>
+                <td>15%</td>
+                <td>48%</td>
+              </tr>
+              <tr>
+                <td>跨境图书推广</td>
+                <td>5.2M</td>
+                <td>9%</td>
+                <td>36%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="admin-card">
+          <h3>库存与供应链</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>仓库</th>
+                <th>库存周转</th>
+                <th>建议动作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kindle Oasis</td>
+                <td>深圳 · FBA</td>
+                <td>7.5 周</td>
+                <td>启动闪购清库存</td>
+              </tr>
+              <tr>
+                <td>Echo Dot 5</td>
+                <td>宁波 · FBA</td>
+                <td>2.1 周</td>
+                <td>追加采购订单</td>
+              </tr>
+              <tr>
+                <td>Amazon Basics</td>
+                <td>广州 · 3PL</td>
+                <td>5.4 周</td>
+                <td>优化补货节奏</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="admin-card">
+          <h3>跨团队协作</h3>
+          <div class="kanban">
+            <div class="kanban-column">
+              <h4>待处理</h4>
+              <div class="kanban-card">
+                Prime Day 主视觉确认 · 品牌部
+              </div>
+              <div class="kanban-card">
+                CN 站点税费调研 · 财务
+              </div>
+            </div>
+            <div class="kanban-column">
+              <h4>进行中</h4>
+              <div class="kanban-card">
+                FBA 仓库容量扩容方案 · 运营
+              </div>
+              <div class="kanban-card">
+                Alexa 语音下单文案本地化 · 产品
+              </div>
+            </div>
+            <div class="kanban-column">
+              <h4>已完成</h4>
+              <div class="kanban-card">
+                Prime 会员权益页面翻新 · 设计
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h3>客户体验追踪</h3>
+          <p>
+            实时监控 NPS、退换货原因与客服工单 SLA，重点关注 Prime 会员留存率和跨境购体验反馈。
+          </p>
+          <ul>
+            <li>退换货触达率：92% · 已接入智能客服</li>
+            <li>负面评价预警：36 条 · 自动派单处理</li>
+            <li>Alexa 语音购物满意度：4.6 / 5</li>
+          </ul>
+        </div>
+      </div>
+      <div class="admin-footer">Amazon 内部运营控制台 · 原型演示</div>
     </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>消费者搜索商品并下单</li><li>卖家在 Seller Central 管理商品与广告</li><li>物流团队通过 FBA 完成仓储与配送</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>商品与搜索</h3>
-              <p class="goal">功能目标：帮助用户快速找到适合的商品</p>
-              <ul>
-                <li>搜索联想、类目导航与过滤器</li><li>商品详情页、评价与问答</li><li>推荐算法与个性化列表</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>交易与履约</h3>
-              <p class="goal">功能目标：确保下单到收货的流程顺畅</p>
-              <ul>
-                <li>购物车、结账与支付安全</li><li>Prime 配送、物流追踪与退换货</li><li>FBA 仓储管理与库存补货提醒</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>卖家中心</h3>
-              <p class="goal">功能目标：提供卖家运营、广告与数据工具</p>
-              <ul>
-                <li>商品上架、定价与库存</li><li>Sponsored Ads 广告管理</li><li>绩效指标、评价与客服工单</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>会员与服务扩展</h3>
-              <p class="goal">功能目标：提升用户忠诚度并拓展生态</p>
-              <ul>
-                <li>Prime 会员权益与订阅</li><li>Amazon Fresh、Prime Video 等增值服务</li><li>语音助手与智能设备集成</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>Prime 会员增长与留存</li><li>订单履约准时率与客户满意度</li><li>广告收入与第三方卖家贡献度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+
+    <footer class="customer-view">
+      © 2024 Amazon 原型体验 · 包含消费者与管理端视角
+    </footer>
+
+    <script>
+      const roleToggle = document.getElementById('roleToggle');
+      const adminView = document.getElementById('adminView');
+      const customerSections = document.querySelectorAll('.customer-view');
+      const roleHint = document.getElementById('roleHint');
+      let currentRole = 'customer';
+
+      function updateRoleUI() {
+        if (currentRole === 'customer') {
+          customerSections.forEach((section) => (section.style.display = ''));
+          adminView.style.display = 'none';
+          document.body.style.background = varComputed('--amazon-light');
+          roleToggle.textContent = '切换为管理员视角';
+          showHint('当前：消费者体验');
+        } else {
+          customerSections.forEach((section) => (section.style.display = 'none'));
+          adminView.style.display = 'block';
+          document.body.style.background = varComputed('--admin-bg');
+          roleToggle.textContent = '切换为消费者视角';
+          showHint('当前：管理员控制台');
+        }
+      }
+
+      function varComputed(name) {
+        return getComputedStyle(document.documentElement)
+          .getPropertyValue(name)
+          .trim();
+      }
+
+      function showHint(text) {
+        roleHint.textContent = text;
+        roleHint.classList.add('show');
+        clearTimeout(showHint.timer);
+        showHint.timer = setTimeout(() => {
+          roleHint.classList.remove('show');
+        }, 2000);
+      }
+
+      roleToggle.addEventListener('click', () => {
+        currentRole = currentRole === 'customer' ? 'admin' : 'customer';
+        updateRoleUI();
+      });
+
+      updateRoleUI();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
