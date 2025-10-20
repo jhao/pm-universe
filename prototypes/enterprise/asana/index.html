@@ -2,83 +2,405 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Asana 协同工作平台 原型概览</title>
-    <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
-    </style>
+    <title>Asana 协同工作平台 · 原型演示</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
-      <h1>Asana 协同工作平台 原型</h1>
-      <p class="tagline">帮助团队规划、协作与跟踪工作的工作管理平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>项目经理、跨职能团队、运营管理者</p>
-        <p><strong>核心痛点：</strong>任务散落在邮件与聊天工具，缺乏透明可视化</p>
-        <p><strong>价值主张：</strong>通过任务、时间线与自动化，构建工作协作的单一真相源</p>
+    <main class="layout">
+      <div class="top-bar">
+        <div>
+          <div class="breadcrumbs">企业级原型 · 协同与项目运营</div>
+          <h1>Asana 协同工作平台</h1>
+          <p class="subtitle">集中规划、协作、自动化与目标管理，打造跨团队的工作协调中枢。</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button class="secondary-button">下载业务蓝图</button>
+          <button class="primary-button">预约产品演示</button>
+        </div>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>团队启动项目并拆解任务</li><li>成员在看板/列表中执行并更新进度</li><li>管理者查看资源负载与业务目标达成</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>项目与任务管理</h3>
-              <p class="goal">功能目标：让团队清晰知道谁负责什么</p>
-              <ul>
-                <li>任务分配、子任务与依赖</li><li>自定义字段、模板与重复任务</li><li>项目看板、列表与时间线视图</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>目标与路线图</h3>
-              <p class="goal">功能目标：将团队工作与战略目标对齐</p>
-              <ul>
-                <li>OKR 目标设定与层级关联</li><li>进度跟踪、状态更新与风险提醒</li><li>仪表盘与汇报模板</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>自动化与集成</h3>
-              <p class="goal">功能目标：减少重复操作并连接工具链</p>
-              <ul>
-                <li>Rules 触发自动化</li><li>与 Slack、Teams、Google Workspace 集成</li><li>开放 API 与自定义应用</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>工作负载与报告</h3>
-              <p class="goal">功能目标：实时掌握资源使用与产能</p>
-              <ul>
-                <li>Workload 人力视图</li><li>高级报表与实时仪表盘</li><li>时间追踪与成本估算</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>任务按时完成率与延期数量</li><li>目标达成率与跨团队协作满意度</li><li>自动化触发次数与节省时间</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">关键指标快照</h2>
+          <span class="badge">季度实时同步</span>
+        </div>
+        <div class="metrics-grid">
+          <article class="metric-card">
+            <div class="label">按时完成率</div>
+            <div class="value">92%</div>
+            <div class="trend"><span>同比 +8%</span></div>
+            <p class="subtitle">项目经理视角：通过时间线与里程碑管控关键节点。</p>
+          </article>
+          <article class="metric-card">
+            <div class="label">跨团队协作满意度</div>
+            <div class="value">4.6/5</div>
+            <div class="trend"><span>本月调研</span></div>
+            <p class="subtitle">团队成员视角：统一任务入口，减少工具切换。</p>
+          </article>
+          <article class="metric-card">
+            <div class="label">目标达成进度</div>
+            <div class="value">78%</div>
+            <div class="trend warning"><span>需关注财务线</span></div>
+            <p class="subtitle">高层视角：OKR 联动项目组合，快速识别风险。</p>
+          </article>
+          <article class="metric-card">
+            <div class="label">自动化节省工时</div>
+            <div class="value">+420h</div>
+            <div class="trend"><span>触发规则 136 次</span></div>
+            <p class="subtitle">运营视角：审批、分配、提醒自动化后节省人力。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">核心能力与模块</h2>
+          <input
+            class="search-input"
+            type="search"
+            placeholder="搜索模块、关键字或业务场景..."
+            data-search
+            data-target="#modules-grid"
+            data-empty="#modules-empty"
+          />
+        </div>
+        <div class="card-grid" id="modules-grid">
+          <article class="card" data-filter-item data-keywords="项目 管理 任务 看板 时间线 依赖">
+            <span class="badge">项目执行</span>
+            <h3>项目与任务空间</h3>
+            <p class="subtitle">规划、分配与跟踪，随时掌握项目健康度。</p>
+            <ul class="feature-list">
+              <li>列表 / 看板 / 时间线 多视图切换</li>
+              <li>任务负责人、依赖、子任务一目了然</li>
+              <li>自定义字段、模板与重复任务</li>
+            </ul>
+            <div class="cta"><a class="ghost-button" href="workspace-dashboard.html">进入项目工作台</a></div>
+          </article>
+          <article class="card" data-filter-item data-keywords="目标 OKR 组合 组合管理 高层 portfolio">
+            <span class="badge">战略对齐</span>
+            <h3>目标与组合管理</h3>
+            <p class="subtitle">将团队执行与企业 OKR 联动，实时监控业务成果。</p>
+            <ul class="feature-list">
+              <li>目标分解与层级关联</li>
+              <li>组合视图对齐资源与产能</li>
+              <li>执行进度、风险、预算健康度</li>
+            </ul>
+            <div class="cta"><a class="ghost-button" href="executive-portfolio.html">查看高层仪表盘</a></div>
+          </article>
+          <article class="card" data-filter-item data-keywords="团队 协作 沟通 表单 会议 同步">
+            <span class="badge">协同体验</span>
+            <h3>团队协作中心</h3>
+            <p class="subtitle">统一任务、讨论与会议纪要的协作空间。</p>
+            <ul class="feature-list">
+              <li>集中处理我的任务与消息收件箱</li>
+              <li>跨团队共享视图与站会节奏</li>
+              <li>表单收集需求、自动生成任务</li>
+            </ul>
+            <div class="cta"><a class="ghost-button" href="team-my-tasks.html">体验成员视角</a></div>
+          </article>
+          <article class="card" data-filter-item data-keywords="自动化 工作流 规则 集成 通知 审批">
+            <span class="badge">效率提升</span>
+            <h3>自动化与集成中心</h3>
+            <p class="subtitle">连接工具链，减少重复操作，触发智能提醒。</p>
+            <ul class="feature-list">
+              <li>可视化规则、触发条件与操作</li>
+              <li>与 Slack、Teams、Gmail、Jira 等集成</li>
+              <li>自定义 App 与 API Webhook</li>
+            </ul>
+            <div class="cta"><a class="ghost-button" href="automation-hub.html">查看自动化蓝图</a></div>
+          </article>
+        </div>
+        <div class="empty-state" id="modules-empty" hidden>暂无匹配的模块，请调整关键字。</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">角色切换体验</h2>
+          <div class="role-switcher" data-role-switcher data-target="#role-panels">
+            <button data-role="manager">项目经理</button>
+            <button data-role="member">团队成员</button>
+            <button data-role="executive">业务高层</button>
+          </div>
+        </div>
+        <div class="role-panels" id="role-panels">
+          <div class="role-panel" data-role-panel="manager">
+            <h3>项目经理视角</h3>
+            <p class="subtitle">聚焦进度、风险与跨团队协作，快速完成排期与资源调度。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>健康度一览</h4>
+                <p>关键项目 KPI、阻塞任务与成员负载汇总。</p>
+                <div class="highlight-strip">
+                  <div class="highlight"><strong>延迟里程碑：</strong>营销上线延期 3 天，建议调整投放策略。</div>
+                  <div class="highlight"><strong>资源预警：</strong>设计资源利用率 125%，已触发跨项目借调流程。</div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>排期视图</h4>
+                <p>时间线与甘特拖拽排期，实时计算依赖影响。</p>
+                <div class="view-toggle" data-view-toggle data-view-target="#manager-views">
+                  <button data-view="timeline">时间线</button>
+                  <button data-view="board">看板</button>
+                  <button data-view="list">列表</button>
+                </div>
+                <div id="manager-views">
+                  <div data-view-panel="timeline">
+                    <div class="timeline">
+                      <div class="timeline-event">
+                        <strong>上线计划 · 6月18日</strong>
+                        <span class="status-pill warning">依赖开发提测</span>
+                        <p>已重新安排 UI 评审，开发提测提前至 6 月 12 日。</p>
+                      </div>
+                      <div class="timeline-event">
+                        <strong>用户调研 · 6月25日</strong>
+                        <span class="status-pill success">资源就绪</span>
+                        <p>调研问卷发布，等待数据回传自动生成洞察任务。</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div data-view-panel="board" hidden>
+                    <div class="view-grid">
+                      <div class="view-card">
+                        <h5>规划中</h5>
+                        <p>编写上线计划、确认法律审查。</p>
+                      </div>
+                      <div class="view-card">
+                        <h5>进行中</h5>
+                        <p>开发 Sprint #24、上线彩排。</p>
+                      </div>
+                      <div class="view-card">
+                        <h5>待验证</h5>
+                        <p>性能测试、监控脚本 Review。</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div data-view-panel="list" hidden>
+                    <div class="table-preview">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>任务</th>
+                            <th>负责人</th>
+                            <th>状态</th>
+                            <th>到期</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>上线策略确认</td>
+                            <td>王静</td>
+                            <td><span class="status-pill success">按计划</span></td>
+                            <td>6月15日</td>
+                          </tr>
+                          <tr>
+                            <td>合规审查</td>
+                            <td>陈立</td>
+                            <td><span class="status-pill warning">阻塞</span></td>
+                            <td>6月16日</td>
+                          </tr>
+                          <tr>
+                            <td>站会总结同步</td>
+                            <td>自动化机器人</td>
+                            <td><span class="status-pill">完成</span></td>
+                            <td>6月12日</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="member">
+            <h3>团队成员视角</h3>
+            <p class="subtitle">聚焦本周优先级、协作反馈与跨时区沟通，保持高效执行。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>我的任务聚焦</h4>
+                <p>自动聚合本周待办、今日到期与阻塞任务。</p>
+                <div class="quick-actions">
+                  <span class="quick-action">✅ 一键更新进度</span>
+                  <span class="quick-action">📎 上传交付物</span>
+                  <span class="quick-action">💬 @相关人澄清</span>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>协作时间线</h4>
+                <p>会议纪要、讨论与审批历史自动串联。</p>
+                <div class="timeline">
+                  <div class="timeline-event">
+                    <strong>设计稿反馈</strong>
+                    <span class="status-pill">收到 4 条评论</span>
+                    <p>自动生成后续修订任务，并同步提醒设计负责人。</p>
+                  </div>
+                  <div class="timeline-event">
+                    <strong>需求澄清</strong>
+                    <span class="status-pill success">产品已回复</span>
+                    <p>通过 Slack 集成直接回写讨论结果。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>跨团队共享视图</h4>
+                <p>查看依赖团队进度，自动识别风险影响。</p>
+                <ul class="feature-list">
+                  <li>设计交付完成度 85%，自动提醒补齐素材</li>
+                  <li>数据团队上线脚本延迟 2 天，建议调整站会节奏</li>
+                  <li>本周学习资源推荐：自动化规则模板合集</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="executive">
+            <h3>业务高层视角</h3>
+            <p class="subtitle">从战略目标、项目组合到资源健康度一屏呈现，支持快速决策。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>目标进度追踪</h4>
+                <p>公司级 OKR 对齐关键项目与 KPI。</p>
+                <div class="highlight-strip">
+                  <div class="highlight"><strong>营收 OKR：</strong>Q3 进度 76%，营销项目 A 贡献 32%。</div>
+                  <div class="highlight"><strong>客户满意度：</strong>NPS 提升计划风险预警，建议调配 CS 资源。</div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>资源与预算</h4>
+                <p>Workload 与预算燃尽结合，识别产能瓶颈。</p>
+                <div class="table-preview">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>组合</th>
+                        <th>预算消耗</th>
+                        <th>人力利用率</th>
+                        <th>风险</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>战略增长</td>
+                        <td>68%</td>
+                        <td>92%</td>
+                        <td><span class="status-pill warning">运营缺口</span></td>
+                      </tr>
+                      <tr>
+                        <td>平台体验</td>
+                        <td>54%</td>
+                        <td>81%</td>
+                        <td><span class="status-pill success">健康</span></td>
+                      </tr>
+                      <tr>
+                        <td>合规安全</td>
+                        <td>47%</td>
+                        <td>74%</td>
+                        <td><span class="status-pill">关注周报</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>治理节奏</h4>
+                <p>自动生成周例会、月度业务回顾所需材料。</p>
+                <div class="stepper">
+                  <div class="step">
+                    <strong>周例会</strong>
+                    <p>同步 KPI、重大风险及跨团队依赖进展。</p>
+                  </div>
+                  <div class="step">
+                    <strong>月度复盘</strong>
+                    <p>汇总组合成果、预算与产能调整建议。</p>
+                  </div>
+                  <div class="step">
+                    <strong>季度战略评审</strong>
+                    <p>调用历史数据与预测模型，支持调优目标。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">跨团队协作旅程</h2>
+          <span class="badge">端到端流程</span>
+        </div>
+        <div class="dual-column">
+          <div>
+            <h3>从需求提出到上线</h3>
+            <p class="subtitle">表单触发 → 自动分配 → 设计开发协同 → 发布回顾。</p>
+            <div class="timeline">
+              <div class="timeline-event">
+                <strong>需求提交 · 市场团队</strong>
+                <p>使用 Asana 表单收集素材需求，自动分配给产品经理。</p>
+              </div>
+              <div class="timeline-event">
+                <strong>项目规划 · PM</strong>
+                <p>套用产品上线模板，一键生成任务、里程碑与角色权限。</p>
+              </div>
+              <div class="timeline-event">
+                <strong>执行追踪 · 团队成员</strong>
+                <p>看板+站会节奏，实时同步进展并触发风险提醒。</p>
+              </div>
+              <div class="timeline-event">
+                <strong>结果沉淀 · 高层</strong>
+                <p>自动生成成果总结与 KPI 更新，沉淀到知识库。</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>常用自动化规则</h3>
+            <p class="subtitle">通过规则减少重复沟通，保障信息同步。</p>
+            <ul class="feature-list">
+              <li>当任务状态改为“待发布”时，自动通知法务与运营审批</li>
+              <li>若截止日期 48 小时内未更新进度，自动提醒负责人与 PM</li>
+              <li>表单字段触发模板，自动分派跨部门协作清单</li>
+              <li>与 Slack/Teams 集成，将关键更新同步到频道并回写记录</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">演示入口</h2>
+          <a class="ghost-button" href="../..">返回原型目录</a>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <span class="badge">项目执行</span>
+            <h3>项目工作台</h3>
+            <p class="subtitle">体验项目经理如何规划、调度与监控执行。</p>
+            <div class="cta"><a class="secondary-button" href="workspace-dashboard.html">打开页面</a></div>
+          </article>
+          <article class="card">
+            <span class="badge">团队协作</span>
+            <h3>成员任务中心</h3>
+            <p class="subtitle">查看个人任务聚焦、反馈闭环与跨团队协作。</p>
+            <div class="cta"><a class="secondary-button" href="team-my-tasks.html">打开页面</a></div>
+          </article>
+          <article class="card">
+            <span class="badge">战略治理</span>
+            <h3>高层组合仪表盘</h3>
+            <p class="subtitle">了解目标对齐、资源健康与治理节奏。</p>
+            <div class="cta"><a class="secondary-button" href="executive-portfolio.html">打开页面</a></div>
+          </article>
+          <article class="card">
+            <span class="badge">效率提升</span>
+            <h3>自动化与集成中心</h3>
+            <p class="subtitle">预览自动化规则、审批链路与生态集成。</p>
+            <div class="cta"><a class="secondary-button" href="automation-hub.html">打开页面</a></div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer>原型基于 PM Universe 目标整理，用于展示 Asana 在企业协同中的端到端能力。</footer>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
