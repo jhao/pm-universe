@@ -1,3 +1,14 @@
+document.querySelectorAll('.header-role-switch').forEach((switcher) => {
+  switcher.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-role]');
+    if (!button) return;
+
+    switcher.querySelectorAll('button').forEach((btn) => {
+      btn.classList.toggle('active', btn === button);
+    });
+  });
+});
+
 document.querySelectorAll('[data-role-container]').forEach((container) => {
   const switcher = container.querySelector('[data-role-switch]');
   const panels = container.querySelectorAll('.role-panel');
