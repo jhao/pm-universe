@@ -69,6 +69,11 @@ if (prototypesIndex !== -1) {
       .prototype-menu-link:hover {
         background: rgba(59, 130, 246, 0.12);
       }
+      .prototype-menu-link-active {
+        background: rgba(59, 130, 246, 0.2);
+        color: #0f172a;
+        font-weight: 600;
+      }
       .prototype-menu-category {
         margin-top: 16px;
         padding-top: 12px;
@@ -109,10 +114,37 @@ if (prototypesIndex !== -1) {
     const panel = document.createElement('div');
     panel.className = 'prototype-menu-panel prototype-menu-hidden';
 
+    const normalizePath = (path) => {
+      if (!path) return '';
+      let normalized = path.replace(/^\/+/, '');
+      if (normalized.endsWith('index.html')) {
+        normalized = normalized.slice(0, -'index.html'.length);
+      }
+      if (normalized && !normalized.endsWith('/')) {
+        normalized += '/';
+      }
+      return normalized;
+    };
+
+    const currentPath = (() => {
+      const fullPath = window.location.pathname;
+      if (fullPath.startsWith(rootPath)) {
+        return normalizePath(fullPath.slice(rootPath.length));
+      }
+      return normalizePath(fullPath);
+    })();
+
+    let activeLink = null;
+
     const homeLink = document.createElement('a');
     homeLink.className = 'prototype-menu-link';
     homeLink.href = `${rootPath}`;
     homeLink.textContent = '🏠 返回原型首页';
+    if (!currentPath) {
+      homeLink.classList.add('prototype-menu-link-active');
+      homeLink.setAttribute('aria-current', 'page');
+      activeLink = homeLink;
+    }
     panel.appendChild(homeLink);
 
     catalog.categories.forEach((category) => {
@@ -132,6 +164,14 @@ if (prototypesIndex !== -1) {
         link.className = 'prototype-menu-link';
         link.href = `${rootPath}${item.path}`;
         link.textContent = item.name;
+
+        const itemPath = normalizePath(item.path);
+        if (currentPath.startsWith(itemPath) && !activeLink) {
+          link.classList.add('prototype-menu-link-active');
+          link.setAttribute('aria-current', 'page');
+          activeLink = link;
+        }
+
         listItem.appendChild(link);
         list.appendChild(listItem);
       });
@@ -151,7 +191,12 @@ if (prototypesIndex !== -1) {
     panel.appendChild(about);
 
     button.addEventListener('click', () => {
-      panel.classList.toggle('prototype-menu-hidden');
+      const isHidden = panel.classList.toggle('prototype-menu-hidden');
+      if (!isHidden && activeLink) {
+        window.requestAnimationFrame(() => {
+          activeLink.scrollIntoView({ block: 'center', inline: 'nearest' });
+        });
+      }
     });
 
     wrapper.appendChild(button);
