@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 需求池</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="backlog">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>需求空间：Product Backlog</strong><br />
+          默认视图：WSJF 排序<br />
+          自动更新：每 5 分钟同步
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">优先级 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">Backlog</a>
+              <a class="system-link" href="#">Sprint</a>
+              <a class="system-link" href="#">发布</a>
+              <a class="system-link" href="#">Insight</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索需求或标签" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">需求池视图 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">量化驱动的 Backlog 优先级</h1>
+              <p class="page-hero__subtitle">融合价值、成本与风险得分，快速排列待办事项，便于与跨团队协同决策。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">需求总数</span>
+                  <span class="hero-stat__value">128</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">准备就绪</span>
+                  <span class="hero-stat__value">36</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">设计待确认</span>
+                  <span class="hero-stat__value">9</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="issue-detail.html" data-keep-role>
+                ➕ 新建需求项
+              </a>
+              <a class="hero-actions__secondary" href="sprint-board.html" data-keep-role>
+                🚀 推送至 Sprint
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">Backlog 列表</h2>
+                  <p class="surface-card__subtitle">基于 WSJF 和用户价值排序</p>
+                </div>
+                <div class="segmented-control">
+                  <button class="is-active">按 WSJF</button>
+                  <button>按发布</button>
+                  <button>按组件</button>
+                </div>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>标题</th>
+                    <th>价值得分</th>
+                    <th>预计工作量</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="link-muted" href="issue-detail.html" data-keep-role>QL-231</a></td>
+                    <td>多渠道工单同步</td>
+                    <td>21</td>
+                    <td>13 pt</td>
+                    <td><span class="tag">Ready</span></td>
+                  </tr>
+                  <tr>
+                    <td><a class="link-muted" href="issue-detail.html" data-keep-role>QL-224</a></td>
+                    <td>AI 优先级建议</td>
+                    <td>19</td>
+                    <td>8 pt</td>
+                    <td><span class="tag">In Refinement</span></td>
+                  </tr>
+                  <tr>
+                    <td><a class="link-muted" href="issue-detail.html" data-keep-role>QL-210</a></td>
+                    <td>CI/CD 失败回滚</td>
+                    <td>17</td>
+                    <td>13 pt</td>
+                    <td><span class="tag">Ready</span></td>
+                  </tr>
+                  <tr>
+                    <td><a class="link-muted" href="issue-detail.html" data-keep-role>QL-188</a></td>
+                    <td>大客户配额仪表板</td>
+                    <td>16</td>
+                    <td>5 pt</td>
+                    <td><span class="tag">UX Draft</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">需求分层</h2>
+                  <p class="surface-card__subtitle">按 Epic 结构聚合的优先级</p>
+                </div>
+                <a class="action-link" href="roadmap.html" data-keep-role>查看 Epic 路线图</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">Epic: 全渠道体验</p>
+                    <p class="list-item__desc">相关需求 12 个 · 占比 28%</p>
+                  </div>
+                  <span class="tag">优先级 A</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">Epic: 智能自动化</p>
+                    <p class="list-item__desc">相关需求 9 个 · 占比 22%</p>
+                  </div>
+                  <span class="tag">优先级 A</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">Epic: 可靠性与性能</p>
+                    <p class="list-item__desc">相关需求 15 个 · 占比 33%</p>
+                  </div>
+                  <span class="tag">优先级 B</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">准备度校验</h2>
+                  <p class="surface-card__subtitle">确保进入 Sprint 的需求满足 Definition of Ready</p>
+                </div>
+                <a class="action-link" href="sprint-configuration.html" data-keep-role>调整准入规则</a>
+              </div>
+              <div class="checklist">
+                <label class="checklist-item">
+                  <input type="checkbox" checked />验收标准已补充
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" checked />UX 交互稿已上传
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" />依赖梳理确认
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" checked />技术评估估点
+                </label>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">需求来源分布</h2>
+                  <p class="surface-card__subtitle">按渠道拆分的新增需求趋势</p>
+                </div>
+                <a class="action-link" href="customer-insights.html" data-keep-role>查看洞察</a>
+              </div>
+              <div class="chart-placeholder"></div>
+              <div class="personas">
+                <span class="persona-chip">客户成功 · 38%</span>
+                <span class="persona-chip">销售反馈 · 25%</span>
+                <span class="persona-chip">数据埋点 · 20%</span>
+                <span class="persona-chip">内部运营 · 17%</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">需求池界面帮助 <span data-role-name></span> 管理跨渠道需求，实时校验准备度并将符合准入的条目推送进入 Sprint。通过进入详情页可补充验收标准、关联 Epic 或创建子任务。</p>
+            <div class="page-info__actions">
+              <a href="issue-detail.html" data-keep-role>→ 查看需求详情</a>
+              <a href="sprint-board.html" data-keep-role>→ 转入 Sprint 看板</a>
+              <a href="automation-rules.html" data-keep-role>→ 配置自动化规则</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

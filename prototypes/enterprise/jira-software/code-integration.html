@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 代码集成</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="code">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>CI/CD 集成</strong><br />
+          最近部署：7 月 18 日 09:45<br />
+          生产环境：Phoenix-prod
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">持续交付 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">流水线</a>
+              <a class="system-link" href="#">部署</a>
+              <a class="system-link" href="#">变更</a>
+              <a class="system-link" href="#">监控</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索流水线或部署记录" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">CI/CD 面板 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">持续交付与部署稳定性</h1>
+              <p class="page-hero__subtitle">追踪流水线执行、部署窗口与变更风险，保障发布质量。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">成功率</span>
+                  <span class="hero-stat__value">92%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">平均耗时</span>
+                  <span class="hero-stat__value">14m</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">失败警报</span>
+                  <span class="hero-stat__value">2</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="release-plan.html" data-keep-role>
+                🚀 对齐发布窗口
+              </a>
+              <a class="hero-actions__secondary" href="automation-rules.html" data-keep-role>
+                ⚙️ 配置回滚自动化
+              </a>
+            </div>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">流水线视图</h2>
+                <p class="surface-card__subtitle">展示主要分支的构建状态</p>
+              </div>
+              <div class="segmented-control">
+                <button class="is-active">主干</button>
+                <button>预发布</button>
+                <button>热修复</button>
+              </div>
+            </div>
+            <div class="pipeline">
+              <div class="pipeline-step">
+                <div class="pipeline-step__header">
+                  <span class="pipeline-step__title">单元测试</span>
+                  <span class="pipeline-step__status">通过</span>
+                </div>
+                <div class="progress-track"><span style="width: 100%"></span></div>
+                <p class="list-item__desc">覆盖率 86%</p>
+              </div>
+              <div class="pipeline-step">
+                <div class="pipeline-step__header">
+                  <span class="pipeline-step__title">构建镜像</span>
+                  <span class="pipeline-step__status">通过</span>
+                </div>
+                <div class="progress-track"><span style="width: 100%"></span></div>
+                <p class="list-item__desc">时长 4m23s</p>
+              </div>
+              <div class="pipeline-step">
+                <div class="pipeline-step__header">
+                  <span class="pipeline-step__title">集成测试</span>
+                  <span class="pipeline-step__status">失败</span>
+                </div>
+                <div class="progress-track"><span style="width: 45%"></span></div>
+                <p class="list-item__desc">失败用例：3 · <a class="link-muted" href="bug-tracker.html" data-keep-role>查看缺陷</a></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">部署计划</h2>
+                  <p class="surface-card__subtitle">即将进行的部署窗口</p>
+                </div>
+                <a class="action-link" href="release-plan.html" data-keep-role>查看发布详情</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>环境</th>
+                    <th>时间</th>
+                    <th>版本</th>
+                    <th>负责人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Staging</td>
+                    <td>7/18 22:00</td>
+                    <td>3.4.0-rc1</td>
+                    <td>赵倩</td>
+                  </tr>
+                  <tr>
+                    <td>Prod</td>
+                    <td>7/20 01:30</td>
+                    <td>3.3.2</td>
+                    <td>王磊</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">变更告警</h2>
+                  <p class="surface-card__subtitle">实时监控风险指标</p>
+                </div>
+                <a class="action-link" href="risk-overview.html" data-keep-role>查看风险</a>
+              </div>
+              <div class="alert-card">
+                Phoenix-prod 最近 2 小时内出现 3 次错误率峰值，建议暂缓新部署。
+              </div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">关联任务</h2>
+                  <p class="surface-card__subtitle">关联 Jira 需求与缺陷</p>
+                </div>
+                <a class="action-link" href="issue-detail.html" data-keep-role>查看任务</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">QL-210 自动回滚</p>
+                    <p class="list-item__desc">状态：Code Review · 分支：feature/rollback</p>
+                  </div>
+                  <span class="tag">高优先级</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">BUG-782 API 错误率</p>
+                    <p class="list-item__desc">状态：In Progress · 负责人：李俊</p>
+                  </div>
+                  <a class="action-link" href="bug-tracker.html" data-keep-role>打开缺陷</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">监控概览</h2>
+                  <p class="surface-card__subtitle">部署后关键指标表现</p>
+                </div>
+                <a class="action-link" href="portfolio-dashboard.html" data-keep-role>同步高层</a>
+              </div>
+              <div class="chart-placeholder"></div>
+              <div class="focus-banner">
+                <strong>建议：</strong>
+                <span>错误率峰值与新发布相关，建议触发回滚模板。</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">代码集成页面帮助 <span data-role-name></span> 联动流水线状态、部署计划与风险告警，及时处理失败并同步到发布计划或风险视图。</p>
+            <div class="page-info__actions">
+              <a href="release-plan.html" data-keep-role>→ 查看发布计划</a>
+              <a href="automation-rules.html" data-keep-role>→ 配置回滚</a>
+              <a href="bug-tracker.html" data-keep-role>→ 处理缺陷</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 自动化规则</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="automation">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>自动化中心</strong><br />
+          已启用规则：24 · 今日触发：86 次<br />
+          最近编辑：7 月 18 日
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">自动化 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">规则库</a>
+              <a class="system-link" href="#">触发器</a>
+              <a class="system-link" href="#">执行历史</a>
+              <a class="system-link" href="#">模板</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索规则或触发器" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">自动化控制台 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">标准化工作流与告警策略</h1>
+              <p class="page-hero__subtitle">通过可视化规则编辑器，统一配置触发条件、动作与条件判断，减少重复劳动。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">活跃规则</span>
+                  <span class="hero-stat__value">24</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">节省工时</span>
+                  <span class="hero-stat__value">36h</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">失败次数</span>
+                  <span class="hero-stat__value">1</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="sprint-configuration.html" data-keep-role>
+                ⚙️ 创建规则
+              </a>
+              <a class="hero-actions__secondary" href="release-plan.html" data-keep-role>
+                🚀 连接发布管道
+              </a>
+            </div>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">规则总览</h2>
+                <p class="surface-card__subtitle">按场景分组的自动化规则列表</p>
+              </div>
+              <div class="segmented-control">
+                <button class="is-active">所有</button>
+                <button>执行成功</button>
+                <button>需要关注</button>
+              </div>
+            </div>
+            <div class="stacked-list">
+              <div class="stacked-item">
+                <h3 class="stacked-item__title">阻塞提醒 · 当任务阻塞超过 24h</h3>
+                <p class="stacked-item__meta">触发：状态变更 → 阻塞 · 动作：通知 Slack + 创建跟进</p>
+              </div>
+              <div class="stacked-item">
+                <h3 class="stacked-item__title">发布回滚 · CI 失败 3 次以上</h3>
+                <p class="stacked-item__meta">触发：流水线事件 · 动作：执行回滚脚本 + 通知负责人</p>
+              </div>
+              <div class="stacked-item">
+                <h3 class="stacked-item__title">客户反馈 → 需求池</h3>
+                <p class="stacked-item__meta">触发：Insight 标记为高优先级 · 动作：创建 Jira Story</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">可视化编辑器</h2>
+                  <p class="surface-card__subtitle">拖拽式配置触发器、条件与动作</p>
+                </div>
+                <a class="action-link" href="sprint-configuration.html" data-keep-role>打开编辑器</a>
+              </div>
+              <div class="flow-columns">
+                <div class="flow-column">
+                  <div class="flow-column__title">Trigger</div>
+                  <div class="flow-task">
+                    <strong>Issue Transitioned</strong>
+                    <span>状态 → 阻塞</span>
+                  </div>
+                </div>
+                <div class="flow-column">
+                  <div class="flow-column__title">Condition</div>
+                  <div class="flow-task">
+                    <strong>优先级 ≥ High</strong>
+                    <span>且剩余工时 > 4h</span>
+                  </div>
+                </div>
+                <div class="flow-column">
+                  <div class="flow-column__title">Action</div>
+                  <div class="flow-task">
+                    <strong>通知 Slack</strong>
+                    <span>#sprint-alerts · @负责人</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">执行历史</h2>
+                  <p class="surface-card__subtitle">最近触发记录与耗时</p>
+                </div>
+                <a class="action-link" href="report-detail.html" data-keep-role>导出日志</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>规则</th>
+                    <th>耗时</th>
+                    <th>结果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>07-18 11:20</td>
+                    <td>阻塞提醒</td>
+                    <td>0.8s</td>
+                    <td><span class="tag">Success</span></td>
+                  </tr>
+                  <tr>
+                    <td>07-18 10:44</td>
+                    <td>发布回滚</td>
+                    <td>2.4s</td>
+                    <td><span class="tag">Success</span></td>
+                  </tr>
+                  <tr>
+                    <td>07-18 09:12</td>
+                    <td>客户反馈 → 需求池</td>
+                    <td>0.6s</td>
+                    <td><span class="tag">Warning</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">模板市场</h2>
+                <p class="surface-card__subtitle">基于最佳实践快速搭建新规则</p>
+              </div>
+              <a class="action-link" href="backlog.html" data-keep-role>创建需求联动</a>
+            </div>
+            <div class="grid-auto">
+              <div class="surface-card" style="box-shadow:none; padding:18px;">
+                <h3 class="surface-card__title">自动提醒审批人</h3>
+                <p class="surface-card__subtitle">适用于变更流程</p>
+                <a class="action-link" href="release-plan.html" data-keep-role>应用模板</a>
+              </div>
+              <div class="surface-card" style="box-shadow:none; padding:18px;">
+                <h3 class="surface-card__title">CI 失败触发回滚</h3>
+                <p class="surface-card__subtitle">监控流水线稳定性</p>
+                <a class="action-link" href="code-integration.html" data-keep-role>关联流水线</a>
+              </div>
+              <div class="surface-card" style="box-shadow:none; padding:18px;">
+                <h3 class="surface-card__title">客户反馈转任务</h3>
+                <p class="surface-card__subtitle">加速需求响应</p>
+                <a class="action-link" href="customer-insights.html" data-keep-role>查看来源</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">自动化控制台帮助 <span data-role-name></span> 在不同场景下建立触发器与动作联动，支撑发布、阻塞提醒与客户反馈闭环。通过模板快速创建规则，并可在执行历史中追踪稳定性。</p>
+            <div class="page-info__actions">
+              <a href="sprint-configuration.html" data-keep-role>→ 新建规则</a>
+              <a href="release-plan.html" data-keep-role>→ 管理发布回滚</a>
+              <a href="customer-insights.html" data-keep-role>→ 联动客户洞察</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 客户洞察</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="insights">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>洞察中心</strong><br />
+          数据来源：NPS、客服、埋点、社群<br />
+          最近同步：7 月 18 日 11:32
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">洞察 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">趋势</a>
+              <a class="system-link" href="#">分群</a>
+              <a class="system-link" href="#">旅程</a>
+              <a class="system-link" href="#">行动项</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索反馈或客户" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">客户洞察 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">实时洞察客户旅程与满意度</h1>
+              <p class="page-hero__subtitle">聚合多渠道反馈，追踪痛点与机会，并快速转化为需求项或实验计划。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">NPS</span>
+                  <span class="hero-stat__value">38</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">负向反馈</span>
+                  <span class="hero-stat__value">12%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">待处理行动</span>
+                  <span class="hero-stat__value">6</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="backlog.html" data-keep-role>
+                ✍️ 转化为需求
+              </a>
+              <a class="hero-actions__secondary" href="issue-detail.html" data-keep-role>
+                🔍 查看关联问题
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">渠道热点</h2>
+                  <p class="surface-card__subtitle">从 4 个渠道提取的主要主题</p>
+                </div>
+                <div class="segmented-control">
+                  <button class="is-active">30 天</button>
+                  <button>7 天</button>
+                  <button>季度</button>
+                </div>
+              </div>
+              <div class="grid-auto">
+                <div class="surface-card" style="box-shadow:none; padding:18px;">
+                  <h3 class="surface-card__title">客服</h3>
+                  <p class="surface-card__subtitle">缺陷升级流程复杂 · 占比 27%</p>
+                  <a class="action-link" href="bug-tracker.html" data-keep-role>关联缺陷</a>
+                </div>
+                <div class="surface-card" style="box-shadow:none; padding:18px;">
+                  <h3 class="surface-card__title">NPS</h3>
+                  <p class="surface-card__subtitle">自动化设置门槛高 · 占比 22%</p>
+                  <a class="action-link" href="automation-rules.html" data-keep-role>优化流程</a>
+                </div>
+                <div class="surface-card" style="box-shadow:none; padding:18px;">
+                  <h3 class="surface-card__title">社群</h3>
+                  <p class="surface-card__subtitle">移动端体验反馈 · 占比 18%</p>
+                  <a class="action-link" href="roadmap.html" data-keep-role>纳入路线图</a>
+                </div>
+                <div class="surface-card" style="box-shadow:none; padding:18px;">
+                  <h3 class="surface-card__title">使用数据</h3>
+                  <p class="surface-card__subtitle">报表功能活跃度下降 · 占比 14%</p>
+                  <a class="action-link" href="progress-report.html" data-keep-role>通知业务</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">旅程漏斗</h2>
+                  <p class="surface-card__subtitle">核心体验的转化情况</p>
+                </div>
+                <a class="action-link" href="portfolio-dashboard.html" data-keep-role>同步高层视图</a>
+              </div>
+              <div class="chart-placeholder"></div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">创建项目 → 邀请成员</p>
+                    <p class="list-item__desc">转化率 62% · 跨部门协作</p>
+                  </div>
+                  <span class="tag">需提升</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">配置工作流 → 发布自动化</p>
+                    <p class="list-item__desc">转化率 41% · 需要向导</p>
+                  </div>
+                  <span class="tag">重点优化</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">分群分析</h2>
+                  <p class="surface-card__subtitle">按客户分层查看满意度与需求</p>
+                </div>
+                <a class="action-link" href="resource-planning.html" data-keep-role>匹配资源</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">企业旗舰客户</p>
+                    <p class="list-item__desc">NPS 45 · 关注治理与合规</p>
+                  </div>
+                  <span class="tag">满意</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">成长型科技企业</p>
+                    <p class="list-item__desc">NPS 32 · 关注自动化与效率</p>
+                  </div>
+                  <span class="tag">待提升</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">合作伙伴生态</p>
+                    <p class="list-item__desc">NPS 28 · 需要更开放 API</p>
+                  </div>
+                  <span class="tag">观察</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">行动队列</h2>
+                  <p class="surface-card__subtitle">将洞察转化为可执行事项</p>
+                </div>
+                <a class="action-link" href="issue-detail.html" data-keep-role>创建相关需求</a>
+              </div>
+              <div class="stacked-list">
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">自动化引导体验</h3>
+                  <p class="stacked-item__meta">负责人：林晨 · 目标：降低流失 8%</p>
+                </div>
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">移动端仪表板改版</h3>
+                  <p class="stacked-item__meta">负责人：赵倩 · 目标：提升活跃 12%</p>
+                </div>
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">企业治理模板包</h3>
+                  <p class="stacked-item__meta">负责人：王磊 · 目标：缩短上线周期 20%</p>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">客户洞察中心帮助 <span data-role-name></span> 将多渠道反馈与行为数据转化为结构化行动。通过转化按钮可以一键生成需求项或实验，确保数据驱动的产品决策。</p>
+            <div class="page-info__actions">
+              <a href="backlog.html" data-keep-role>→ 生成需求</a>
+              <a href="progress-report.html" data-keep-role>→ 向管理层汇报</a>
+              <a href="automation-rules.html" data-keep-role>→ 优化自动化体验</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

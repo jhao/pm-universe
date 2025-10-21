@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 发布准备度</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="release-plan">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>发布准备度</strong><br />
+          Release：Phoenix 3.4<br />
+          检查时间：7 月 18 日
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">发布准备 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">范围</a>
+              <a class="system-link" href="#">测试</a>
+              <a class="system-link" href="#">风险</a>
+              <a class="system-link" href="#">沟通</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索检查项" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">发布准备 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">Phoenix 3.4 准备度核对</h1>
+              <p class="page-hero__subtitle">围绕范围、质量、风险和沟通进行最终核对，确保上线无遗漏。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">准备度</span>
+                  <span class="hero-stat__value">82%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">阻塞项</span>
+                  <span class="hero-stat__value">2</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">回滚准备</span>
+                  <span class="hero-stat__value">100%</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="release-plan.html" data-keep-role>
+                📦 返回发布计划
+              </a>
+              <a class="hero-actions__secondary" href="risk-overview.html" data-keep-role>
+                ⚠️ 检查风险
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">范围核对</h2>
+                  <p class="surface-card__subtitle">确认纳入的关键需求</p>
+                </div>
+                <a class="action-link" href="backlog.html" data-keep-role>查看需求</a>
+              </div>
+              <div class="checklist">
+                <label class="checklist-item">
+                  <input type="checkbox" checked /> 需求 QL-231 完成验收
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" checked /> 需求 QL-210 完成回归
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" /> 需求 QL-224 数据准备完成
+                </label>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">测试准备</h2>
+                  <p class="surface-card__subtitle">覆盖率、缺陷与回归</p>
+                </div>
+                <a class="action-link" href="bug-tracker.html" data-keep-role>查看缺陷</a>
+              </div>
+              <div class="metric-group">
+                <div class="metric-card">
+                  <span class="metric-card__label">自动化覆盖率</span>
+                  <span class="metric-card__value">78%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">未解决缺陷</span>
+                  <span class="metric-card__value">9</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">阻塞缺陷</span>
+                  <span class="metric-card__value">2</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">风险与回滚</h2>
+                  <p class="surface-card__subtitle">关键风险与回滚策略</p>
+                </div>
+                <a class="action-link" href="automation-rules.html" data-keep-role>配置回滚自动化</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">风险：数据同步延迟</p>
+                    <p class="list-item__desc">缓解：临时缓存方案 · Owner：数据平台</p>
+                  </div>
+                  <span class="tag">高</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">回滚脚本验证</p>
+                    <p class="list-item__desc">脚本：rollback-prod.sh · 验证：通过</p>
+                  </div>
+                  <span class="tag">完成</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">沟通计划</h2>
+                  <p class="surface-card__subtitle">通知渠道与责任人</p>
+                </div>
+                <a class="action-link" href="report-detail.html" data-keep-role>生成通知</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">客户通告</p>
+                    <p class="list-item__desc">负责人：市场 · 渠道：邮件/状态页</p>
+                  </div>
+                  <span class="tag">准备</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">内部同步</p>
+                    <p class="list-item__desc">负责人：Scrum Master · 渠道：Slack</p>
+                  </div>
+                  <span class="tag">已安排</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">发布准备度页面帮助 <span data-role-name></span> 核查范围完成度、测试质量与风险缓解，确保上线决策有据可依，可返回发布计划或跳转至风险视图继续跟踪。</p>
+            <div class="page-info__actions">
+              <a href="release-plan.html" data-keep-role>→ 返回发布计划</a>
+              <a href="risk-overview.html" data-keep-role>→ 检查风险</a>
+              <a href="automation-rules.html" data-keep-role>→ 启动回滚自动化</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

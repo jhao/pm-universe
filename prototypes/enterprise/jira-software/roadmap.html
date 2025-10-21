@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 路线图</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="roadmap">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>路线图：FY24 H2</strong><br />
+          同步团队：产品、研发、市场<br />
+          下次评审：7 月 25 日
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">规划 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">季度路线图</a>
+              <a class="system-link" href="#">版本计划</a>
+              <a class="system-link" href="#">依赖矩阵</a>
+              <a class="system-link" href="#">沟通纪要</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索 Epic 或版本" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">路线图视图 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">季度路线图与版本对齐</h1>
+              <p class="page-hero__subtitle">对齐 Epic、版本与依赖链，实时识别资源瓶颈与冲突，确保承诺可执行。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">活跃 Epic</span>
+                  <span class="hero-stat__value">12</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">关键依赖</span>
+                  <span class="hero-stat__value">9</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">延迟风险</span>
+                  <span class="hero-stat__value">3</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="release-plan.html" data-keep-role>
+                📦 打开版本计划
+              </a>
+              <a class="hero-actions__secondary" href="resource-planning.html" data-keep-role>
+                🧩 查看资源排期
+              </a>
+            </div>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">时间轴视图</h2>
+                <p class="surface-card__subtitle">跨月度分解的 Epic 计划与关键里程碑</p>
+              </div>
+              <div class="segmented-control">
+                <button class="is-active">季度</button>
+                <button>半年</button>
+                <button>年度</button>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-item__marker"></div>
+                <div class="timeline-item__content">
+                  <strong>7 月 · Epic: 全渠道体验</strong>
+                  <p class="list-item__desc">关键节点：移动端 SDK 接入、客服工作台整合</p>
+                  <div class="progress-track"><span style="width: 55%"></span></div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-item__marker"></div>
+                <div class="timeline-item__content">
+                  <strong>8 月 · Epic: 智能自动化</strong>
+                  <p class="list-item__desc">关键节点：事件触发引擎、自动化模板市场</p>
+                  <div class="progress-track"><span style="width: 38%"></span></div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-item__marker"></div>
+                <div class="timeline-item__content">
+                  <strong>9 月 · Epic: 企业级治理</strong>
+                  <p class="list-item__desc">关键节点：审计日志、分层权限、合规包</p>
+                  <div class="progress-track"><span style="width: 22%"></span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">依赖矩阵</h2>
+                  <p class="surface-card__subtitle">识别跨团队依赖并跟踪状态</p>
+                </div>
+                <a class="action-link" href="risk-overview.html" data-keep-role>查看风险概览</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>来源团队</th>
+                    <th>依赖描述</th>
+                    <th>目标 Sprint</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Infra</td>
+                    <td>Provision 多活环境</td>
+                    <td>Sprint 34</td>
+                    <td><span class="tag">进行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>Security</td>
+                    <td>合规审批流程</td>
+                    <td>Sprint 35</td>
+                    <td><span class="tag">待确认</span></td>
+                  </tr>
+                  <tr>
+                    <td>Data</td>
+                    <td>行为分析埋点</td>
+                    <td>Sprint 33</td>
+                    <td><span class="tag">已完成</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">资源利用率</h2>
+                  <p class="surface-card__subtitle">对齐人力投入与路线图承诺</p>
+                </div>
+                <a class="action-link" href="resource-planning.html" data-keep-role>打开资源排期</a>
+              </div>
+              <div class="metric-group">
+                <div class="metric-card">
+                  <span class="metric-card__label">产品</span>
+                  <span class="metric-card__value">95%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">前端</span>
+                  <span class="metric-card__value">82%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">后端</span>
+                  <span class="metric-card__value">88%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">QA</span>
+                  <span class="metric-card__value">76%</span>
+                </div>
+              </div>
+              <div class="chart-placeholder"></div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">沟通记录</h2>
+                <p class="surface-card__subtitle">关键干系人同步与决策摘要</p>
+              </div>
+              <a class="action-link" href="progress-report.html" data-keep-role>查看周报详情</a>
+            </div>
+            <div class="stacked-list">
+              <div class="stacked-item">
+                <h3 class="stacked-item__title">路线图评审 · 7 月 10 日</h3>
+                <p class="stacked-item__meta">确认自动化 Epic 延长 1 Sprint · 需额外 2 名后端支援</p>
+              </div>
+              <div class="stacked-item">
+                <h3 class="stacked-item__title">重点客户同步 · 7 月 15 日</h3>
+                <p class="stacked-item__meta">将智能推荐提前至 Beta，市场团队负责客户引导</p>
+              </div>
+              <div class="stacked-item">
+                <h3 class="stacked-item__title">跨团队风险评审 · 7 月 18 日</h3>
+                <p class="stacked-item__meta">Infra 需要在 7 月底前交付环境，Scrum Master 跟进</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">路线图视图帮助 <span data-role-name></span> 将季度目标拆解为 Epic 和版本，围绕关键依赖与资源配置展开协同。可跳转至发布计划查看更细粒度的发布待办，也可进入资源排期调整团队负载。</p>
+            <div class="page-info__actions">
+              <a href="release-plan.html" data-keep-role>→ 管理发布计划</a>
+              <a href="resource-planning.html" data-keep-role>→ 协调资源排期</a>
+              <a href="risk-overview.html" data-keep-role>→ 识别路线图风险</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
