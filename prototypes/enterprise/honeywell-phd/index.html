@@ -3,82 +3,192 @@
   <head>
     <meta charset="utf-8" />
     <title>Honeywell PHD 原型概览</title>
-    <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
-      <h1>Honeywell PHD 原型</h1>
-      <p class="tagline">过程工业的历史数据管理与高级分析平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>炼化、化工、能源企业的工艺工程师与运维团队</p>
-        <p><strong>核心痛点：</strong>DCS/SCADA 数据难以长期存储与分析，流程优化需要历史数据</p>
-        <p><strong>价值主张：</strong>提供高性能历史数据库、分析工具与建模能力，支撑工艺优化</p>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li>
+              <a class="nav-link is-active" href="index.html">
+                <span class="nav-icon">🏠</span>
+                概览首页
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="operations-dashboard.html">
+                <span class="nav-icon">📊</span>
+                运行驾驶舱
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="data-collection.html">
+                <span class="nav-icon">🛠️</span>
+                数据采集
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="trend-analysis.html">
+                <span class="nav-icon">📈</span>
+                趋势分析
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="alarm-management.html">
+                <span class="nav-icon">🚨</span>
+                报警管理
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="report-center.html">
+                <span class="nav-icon">🗂️</span>
+                报表中心
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="model-lab.html">
+                <span class="nav-icon">🧪</span>
+                模型实验室
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>快速跳转</strong>
+          <div>• <a href="alarm-investigation.html">报警应急响应</a></div>
+          <div>• <a href="model-training-detail.html">模型训练详情</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>概览首页</h2>
+            <span class="breadcrumb">Honeywell PHD / 原型总览</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card hero">
+            <h1>统一入口：工业数据驱动的运营优化</h1>
+            <p>
+              快速了解 Honeywell PHD 平台的核心价值、关键任务与各角色关注重点。通过左侧菜单进入具体功能，右上角切换角色即可查看不同视角下的业务主界面与动作入口。
+            </p>
+            <div class="list-inline">
+              <span class="pill">实时采集 20 万+ 点位</span>
+              <span class="pill">历史数据保留 5 年+</span>
+              <span class="pill">AI 模型助力节能减排</span>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>角色关心的核心任务</h3>
+            <div class="split-layout">
+              <div class="role-section" data-role="工艺工程师">
+                <h4>工艺工程师</h4>
+                <p>专注于过程优化、异常波动分析与回归建模。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="trend-analysis.html">进入趋势分析</a>
+                  <a class="button secondary" href="model-lab.html">打开模型实验室</a>
+                </div>
+              </div>
+              <div class="role-section" data-role="运维主管">
+                <h4>运维主管</h4>
+                <p>确保采集通道稳定，及时响应报警与设备健康。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="data-collection.html">查看采集状态</a>
+                  <a class="button secondary" href="alarm-management.html">查看报警队列</a>
+                </div>
+              </div>
+              <div class="role-section" data-role="管理层">
+                <h4>管理层</h4>
+                <p>关注关键生产指标、能耗指标与合规报表。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="operations-dashboard.html">查看运营驾驶舱</a>
+                  <a class="button secondary" href="report-center.html">下载合规报表</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>核心模块速览</h3>
+            <div class="quick-links">
+              <a class="quick-link" href="operations-dashboard.html">
+                <strong>运行驾驶舱</strong>
+                <span>综合展示产量、能耗、报警等核心 KPI，支持角色化视图切换。</span>
+              </a>
+              <a class="quick-link" href="data-collection.html">
+                <strong>数据采集与通道</strong>
+                <span>查看接口健康度与吞吐，进入 <em>管道详情</em> 可进一步编辑采集策略。</span>
+              </a>
+              <a class="quick-link" href="trend-analysis.html">
+                <strong>趋势分析工作台</strong>
+                <span>快速拉取多点位趋势，创建模板后可在 <em>模板编辑器</em> 中复用。</span>
+              </a>
+              <a class="quick-link" href="alarm-management.html">
+                <strong>报警管理中心</strong>
+                <span>监控报警生命周期，点击报警可进入 <em>应急响应页</em>。</span>
+              </a>
+              <a class="quick-link" href="report-center.html">
+                <strong>报表中心</strong>
+                <span>调度运行日报、能耗周报和合规报告，支持在线审批。</span>
+              </a>
+              <a class="quick-link" href="model-lab.html">
+                <strong>模型实验室</strong>
+                <span>运行回归 / MVR 模型，进入 <em>模型训练详情</em> 了解训练细节。</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>即时公告</h3>
+            <div class="timeline">
+              <article class="timeline-item" data-role="工艺工程师,运维主管">
+                <div class="timeline-meta">
+                  <span>2024-04-22 · 数据采集升级</span>
+                  <span class="badge success"><span class="status-dot"></span> 已完成</span>
+                </div>
+                <p>新增 4 条 OPC UA 通道并启用动态重连，建议进入 <a href="data-pipeline-detail.html">管道详情</a> 检查采集频率。</p>
+              </article>
+              <article class="timeline-item" data-role="管理层">
+                <div class="timeline-meta">
+                  <span>2024-04-20 · KPI 发布</span>
+                  <span class="badge warning"><span class="status-dot"></span> 待关注</span>
+                </div>
+                <p>三月能耗同比下降 8%，建议前往 <a href="operations-dashboard.html">运行驾驶舱</a> 复盘节能措施。</p>
+              </article>
+              <article class="timeline-item" data-role="all">
+                <div class="timeline-meta">
+                  <span>2024-04-18 · 新功能上线</span>
+                  <span class="badge success"><span class="status-dot"></span> 在线</span>
+                </div>
+                <p>模型实验室支持多版本对比，可在 <a href="model-training-detail.html">模型训练详情</a> 中查看版本评分。</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            概览首页聚合所有核心入口，帮助不同角色快速跳转至关注的业务模块。通过顶部角色切换可以体验不同角色看到的公告与行动建议。
+          </section>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>现场数据采集至历史数据库</li><li>工程师分析过程波动与能耗</li><li>管理层查看生产绩效与报警</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>数据采集与存储</h3>
-              <p class="goal">功能目标：稳定采集大规模实时数据</p>
-              <ul>
-                <li>与 Experion 等控制系统集成</li><li>高压缩率与冗余架构</li><li>数据质量校验与修正</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>可视化与报表</h3>
-              <p class="goal">功能目标：快速洞察生产运行情况</p>
-              <ul>
-                <li>Trend 浏览器与自定义图表</li><li>报警分析与事件回放</li><li>报表调度与发布</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>高级分析</h3>
-              <p class="goal">功能目标：支持过程优化与预测</p>
-              <ul>
-                <li>Profile、Uniformance Insight 工具</li><li>建模、回归与多变量分析</li><li>与第三方高级分析集成</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>集成与治理</h3>
-              <p class="goal">功能目标：确保数据安全与共享</p>
-              <ul>
-                <li>企业数据总线与 API</li><li>用户权限、审计与合规</li><li>与 ERP、MES、LIMS 等系统对接</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>数据采集可用率与完整性</li><li>分析模型部署数量与节能收益</li><li>报警响应时间与合规报告完成率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>报警管理中心 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a></li>
+            <li><a class="nav-link" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a></li>
+            <li><a class="nav-link" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a></li>
+            <li><a class="nav-link" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a></li>
+            <li><a class="nav-link is-active" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a></li>
+            <li><a class="nav-link" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a></li>
+            <li><a class="nav-link" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a></li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>快速处理</strong>
+          <div>• <a href="alarm-investigation.html">报警应急响应</a></div>
+          <div>• <a href="report-center.html#safety">安全报表</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>报警管理中心</h2>
+            <span class="breadcrumb">Honeywell PHD / 报警管理</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card" id="critical">
+            <h3>高优报警队列</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>报警</th>
+                  <th>优先级</th>
+                  <th>持续时间</th>
+                  <th>状态</th>
+                  <th>责任人</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-role="运维主管,工艺工程师">
+                  <td>F-301 炉膛温度上限</td>
+                  <td><span class="badge danger"><span class="status-dot"></span> 高</span></td>
+                  <td>18 分钟</td>
+                  <td>待确认</td>
+                  <td>张伟</td>
+                  <td><a href="alarm-investigation.html#f301">进入应急响应</a></td>
+                </tr>
+                <tr data-role="运维主管">
+                  <td>循环水泵压力低</td>
+                  <td><span class="badge warning"><span class="status-dot"></span> 中</span></td>
+                  <td>5 分钟</td>
+                  <td>处理中</td>
+                  <td>李娜</td>
+                  <td><a href="alarm-investigation.html#pump">跟踪进展</a></td>
+                </tr>
+                <tr data-role="工艺工程师,管理层">
+                  <td>乙烯塔能耗异常</td>
+                  <td><span class="badge warning"><span class="status-dot"></span> 中</span></td>
+                  <td>32 分钟</td>
+                  <td>已确认</td>
+                  <td>陈明</td>
+                  <td><a href="trend-analysis.html">查看趋势</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="section-card" id="quality">
+            <h3>报警分析面板</h3>
+            <div class="split-layout">
+              <div>
+                <h4>报警原因分布</h4>
+                <div class="chart-placeholder">停机 / 设备 / 过程 / 数据质量 分类占比</div>
+              </div>
+              <div>
+                <h4>推荐动作</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>触发 <a href="data-pipeline-detail.html#mqtt-01">MQTT-01</a> 通道自检。</li>
+                  <li><span class="check-icon">✓</span>在 <a href="report-center.html#safety">安全周报</a> 中记录此次报警。</li>
+                  <li><span class="check-icon">✓</span>通知模型团队更新异常检测阈值，见 <a href="model-training-detail.html">模型详情</a>。</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>角色关注点</h3>
+            <div class="split-layout">
+              <div class="role-section" data-role="工艺工程师">
+                <h4>工艺工程师</h4>
+                <p>重点处理影响工艺稳定的报警，关注趋势与模型建议。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="trend-analysis.html">打开趋势分析</a>
+                  <a class="button secondary" href="model-lab.html">查看模型建议</a>
+                </div>
+              </div>
+              <div class="role-section" data-role="运维主管">
+                <h4>运维主管</h4>
+                <p>统筹调度维护资源，确保响应 SLA。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="alarm-investigation.html">启动应急响应</a>
+                  <a class="button secondary" href="data-pipeline-detail.html">检查采集通道</a>
+                </div>
+              </div>
+              <div class="role-section" data-role="管理层">
+                <h4>管理层</h4>
+                <p>关注报警趋势与对生产影响，审阅合规记录。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="report-center.html#executive">查看管理报表</a>
+                  <a class="button secondary" href="operations-dashboard.html">回到驾驶舱</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            报警管理中心提供高优报警队列、原因分析与角色关注点，用户可通过链接快速进入应急响应、趋势分析或报表模块，确保报警的全流程闭环。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
