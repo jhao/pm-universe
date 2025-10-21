@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜客户服务排班</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="service">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>客户服务中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>客户服务页面可直达工单、合同与履约分析。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">Epicor ERP &gt; 客户服务</div>
+            <h1>客户服务排班与履约中心</h1>
+            <p class="role-tagline" data-role-summary>跟踪客户履约与售后服务交付，提高满意度与续约率。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel" data-role-visibility="service,production,supply">
+            <div class="panel-header">
+              <h2>今日现场排班</h2>
+              <div class="panel-actions">
+                <a class="button" href="service-case-detail.html">查看现场工单</a>
+                <a class="button secondary" href="service-contract.html">查看合同</a>
+              </div>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>服务工单</th>
+                    <th>客户</th>
+                    <th>工程师</th>
+                    <th>时间</th>
+                    <th>状态</th>
+                    <th>协同</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="service-case-detail.html">SR-2024-118</a></td>
+                    <td>EMEA-Delta</td>
+                    <td>张磊｜李娟</td>
+                    <td>09:00 - 15:00</td>
+                    <td><span class="badge warning">调试中</span></td>
+                    <td><a href="supply-chain.html">补充备件</a></td>
+                  </tr>
+                  <tr>
+                    <td>SR-2024-123</td>
+                    <td>APAC-Tech</td>
+                    <td>刘伟</td>
+                    <td>13:00 - 17:00</td>
+                    <td><span class="badge">待出发</span></td>
+                    <td><a href="production.html">协调生产支援</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="service,finance,admin">
+            <div class="panel-header">
+              <h2>客户满意度与 SLA</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="analytics.html">查看满意度分析</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>本月满意度</h3>
+                <p>平均 4.6 / 5｜NPS +38</p>
+                <a class="button secondary" href="service-case-detail.html">查看反馈</a>
+              </div>
+              <div class="card">
+                <h3>SLA 达成</h3>
+                <p>98% 工单按 SLA 完成，2% 延迟已补偿。</p>
+                <a class="button" href="analytics.html">打开 SLA 仪表盘</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="service,finance,supply">
+            <div class="panel-header">
+              <h2>合同与续约提醒</h2>
+              <div class="panel-actions">
+                <a class="button" href="service-contract.html">更新合同</a>
+              </div>
+            </div>
+            <div class="flex-table">
+              <div class="flex-row">
+                <strong>EMEA-Delta 维保合同</strong>
+                <span>2025-03-31 到期｜续约概率 85%</span>
+                <a href="service-contract.html">查看合同</a>
+              </div>
+              <div class="flex-row">
+                <strong>APAC-Tech 维保合同</strong>
+                <span>2024-08-15 到期｜续约概率 62%</span>
+                <a href="service-contract.html">制定续约计划</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示客户服务经理的核心操作界面。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                客户服务页面聚合现场排班、满意度与 SLA、合同续约三个板块。通过链接可跳转至供应链、生产、财务页面，展示与其他角色的协同。
+              </p>
+              <p>
+                切换角色时，财务可看到合同续约与收入相关信息，生产仅保留需要支援的工单，说明不同角色看到的内容差异。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

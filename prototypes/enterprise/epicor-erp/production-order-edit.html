@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜调整排程</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="production">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>生产控制中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>说明：</strong>调整排程时可同步通知供应链与客户服务角色。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">生产排程 &gt; 调整排程</div>
+            <h1>调整工单排程与班次</h1>
+            <p class="role-tagline" data-role-summary>关注排程执行、产线产能与质量预警，及时协调工单与资源。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>调整范围</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="production-order-detail.html">返回工单详情</a>
+              </div>
+            </div>
+            <dl class="description-list">
+              <div>
+                <dt>工单</dt>
+                <dd>MO-4821｜工业控制柜</dd>
+              </div>
+              <div>
+                <dt>当前排程</dt>
+                <dd>2024-05-18 08:00 - 2024-05-19 18:00</dd>
+              </div>
+              <div>
+                <dt>异常原因</dt>
+                <dd><span class="badge warning">SMT 板缺料</span></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>排程调整表单</h2>
+              <p>调整后自动触发通知与审批。</p>
+            </div>
+            <form class="form-grid">
+              <div class="form-field">
+                <label for="newStart">新的开工时间</label>
+                <input id="newStart" type="datetime-local" value="2024-05-18T10:30" />
+                <span class="helper-text">系统根据物料补给预计可在 10:30 重新开工。</span>
+              </div>
+              <div class="form-field">
+                <label for="newEnd">新的完工时间</label>
+                <input id="newEnd" type="datetime-local" value="2024-05-19T20:00" />
+              </div>
+              <div class="form-field" data-role-visibility="production,supply">
+                <label for="materialPlan">补料方案</label>
+                <select id="materialPlan">
+                  <option>方案 A｜供应商加急到厂</option>
+                  <option>方案 B｜仓库调拨 W2</option>
+                  <option>方案 C｜拆单生产</option>
+                </select>
+              </div>
+              <div class="form-field" data-role-visibility="service,production,admin">
+                <label for="customerNotice">客户承诺</label>
+                <textarea id="customerNotice" rows="3">计划延迟 45 分钟，已与客户确认新的安装时间。</textarea>
+              </div>
+              <div class="form-field" data-role-visibility="finance,production">
+                <label for="costImpact">成本影响</label>
+                <input id="costImpact" type="text" value="+2600 CNY" />
+                <span class="helper-text">数据将同步至成本分析页面。</span>
+              </div>
+            </form>
+            <div class="inline-actions">
+              <a class="button" href="production-order-detail.html">提交调整</a>
+              <a class="button secondary" href="service.html">同步客户服务</a>
+              <a class="button secondary" href="purchase-order-detail.html">通知采购</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>审批路线</h2>
+              <p>根据角色不同显示需要确认的审批节点。</p>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item" data-role-visibility="production,admin">
+                <h4>生产经理确认</h4>
+                <p>确认新的班次安排与产能负荷。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="supply,production">
+                <h4>供应链主管</h4>
+                <p>验证补料计划是否满足新的排程。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="finance">
+                <h4>财务总监</h4>
+                <p>评估成本影响并决定是否需要预算调整。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="service,production">
+                <h4>客户服务经理</h4>
+                <p>更新客户承诺与现场服务排期。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示排程调整与跨角色审批流程。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                该页面模拟生产经理在系统中调整工单排程的操作表单，包含时间、物料、成本、客户承诺等字段；切换不同角色可演示表单字段和审批节点的差异，例如供应链主管看到补料方案、财务总监看到成本影响。
+              </p>
+              <p>
+                底部按钮用于跳转回工单详情、同步客户服务或通知采购，从而演示流程闭环。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

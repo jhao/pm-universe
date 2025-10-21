@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜生产排程与执行</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="production">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>生产控制中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>工单详情、调整排程等操作可通过卡片按钮快速进入。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">Epicor ERP &gt; 生产排程</div>
+            <h1>生产排程与执行控制塔</h1>
+            <p class="role-tagline" data-role-summary>关注排程执行、产线产能与质量预警，及时协调工单与资源。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel" data-role-visibility="production,admin">
+            <div class="panel-header">
+              <h2>今日主生产计划</h2>
+              <div class="panel-actions">
+                <a class="button" href="production-order-edit.html">调整排程</a>
+                <a class="button secondary" href="production-order-detail.html">查看工单 MO-4821</a>
+              </div>
+            </div>
+            <div class="chart-placeholder">甘特图 / 产能装载情况占位</div>
+            <div class="flex-table">
+              <div class="flex-row">
+                <strong>装配线 A</strong>
+                <div>
+                  <span class="badge danger">瓶颈</span>
+                  <span class="badge">计划负载 118%</span>
+                </div>
+                <a href="production-order-detail.html">查看受影响工单</a>
+              </div>
+              <div class="flex-row">
+                <strong>涂装线</strong>
+                <div>
+                  <span class="badge positive">正常</span>
+                  <span class="badge">余量 6%</span>
+                </div>
+                <a href="production-order-edit.html">插入加急单</a>
+              </div>
+              <div class="flex-row">
+                <strong>测试线</strong>
+                <div>
+                  <span class="badge warning">注意</span>
+                  <span class="badge">等待 QC 反馈</span>
+                </div>
+                <a href="service-case-detail.html">查看质检工单</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="production,supply">
+            <div class="panel-header">
+              <h2>工单队列与齐套</h2>
+              <p>按优先级排序的主工单队列，实时显示物料齐套情况。</p>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>工单号</th>
+                    <th>产品</th>
+                    <th>开工时间</th>
+                    <th>齐套状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>MO-4821</td>
+                    <td>工业控制柜</td>
+                    <td>今日 09:30</td>
+                    <td><span class="badge warning">缺少 SMT 板</span></td>
+                    <td><a href="purchase-order-detail.html">催交采购</a></td>
+                  </tr>
+                  <tr>
+                    <td>MO-4825</td>
+                    <td>伺服驱动单元</td>
+                    <td>今日 13:00</td>
+                    <td><span class="badge positive">齐套</span></td>
+                    <td><a href="production-order-detail.html">查看进度</a></td>
+                  </tr>
+                  <tr>
+                    <td>MO-4830</td>
+                    <td>控制柜出口版</td>
+                    <td>明日 08:00</td>
+                    <td><span class="badge">待确认</span></td>
+                    <td><a href="warehouse-transfer.html">调拨仓库</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="production,service,admin">
+            <div class="panel-header">
+              <h2>车间执行与质量</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="service-case-detail.html">打开质量事件</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>实时状态</h3>
+                <p>MES 返回 18 台设备在线，OEE 平均 83%。</p>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <h4>08:20 | 机器人单元保养完成</h4>
+                    <p>维护报告已同步至系统管理员。</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4>10:05 | QC 抽检警报</h4>
+                    <p><a href="service-case-detail.html">点击查看不良原因</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>班组沟通墙</h3>
+                <p>班组长可发布现场公告，系统自动同步至移动端。</p>
+                <div class="notice">
+                  夜班交接提醒：CNC 机台需更换刀具，请于 22:00 前完成；相关工单已自动顺延 15 分钟。
+                </div>
+                <div class="inline-actions">
+                  <a class="button secondary" href="production-order-detail.html">查看班组详情</a>
+                  <a class="button" href="service.html">通知售后支援</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>模拟生产经理/计划员进入系统后的核心操作界面。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                首屏展示今日主生产计划的甘特视图与瓶颈提醒，点击工单可进入详情页；队列表格直接体现物料齐套与跨部门协同动作，
+                例如跳转到采购订单或仓库调拨页面。车间执行卡片用于演示 MES 集成、质量事件追踪与班组沟通流程。
+              </p>
+              <p>
+                通过顶部角色切换，可展示供应链主管或客户服务经理进入该页面时，仅保留与其相关的协同模块，从而说明权限驱动的视图收敛。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

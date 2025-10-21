@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜系统配置中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="admin">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>系统配置中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>系统配置支持为不同角色定义权限模板与集成接口。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">Epicor ERP &gt; 系统配置</div>
+            <h1>系统配置与权限中心</h1>
+            <p class="role-tagline" data-role-summary>配置主数据、权限与跨部门流程，保障系统稳定运行。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel" data-role-visibility="admin">
+            <div class="panel-header">
+              <h2>角色与权限模板</h2>
+              <div class="panel-actions">
+                <a class="button" href="admin.html">新增角色</a>
+              </div>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>角色模板</th>
+                    <th>关键权限</th>
+                    <th>审批范围</th>
+                    <th>协同入口</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>生产经理</td>
+                    <td>排程调整、工单执行、质量事件</td>
+                    <td>排程审批、质量例外</td>
+                    <td><a href="production.html">查看页面</a></td>
+                  </tr>
+                  <tr>
+                    <td>供应链主管</td>
+                    <td>采购订单、仓库调拨、物流跟踪</td>
+                    <td>采购审批、调拨审批</td>
+                    <td><a href="supply-chain.html">查看页面</a></td>
+                  </tr>
+                  <tr>
+                    <td>财务总监</td>
+                    <td>成本调整、发票审批、预算管理</td>
+                    <td>成本审批、付款审批</td>
+                    <td><a href="finance.html">查看页面</a></td>
+                  </tr>
+                  <tr>
+                    <td>客户服务经理</td>
+                    <td>服务排班、SLA 管理、客户沟通</td>
+                    <td>赔付审批、升级审批</td>
+                    <td><a href="service.html">查看页面</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="admin,finance,production,supply,service">
+            <div class="panel-header">
+              <h2>集成与系统健康</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="analytics.html">查看监控报表</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>系统集成</h3>
+                <p>MES｜WMS｜CRM｜BI｜SaaS 集成状态正常。</p>
+                <a class="button secondary" href="production.html">查看 MES 状态</a>
+              </div>
+              <div class="card">
+                <h3>安全与审计</h3>
+                <p>近 7 日 0 起高危告警，例行权限审计待处理 1 项。</p>
+                <a class="button" href="admin.html">处理审计</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="admin,finance">
+            <div class="panel-header">
+              <h2>审批与通知配置</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="cost-adjustment.html">预览审批流程</a>
+              </div>
+            </div>
+            <div class="flex-table">
+              <div class="flex-row">
+                <strong>成本调整</strong>
+                <span>流程：生产→供应链→财务→客户服务</span>
+                <a href="cost-adjustment.html">查看示例</a>
+              </div>
+              <div class="flex-row">
+                <strong>服务升级</strong>
+                <span>流程：服务→生产→供应链</span>
+                <a href="service-case-detail.html">查看示例</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示系统管理员如何支撑跨角色协同。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                系统配置中心展示角色模板、集成健康与审批配置，链接至各业务页面帮助演示系统管理员如何协调权限与流程。切换角色时，非管理员仅看到与自己相关的系统信息，例如审批配置或集成状态。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜采购订单详情 PO#4502389</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="supply">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>供应链指挥塔</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>订单详情支持与生产、财务、服务共享状态。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">供应链协同 &gt; 采购订单</div>
+            <h1>采购订单 PO#4502389｜SMT 主板</h1>
+            <p class="role-tagline" data-role-summary>统筹采购、库存与物流协同，保障物料齐套与供应韧性。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>订单概况</h2>
+              <div class="panel-actions">
+                <a class="button" href="production.html">反馈生产排程</a>
+                <a class="button secondary" href="invoice-detail.html">查看发票</a>
+              </div>
+            </div>
+            <dl class="description-list">
+              <div>
+                <dt>供应商</dt>
+                <dd>V45｜华芯电子</dd>
+              </div>
+              <div>
+                <dt>下单数量</dt>
+                <dd>120 件（SMT 主板）</dd>
+              </div>
+              <div>
+                <dt>计划到货</dt>
+                <dd><span class="badge warning">延迟 2 天</span> 原计划 2024-05-18</dd>
+              </div>
+              <div>
+                <dt data-role-visibility="finance">付款条件</dt>
+                <dd data-role-visibility="finance" class="is-visible">30% 预付款｜货到 60 天内付清</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel" data-role-visibility="supply,production,admin">
+            <div class="panel-header">
+              <h2>交付追踪</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="warehouse-transfer.html">安排入库</a>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <h4>05-15 | 供应商确认</h4>
+                <p>供应商回复：关键原料缺货，建议拆分交付。</p>
+              </div>
+              <div class="timeline-item">
+                <h4>05-17 | 物流提货</h4>
+                <p>第一批 40 件已提货，预计今晚到厂。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="service,production">
+                <h4>05-18 | 影响排程</h4>
+                <p>需要将 MO-4821 顺延 2 小时，<a href="production-order-edit.html">立即调整</a></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="finance,supply">
+            <div class="panel-header">
+              <h2>价格与发票</h2>
+              <div class="panel-actions">
+                <a class="button" href="invoice-detail.html">核对发票 INV-90321</a>
+              </div>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>项目</th>
+                    <th>数量</th>
+                    <th>单价 (CNY)</th>
+                    <th>金额</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SMT 主板</td>
+                    <td>120</td>
+                    <td>680</td>
+                    <td>81,600</td>
+                    <td><span class="badge">待到货</span></td>
+                  </tr>
+                  <tr data-role-visibility="finance">
+                    <td>加急运费</td>
+                    <td>1</td>
+                    <td>3,200</td>
+                    <td>3,200</td>
+                    <td><span class="badge warning">待审批</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示单一采购订单在不同角色下的关注点。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                采购订单详情页面提供供应商信息、交付追踪、价格与发票模块。通过按钮可跳转至生产排程、仓库调拨、财务发票页面，体现供应链协同。
+              </p>
+              <p>
+                切换角色时，财务可查看付款条件、加急运费审批，生产侧重点在交付对排程的影响，客户服务角色则关注交付延迟对客户承诺的影响。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

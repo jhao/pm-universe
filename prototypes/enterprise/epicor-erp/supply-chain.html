@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜供应链协同</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="supply">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>供应链指挥塔</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>供应链角色可直接跳转到采购、仓储、物流等子页面。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">Epicor ERP &gt; 供应链协同</div>
+            <h1>供应链与采购协同指挥塔</h1>
+            <p class="role-tagline" data-role-summary>统筹采购、库存与物流协同，保障物料齐套与供应韧性。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel" data-role-visibility="supply,production">
+            <div class="panel-header">
+              <h2>采购订单雷达</h2>
+              <div class="panel-actions">
+                <a class="button" href="purchase-order-detail.html">查看 PO#4502389</a>
+                <a class="button secondary" href="production.html">反馈排程</a>
+              </div>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>采购订单</th>
+                    <th>供应商</th>
+                    <th>到货日期</th>
+                    <th>状态</th>
+                    <th>协同动作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="purchase-order-detail.html">PO#4502389</a></td>
+                    <td>V45 - 华芯电子</td>
+                    <td>2024-05-18</td>
+                    <td><span class="badge warning">延迟 2 天</span></td>
+                    <td><a href="production-order-edit.html">调整生产节奏</a></td>
+                  </tr>
+                  <tr>
+                    <td>PO#4502391</td>
+                    <td>W12 - 联诚铝材</td>
+                    <td>2024-05-20</td>
+                    <td><span class="badge positive">在途</span></td>
+                    <td><a href="warehouse-transfer.html">安排卸货仓位</a></td>
+                  </tr>
+                  <tr data-role-visibility="finance,supply">
+                    <td>PO#4502403</td>
+                    <td>F32 - 精密外协</td>
+                    <td>2024-05-25</td>
+                    <td><span class="badge">待确认</span></td>
+                    <td><a href="invoice-detail.html">确认付款条件</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="supply,admin">
+            <div class="panel-header">
+              <h2>库存预警与调拨</h2>
+              <div class="panel-actions">
+                <a class="button" href="warehouse-transfer.html">发起调拨</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>安全库存预警</h3>
+                <p>共有 6 个物料低于安全库存线。</p>
+                <ul>
+                  <li>SMT 主板｜缺口 12 件｜<a href="purchase-order-detail.html">补货中</a></li>
+                  <li>电源模组｜缺口 8 件｜已发起调拨</li>
+                  <li>密封件套装｜缺口 30 件｜建议合并采购</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>仓库调拨看板</h3>
+                <p>展示跨仓库调拨的执行情况。</p>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <h4>09:00 | W2 → W1</h4>
+                    <p>SMT 板 40 件已出库，预计 10:30 到达。</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4>09:45 | W3 → 工厂</h4>
+                    <p>备件套装 25 件，<a href="warehouse-transfer.html">查看调拨单</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="supply,service,production">
+            <div class="panel-header">
+              <h2>物流与客户承诺</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="service.html">通知客户服务</a>
+              </div>
+            </div>
+            <div class="description-list">
+              <div>
+                <dt>关键客户发货</dt>
+                <dd>EMEA-Delta｜预计 5/19 离港</dd>
+              </div>
+              <div>
+                <dt>在途里程碑</dt>
+                <dd>海运提单已生成｜待关务放行</dd>
+              </div>
+              <div>
+                <dt>风险提示</dt>
+                <dd><span class="badge warning">船期紧张</span> 建议与客户确认缓冲期。</dd>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>演示供应链主管/采购经理在系统中的核心操作。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                页面覆盖采购订单监控、库存预警与调拨、物流与客户承诺三个核心区域；点击各条目可进入采购详情、仓库调拨或客户服务页面，展示跨部门协同流程。
+              </p>
+              <p>
+                切换角色时，可看到财务仅关注与付款相关的 PO，生产看到影响排程的订单，说明系统如何基于角色控制信息范围。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

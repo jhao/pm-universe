@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜服务工单 SR-2024-118</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="service">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>客户服务中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>说明：</strong>服务工单页面支持跳转到工单、采购、合同、成本等环节。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">客户服务 &gt; 服务工单</div>
+            <h1>服务工单 SR-2024-118｜EMEA-Delta</h1>
+            <p class="role-tagline" data-role-summary>跟踪客户履约与售后服务交付，提高满意度与续约率。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>工单概况</h2>
+              <div class="panel-actions">
+                <a class="button" href="service.html">返回排班</a>
+                <a class="button secondary" href="service-contract.html">查看合同</a>
+              </div>
+            </div>
+            <dl class="description-list">
+              <div>
+                <dt>服务类型</dt>
+                <dd>现场安装调试</dd>
+              </div>
+              <div>
+                <dt>客户联系人</dt>
+                <dd>Linda｜EMEA-Delta</dd>
+              </div>
+              <div>
+                <dt>计划时间</dt>
+                <dd>2024-05-18 09:00 - 15:00</dd>
+              </div>
+              <div>
+                <dt>当前状态</dt>
+                <dd><span class="badge warning">调试中</span></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel" data-role-visibility="service,production,supply">
+            <div class="panel-header">
+              <h2>执行进度</h2>
+              <div class="panel-actions">
+                <a class="button" href="warehouse-transfer.html">催促备件</a>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <h4>08:30 | 工程师出发</h4>
+                <p>系统自动生成出差单。</p>
+              </div>
+              <div class="timeline-item">
+                <h4>09:10 | 到场签到</h4>
+                <p>拍照上传现场环境，<a href="analytics.html">查看签到地图</a></p>
+              </div>
+              <div class="timeline-item">
+                <h4>11:20 | 调试异常</h4>
+                <p>发现主控板故障，已向供应链申请备件。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="finance">
+                <h4>12:30 | 费用更新</h4>
+                <p>新增差旅补贴 600 CNY，待审批。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="service,finance">
+            <div class="panel-header">
+              <h2>客户沟通与 SLA</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="service-contract.html">更新 SLA</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>客户沟通记录</h3>
+                <ul>
+                  <li>09:30 客户确认调试进度</li>
+                  <li>10:45 远程专家加入 Teams 支援</li>
+                  <li>11:30 通知客户延迟 45 分钟</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>SLA 影响</h3>
+                <p>SLA 允许 1 小时缓冲，当前延迟 45 分钟仍在 SLA 范围。</p>
+                <a class="button" href="analytics.html">查看 SLA 趋势</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示现场服务工单的全链路视图。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                服务工单页面集成执行进度、客户沟通与 SLA 数据，并链接到仓储、财务、合同等页面；切换不同角色展示其关注的信息，例如供应链查看备件进度、财务关注费用更新。
+              </p>
+              <p>
+                通过顶部按钮可返回排班或查看合同，形成服务流程闭环。</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
