@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>数据连接中心 | 数据工程师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-role="engineer" data-page="data-connections">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：数据工程师</span>
+            <strong>数据连接中心</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>企业数据源管理</h1>
+                <p>统一管理数据网关、连接凭据与数据源认证。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="connection-wizard.html">新建数据连接</a>
+                <a class="button secondary" href="dataflow-monitor.html">查看数据流</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>网关与连接状态</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>网关名称</th>
+                    <th>数据源</th>
+                    <th>环境</th>
+                    <th>状态</th>
+                    <th>最后同步</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>总部数据中心</td>
+                    <td>SQL Server (ERP)</td>
+                    <td>生产</td>
+                    <td><span class="metric-badge gain">在线</span></td>
+                    <td>10 分钟前</td>
+                  </tr>
+                  <tr>
+                    <td>云分析</td>
+                    <td>Azure Synapse</td>
+                    <td>生产</td>
+                    <td><span class="metric-badge gain">在线</span></td>
+                    <td>5 分钟前</td>
+                  </tr>
+                  <tr>
+                    <td>测试环境</td>
+                    <td>Oracle EBS</td>
+                    <td>测试</td>
+                    <td><span class="metric-badge loss">离线</span></td>
+                    <td>2 小时前</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>敏感连接监控</h2>
+              <div class="alert-banner">检测到 2 个凭据即将过期，请尽快处理。</div>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>SAP BW 连接</strong>
+                  <p>凭据 5 天后过期</p>
+                  <a class="button ghost" href="connection-wizard.html">更新凭据</a>
+                </div>
+                <div class="status-tile">
+                  <strong>CRM API</strong>
+                  <p>请求量接近限制</p>
+                  <a class="button ghost" href="dataflow-monitor.html">查看调用</a>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>集中展示所有数据网关与连接状态，支持快速定位异常。</li>
+                <li>提供敏感连接的风险提醒及下一步处理动作。</li>
+                <li>可继续进入连接向导进行新增或更新凭据，保障刷新稳定。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

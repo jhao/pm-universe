@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>订阅与警报 | 租户管理员视角</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-role="admin" data-page="subscriptions">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：租户管理员</span>
+            <strong>订阅与警报</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>企业级订阅与阈值管理</h1>
+                <p>监控关键仪表盘的订阅配置与警报触发。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="alert-detail.html">新增阈值警报</a>
+                <a class="button secondary" href="workspace-admin.html">返回工作区治理</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>订阅总览</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>订阅名称</th>
+                    <th>目标仪表盘</th>
+                    <th>收件人</th>
+                    <th>频率</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>高管日报</td>
+                    <td>集团经营概览</td>
+                    <td>12 位高管</td>
+                    <td>每日 08:00</td>
+                    <td><span class="metric-badge gain">发送成功</span></td>
+                  </tr>
+                  <tr>
+                    <td>供应链预警</td>
+                    <td>供应链执行仪表盘</td>
+                    <td>供应链团队</td>
+                    <td>触发式</td>
+                    <td><span class="metric-badge gain">运行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>市场周报</td>
+                    <td>市场洞察仪表盘</td>
+                    <td>市场团队</td>
+                    <td>每周一</td>
+                    <td><span class="metric-badge loss">等待更新</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>警报阈值</h2>
+              <div class="grid">
+                <div class="card">
+                  <h2>库存告警</h2>
+                  <p>库存周转天数 &lt; 15 天时触发</p>
+                  <a class="button ghost" href="alert-detail.html">编辑阈值</a>
+                </div>
+                <div class="card">
+                  <h2>营收达成</h2>
+                  <p>营收达成率 &lt; 85% 时触发</p>
+                </div>
+                <div class="card">
+                  <h2>延迟订单</h2>
+                  <p>延迟率 &gt; 6% 时触发</p>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>集中管理仪表盘订阅的频率、覆盖人群及状态。</li>
+                <li>展示关键阈值警报，支持编辑与新增。</li>
+                <li>可返回工作区治理或进入警报详情，确保通知闭环。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

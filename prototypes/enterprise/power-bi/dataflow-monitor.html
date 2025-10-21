@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>数据流监控 | 数据工程师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-role="engineer" data-page="dataflow-monitor">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：数据工程师</span>
+            <strong>数据流监控</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>数据流运行概览</h1>
+                <p>跟踪每个数据流刷新状态、耗时与失败原因。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="refresh-log.html">查看刷新日志</a>
+                <a class="button secondary" href="data-connection-hub.html">返回连接中心</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>刷新状态</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>数据流</th>
+                    <th>关联数据集</th>
+                    <th>刷新耗时</th>
+                    <th>状态</th>
+                    <th>最近运行</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>渠道销售增量</td>
+                    <td>渠道销售绩效</td>
+                    <td>08:34</td>
+                    <td><span class="metric-badge gain">成功</span></td>
+                    <td>今天 02:05</td>
+                  </tr>
+                  <tr>
+                    <td>订单履约跟踪</td>
+                    <td>订单履约与库存</td>
+                    <td>12:18</td>
+                    <td><span class="metric-badge loss">失败</span></td>
+                    <td>今天 02:10</td>
+                  </tr>
+                  <tr>
+                    <td>客户 360 汇总</td>
+                    <td>客户 360</td>
+                    <td>09:45</td>
+                    <td><span class="metric-badge gain">成功</span></td>
+                    <td>今天 02:12</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>失败诊断</h2>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span>02:10</span>
+                  <span>订单履约跟踪 - 凭据过期</span>
+                </div>
+                <div class="timeline-item">
+                  <span>02:12</span>
+                  <span>自动尝试重新刷新（失败）</span>
+                </div>
+                <div class="timeline-item">
+                  <span>02:15</span>
+                  <span>告警发送至数据工程团队</span>
+                </div>
+              </div>
+              <div class="link-list">
+                <a href="connection-wizard.html">更新凭据</a>
+                <a href="refresh-log.html">查看详细日志</a>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>监控数据流的刷新状态和耗时，及时识别失败。</li>
+                <li>提供失败诊断时间线，方便追溯问题并采取措施。</li>
+                <li>可直接跳转至日志或连接向导，迅速完成修复。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

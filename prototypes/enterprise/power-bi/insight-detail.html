@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>延迟订单洞察 | 业务分析师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-role="analyst" data-page="executive-dashboard">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：业务分析师</span>
+            <strong>延迟订单洞察</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>延迟订单追踪</h1>
+                <p>聚焦延迟交付订单的原因、影响范围与改善建议。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="report-builder.html">加入报表</a>
+                <a class="button secondary" href="dataset-detail.html">查看字段来源</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>延迟分布</h2>
+              <div class="grid">
+                <div class="card">
+                  <h2>主要原因</h2>
+                  <p>原材料短缺占 46%，物流拥堵占 32%。</p>
+                </div>
+                <div class="card">
+                  <h2>受影响区域</h2>
+                  <p>华南、华东受影响最大。</p>
+                </div>
+                <div class="card">
+                  <h2>关键客户</h2>
+                  <p>三大重点客户订单延迟超过 3 天。</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>推荐行动</h2>
+              <div class="flow-steps">
+                <div class="flow-step">
+                  <strong>库存补货</strong>
+                  <p>与供应链协同提升华南仓安全库存。</p>
+                </div>
+                <div class="flow-step">
+                  <strong>优先交付</strong>
+                  <p>将重点客户订单加入快速通道。</p>
+                </div>
+                <div class="flow-step">
+                  <strong>物流协调</strong>
+                  <p>联系合作物流调整线路与时段。</p>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>展示延迟订单的多维度分析，帮助迅速定位问题根因。</li>
+                <li>提供可执行建议，可复制到报表或共享给团队。</li>
+                <li>支持返回仪表盘或报表创作继续沉淀洞察。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
