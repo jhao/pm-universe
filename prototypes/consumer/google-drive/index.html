@@ -2,83 +2,721 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Google Drive 云端硬盘 原型概览</title>
+    <title>Google Drive 多角色原型画布</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #f4f7fc 0%, #eef2fa 100%);
+        color: #1f2937;
+      }
+      .top-bar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 48px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+        backdrop-filter: blur(10px);
+      }
+      .brand {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .role-switcher {
+        display: flex;
+        gap: 12px;
+      }
+      .role-switcher button {
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: 1px solid #cbd5f5;
+        background: #f8faff;
+        color: #3b4c8f;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .role-switcher button.active {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 8px 16px rgba(79, 70, 229, 0.25);
+      }
+      main {
+        padding: 32px 48px 72px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .canvas-description {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .persona-chip {
+        background: rgba(79, 70, 229, 0.08);
+        border: 1px solid rgba(79, 70, 229, 0.15);
+        border-radius: 18px;
+        padding: 12px 16px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #4338ca;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .persona-chip span {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #7c8bdb;
+        letter-spacing: 0.08em;
+      }
+      .role-view {
+        display: none;
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.14);
+        overflow: hidden;
+        border: 1px solid #e5e7f0;
+      }
+      .role-view.active { display: block; }
+      .app-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 640px;
+      }
+      .side-menu {
+        background: linear-gradient(180deg, #f7f7ff 0%, #ecebfe 100%);
+        border-right: 1px solid #d9ddf0;
+        padding: 28px 24px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      .side-menu h3 {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #6b7ab0;
+      }
+      .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .menu-item {
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        color: #3a4374;
+        background: transparent;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      .menu-item.primary, .menu-item:hover {
+        background: rgba(59, 76, 143, 0.12);
+        color: #1e2a78;
+      }
+      .workspace {
+        padding: 28px 36px 40px;
+        background: linear-gradient(180deg, #ffffff 0%, #f4f6fc 100%);
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 24px;
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .breadcrumbs {
+        font-weight: 600;
+        color: #475569;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .breadcrumbs span {
+        padding: 6px 12px;
+        border-radius: 10px;
+        background: #eef2ff;
+        color: #3730a3;
+      }
+      .action-group {
+        display: flex;
+        gap: 12px;
+      }
+      .action-group button {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid #d8dcf0;
+        background: #fff;
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      .action-group button:hover { transform: translateY(-2px); }
+      .sub-nav {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .sub-nav button {
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: none;
+        background: #edf2ff;
+        color: #475569;
+        font-weight: 600;
+      }
+      .sub-nav button.active {
+        background: #4338ca;
+        color: #fff;
+      }
+      .content-grid {
+        display: grid;
+        gap: 18px;
+      }
+      .grid-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+      .grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+      .panel {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 18px;
+        padding: 20px 22px;
+        border: 1px solid #e0e3f7;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      }
+      .panel h4 {
+        margin: 0;
+        font-size: 16px;
+        color: #1f2a60;
+      }
+      .file-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 16px;
+      }
+      .file-card {
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid #e5e7f8;
+        background: #f9faff;
+        display: grid;
+        gap: 12px;
+      }
+      .file-card strong {
+        font-size: 15px;
+        color: #1f2a60;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(99, 102, 241, 0.16);
+        color: #4338ca;
+      }
+      .mini-chart {
+        height: 56px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.16), rgba(37, 99, 235, 0.08));
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        color: #334155;
+      }
+      .table thead {
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: #6b7280;
+      }
+      .table th, .table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .timeline {
+        display: grid;
+        gap: 14px;
+      }
+      .timeline-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .timeline-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #6366f1;
+        margin-top: 6px;
+      }
+      .timeline-content strong { color: #1f2a60; display: block; margin-bottom: 4px; }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Google Drive 云端硬盘 原型</h1>
-      <p class="tagline">跨平台云存储与协同办公服务。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>个人用户、教育机构、企业团队</p>
-        <p><strong>核心痛点：</strong>文件分散、不易分享协作、存储空间不足</p>
-        <p><strong>价值主张：</strong>提供安全的云存储、实时协作与生态集成，提升文件管理效率</p>
+    <header class="top-bar">
+      <div class="brand">Drive Prototype Studio</div>
+      <div class="role-switcher">
+        <button type="button" class="active" data-role="user">用户端</button>
+        <button type="button" data-role="admin">管理员端</button>
+        <button type="button" data-role="ops">运营端</button>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>个人用户同步文件并跨设备访问</li><li>团队协作编辑文档与表格</li><li>管理员配置存储策略与安全策略</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>文件存储与同步</h3>
-              <p class="goal">功能目标：保障文件随时随地访问</p>
-              <ul>
-                <li>桌面与移动端同步客户端</li><li>离线访问与版本历史</li><li>大文件上传与快传</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>协作与共享</h3>
-              <p class="goal">功能目标：支持跨组织的实时协作</p>
-              <ul>
-                <li>权限管理、链接分享与到期控制</li><li>与 Docs、Sheets、Slides 实时协作</li><li>评论、建议与审批流程</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>搜索与智能</h3>
-              <p class="goal">功能目标：快速定位所需文件</p>
-              <ul>
-                <li>全文搜索与 OCR 识别</li><li>智能推荐与快捷访问</li><li>工作区与快捷操作</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>安全与管理</h3>
-              <p class="goal">功能目标：满足企业数据安全合规</p>
-              <ul>
-                <li>审计日志、DLP 与加密</li><li>共享驱动与团队管理</li><li>端点管理与合规报表</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>活跃用户数与文件同步成功率</li><li>协作文档数量与评论互动</li><li>存储使用率与安全事件响应时间</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </header>
+    <main>
+      <section class="canvas-description">
+        <div class="persona-chip"><span>USER</span>多端同步 · 快捷协作</div>
+        <div class="persona-chip"><span>ADMIN</span>策略治理 · 安全护航</div>
+        <div class="persona-chip"><span>OPS</span>活动运营 · 转化增长</div>
+      </section>
+      <section id="role-user" class="role-view active">
+        <div class="app-shell">
+          <aside class="side-menu">
+            <div>
+              <h3>我的空间</h3>
+              <div class="menu-list">
+                <button class="menu-item primary">我的云端硬盘</button>
+                <button class="menu-item">优先级</button>
+                <button class="menu-item">与我共享</button>
+                <button class="menu-item">近期文件</button>
+                <button class="menu-item">标记星标</button>
+              </div>
+            </div>
+            <div>
+              <h3>工作台</h3>
+              <div class="menu-list">
+                <button class="menu-item">工作区</button>
+                <button class="menu-item">离线文件</button>
+                <button class="menu-item">备份设备</button>
+              </div>
+            </div>
+            <div>
+              <h3>容量</h3>
+              <div class="panel" style="gap: 8px; background: rgba(255, 255, 255, 0.65);">
+                <strong>68% 已使用</strong>
+                <div class="mini-chart"></div>
+                <span class="badge">升级至 5TB</span>
+              </div>
+            </div>
+          </aside>
+          <section class="workspace">
+            <div class="toolbar">
+              <div class="breadcrumbs">
+                <span>My Drive</span>
+                项目空间 / 设计协同
+              </div>
+              <div class="action-group">
+                <button>+ 新建</button>
+                <button>共享</button>
+                <button>自动整理</button>
+              </div>
+            </div>
+            <div class="sub-nav">
+              <button class="active">全部</button>
+              <button>文档</button>
+              <button>表格</button>
+              <button>演示文稿</button>
+              <button>白板</button>
+            </div>
+            <div class="content-grid">
+              <div class="panel">
+                <h4>快捷访问</h4>
+                <div class="file-grid">
+                  <div class="file-card">
+                    <strong>季度规划模板</strong>
+                    <span class="badge">Docs · 实时编辑</span>
+                    <small>最新活动 · 1 分钟前</small>
+                  </div>
+                  <div class="file-card">
+                    <strong>品牌素材库</strong>
+                    <span class="badge">文件夹 · 共享</span>
+                    <small>15 位成员</small>
+                  </div>
+                  <div class="file-card">
+                    <strong>合作协议 2024</strong>
+                    <span class="badge">PDF · 已评论</span>
+                    <small>待我处理</small>
+                  </div>
+                  <div class="file-card">
+                    <strong>演示文稿 Demo</strong>
+                    <span class="badge">Slides · 播放模式</span>
+                    <small>上线评审</small>
+                  </div>
+                </div>
+              </div>
+              <div class="content-grid grid-2">
+                <div class="panel">
+                  <h4>团队房间</h4>
+                  <div class="file-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                    <div class="file-card">
+                      <strong>体验设计</strong>
+                      <small>7 位成员 · 活跃</small>
+                    </div>
+                    <div class="file-card">
+                      <strong>渠道合作</strong>
+                      <small>5 位成员 · 新消息</small>
+                    </div>
+                    <div class="file-card">
+                      <strong>个人空间</strong>
+                      <small>自动备份启用</small>
+                    </div>
+                    <div class="file-card">
+                      <strong>审核中心</strong>
+                      <small>2 个待批复</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h4>实时协作</h4>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>张敏 正在编辑《季度规划模板》</strong>
+                        <small>实时光标 · 12 名协作者在线</small>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>生成式助手推荐「OKR 回顾看板」</strong>
+                        <small>基于近期项目动态</small>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>共享权限即将到期提醒</strong>
+                        <small>《合作协议 2024》· 24 小时内</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section id="role-admin" class="role-view">
+        <div class="app-shell">
+          <aside class="side-menu">
+            <div>
+              <h3>组织控制台</h3>
+              <div class="menu-list">
+                <button class="menu-item primary">组织概览</button>
+                <button class="menu-item">用户与群组</button>
+                <button class="menu-item">共享驱动</button>
+                <button class="menu-item">存储策略</button>
+              </div>
+            </div>
+            <div>
+              <h3>安全中心</h3>
+              <div class="menu-list">
+                <button class="menu-item">数据防泄漏</button>
+                <button class="menu-item">审计日志</button>
+                <button class="menu-item">终端管理</button>
+                <button class="menu-item">合规报告</button>
+              </div>
+            </div>
+            <div>
+              <h3>计费</h3>
+              <div class="menu-list">
+                <button class="menu-item">账单中心</button>
+                <button class="menu-item">套餐管理</button>
+              </div>
+            </div>
+          </aside>
+          <section class="workspace">
+            <div class="toolbar">
+              <div class="breadcrumbs">
+                <span>Admin Console</span>
+                企业版 · 显示安全概览
+              </div>
+              <div class="action-group">
+                <button>新建策略</button>
+                <button>导出报表</button>
+                <button>暂停用户</button>
+              </div>
+            </div>
+            <div class="sub-nav">
+              <button class="active">仪表盘</button>
+              <button>安全态势</button>
+              <button>用户健康</button>
+              <button>审计</button>
+            </div>
+            <div class="content-grid grid-2">
+              <div class="panel">
+                <h4>组织使用率</h4>
+                <div class="mini-chart" style="height: 120px;"></div>
+                <div class="content-grid grid-3">
+                  <div class="file-card" style="background:#eef2ff;">
+                    <strong>活跃用户 1,284</strong>
+                    <small>本月 +8.6%</small>
+                  </div>
+                  <div class="file-card" style="background:#e0f2fe;">
+                    <strong>共享驱动 96 个</strong>
+                    <small>核心团队 23 个</small>
+                  </div>
+                  <div class="file-card" style="background:#fee2e2;">
+                    <strong>高风险事件 4</strong>
+                    <small>需 1 小时内跟进</small>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <h4>安全态势</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>策略</th>
+                      <th>状态</th>
+                      <th>影响范围</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>DLP：外发敏感合同</td>
+                      <td><span class="badge">触发 2 次</span></td>
+                      <td>营销团队</td>
+                    </tr>
+                    <tr>
+                      <td>共享驱动访问异常</td>
+                      <td><span class="badge">需要复核</span></td>
+                      <td>全部共享驱动</td>
+                    </tr>
+                    <tr>
+                      <td>终端设备合规</td>
+                      <td><span class="badge">95% 达标</span></td>
+                      <td>移动端 · Web</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="panel">
+                <h4>审批队列</h4>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>许可请求：新增 20 个 Storage 席位</strong>
+                      <small>财务部 · 待审批</small>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>外部共享申请：合作伙伴邮箱域</strong>
+                      <small>由 安全组 审核</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <h4>合规日历</h4>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>季度 GDPR 复盘</strong>
+                      <small>下周三 · 自动生成报告</small>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>安全演练回顾</strong>
+                      <small>已完成 · 等待总结</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section id="role-ops" class="role-view">
+        <div class="app-shell">
+          <aside class="side-menu">
+            <div>
+              <h3>运营工作台</h3>
+              <div class="menu-list">
+                <button class="menu-item primary">活动控制中心</button>
+                <button class="menu-item">模板库</button>
+                <button class="menu-item">消息推送</button>
+                <button class="menu-item">用户细分</button>
+              </div>
+            </div>
+            <div>
+              <h3>增长工具</h3>
+              <div class="menu-list">
+                <button class="menu-item">体验路径</button>
+                <button class="menu-item">A/B 实验</button>
+                <button class="menu-item">生态集成</button>
+              </div>
+            </div>
+            <div>
+              <h3>监控</h3>
+              <div class="menu-list">
+                <button class="menu-item">实时监控</button>
+                <button class="menu-item">转化分析</button>
+              </div>
+            </div>
+          </aside>
+          <section class="workspace">
+            <div class="toolbar">
+              <div class="breadcrumbs">
+                <span>Ops Studio</span>
+                云端硬盘 · 活动运营视角
+              </div>
+              <div class="action-group">
+                <button>创建活动</button>
+                <button>发布通知</button>
+                <button>生成报告</button>
+              </div>
+            </div>
+            <div class="sub-nav">
+              <button class="active">增长概览</button>
+              <button>推荐流</button>
+              <button>激励体系</button>
+              <button>生态合作</button>
+            </div>
+            <div class="content-grid grid-2">
+              <div class="panel">
+                <h4>重点活动表现</h4>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>「协同升级周」</strong>
+                      <small>激活率 32% · 升级转化 540 单</small>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>「团队模板快闪」</strong>
+                      <small>模板复制 1.8k 次 · NPS +12</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <h4>渠道健康</h4>
+                <div class="content-grid grid-3">
+                  <div class="file-card" style="background:#ecfeff;">
+                    <strong>产品内推荐</strong>
+                    <small>UV 24k · CTR 6.5%</small>
+                  </div>
+                  <div class="file-card" style="background:#fef3c7;">
+                    <strong>邮件触达</strong>
+                    <small>发送 120k · 打开率 38%</small>
+                  </div>
+                  <div class="file-card" style="background:#e0f2fe;">
+                    <strong>社区共创</strong>
+                    <small>投稿 460 · 转存 3.2k</small>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <h4>细分视图</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>分群</th>
+                      <th>规模</th>
+                      <th>关键动作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>新注册 7 日</td>
+                      <td>18,240</td>
+                      <td>同步客户端安装 42%</td>
+                    </tr>
+                    <tr>
+                      <td>高频团队</td>
+                      <td>3,980</td>
+                      <td>共享驱动创建 +26%</td>
+                    </tr>
+                    <tr>
+                      <td>沉默用户</td>
+                      <td>9,204</td>
+                      <td>推送激活任务中</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="panel">
+                <h4>自动化编排</h4>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>触发：团队空间首次创建</strong>
+                      <small>自动推送模板推荐包</small>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>触发：容量即将耗尽</strong>
+                      <small>发送升级优惠 · 同步 webhook 给 CRM</small>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>触发：活跃下降 30%</strong>
+                      <small>自动创建 A/B 实验任务</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script>
+      const roleButtons = document.querySelectorAll('.role-switcher button');
+      const roleViews = {
+        user: document.getElementById('role-user'),
+        admin: document.getElementById('role-admin'),
+        ops: document.getElementById('role-ops')
+      };
+      roleButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          roleButtons.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          Object.values(roleViews).forEach((view) => view.classList.remove('active'));
+          const view = roleViews[btn.dataset.role];
+          if (view) view.classList.add('active');
+        });
+      });
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
