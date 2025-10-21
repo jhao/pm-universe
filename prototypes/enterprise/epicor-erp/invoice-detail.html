@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜发票详情 INV-90321</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="finance">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>财务控制中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>发票与采购订单、工单、服务订单联动展示。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">财务与成本 &gt; 发票</div>
+            <h1>发票 INV-90321｜华芯电子</h1>
+            <p class="role-tagline" data-role-summary>洞察成本、利润与现金流波动，支撑经营分析与预算执行。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>发票概况</h2>
+              <div class="panel-actions">
+                <a class="button" href="purchase-order-detail.html">查看采购订单</a>
+                <a class="button secondary" href="cost-adjustment.html">发起成本调整</a>
+              </div>
+            </div>
+            <dl class="description-list">
+              <div>
+                <dt>供应商</dt>
+                <dd>V45｜华芯电子</dd>
+              </div>
+              <div>
+                <dt>金额</dt>
+                <dd>¥ 84,800</dd>
+              </div>
+              <div>
+                <dt>收票日期</dt>
+                <dd>2024-05-17</dd>
+              </div>
+              <div>
+                <dt data-role-visibility="finance">付款状态</dt>
+                <dd data-role-visibility="finance" class="is-visible"><span class="badge">待审批</span></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel" data-role-visibility="finance,supply,production">
+            <div class="panel-header">
+              <h2>对账明细</h2>
+              <p>比对发票行、采购订单与收货数据。</p>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>项目</th>
+                    <th>发票数量</th>
+                    <th>收货数量</th>
+                    <th>差异</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SMT 主板</td>
+                    <td>120</td>
+                    <td>40 (已收) / 80 (在途)</td>
+                    <td><span class="badge warning">未入库</span></td>
+                    <td><a href="warehouse-transfer.html">查看调拨</a></td>
+                  </tr>
+                  <tr>
+                    <td>加急运费</td>
+                    <td>1</td>
+                    <td>-</td>
+                    <td><span class="badge danger">需确认</span></td>
+                    <td><a href="cost-adjustment.html">审批费用</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="finance,service">
+            <div class="panel-header">
+              <h2>关联业务</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="service-case-detail.html">查看服务事件</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>关联工单</h3>
+                <p>MO-4821｜待确认成本分摊。</p>
+                <a class="button" href="production-order-detail.html">打开工单</a>
+              </div>
+              <div class="card">
+                <h3>客户履约</h3>
+                <p>延迟风险已与客户沟通，无需额外赔付。</p>
+                <a class="button secondary" href="service.html">查看客户承诺</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>演示财务发票处理与跨部门协同。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                发票详情页整合采购订单、收货数据与服务影响，点击操作按钮可跳转至调拨、成本调整或服务页面，演示财务处理如何与业务协同。
+              </p>
+              <p>
+                切换角色可展示生产、供应链、客户服务看到的差异信息，例如生产仅关注关联工单，供应链关注收货差异，财务关注付款状态与差异处理。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

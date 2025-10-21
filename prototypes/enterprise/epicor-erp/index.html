@@ -1,84 +1,254 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-page="dashboard">
   <head>
     <meta charset="utf-8" />
-    <title>Epicor ERP 原型概览</title>
-    <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
-    </style>
+    <title>Epicor ERP｜运营驾驶舱</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <header>
-      <h1>Epicor ERP 原型</h1>
-      <p class="tagline">面向制造、分销行业的灵活 ERP 平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>制造企业管理层、运营、财务团队</p>
-        <p><strong>核心痛点：</strong>多行业复杂流程需要定制化、IT 资源有限</p>
-        <p><strong>价值主张：</strong>通过模块化架构与行业模板，支持制造、分销与零售业务</p>
+  <body data-page="dashboard">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>运营控制中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>协同模式：</strong>跨部门共享实时数据，支持角色切换查看不同视角。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">Epicor ERP &gt; 智能制造云</div>
+            <h1>全局运营驾驶舱</h1>
+            <p class="role-tagline" data-role-summary>关注排程执行、产线产能与质量预警，及时协调工单与资源。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>今日核心指标</h2>
+              <p>各角色关注的关键运营指标实时刷新，支持快速 drill-down。</p>
+            </div>
+            <div class="metric-grid">
+              <article class="metric-card" data-role-visibility="production,supply">
+                <h3>工单达成率</h3>
+                <div class="value">94%</div>
+                <div class="metric-trend">较昨日提升 3.2%</div>
+                <div class="tag-list">
+                  <span class="role-chip"><span class="status-dot"></span>生产经理</span>
+                  <span class="badge positive">良好</span>
+                </div>
+              </article>
+              <article class="metric-card" data-role-visibility="supply,admin">
+                <h3>关键物料齐套</h3>
+                <div class="value">87%</div>
+                <div class="metric-trend">缺口主要集中在 SMT 产线</div>
+                <div class="tag-list">
+                  <span class="role-chip"><span class="status-dot"></span>供应链主管</span>
+                  <a class="button secondary" href="supply-chain.html">查看补货建议</a>
+                </div>
+              </article>
+              <article class="metric-card" data-role-visibility="finance">
+                <h3>本月成本差异</h3>
+                <div class="value">-2.8%</div>
+                <div class="metric-trend">原材料节省 1.3M CNY</div>
+                <div class="tag-list">
+                  <span class="role-chip"><span class="status-dot"></span>财务总监</span>
+                  <a class="button secondary" href="finance.html">查看成本分解</a>
+                </div>
+              </article>
+              <article class="metric-card" data-role-visibility="service,admin">
+                <h3>服务 SLA 达成</h3>
+                <div class="value">98%</div>
+                <div class="metric-trend">关键客户无超时工单</div>
+                <div class="tag-list">
+                  <span class="role-chip"><span class="status-dot"></span>客户服务经理</span>
+                  <a class="button secondary" href="service.html">打开服务排班</a>
+                </div>
+              </article>
+              <article class="metric-card" data-role-visibility="admin,production,finance,supply,service">
+                <h3>平台健康度</h3>
+                <div class="value">99.97%</div>
+                <div class="metric-trend">昨晚维护窗口已完成</div>
+                <div class="tag-list">
+                  <span class="role-chip"><span class="status-dot"></span>系统管理员</span>
+                  <a class="button secondary" href="admin.html">查看系统告警</a>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>跨角色协同工作台</h2>
+              <p>双击卡片可进入对应功能界面，协同处理跨部门事项。</p>
+            </div>
+            <div class="grid-two">
+              <article class="card" data-role-visibility="production,supply">
+                <header class="panel-header">
+                  <h2>产线节奏总览</h2>
+                  <div class="panel-actions">
+                    <a class="button" href="production.html">进入生产排程</a>
+                    <a class="button secondary" href="production-order-detail.html">查看工单详情</a>
+                  </div>
+                </header>
+                <p>当前有 3 条瓶颈产线正在运行，预计 4 小时后释放能力。来自供应链的 SMT 物料齐套率为 82%。</p>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <h4>08:45 | 装配线 A 暂停</h4>
+                    <p>等待质量检验确认，<a href="production-order-detail.html">查看质检记录</a></p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4>09:20 | 自动生成产能平衡建议</h4>
+                    <p>建议切换至夜班增加 2 条产线以保障交期。</p>
+                  </div>
+                </div>
+              </article>
+              <article class="card" data-role-visibility="supply,production">
+                <header class="panel-header">
+                  <h2>供应链补货协同</h2>
+                  <div class="panel-actions">
+                    <a class="button" href="supply-chain.html">联动采购</a>
+                    <a class="button secondary" href="purchase-order-detail.html">PO#4502389</a>
+                  </div>
+                </header>
+                <p>根据需求预测，本周需提前释放 2 个关键件采购订单。供应商 on-time rate 90%，需要重点跟进。</p>
+                <div class="badge-legend">
+                  <span class="badge warning">关注：铝合金外壳</span>
+                  <span class="badge positive">已确认：PCB 组件</span>
+                </div>
+              </article>
+              <article class="card" data-role-visibility="finance,production">
+                <header class="panel-header">
+                  <h2>成本&利润快照</h2>
+                  <div class="panel-actions">
+                    <a class="button" href="finance.html">查看财务驾驶舱</a>
+                    <a class="button secondary" href="cost-adjustment.html">发起成本调整</a>
+                  </div>
+                </header>
+                <p>目标 SKU 毛利率 26.4%，较预算高 1.3pt。请复核工时分摊与外包费用。</p>
+                <div class="chart-placeholder">实时利润趋势图占位</div>
+              </article>
+              <article class="card" data-role-visibility="service,admin,supply">
+                <header class="panel-header">
+                  <h2>客户履约进度</h2>
+                  <div class="panel-actions">
+                    <a class="button" href="service.html">服务排期</a>
+                    <a class="button secondary" href="service-case-detail.html">Case#SR-2024-118</a>
+                  </div>
+                </header>
+                <p>重点客户 EMEA-Delta 的现场安装进入调试阶段，需协调备件补给与远程专家。</p>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <h4>10:30 | 工程师到场签到</h4>
+                    <p>已关联现场工单，等待资料上传。</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4>11:05 | CRM 自动推送满意度调查</h4>
+                    <p>预计 2 小时后获取反馈。</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>异常队列与待办</h2>
+              <p>系统基于规则与 AI 诊断生成异常任务，支持跨部门协作处理。</p>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>异常类型</th>
+                    <th>优先级</th>
+                    <th>责任角色</th>
+                    <th>状态</th>
+                    <th>下一步</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-role-visibility="production,supply">
+                    <td>产能瓶颈 - 装配线 A</td>
+                    <td><span class="badge danger">高</span></td>
+                    <td>生产经理</td>
+                    <td>处理中</td>
+                    <td><a href="production-order-edit.html">调整排程</a></td>
+                  </tr>
+                  <tr data-role-visibility="supply">
+                    <td>供应商交期偏移 - V45</td>
+                    <td><span class="badge warning">中</span></td>
+                    <td>供应链主管</td>
+                    <td>待确认</td>
+                    <td><a href="purchase-order-detail.html">更新交付计划</a></td>
+                  </tr>
+                  <tr data-role-visibility="finance">
+                    <td>工单超预算预警</td>
+                    <td><span class="badge warning">中</span></td>
+                    <td>财务总监</td>
+                    <td>待分析</td>
+                    <td><a href="finance.html">进入成本分析</a></td>
+                  </tr>
+                  <tr data-role-visibility="service">
+                    <td>客户投诉 - 安装延迟</td>
+                    <td><span class="badge danger">高</span></td>
+                    <td>客户服务经理</td>
+                    <td>已指派</td>
+                    <td><a href="service-case-detail.html">打开服务工单</a></td>
+                  </tr>
+                  <tr data-role-visibility="admin">
+                    <td>权限审计 - 新增工程师</td>
+                    <td><span class="badge">低</span></td>
+                    <td>系统管理员</td>
+                    <td>待审批</td>
+                    <td><a href="admin.html">审核角色模板</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>本页提供企业高层与职能负责人日常监控视图。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                运营驾驶舱整合了生产、供应链、财务与客户服务的关键指标，支持点击指标跳转至详细页面；当切换不同角色后，
+                展示信息自动过滤为该角色关注的任务与异常，模拟真实系统中基于权限的视图差异。
+              </p>
+              <p>
+                通过顶部角色切换，可演示不同职能进入后关注的 KPI、待办事项以及协同按钮如何变化；各功能卡片的主要按钮链接到对应功能页面或详情界面，便于继续演示流程。
+              </p>
+            </div>
+          </section>
+        </div>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>运营团队管理生产与仓储</li><li>财务结算与成本控制</li><li>客户订单履约与服务</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>生产管理</h3>
-              <p class="goal">功能目标：优化制造流程</p>
-              <ul>
-                <li>工单、工艺路线与排程</li><li>MES 集成与设备监控</li><li>质量管理与追溯</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>供应链与分销</h3>
-              <p class="goal">功能目标：提升订单履约效率</p>
-              <ul>
-                <li>采购、库存与仓储</li><li>分销、运输与第三方物流</li><li>需求预测与补货计划</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>财务与成本</h3>
-              <p class="goal">功能目标：提供财务可视化</p>
-              <ul>
-                <li>总账、应收应付</li><li>成本核算、利润分析</li><li>预算、现金流与合规</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>客户与服务</h3>
-              <p class="goal">功能目标：扩展客户关系管理</p>
-              <ul>
-                <li>CRM、商机与报价</li><li>售后服务与保修管理</li><li>电子商务与门户</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>生产订单准时率与报工准确率</li><li>库存准确率与履约时间</li><li>财务结账周期与利润率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

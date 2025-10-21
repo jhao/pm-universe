@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜财务与成本驾驶舱</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="finance">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>财务控制中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>财务驾驶舱支持穿透到工单、采购与服务数据。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">Epicor ERP &gt; 财务与成本</div>
+            <h1>财务与成本驾驶舱</h1>
+            <p class="role-tagline" data-role-summary>洞察成本、利润与现金流波动，支撑经营分析与预算执行。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel" data-role-visibility="finance,production,admin">
+            <div class="panel-header">
+              <h2>成本与利润快照</h2>
+              <div class="panel-actions">
+                <a class="button" href="cost-adjustment.html">发起成本调整</a>
+                <a class="button secondary" href="production-order-detail.html">对比工单成本</a>
+              </div>
+            </div>
+            <div class="metric-grid">
+              <article class="metric-card">
+                <h3>本月毛利率</h3>
+                <div class="value">26.4%</div>
+                <div class="metric-trend">较预算 +1.3pt</div>
+              </article>
+              <article class="metric-card">
+                <h3>制造成本偏差</h3>
+                <div class="value">-2.8%</div>
+                <div class="metric-trend">节省 1.3M CNY</div>
+              </article>
+              <article class="metric-card" data-role-visibility="finance">
+                <h3>现金流预测</h3>
+                <div class="value">¥ 86M</div>
+                <div class="metric-trend">未来 30 天净流入</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="finance,supply,production">
+            <div class="panel-header">
+              <h2>成本分解表</h2>
+              <p>按产品线与成本要素拆分，支持钻取。</p>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>产品线</th>
+                    <th>材料成本</th>
+                    <th>人工成本</th>
+                    <th>制造费用</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>工业控制柜</td>
+                    <td>¥ 2.3M</td>
+                    <td>¥ 0.9M</td>
+                    <td>¥ 0.6M</td>
+                    <td><a href="production-order-detail.html">查看关联工单</a></td>
+                  </tr>
+                  <tr>
+                    <td>伺服驱动单元</td>
+                    <td>¥ 1.8M</td>
+                    <td>¥ 0.7M</td>
+                    <td>¥ 0.4M</td>
+                    <td><a href="cost-adjustment.html">调整分摊</a></td>
+                  </tr>
+                  <tr data-role-visibility="finance">
+                    <td>售后服务</td>
+                    <td>¥ 0.4M</td>
+                    <td>¥ 0.5M</td>
+                    <td>¥ 0.3M</td>
+                    <td><a href="service.html">查看服务成本</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="finance,service">
+            <div class="panel-header">
+              <h2>收入与应收</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="invoice-detail.html">核对发票</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>应收账龄</h3>
+                <p>30 天以内：76%｜60 天以内：18%｜90 天以上：6%</p>
+                <a class="button secondary" href="analytics.html">查看账龄分析</a>
+              </div>
+              <div class="card">
+                <h3>重点客户履约</h3>
+                <p>EMEA-Delta 已收款 70%，剩余部分待安装完成。</p>
+                <a class="button" href="service-case-detail.html">查看服务进度</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示财务角色的核心视图。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                财务驾驶舱聚焦成本、利润、现金流与应收数据，通过按钮与链接穿透到工单、服务、采购等页面，体现财务与业务的协同。
+              </p>
+              <p>
+                切换到生产或供应链角色后，仅保留与其相关的成本分解与协同操作，模拟权限控制下的信息差异。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

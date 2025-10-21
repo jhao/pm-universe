@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜仓库调拨单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="supply">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>仓储与物流</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>说明：</strong>调拨单可与生产、财务、服务同步状态。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">供应链协同 &gt; 仓库调拨</div>
+            <h1>仓库调拨单 TRF-2024-0518</h1>
+            <p class="role-tagline" data-role-summary>统筹采购、库存与物流协同，保障物料齐套与供应韧性。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>调拨信息</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="supply-chain.html">返回供应链指挥塔</a>
+              </div>
+            </div>
+            <dl class="description-list">
+              <div>
+                <dt>调出仓库</dt>
+                <dd>W2｜区域仓</dd>
+              </div>
+              <div>
+                <dt>调入仓库</dt>
+                <dd>W1｜工厂主仓</dd>
+              </div>
+              <div>
+                <dt>发起原因</dt>
+                <dd>满足工单 MO-4821 的缺料需求</dd>
+              </div>
+              <div>
+                <dt>预计到达</dt>
+                <dd>2024-05-18 10:30</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>调拨明细</h2>
+              <div class="panel-actions">
+                <a class="button" href="production.html">通知生产</a>
+              </div>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>物料</th>
+                    <th>批次</th>
+                    <th>数量</th>
+                    <th>现状</th>
+                    <th>下一步</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SMT 主板</td>
+                    <td>LOT-SMT-2405</td>
+                    <td>40</td>
+                    <td><span class="badge positive">已发运</span></td>
+                    <td><a href="production-order-detail.html">更新工单</a></td>
+                  </tr>
+                  <tr>
+                    <td>备件套装</td>
+                    <td>LOT-SP-1905</td>
+                    <td>25</td>
+                    <td><span class="badge">待装车</span></td>
+                    <td><a href="service-case-detail.html">通知服务现场</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="supply,finance,admin">
+            <div class="panel-header">
+              <h2>成本与责任</h2>
+              <p>展示调拨引起的费用与责任归属。</p>
+            </div>
+            <div class="flex-table">
+              <div class="flex-row">
+                <strong>运输成本</strong>
+                <span>1,200 CNY｜责任部门：物流</span>
+                <a href="invoice-detail.html">查看费用单</a>
+              </div>
+              <div class="flex-row">
+                <strong>库存影响</strong>
+                <span>W2 库存 -40｜W1 库存 +40</span>
+                <a href="analytics.html">进入库存分析</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>演示仓库调拨单的核心结构。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                调拨单页面展示基础信息、明细、成本责任，按钮提供跳转到生产、服务、财务与分析页面的链接，体现跨部门协同。
+              </p>
+              <p>
+                通过角色切换，财务可查看费用与责任数据，生产仅保留更新工单的入口，客户服务可直接通知现场团队，突出差异化视角。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

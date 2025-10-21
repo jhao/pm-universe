@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜成本调整申请</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="finance">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>财务控制中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>说明：</strong>成本调整将推送给生产、供应链与客户服务角色确认。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">财务与成本 &gt; 成本调整</div>
+            <h1>成本调整申请｜工业控制柜产品线</h1>
+            <p class="role-tagline" data-role-summary>洞察成本、利润与现金流波动，支撑经营分析与预算执行。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>调整背景</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="finance.html">返回财务驾驶舱</a>
+              </div>
+            </div>
+            <div class="notice">
+              由于供应商延迟交付导致的加急运输费用，需要将 3,200 CNY 分摊到工单 MO-4821；同时人工加班费用 2,600 CNY 需记入制造费用。
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>调整表单</h2>
+              <p>根据角色不同显示相关字段。</p>
+            </div>
+            <form class="form-grid">
+              <div class="form-field">
+                <label for="relatedOrder">关联工单</label>
+                <input id="relatedOrder" type="text" value="MO-4821" />
+              </div>
+              <div class="form-field" data-role-visibility="finance,production">
+                <label for="laborCost">人工成本调整</label>
+                <input id="laborCost" type="number" value="2600" />
+              </div>
+              <div class="form-field" data-role-visibility="finance,supply">
+                <label for="freightCost">运输费用</label>
+                <input id="freightCost" type="number" value="3200" />
+              </div>
+              <div class="form-field" data-role-visibility="service,finance">
+                <label for="customerImpact">客户影响说明</label>
+                <textarea id="customerImpact" rows="3">确认与客户沟通延迟情况，对 SLA 无额外赔付。</textarea>
+              </div>
+              <div class="form-field" data-role-visibility="admin">
+                <label for="ledger">科目编码</label>
+                <select id="ledger">
+                  <option>5101 制造费用-直接人工</option>
+                  <option selected>5203 制造费用-外部物流</option>
+                  <option>5302 服务支援费用</option>
+                </select>
+              </div>
+            </form>
+            <div class="inline-actions">
+              <a class="button" href="finance.html">提交审批</a>
+              <a class="button secondary" href="production-order-detail.html">通知生产经理</a>
+              <a class="button secondary" href="purchase-order-detail.html">通知采购</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>审批链</h2>
+              <p>展示不同角色看到的审批步骤。</p>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item" data-role-visibility="finance,admin">
+                <h4>财务总监审批</h4>
+                <p>核对调整金额与科目。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="production">
+                <h4>生产经理确认</h4>
+                <p>确认工单成本归集。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="supply">
+                <h4>供应链主管确认</h4>
+                <p>确认运输费用归因。</p>
+              </div>
+              <div class="timeline-item" data-role-visibility="service">
+                <h4>客户服务经理</h4>
+                <p>更新客户沟通记录。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示成本调整申请的关键要素。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                成本调整页面结合表单、审批链与通知动作，支持展示不同角色可见的字段与审批节点；按钮可跳转回财务驾驶舱或通知相关部门。
+              </p>
+              <p>
+                切换角色时，供应链角色重点填写运输费用，生产角色关注人工成本与审批节点，体现协同流程的差异化体验。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
