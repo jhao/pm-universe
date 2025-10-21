@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>模型训练详情 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a></li>
+            <li><a class="nav-link" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a></li>
+            <li><a class="nav-link" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a></li>
+            <li><a class="nav-link" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a></li>
+            <li><a class="nav-link" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a></li>
+            <li><a class="nav-link" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a></li>
+            <li><a class="nav-link is-active" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a></li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>返回</strong>
+          <div>• <a href="model-lab.html">返回模型实验室</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>模型训练详情</h2>
+            <span class="breadcrumb">Honeywell PHD / 模型实验室 / 训练详情</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card" id="regression">
+            <h3>裂解炉能耗回归模型 · v3.2</h3>
+            <div class="detail-layout">
+              <div class="meta-grid">
+                <div class="meta-item"><strong>训练时间</strong><br />2024-04-18 02:30</div>
+                <div class="meta-item"><strong>训练数据</strong><br />趋势模板：裂解炉能效监控</div>
+                <div class="meta-item"><strong>评估指标</strong><br />RMSE 1.6 · R² 0.93</div>
+                <div class="meta-item"><strong>部署状态</strong><br /><span class="badge success"><span class="status-dot"></span> 在线</span></div>
+              </div>
+              <div class="chart-placeholder" style="height: 240px;">预测 vs 实际 对比图</div>
+              <div class="action-buttons">
+                <a class="button" href="trend-analysis.html">回看数据</a>
+                <a class="button secondary" href="operations-dashboard.html">同步驾驶舱</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card" id="anomaly">
+            <h3>采集通道异常检测 · v1.5</h3>
+            <div class="split-layout">
+              <div>
+                <h4>训练概览</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>数据来源：<a href="data-pipeline-detail.html">采集通道</a></li>
+                  <li><span class="check-icon">✓</span>特征：吞吐、延迟、质量评分</li>
+                  <li><span class="check-icon">✓</span>训练结果：AUC 0.91</li>
+                </ul>
+              </div>
+              <div>
+                <h4>待办动作</h4>
+                <div class="role-section" data-role="运维主管">
+                  <p>补充最新数据并重新训练，完成后通知报警中心。</p>
+                  <div class="action-buttons">
+                    <a class="button" href="#" onclick="return false;">启动重新训练</a>
+                    <a class="button secondary" href="alarm-management.html">通知报警中心</a>
+                  </div>
+                </div>
+                <div class="role-section" data-role="工艺工程师">
+                  <p>验证异常检测结果是否影响工艺决策，必要时调整阈值。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>版本对比</h3>
+            <table class="table">
+              <thead>
+                <tr><th>版本</th><th>发布时间</th><th>RMSE</th><th>节能贡献</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr data-role="工艺工程师,管理层">
+                  <td>v3.2</td>
+                  <td>2024-04-18</td>
+                  <td>1.6</td>
+                  <td>节能 4.3%</td>
+                  <td><a href="operations-dashboard.html">推送驾驶舱</a></td>
+                </tr>
+                <tr data-role="工艺工程师">
+                  <td>v3.1</td>
+                  <td>2024-04-02</td>
+                  <td>1.9</td>
+                  <td>节能 3.8%</td>
+                  <td><a href="#" onclick="return false;">回滚</a></td>
+                </tr>
+                <tr data-role="管理层">
+                  <td>v2.8</td>
+                  <td>2024-03-10</td>
+                  <td>2.4</td>
+                  <td>节能 2.9%</td>
+                  <td><a href="report-center.html#executive">写入经营简报</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            模型训练详情页展示训练概览、版本对比与角色待办，帮助团队评估模型表现并快速跳转至趋势、驾驶舱与报警模块完成后续动作。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

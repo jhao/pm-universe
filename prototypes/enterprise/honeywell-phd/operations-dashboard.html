@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>运行驾驶舱 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li>
+              <a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a>
+            </li>
+            <li>
+              <a class="nav-link is-active" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a>
+            </li>
+            <li>
+              <a class="nav-link" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a>
+            </li>
+            <li>
+              <a class="nav-link" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a>
+            </li>
+            <li>
+              <a class="nav-link" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a>
+            </li>
+            <li>
+              <a class="nav-link" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a>
+            </li>
+            <li>
+              <a class="nav-link" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a>
+            </li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>驾驶舱相关</strong>
+          <div>• <a href="alarm-management.html#critical">报警高优队列</a></div>
+          <div>• <a href="report-center.html#kpi">生产 KPI 报表</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>运行驾驶舱</h2>
+            <span class="breadcrumb">Honeywell PHD / 运行驾驶舱</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card">
+            <h3>关键生产指标</h3>
+            <div class="kpi-grid">
+              <div class="kpi-card" data-role="管理层,运维主管">
+                <h4>当日产量</h4>
+                <div class="kpi-value">12.8 kt</div>
+                <span class="trend-positive">↑ 较昨日 +3.2%</span>
+              </div>
+              <div class="kpi-card" data-role="管理层,工艺工程师">
+                <h4>能耗强度</h4>
+                <div class="kpi-value">0.82 GJ/t</div>
+                <span class="trend-positive">↓ 较上周 -5%</span>
+              </div>
+              <div class="kpi-card" data-role="运维主管,工艺工程师">
+                <h4>报警数量</h4>
+                <div class="kpi-value">18</div>
+                <span class="trend-negative">↑ 需要复查</span>
+              </div>
+              <div class="kpi-card" data-role="工艺工程师">
+                <h4>模型预测偏差</h4>
+                <div class="kpi-value">1.6%</div>
+                <span class="trend-neutral">预测偏差处于安全区间</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>多视角运行总览</h3>
+            <div class="split-layout">
+              <div>
+                <div class="chart-placeholder">产量 / 能耗趋势（过去 24 小时）</div>
+                <div class="action-buttons" style="margin-top: 16px;">
+                  <a class="button" href="trend-analysis.html">查看趋势详情</a>
+                  <a class="button secondary" href="report-center.html#kpi">导出 KPI 报表</a>
+                </div>
+              </div>
+              <div class="timeline">
+                <article class="timeline-item" data-role="运维主管,管理层">
+                  <div class="timeline-meta">
+                    <span>关键事件</span>
+                    <span class="badge danger"><span class="status-dot"></span> 告警</span>
+                  </div>
+                  <p>裂解炉 F-301 出现温度波动，建议立即前往 <a href="alarm-investigation.html">报警应急响应</a> 页面。</p>
+                </article>
+                <article class="timeline-item" data-role="工艺工程师">
+                  <div class="timeline-meta">
+                    <span>模型建议</span>
+                    <span class="badge success"><span class="status-dot"></span> 稳定</span>
+                  </div>
+                  <p>氢气回收模型建议在 15:00 调整塔顶压力至 0.32 MPa，可在 <a href="model-training-detail.html">模型详情</a> 中查看。</p>
+                </article>
+                <article class="timeline-item" data-role="管理层">
+                  <div class="timeline-meta">
+                    <span>高层关注</span>
+                    <span class="badge warning"><span class="status-dot"></span> 待确认</span>
+                  </div>
+                  <p>计划内检修将在 5 月启动，请在 <a href="report-center.html#plan">计划报表</a> 中确认资源。</p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>角色化行动面板</h3>
+            <div class="split-layout">
+              <div class="role-section" data-role="工艺工程师">
+                <h4>工艺工程师 · 待办</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>对比 2024-Q1 炉温模型版本，点击进入 <a href="model-lab.html">模型实验室</a>。</li>
+                  <li><span class="check-icon">✓</span>为乙烯塔新增趋势模板，使用 <a href="trend-template-editor.html">模板编辑器</a>。</li>
+                </ul>
+              </div>
+              <div class="role-section" data-role="运维主管">
+                <h4>运维主管 · 待办</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>确认 OPC UA-12 管道同步率，详情见 <a href="data-pipeline-detail.html">管道详情</a>。</li>
+                  <li><span class="check-icon">✓</span>处理 3 条高优报警，直接跳转 <a href="alarm-management.html#critical">报警队列</a>。</li>
+                </ul>
+              </div>
+              <div class="role-section" data-role="管理层">
+                <h4>管理层 · 决策</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>审阅一季度能耗总结，位于 <a href="report-center.html#executive">管理驾驶舱报表</a>。</li>
+                  <li><span class="check-icon">✓</span>评估模型节能贡献，查看 <a href="model-training-detail.html">模型训练详情</a>。</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            运行驾驶舱展示平台的核心指标与事件流，顶端为即时 KPI 与趋势，右上角角色切换可调整显示内容。通过卡片按钮可跳转到趋势分析、报警响应等功能页面进行深入操作。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

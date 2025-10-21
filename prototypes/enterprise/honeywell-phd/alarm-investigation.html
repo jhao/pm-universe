@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>报警应急响应 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a></li>
+            <li><a class="nav-link" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a></li>
+            <li><a class="nav-link" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a></li>
+            <li><a class="nav-link" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a></li>
+            <li><a class="nav-link is-active" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a></li>
+            <li><a class="nav-link" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a></li>
+            <li><a class="nav-link" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a></li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>返回</strong>
+          <div>• <a href="alarm-management.html">返回报警队列</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>报警应急响应</h2>
+            <span class="breadcrumb">Honeywell PHD / 报警管理 / 应急响应</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card" id="f301">
+            <h3>F-301 炉膛温度报警</h3>
+            <div class="detail-layout">
+              <div class="meta-grid">
+                <div class="meta-item"><strong>触发时间</strong><br />2024-04-22 09:42</div>
+                <div class="meta-item"><strong>报警级别</strong><br /><span class="badge danger"><span class="status-dot"></span> 高</span></div>
+                <div class="meta-item"><strong>当前状态</strong><br />待确认</div>
+                <div class="meta-item"><strong>关联模型</strong><br /><a href="model-training-detail.html#regression">裂解炉能耗回归模型</a></div>
+              </div>
+              <div class="action-buttons">
+                <a class="button" href="trend-analysis.html">查看实时趋势</a>
+                <a class="button secondary" href="operations-dashboard.html">推送管理层</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>处置流程</h3>
+            <div class="split-layout">
+              <div>
+                <h4>应急步骤</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">1</span>确认炉膛温度与燃料阀门开度，记录于 <a href="report-schedule.html#log">应急日志</a>。</li>
+                  <li><span class="check-icon">2</span>检查采集延迟，必要时在 <a href="data-pipeline-detail.html#mqtt-01">MQTT-01</a> 通道启用备份。</li>
+                  <li><span class="check-icon">3</span>如趋势持续上升，通知管理层通过 <a href="operations-dashboard.html">驾驶舱</a> 关注。</li>
+                </ul>
+              </div>
+              <div>
+                <h4>角色分工</h4>
+                <div class="role-section" data-role="工艺工程师">
+                  <p>分析异常原因，必要时在 <a href="trend-template-editor.html">模板编辑器</a> 中追加监测标签。</p>
+                </div>
+                <div class="role-section" data-role="运维主管">
+                  <p>调度现场检修人员，跟进现场执行并在 <a href="report-schedule.html#approval">审批中心</a> 记录。</p>
+                </div>
+                <div class="role-section" data-role="管理层">
+                  <p>评估对产能影响，决定是否降负荷运行，并在 <a href="report-center.html#executive">经营简报</a> 中记录。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card" id="pump">
+            <h3>循环水泵压力低 · 跟进</h3>
+            <div class="detail-layout">
+              <div class="meta-grid">
+                <div class="meta-item"><strong>责任人</strong><br />李娜（运维）</div>
+                <div class="meta-item"><strong>SLA</strong><br />10 分钟内响应</div>
+                <div class="meta-item"><strong>影响范围</strong><br />冷却水系统</div>
+                <div class="meta-item"><strong>状态</strong><br />处理中</div>
+              </div>
+              <div class="action-buttons">
+                <a class="button" href="alarm-management.html#critical">返回高优队列</a>
+                <a class="button secondary" href="report-center.html#safety">更新安全周报</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            报警应急响应页帮助团队执行标准化应急流程，提供角色分工与跨系统链接，确保报警处理全过程可追溯、可闭环。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
