@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reddit 用户端工作台</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+        background: #eef2ff;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        color: #0f172a;
+      }
+      aside {
+        width: 260px;
+        background: #111827;
+        color: #cbd5f5;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .logo {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .menu-group h3 {
+        margin: 0 0 12px;
+        color: #94a3b8;
+        font-size: 13px;
+        letter-spacing: 1px;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: none;
+        background: transparent;
+        color: inherit;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+        text-align: left;
+      }
+      .menu-item.active, .menu-item:hover {
+        background: rgba(96, 165, 250, 0.16);
+        color: #ffffff;
+      }
+      .menu-item span {
+        font-size: 18px;
+      }
+      header {
+        background: #ffffff;
+        padding: 24px 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      header .role-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #475569;
+      }
+      header .role-switch a {
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 999px;
+        border: 1px solid #cbd5f5;
+        color: #1d4ed8;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      header .role-switch a:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .content {
+        flex: 1;
+        padding: 32px 40px 48px;
+        background: linear-gradient(135deg, rgba(219, 234, 254, 0.6), rgba(255, 255, 255, 0.9));
+      }
+      .section {
+        display: none;
+        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        align-items: start;
+      }
+      .section.active {
+        display: grid;
+      }
+      .panel {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+      .panel h2 {
+        margin: 0 0 16px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .cards {
+        display: grid;
+        gap: 16px;
+      }
+      .card {
+        background: rgba(59, 130, 246, 0.08);
+        border-radius: 18px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .card strong {
+        font-size: 16px;
+      }
+      .card span {
+        color: #475569;
+        font-size: 13px;
+      }
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+      .timeline-item {
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .timeline-item .meta {
+        font-size: 12px;
+        color: #475569;
+      }
+      .two-column {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .settings-list {
+        display: grid;
+        gap: 12px;
+      }
+      .settings-item {
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .settings-item span {
+        color: #475569;
+      }
+      footer {
+        padding: 18px 40px;
+        font-size: 12px;
+        color: #64748b;
+        background: rgba(15, 23, 42, 0.05);
+      }
+      @media (max-width: 960px) {
+        body {
+          flex-direction: column;
+        }
+        aside {
+          width: 100%;
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        nav {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        .menu-item {
+          flex: 1 0 calc(50% - 8px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <div class="logo">Reddit · 用户</div>
+      <nav>
+        <div class="menu-group">
+          <h3>浏览与发现</h3>
+          <button class="menu-item active" data-target="feed"><span>📰</span>首页信息流</button>
+          <button class="menu-item" data-target="explore"><span>🔍</span>社区探索</button>
+          <button class="menu-item" data-target="post"><span>🧵</span>帖子详情</button>
+        </div>
+        <div class="menu-group">
+          <h3>创作与互动</h3>
+          <button class="menu-item" data-target="create"><span>✍️</span>创建内容</button>
+          <button class="menu-item" data-target="inbox"><span>💬</span>消息中心</button>
+          <button class="menu-item" data-target="profile"><span>⚙️</span>个人设置</button>
+        </div>
+      </nav>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <h1>用户工作台</h1>
+          <p>掌握关注社区的新鲜动态，快速参与讨论与创作。</p>
+        </div>
+        <div class="role-switch">
+          切换角色：
+          <a href="index.html">角色大厅</a>
+          <a href="admin.html">管理员</a>
+          <a href="operations.html">运营</a>
+        </div>
+      </header>
+      <section class="content">
+        <div class="section active" data-section="feed">
+          <article class="panel">
+            <h2>🔥 今日热议</h2>
+            <div class="cards">
+              <div class="card">
+                <strong>r/technology · 开放 AI 创新提案征集中</strong>
+                <span>来自 4 个关注社区的精选内容，预计阅读 6 分钟</span>
+              </div>
+              <div class="card">
+                <strong>r/finance · 每日市场深度解读</strong>
+                <span>主题投票：加息周期下的资产配置策略</span>
+              </div>
+              <div class="card">
+                <strong>r/AskReddit · 你遇到的城市传奇</strong>
+                <span>今日已有 12.6k 评论，互动峰值 21:00</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>📌 订阅看板</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>r/productivity 发布置顶周报</strong>
+                <div class="meta">刚刚 · 智能提醒优先推送</div>
+              </div>
+              <div class="timeline-item">
+                <strong>r/gaming 开启新游戏合集话题</strong>
+                <div class="meta">15 分钟前 · 参与即可解锁限定徽章</div>
+              </div>
+              <div class="timeline-item">
+                <strong>r/science 举办 AMA 科学家问答</strong>
+                <div class="meta">1 小时前 · 报名人数 2.3k</div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="explore">
+          <article class="panel">
+            <h2>🧭 社区探索地图</h2>
+            <div class="cards">
+              <div class="card">
+                <strong>为你推荐 · 创作者成长</strong>
+                <span>内容类型：视频教程 · 活跃度 ↑ 28%</span>
+              </div>
+              <div class="card">
+                <strong>周度热榜 · 新晋 Subreddit</strong>
+                <span>r/urbanlife、r/microgarden、r/slowtravel</span>
+              </div>
+              <div class="card">
+                <strong>实时趋势 · 科技 &amp; 创业</strong>
+                <span>关键词：AGI、边缘计算、全球扩张</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🎯 筛选偏好</h2>
+            <div class="two-column">
+              <div class="card">
+                <strong>兴趣主题</strong>
+                <span>科技 · 职场 · 城市生活</span>
+              </div>
+              <div class="card">
+                <strong>内容时段</strong>
+                <span>21:00 - 23:00 推送深度内容</span>
+              </div>
+              <div class="card">
+                <strong>互动目标</strong>
+                <span>每周参与 4 个讨论线程</span>
+              </div>
+              <div class="card">
+                <strong>收藏夹</strong>
+                <span>草稿 3 条 · 收藏帖子 24 条</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="post">
+          <article class="panel">
+            <h2>🧾 帖子结构预览</h2>
+            <div class="cards">
+              <div class="card">
+                <strong>内容框架</strong>
+                <span>标题、正文块、代码片段、附件、投票模块</span>
+              </div>
+              <div class="card">
+                <strong>讨论热度</strong>
+                <span>1.5k upvotes · 423 条评论 · 12 次分享</span>
+              </div>
+              <div class="card">
+                <strong>版主操作记录</strong>
+                <span>上次置顶 3 小时前 · 标签：深度讨论</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🗂️ 评论层级</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>高赞回复</strong>
+                <div class="meta">由 320 位用户点赞 · 关键观点已总结</div>
+              </div>
+              <div class="timeline-item">
+                <strong>版主精华串</strong>
+                <div class="meta">3 条精华回答，支持折叠/展开</div>
+              </div>
+              <div class="timeline-item">
+                <strong>实时互动</strong>
+                <div class="meta">新增 24 条回复，智能排序优先展示</div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="create">
+          <article class="panel">
+            <h2>🛠️ 创作工具箱</h2>
+            <div class="two-column">
+              <div class="card">
+                <strong>内容类型选择</strong>
+                <span>文本 · 图集 · 视频 · 投票 · Live</span>
+              </div>
+              <div class="card">
+                <strong>智能草稿</strong>
+                <span>自动保存 · 多端同步 · 版本对比</span>
+              </div>
+              <div class="card">
+                <strong>辅助功能</strong>
+                <span>敏感词提示 · 图像压缩 · 外链预览</span>
+              </div>
+              <div class="card">
+                <strong>发布策略</strong>
+                <span>建议发布时间 20:30 · 推荐标签 4 个</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🧮 成效预估</h2>
+            <div class="cards">
+              <div class="card">
+                <strong>潜在曝光</strong>
+                <span>预计 42k 浏览 · 覆盖 6 个核心社区</span>
+              </div>
+              <div class="card">
+                <strong>互动预测</strong>
+                <span>点赞 2.4k · 评论 360 · 收藏 120</span>
+              </div>
+              <div class="card">
+                <strong>跟进提醒</strong>
+                <span>发布后 1 小时回访评论区 · 监控舆情</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="inbox">
+          <article class="panel">
+            <h2>📨 消息总览</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>评论回复提醒</strong>
+                <div class="meta">r/startups · 讨论串「融资节奏」</div>
+              </div>
+              <div class="timeline-item">
+                <strong>私信邀请</strong>
+                <div class="meta">创作者合作计划 · 需 24h 内确认</div>
+              </div>
+              <div class="timeline-item">
+                <strong>系统通知</strong>
+                <div class="meta">参与 r/dataisbeautiful 每周挑战</div>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🤝 互动建议</h2>
+            <div class="cards">
+              <div class="card">
+                <strong>回访优先级</strong>
+                <span>4 条高赞评论等待回复</span>
+              </div>
+              <div class="card">
+                <strong>社区任务</strong>
+                <span>参与投票 · 报名 1 场线上活动</span>
+              </div>
+              <div class="card">
+                <strong>粉丝管理</strong>
+                <span>新增关注 128 · 粉丝分析报告更新</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="profile">
+          <article class="panel">
+            <h2>🧾 账户概况</h2>
+            <div class="two-column">
+              <div class="card">
+                <strong>身份等级</strong>
+                <span>高级会员 · 勋章 6 枚 · 活跃 863 天</span>
+              </div>
+              <div class="card">
+                <strong>安全状态</strong>
+                <span>2FA 启用 · 最近设备登录安全</span>
+              </div>
+              <div class="card">
+                <strong>创作权益</strong>
+                <span>创作者加速计划 · 支持收益分成</span>
+              </div>
+              <div class="card">
+                <strong>数据迁移</strong>
+                <span>下载社区数据快照 · 支持自定义周期</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>⚙️ 偏好设置</h2>
+            <div class="settings-list">
+              <div class="settings-item">
+                <span>通知推送策略</span>
+                <strong>智能聚合</strong>
+              </div>
+              <div class="settings-item">
+                <span>隐私可见范围</span>
+                <strong>仅订阅者</strong>
+              </div>
+              <div class="settings-item">
+                <span>夜间模式</span>
+                <strong>自动切换</strong>
+              </div>
+              <div class="settings-item">
+                <span>多语言体验</span>
+                <strong>中文（主）/ English</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+      <footer>以上界面仅为互动原型，所有数据为示例内容。</footer>
+    </main>
+    <script>
+      const buttons = document.querySelectorAll('.menu-item');
+      const sections = document.querySelectorAll('.section');
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const target = button.getAttribute('data-target');
+          buttons.forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          sections.forEach((section) => {
+            section.classList.toggle('active', section.dataset.section === target);
+          });
+        });
+      });
+    </script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

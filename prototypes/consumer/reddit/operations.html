@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reddit 运营中台</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+        background: #fdf4ff;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        color: #312e81;
+      }
+      aside {
+        width: 270px;
+        background: linear-gradient(180deg, #4338ca 0%, #7c3aed 100%);
+        color: #ede9fe;
+        padding: 34px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .pulse {
+        background: rgba(237, 233, 254, 0.16);
+        border-radius: 16px;
+        padding: 16px;
+        display: grid;
+        gap: 8px;
+        font-size: 12px;
+        color: #dcd0ff;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .menu-group h3 {
+        margin: 0 0 12px;
+        font-size: 13px;
+        letter-spacing: 1px;
+        color: rgba(237, 233, 254, 0.8);
+      }
+      .menu-item {
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: none;
+        background: rgba(237, 233, 254, 0.12);
+        color: inherit;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+      .menu-item span {
+        font-size: 18px;
+      }
+      .menu-item:hover, .menu-item.active {
+        background: rgba(237, 233, 254, 0.25);
+        transform: translateX(4px);
+        color: #ffffff;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        background: #ffffff;
+        padding: 24px 44px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header h1 {
+        margin: 0 0 8px;
+        color: #312e81;
+      }
+      header p {
+        margin: 0;
+        color: #4c1d95;
+      }
+      .role-switch {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14px;
+        color: #6b21a8;
+      }
+      .role-switch a {
+        text-decoration: none;
+        border: 1px solid rgba(124, 58, 237, 0.4);
+        padding: 6px 14px;
+        border-radius: 999px;
+        color: #5b21b6;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      .role-switch a:hover {
+        background: #5b21b6;
+        color: #ffffff;
+      }
+      .content {
+        flex: 1;
+        padding: 36px 44px 56px;
+        background: linear-gradient(135deg, rgba(196, 181, 253, 0.3), rgba(250, 232, 255, 0.9));
+      }
+      .section {
+        display: none;
+        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        align-items: start;
+      }
+      .section.active {
+        display: grid;
+      }
+      .panel {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 22px;
+        padding: 24px;
+        box-shadow: 0 20px 52px rgba(76, 29, 149, 0.18);
+        border: 1px solid rgba(124, 58, 237, 0.16);
+      }
+      .panel h2 {
+        margin: 0 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #4338ca;
+      }
+      .panel h2 span {
+        font-size: 12px;
+        color: #6b21a8;
+      }
+      .metrics {
+        display: grid;
+        gap: 16px;
+      }
+      .metric-item {
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: rgba(196, 181, 253, 0.35);
+        display: grid;
+        gap: 6px;
+      }
+      .metric-item strong {
+        font-size: 18px;
+      }
+      .metric-item span {
+        font-size: 12px;
+        color: #5b21b6;
+      }
+      .board {
+        display: grid;
+        gap: 12px;
+      }
+      .board-item {
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: rgba(232, 121, 249, 0.18);
+        display: grid;
+        gap: 6px;
+      }
+      .board-item strong {
+        font-size: 16px;
+      }
+      .board-item span {
+        font-size: 12px;
+        color: #701a75;
+      }
+      .kanban {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .kanban-column {
+        background: rgba(237, 233, 254, 0.45);
+        border-radius: 18px;
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      .kanban-column h3 {
+        margin: 0;
+        font-size: 14px;
+        color: #4c1d95;
+        letter-spacing: 1px;
+      }
+      .kanban-card {
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #4c1d95;
+        font-size: 13px;
+      }
+      footer {
+        padding: 20px 44px;
+        font-size: 12px;
+        color: #5b21b6;
+        background: rgba(76, 29, 149, 0.08);
+      }
+      @media (max-width: 1100px) {
+        body { flex-direction: column; }
+        aside { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <div class="logo">Reddit · 运营</div>
+      <div class="pulse">
+        <strong>运营热力</strong>
+        <span>核心 KPI 达成率：86%</span>
+        <span>进行中活动：12 · 待启动：4</span>
+        <span>创作者满意度：4.6 / 5</span>
+      </div>
+      <nav>
+        <div class="menu-group">
+          <h3>增长驱动</h3>
+          <button class="menu-item active" data-target="growth"><span>📈</span>增长大盘</button>
+          <button class="menu-item" data-target="campaign"><span>🎉</span>活动策划</button>
+        </div>
+        <div class="menu-group">
+          <h3>内容生态</h3>
+          <button class="menu-item" data-target="creator"><span>🌟</span>创作者运营</button>
+          <button class="menu-item" data-target="content"><span>📚</span>内容运营</button>
+        </div>
+        <div class="menu-group">
+          <h3>商业与服务</h3>
+          <button class="menu-item" data-target="inventory"><span>💼</span>广告资源</button>
+          <button class="menu-item" data-target="support"><span>🤝</span>客服支持</button>
+        </div>
+      </nav>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <h1>运营中台</h1>
+          <p>掌握增长趋势、活动执行与商业化协作的核心面板。</p>
+        </div>
+        <div class="role-switch">
+          切换角色：
+          <a href="index.html">角色大厅</a>
+          <a href="user.html">用户</a>
+          <a href="admin.html">管理员</a>
+        </div>
+      </header>
+      <section class="content">
+        <div class="section active" data-section="growth">
+          <article class="panel">
+            <h2>📊 增长仪表盘 <span>周同比趋势</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>新增注册 · 380k</strong>
+                <span>新兴市场拉动 +22% · 转化漏斗优化中</span>
+              </div>
+              <div class="metric-item">
+                <strong>日活跃用户 · 1.6M</strong>
+                <span>连续 6 周增长 · Push 渠道贡献 34%</span>
+              </div>
+              <div class="metric-item">
+                <strong>活跃创作者 · 86k</strong>
+                <span>活跃留存 72% · 成长营计划上线</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🧪 实验进度 <span>共 8 个实验</span></h2>
+            <div class="board">
+              <div class="board-item">
+                <strong>动态推荐策略 v3</strong>
+                <span>目标：提升点击率 6% · 状态：验证中</span>
+              </div>
+              <div class="board-item">
+                <strong>多语言内容召回</strong>
+                <span>目标：拉动新市场活跃 · 状态：上线预备</span>
+              </div>
+              <div class="board-item">
+                <strong>创作者激励升级</strong>
+                <span>目标：提高发布频次 · 状态：数据分析</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="campaign">
+          <article class="panel">
+            <h2>🎯 活动排期 <span>当月重点</span></h2>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h3>策划中</h3>
+                <div class="kanban-card">全球影像周 · 合作品牌洽谈</div>
+                <div class="kanban-card">高校社区挑战赛 · 规则拟定</div>
+              </div>
+              <div class="kanban-column">
+                <h3>执行中</h3>
+                <div class="kanban-card">创作者直播季 · 周度复盘中</div>
+                <div class="kanban-card">城市生活季 · 已覆盖 26 城</div>
+              </div>
+              <div class="kanban-column">
+                <h3>复盘中</h3>
+                <div class="kanban-card">科技创新节 · ROI 评估</div>
+                <div class="kanban-card">电商合作专场 · 数据分析</div>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>📅 资源排布 <span>优先级同步</span></h2>
+            <div class="board">
+              <div class="board-item">
+                <strong>首页 Banner</strong>
+                <span>活动曝光保留 2 个席位</span>
+              </div>
+              <div class="board-item">
+                <strong>推送资源</strong>
+                <span>已分配：城市生活季 / 创作者直播季</span>
+              </div>
+              <div class="board-item">
+                <strong>社区联动</strong>
+                <span>重点覆盖：r/Art、r/Movies、r/Cityscape</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="creator">
+          <article class="panel">
+            <h2>🌟 创作者成长 <span>扶持计划</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>成长营梯队</strong>
+                <span>种子 120 · 进阶 68 · 顶级 24</span>
+              </div>
+              <div class="metric-item">
+                <strong>权益兑现率</strong>
+                <span>周兑换完成 94% · 反馈满意度 4.8</span>
+              </div>
+              <div class="metric-item">
+                <strong>内容上新频次</strong>
+                <span>平均每人 5.2 帖/周 · 同比 +16%</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🤝 合作协同 <span>待处理 9</span></h2>
+            <div class="board">
+              <div class="board-item">
+                <strong>品牌共创 · 科技类</strong>
+                <span>匹配创作者 6 位 · 议价中</span>
+              </div>
+              <div class="board-item">
+                <strong>教育专场 · AMA</strong>
+                <span>待确认讲者与脚本</span>
+              </div>
+              <div class="board-item">
+                <strong>城市探访系列</strong>
+                <span>跨城差旅与拍摄支持协调</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="content">
+          <article class="panel">
+            <h2>📚 内容策略 <span>多赛道并行</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>重点主题</strong>
+                <span>科技创新 · 城市生活 · 文化艺术</span>
+              </div>
+              <div class="metric-item">
+                <strong>优质帖子率</strong>
+                <span>达标 78% · 审核效率 92%</span>
+              </div>
+              <div class="metric-item">
+                <strong>舆情监控</strong>
+                <span>高风险话题 3 · 运营跟进中</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🧭 内容日历 <span>下周排期</span></h2>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h3>周一-周二</h3>
+                <div class="kanban-card">城市微旅行主题日</div>
+                <div class="kanban-card">AI 工具最佳实践</div>
+              </div>
+              <div class="kanban-column">
+                <h3>周三-周四</h3>
+                <div class="kanban-card">全球文化节精选内容</div>
+                <div class="kanban-card">创作者 AMA · 医疗健康</div>
+              </div>
+              <div class="kanban-column">
+                <h3>周五-周日</h3>
+                <div class="kanban-card">城市夜生活摄影挑战</div>
+                <div class="kanban-card">社区公益主题周</div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="inventory">
+          <article class="panel">
+            <h2>💼 资源位管理 <span>库存使用率 68%</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>首页曝光位</strong>
+                <span>锁定：品牌 4 · 活动 2 · 自营 1</span>
+              </div>
+              <div class="metric-item">
+                <strong>社区置顶位</strong>
+                <span>剩余可售 18 · 优先级：科技/生活</span>
+              </div>
+              <div class="metric-item">
+                <strong>视频 Feed 位</strong>
+                <span>排期至下月 · 需拓展库存 12%</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>📈 收益总览 <span>月度更新</span></h2>
+            <div class="board">
+              <div class="board-item">
+                <strong>广告收入</strong>
+                <span>同比 +18% · 品牌合作贡献 52%</span>
+              </div>
+              <div class="board-item">
+                <strong>会员增值</strong>
+                <span>升级用户 42k · 续费率 78%</span>
+              </div>
+              <div class="board-item">
+                <strong>创作者分成</strong>
+                <span>支出 3.4M · 满意度 4.7</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="support">
+          <article class="panel">
+            <h2>🤝 客服协同 <span>处理中 36</span></h2>
+            <div class="board">
+              <div class="board-item">
+                <strong>创作者工单</strong>
+                <span>平均响应 18 分钟 · 满意度 4.9</span>
+              </div>
+              <div class="board-item">
+                <strong>广告主工单</strong>
+                <span>待回访 6 · SLA 达成 92%</span>
+              </div>
+              <div class="board-item">
+                <strong>用户投诉</strong>
+                <span>热点话题关联 · 与管理员对接</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🧾 知识库升级 <span>最新发布</span></h2>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h3>流程优化</h3>
+                <div class="kanban-card">创作者激励结算指引</div>
+                <div class="kanban-card">活动复盘模板 V2</div>
+              </div>
+              <div class="kanban-column">
+                <h3>服务升级</h3>
+                <div class="kanban-card">广告投放自查清单</div>
+                <div class="kanban-card">客服 FAQ 智能检索</div>
+              </div>
+              <div class="kanban-column">
+                <h3>系统公告</h3>
+                <div class="kanban-card">运营中台移动端适配说明</div>
+                <div class="kanban-card">数据看板权限更新</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+      <footer>运营中台突出多角色协作场景，所有数据示例仅用于原型演示。</footer>
+    </main>
+    <script>
+      const buttons = document.querySelectorAll('.menu-item');
+      const sections = document.querySelectorAll('.section');
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const target = button.getAttribute('data-target');
+          buttons.forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          sections.forEach((section) => {
+            section.classList.toggle('active', section.dataset.section === target);
+          });
+        });
+      });
+    </script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
