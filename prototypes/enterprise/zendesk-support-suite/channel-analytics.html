@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 渠道体验分析</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="channel-analytics" data-default-role="analyst">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">分析师对比多渠道体验，切换角色查看不同可视范围。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">运营分析师 · 渠道洞察</div>
+            <h1 class="page-title">渠道体验分析</h1>
+            <p class="page-subtitle" data-role-summary>
+              深入分析客户旅程在不同渠道的体验质量、转化情况与痛点分布。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">渠道漏斗</h2>
+                <p class="section-subtitle">展示客户从自助到人工的转化过程，识别流失节点。</p>
+              </div>
+              <a class="button" href="automation-performance.html">查看机器人调优</a>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>自助 → 人工漏斗</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">自助解决率 42%，主要流失在「信息不足」节点。</p>
+              </div>
+              <div class="chart-card">
+                <h3>渠道满意度</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">社媒满意度 4.2，低于其他渠道，建议优化响应脚本。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="analyst,supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">情绪与主题分析</h2>
+                <p class="section-subtitle">利用文本分析识别主要主题与情绪波动。</p>
+              </div>
+            </div>
+            <div class="columns-2">
+              <div class="card">
+                <h3>热门主题</h3>
+                <div class="highlight-list">
+                  <div class="highlight-item">📦 物流延迟 · 占比 22%</div>
+                  <div class="highlight-item">💳 退款进度 · 占比 18%</div>
+                  <div class="highlight-item">⚙️ 功能问题 · 占比 15%</div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>情绪走势</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">过去 7 天负面情绪下降 6%，情绪波动集中在社媒。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="role-locked">客服代表仅能查看与自身渠道相关的摘要，需要切换至运营分析师或主管获得完整分析。</div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心分析界面结束后，补充说明业务价值与下一步。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              渠道体验分析帮助团队识别痛点并制定跨渠道策略。通过按钮可跳转至“自动化成效中心”深入机器人调优，也能回到“运营分析仪表盘”汇报整体表现，满足演示中的多页面联动需求。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 排班与 SLA 控制塔</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="sla-planning" data-default-role="supervisor">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">主管可调整排班与 SLA，切换角色了解可见数据差异。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">客服主管 · 资源调度</div>
+            <h1 class="page-title">排班与 SLA 控制塔</h1>
+            <p class="page-subtitle" data-role-summary>
+              将预测需求、人力排班与 SLA 目标整合，便于即刻做出调整决策。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">排班日历</h2>
+                <p class="section-subtitle">按渠道查看今日班次与缺口，支持拖拽调整。</p>
+              </div>
+              <a class="button" href="queue-monitor.html">查看实时队列</a>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>时间段</th>
+                    <th>聊天</th>
+                    <th>邮件</th>
+                    <th>电话</th>
+                    <th>社媒</th>
+                    <th>缺口</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>09:00 - 12:00</td>
+                    <td>12 / 12</td>
+                    <td>18 / 18</td>
+                    <td>10 / 12</td>
+                    <td>5 / 6</td>
+                    <td><span class="tag-pill warning">-3</span></td>
+                  </tr>
+                  <tr>
+                    <td>12:00 - 15:00</td>
+                    <td>10 / 12</td>
+                    <td>20 / 18</td>
+                    <td>12 / 12</td>
+                    <td>6 / 6</td>
+                    <td><span class="tag-pill success">+2</span></td>
+                  </tr>
+                  <tr>
+                    <td>15:00 - 18:00</td>
+                    <td>9 / 12</td>
+                    <td>16 / 18</td>
+                    <td>11 / 12</td>
+                    <td>4 / 6</td>
+                    <td><span class="tag-pill warning">-5</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">SLA 策略</h2>
+                <p class="section-subtitle">配置不同客户群的 SLA 目标与升级路径。</p>
+              </div>
+            </div>
+            <div class="columns-3">
+              <div class="card">
+                <h3>VIP 客户</h3>
+                <p>首次响应 15 分钟 · 解决 8 小时 · 升级至高级客服。</p>
+              </div>
+              <div class="card">
+                <h3>普通客户</h3>
+                <p>首次响应 1 小时 · 解决 24 小时 · 触发自动提醒。</p>
+              </div>
+              <div class="card">
+                <h3>社区渠道</h3>
+                <p>首次响应 2 小时 · 解决 48 小时 · 鼓励自助。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="role-locked">客服代表仅能查看个人班表，需切换至主管角色以编辑排班与 SLA。</div>
+          </section>
+
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">预测与成本</h2>
+                <p class="section-subtitle">分析师评估劳动力成本与预测准确率。</p>
+              </div>
+              <a class="button-secondary" href="analytics-insights.html">跳转至运营分析仪表盘</a>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>预测准确率</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">本周预测误差 6%，高于目标 5%。</p>
+              </div>
+              <div class="chart-card">
+                <h3>人力成本</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">排班调整预计增加 12% 加班成本。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心布局演示后，补充说明典型使用场景。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              控制塔页面突出主管如何依据预测调整班表并定义 SLA。与“队列监控中心”联动，形成从发现问题到落地调度的完整流程；分析师通过同一界面访问预测与成本数据，实现跨角色的协同演示。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

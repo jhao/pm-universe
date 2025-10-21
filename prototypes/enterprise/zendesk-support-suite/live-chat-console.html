@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 实时对话中心</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="live-chat" data-default-role="agent">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">角色切换影响左侧菜单以及会话分配策略展示。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">客服代表工作台 · 多渠道即时沟通</div>
+            <h1 class="page-title">实时对话中心</h1>
+            <p class="page-subtitle" data-role-summary>
+              可视化聊天、社交消息与机器人协同，支持智能分配和升级处理。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="agent">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">对话队列与分配</h2>
+                <p class="section-subtitle">左侧显示等待队列，中间为会话内容，右侧为客户上下文与宏。</p>
+              </div>
+            </div>
+            <div class="split-layout">
+              <div class="card">
+                <h3>待接入队列 (5)</h3>
+                <div class="highlight-list">
+                  <div class="highlight-item">Lucy · VIP · 等待 2:03 · 推荐接入技能「账单」</div>
+                  <div class="highlight-item">Jasper · 开放渠道 · 等待 1:14 · 推荐宏「物流状态」</div>
+                  <div class="highlight-item">WeChat · 小程序咨询 · 等待 0:46 · 推荐转机器人</div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>当前会话 · #LC-9921</h3>
+                <div class="helper-text">
+                  <strong>客户：</strong>Eva Chen · 企业管理员<br />
+                  <strong>问题：</strong>「我们上线自定义表单后，外部用户提交报错 500。」<br />
+                  <strong>上下文：</strong> 最近 30 天满意度 5/5，近 2 小时内提交过相同问题。
+                </div>
+                <div class="timeline" style="margin-top: 16px;">
+                  <div class="timeline-entry">
+                    <h4>14:32 客户</h4>
+                    <p>「表单提交会报错 500，可以帮忙看下吗？」</p>
+                  </div>
+                  <div class="timeline-entry">
+                    <h4>14:33 机器人</h4>
+                    <p>提供帮助中心文章《自定义表单排错指南》，命中率 62%。</p>
+                  </div>
+                  <div class="timeline-entry">
+                    <h4>14:34 客服代表</h4>
+                    <p>「您好，我来协助排查，是否方便提供出错截图？」</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>快捷工具</h3>
+                <div class="highlight-list">
+                  <div class="highlight-item">📎 上传截图并同步到工单 #45821</div>
+                  <div class="highlight-item">⚙️ 使用宏「表单排错 · 收集信息」</div>
+                  <div class="highlight-item">🧑‍🤝‍🧑 申请主管协作 · 指派给 @Wang</div>
+                  <div class="highlight-item">🔁 转接至技术支持小组</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">实时监控 · 队列健康</h2>
+                <p class="section-subtitle">主管视角显示跨渠道等待时间、席位利用率及机器人接管率。</p>
+              </div>
+              <a class="button" href="queue-monitor.html">打开队列监控中心</a>
+            </div>
+            <div class="metrics-grid">
+              <article class="metric-card">
+                <div class="label">聊天平均等待</div>
+                <div class="value">1.6 分钟</div>
+                <div class="trend warning">目标 1 分钟</div>
+              </article>
+              <article class="metric-card">
+                <div class="label">席位占用率</div>
+                <div class="value">84%</div>
+                <div class="trend">排班利用率良好</div>
+              </article>
+              <article class="metric-card">
+                <div class="label">机器人接管率</div>
+                <div class="value">38%</div>
+                <div class="trend">命中 FAQ 话术 62 次</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">渠道表现对比</h2>
+                <p class="section-subtitle">分析师关注机器人转人工率、会话满意度与峰值时段。</p>
+              </div>
+              <a class="button-secondary" href="analytics-insights.html">跳转至运营仪表盘</a>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>机器人转人工率</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">聊天 42%，社媒 35%，语音 18%。建议增加机器人学习。</p>
+              </div>
+              <div class="chart-card">
+                <h3>满意度对比</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">聊天 CSAT 4.5/5，社媒 4.2/5，邮件 4.7/5。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">本段落位于核心界面之后，用于补充场景描述与下一步动作。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              实时对话中心展示客服代表如何在单屏内处理分配、沟通及协作。通过菜单可进一步访问“客户 360 视图”获取更完整的历史背景，或前往“自动化成效中心”查看机器人调优成果，满足演示过程中多跳转的需求。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

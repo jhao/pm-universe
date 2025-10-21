@@ -2,83 +2,163 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Zendesk Support Suite 原型概览</title>
-    <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
-    </style>
+    <title>Zendesk Support Suite · 全局概览</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <header>
-      <h1>Zendesk Support Suite 原型</h1>
-      <p class="tagline">全渠道客户服务与工单管理平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>客户服务团队、客服主管、运营分析师</p>
-        <p><strong>核心痛点：</strong>客户渠道多样，客服需要统一处理，缺少数据洞察</p>
-        <p><strong>价值主张：</strong>整合邮件、电话、聊天、社媒等渠道，提供智能分配与知识库</p>
+  <body data-page="overview" data-default-role="supervisor">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">根据右上角的角色切换，查看差异化的菜单与内容。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">企业原型 · 客户服务统一运营</div>
+            <h1 class="page-title">全局运营控制台</h1>
+            <p class="page-subtitle" data-role-summary>
+              汇总全渠道运营态势、服务质量与团队负载，支持不同角色的日常决策。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">关键指标一览</h2>
+                <p class="section-subtitle">统一视角追踪 SLA、满意度与运营负载，角色切换可查看关注点差异。</p>
+              </div>
+              <span class="badge">实时同步 · 过去 24 小时</span>
+            </div>
+            <div class="metrics-grid" data-role-view="all">
+              <article class="metric-card">
+                <div class="label">SLA 达成率</div>
+                <div class="value">92%</div>
+                <div class="trend">↑ 与上周相比 +3%</div>
+              </article>
+              <article class="metric-card" data-role-view="agent,supervisor">
+                <div class="label">平均首次响应</div>
+                <div class="value">7 分钟</div>
+                <div class="trend warning">需关注：聊天渠道偏高</div>
+              </article>
+              <article class="metric-card" data-role-view="analyst,supervisor">
+                <div class="label">客户满意度 (CSAT)</div>
+                <div class="value">4.6 / 5</div>
+                <div class="trend">调研覆盖率 68%</div>
+              </article>
+              <article class="metric-card" data-role-view="agent">
+                <div class="label">个人待办工单</div>
+                <div class="value">18</div>
+                <div class="trend danger">4 条 SLA 2 小时内到期</div>
+              </article>
+              <article class="metric-card" data-role-view="supervisor">
+                <div class="label">队列积压</div>
+                <div class="value">126</div>
+                <div class="trend warning">比目标上浮 16%</div>
+              </article>
+              <article class="metric-card" data-role-view="analyst">
+                <div class="label">自动化节省工时</div>
+                <div class="value">+420 h</div>
+                <div class="trend">触发流程 168 次</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="all">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">今日待办与预警</h2>
+                <p class="section-subtitle">系统根据角色关注重点生成提醒，可点击进入相应页面继续处理。</p>
+              </div>
+            </div>
+            <div class="columns-2">
+              <div class="card" data-role-view="agent,supervisor">
+                <h3>高优先级工单预警</h3>
+                <p>智能分配检测到 6 个 VIP 工单将超过首次响应 SLA。</p>
+                <div class="button-bar" style="margin-top: 16px;">
+                  <a class="button" href="agent-workspace.html">进入智能工作台</a>
+                  <a class="button-secondary" href="ticket-detail.html">查看示例工单</a>
+                </div>
+              </div>
+              <div class="card" data-role-view="supervisor">
+                <h3>队列波动提醒</h3>
+                <p>聊天队列等待时间超过 2 分钟，已建议调度 3 名邮件客服转入。</p>
+                <div class="button-bar" style="margin-top: 16px;">
+                  <a class="button" href="queue-monitor.html">查看队列监控</a>
+                  <a class="button-secondary" href="sla-planning.html">快速排班</a>
+                </div>
+              </div>
+              <div class="card" data-role-view="analyst">
+                <h3>自动化优化建议</h3>
+                <p>Answer Bot 对“退款流程”问题命中率仅 38%，推荐训练新知识块。</p>
+                <div class="button-bar" style="margin-top: 16px;">
+                  <a class="button" href="automation-performance.html">查看自动化成效</a>
+                  <a class="button-secondary" href="channel-analytics.html">交叉分析渠道</a>
+                </div>
+              </div>
+              <div class="card" data-role-view="agent">
+                <h3>个人协作提醒</h3>
+                <p>有 3 个工单收到协作备注，请及时查看处理下一步。</p>
+                <div class="button-bar" style="margin-top: 16px;">
+                  <a class="button" href="live-chat-console.html">打开实时对话</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">角色视角导航</h2>
+                <p class="section-subtitle">切换后左侧菜单随即更新，直接进入对应角色的核心能力页面。</p>
+              </div>
+            </div>
+            <div class="columns-3">
+              <div class="card" data-role-view="all">
+                <h3>客服代表视角</h3>
+                <p>优先处理个人任务、获取客户上下文，并在多渠道之间无缝切换。</p>
+                <div class="button-bar" style="margin-top: 14px;">
+                  <a class="button" href="agent-workspace.html">体验智能工作台</a>
+                </div>
+              </div>
+              <div class="card" data-role-view="all">
+                <h3>客服主管视角</h3>
+                <p>监控队列健康、优化排班，并通过质检保障服务一致性。</p>
+                <div class="button-bar" style="margin-top: 14px;">
+                  <a class="button" href="queue-monitor.html">打开队列监控中心</a>
+                </div>
+              </div>
+              <div class="card" data-role-view="all">
+                <h3>运营分析师视角</h3>
+                <p>聚焦数据洞察，衡量渠道体验与自动化 ROI，驱动持续改进。</p>
+                <div class="button-bar" style="margin-top: 14px;">
+                  <a class="button" href="analytics-insights.html">查看运营分析仪表盘</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心页面介绍完成后，可向下查看典型业务场景说明。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              <strong>场景示例：</strong> 当客服主管关注 SLA 波动时，可在本页快速识别风险，随后通过左侧菜单切换到“排班与 SLA 控制塔”进行调度；分析师则从“运营分析仪表盘”导出周报，并跳转到“自动化成效中心”优化机器人回复。所有页面均支持顶部角色切换，实现演示不同权限视图的需求。
+            </div>
+          </section>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>客服代表处理多渠道工单</li><li>主管监控队列、SLA 与客服绩效</li><li>运营分析客户满意度与趋势</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>工单与渠道管理</h3>
-              <p class="goal">功能目标：统一管理客户请求</p>
-              <ul>
-                <li>邮件、聊天、电话、社交渠道接入</li><li>工单分配、触发器与宏</li><li>SLA 管理与优先级规则</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>知识库与自助</h3>
-              <p class="goal">功能目标：降低重复问题并提升自助率</p>
-              <ul>
-                <li>Guide 知识库管理</li><li>社区论坛与帮助中心</li><li>Answer Bot 与 AI 推荐</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>客服工作台</h3>
-              <p class="goal">功能目标：提升客服效率与协作</p>
-              <ul>
-                <li>统一客户视图与上下文</li><li>宏、快捷回复与协同备注</li><li>与 CRM、Slack 等集成</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>分析与优化</h3>
-              <p class="goal">功能目标：持续改进客服运营</p>
-              <ul>
-                <li>Explore 报表与仪表盘</li><li>客户满意度、NPS 与联络原因分析</li><li>预测分析与劳动力规划</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>首次响应时间与解决时间</li><li>自助占比与知识库覆盖率</li><li>CSAT/NPS 分数与客服利用率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

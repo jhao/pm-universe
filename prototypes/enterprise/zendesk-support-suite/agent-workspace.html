@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 智能工作台</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="agent-workspace" data-default-role="agent">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">切换角色可对比不同视角，菜单将自动过滤。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">客服代表工作台 · 工单处理</div>
+            <h1 class="page-title">智能工单工作台</h1>
+            <p class="page-subtitle" data-role-summary>
+              汇集待办工单、实时对话与客户上下文，帮助客服代表高效完成处理。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="agent">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">我的待办工单</h2>
+                <p class="section-subtitle">按照智能优先级排序，含跨渠道上下文，可直接展开处理。</p>
+              </div>
+              <div class="button-bar">
+                <a class="button" href="ticket-detail.html">打开工单详情视图</a>
+                <a class="button-secondary" href="live-chat-console.html">转入实时对话</a>
+              </div>
+            </div>
+            <div class="split-layout">
+              <div class="table-card">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>工单 #</th>
+                      <th>主题</th>
+                      <th>渠道</th>
+                      <th>状态</th>
+                      <th>SLA</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a href="ticket-detail.html">#45821</a></td>
+                      <td>退款进度咨询</td>
+                      <td><span class="tag-pill">邮件</span></td>
+                      <td><span class="tag-pill warning">待处理</span></td>
+                      <td>剩余 1h</td>
+                    </tr>
+                    <tr>
+                      <td><a href="ticket-detail.html">#45856</a></td>
+                      <td>发票开具失败</td>
+                      <td><span class="tag-pill">聊天</span></td>
+                      <td><span class="tag-pill">跟进中</span></td>
+                      <td>剩余 3h</td>
+                    </tr>
+                    <tr>
+                      <td><a href="ticket-detail.html">#45903</a></td>
+                      <td>企业方案升级咨询</td>
+                      <td><span class="tag-pill">电话</span></td>
+                      <td><span class="tag-pill success">已回复</span></td>
+                      <td>达成</td>
+                    </tr>
+                    <tr>
+                      <td><a href="ticket-detail.html">#45918</a></td>
+                      <td>账号权限异常</td>
+                      <td><span class="tag-pill">社媒</span></td>
+                      <td><span class="tag-pill warning">待处理</span></td>
+                      <td>剩余 4h</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>智能建议</h3>
+                <p>宏推荐：退款类问题建议使用「退款流程 · 4 步响应」。</p>
+                <div class="helper-text" style="margin-top: 12px;">
+                  <strong>知识库链接：</strong> <a href="customer-360.html">查阅客户历史与自助内容</a><br />
+                  <strong>协作备注：</strong> 财务团队已在票据 #45821 留下核销凭证，请先查看。
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">多渠道对话总览</h2>
+                <p class="section-subtitle">实时查看聊天与社交消息，使用快捷回复与宏提升响应速度。</p>
+              </div>
+            </div>
+            <div class="columns-2">
+              <div class="card">
+                <h3>聊天队列</h3>
+                <div class="kanban-board">
+                  <div class="kanban-column">
+                    <h4>等待中 (3)</h4>
+                    <div class="kanban-card">
+                      <strong>Lucy · Plus 会员</strong>
+                      <span class="tag-pill warning">等待 1:45</span>
+                      <p>追踪订单 #889101</p>
+                    </div>
+                    <div class="kanban-card">
+                      <strong>Anderson · 企业</strong>
+                      <span class="tag-pill">等待 0:52</span>
+                      <p>咨询 SSO 配置</p>
+                    </div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>进行中 (2)</h4>
+                    <div class="kanban-card">
+                      <strong>Yuki · Prime</strong>
+                      <span class="tag-pill success">语音转文字</span>
+                      <p>报障：支付失败</p>
+                    </div>
+                    <div class="kanban-card">
+                      <strong>Miles · 体验官</strong>
+                      <span class="tag-pill">协作中</span>
+                      <p>反馈新功能问题</p>
+                    </div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>已结束 (5)</h4>
+                    <div class="kanban-card">
+                      <strong>Eva</strong>
+                      <span class="tag-pill success">转自助</span>
+                      <p>已推送相关文档</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>快捷操作</h3>
+                <div class="highlight-list">
+                  <div class="highlight-item">⏱️ 一键设置「等待电话回拨」状态</div>
+                  <div class="highlight-item">🤝 邀请主管加入对话，触发协作工单</div>
+                  <div class="highlight-item">✨ 发送推荐宏「新品发布答疑」</div>
+                  <div class="highlight-item">📂 将附件同步至客户档案</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="supervisor,analyst">
+            <div class="role-locked">该页面主要面向客服代表，切换到“客服代表”角色即可查看完整功能演示。</div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心界面演示完毕后，可阅读下方业务场景补充说明。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              工作台聚合「待办列表 + 客户侧栏 + 快捷操作」，展示客服如何在一次会话内完成多项动作。通过顶部按钮可跳转到工单详情页面，模拟编辑、升级与协作流；也可以转入实时对话页面体验多渠道交互。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
