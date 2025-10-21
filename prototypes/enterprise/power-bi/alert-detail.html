@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>警报配置详情 | 租户管理员视角</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-role="admin" data-page="subscriptions">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：租户管理员</span>
+            <strong>警报配置详情</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>库存告警阈值配置</h1>
+                <p>定义触发条件、通知渠道与应对流程。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="subscription-alerts.html">保存配置</a>
+                <a class="button secondary" href="governance-center.html">查看治理规则</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>触发条件</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>指标来源</strong>
+                  <p>库存覆盖天数（语义模型）</p>
+                </div>
+                <div class="status-tile">
+                  <strong>阈值</strong>
+                  <p>小于 15 天</p>
+                </div>
+                <div class="status-tile">
+                  <strong>监控频率</strong>
+                  <p>每小时</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>通知策略</h2>
+              <div class="flow-steps">
+                <div class="flow-step">
+                  <strong>渠道</strong>
+                  <p>Email + Teams</p>
+                </div>
+                <div class="flow-step">
+                  <strong>受众</strong>
+                  <p>供应链主管、仓储经理</p>
+                </div>
+                <div class="flow-step">
+                  <strong>升级机制</strong>
+                  <p>连续 2 小时未响应升级至运营副总。</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>应对动作</h2>
+              <div class="grid">
+                <div class="card">
+                  <h2>任务分配</h2>
+                  <p>自动在 Planner 创建补货任务</p>
+                </div>
+                <div class="card">
+                  <h2>参考报表</h2>
+                  <p>链接供应链执行仪表盘</p>
+                  <a class="button ghost" href="workspace-detail.html">查看工作区</a>
+                </div>
+                <div class="card">
+                  <h2>记录留存</h2>
+                  <p>审计日志保留 90 天</p>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>定义警报触发条件、通知流程和自动化动作。</li>
+                <li>引导管理员与治理中心协同，确保跨部门响应。</li>
+                <li>可返回订阅总览或进入工作区，追踪执行情况。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

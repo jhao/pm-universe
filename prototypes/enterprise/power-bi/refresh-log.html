@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>刷新日志 | 数据工程师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-role="engineer" data-page="dataflow-monitor">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：数据工程师</span>
+            <strong>刷新日志</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>订单履约数据流日志</h1>
+                <p>定位失败步骤与影响表，快速排查问题。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="connection-wizard.html">修复凭据</a>
+                <a class="button secondary" href="dataflow-monitor.html">返回监控</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>运行详情</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>步骤</th>
+                    <th>耗时</th>
+                    <th>状态</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>02:00:12</td>
+                    <td>提取 - Oracle</td>
+                    <td>04:21</td>
+                    <td><span class="metric-badge gain">成功</span></td>
+                    <td>读取订单明细</td>
+                  </tr>
+                  <tr>
+                    <td>02:05:01</td>
+                    <td>转换 - 清洗</td>
+                    <td>03:15</td>
+                    <td><span class="metric-badge gain">成功</span></td>
+                    <td>统一字段、去重</td>
+                  </tr>
+                  <tr>
+                    <td>02:08:45</td>
+                    <td>加载 - 数据集</td>
+                    <td>01:50</td>
+                    <td><span class="metric-badge loss">失败</span></td>
+                    <td>凭据过期，无法写入</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>影响分析</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>受影响报表</strong>
+                  <p>4 个报表刷新失败</p>
+                  <a class="button ghost" href="report-versioning.html">通知报表所有者</a>
+                </div>
+                <div class="status-tile">
+                  <strong>RLS 角色</strong>
+                  <p>区域经理、供应链主管</p>
+                </div>
+                <div class="status-tile">
+                  <strong>自动重试</strong>
+                  <p>剩余 2 次机会</p>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>提供详细刷新步骤日志，定位失败的具体动作。</li>
+                <li>结合影响分析帮助评估业务影响并制定补救措施。</li>
+                <li>支持跳转到连接向导修复问题或通知报表负责人。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
