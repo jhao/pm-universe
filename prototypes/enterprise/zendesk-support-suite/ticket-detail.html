@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 工单详情示例</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="ticket-detail" data-default-role="agent">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">工单详情支持跨角色查看，权限不同显示的操作也不同。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">工单管理 · 协作与升级</div>
+            <h1 class="page-title">工单 #45821 · 退款进度咨询</h1>
+            <p class="page-subtitle" data-role-summary>
+              展示工单正文、互动记录、宏推荐与升级流程，支撑跨团队协作演示。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">核心信息</h2>
+                <p class="section-subtitle">左侧为客户信息与字段，右侧为互动内容与推荐操作。</p>
+              </div>
+              <div class="button-bar">
+                <a class="button" href="agent-workspace.html">返回我的待办</a>
+                <a class="button-secondary" href="customer-360.html">查看客户档案</a>
+              </div>
+            </div>
+            <div class="split-layout">
+              <div class="card" data-role-view="agent,supervisor">
+                <h3>工单字段</h3>
+                <p>
+                  <strong>渠道：</strong>邮件<br />
+                  <strong>优先级：</strong><span class="tag-pill warning">高</span><br />
+                  <strong>SLA：</strong>首次响应剩余 58 分钟 · 解决剩余 8 小时<br />
+                  <strong>责任组：</strong>财务支持
+                </p>
+                <div class="highlight-list" style="margin-top: 14px;">
+                  <div class="highlight-item">📌 标签：refund，vip，2024-Q2</div>
+                  <div class="highlight-item">🔁 触发器：超过 1 小时未回复提醒主管</div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>最新互动</h3>
+                <div class="timeline">
+                  <div class="timeline-entry">
+                    <h4>客服代表 · 14:30</h4>
+                    <p>已联系财务团队核查退款状态，预计 2 小时内回复。</p>
+                  </div>
+                  <div class="timeline-entry">
+                    <h4>客户 · 13:58</h4>
+                    <p>想确认退款是否在 5 个工作日内到账。</p>
+                  </div>
+                  <div class="timeline-entry">
+                    <h4>自动化 · 13:45</h4>
+                    <p>Answer Bot 推送自助文章《退款进度查询》，客户表示未解决。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">推荐操作</h2>
+                <p class="section-subtitle">提供宏、知识库与协作模板，帮助客服快速推进。</p>
+              </div>
+            </div>
+            <div class="columns-3">
+              <div class="card">
+                <h3>宏 · 退款流程</h3>
+                <p>自动插入退款说明，附上进度查询表单与核对步骤。</p>
+              </div>
+              <div class="card">
+                <h3>协作</h3>
+                <p>邀请 <strong>@Finance-Team</strong> 协作，附上客户交易号 881992。</p>
+              </div>
+              <div class="card">
+                <h3>知识库</h3>
+                <p>向客户推荐《退款常见问题》文章，展示最近的更新记录。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">升级与质检</h2>
+                <p class="section-subtitle">主管可查看升级记录、满意度及质检评分。</p>
+              </div>
+            </div>
+            <div class="columns-2">
+              <div class="card">
+                <h3>升级记录</h3>
+                <p>2024-06-11 13:40 升级至财务支持 · SLA 延长 4 小时。</p>
+              </div>
+              <div class="card">
+                <h3>质检评分</h3>
+                <p>5/5 · 备注：沟通清晰，后续需主动告知客户进度。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">运营洞察</h2>
+                <p class="section-subtitle">分析师关注流程效率与自助转化效果。</p>
+              </div>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>处理时长对比</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">退款类平均解决 6.5 小时，本工单预计 5 小时。</p>
+              </div>
+              <div class="chart-card">
+                <h3>自助触发率</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">退款文章命中率 42%，人工转化率 58%。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心界面结束后补充说明，帮助演示人员串联前后流程。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              工单详情示例强调跨角色的可见信息差异：客服代表专注于宏与协作，主管查看升级与质检，分析师关注效率指标。通过顶部按钮可跳转至工作台或客户档案，演示完整的工单生命周期。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

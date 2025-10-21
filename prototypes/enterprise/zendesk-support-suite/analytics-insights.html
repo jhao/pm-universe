@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 运营分析仪表盘</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="analytics-insights" data-default-role="analyst">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">运营分析师关注数据洞察，切换角色可查看不同层级访问。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">运营分析师 · 数据洞察</div>
+            <h1 class="page-title">运营分析仪表盘</h1>
+            <p class="page-subtitle" data-role-summary>
+              汇总全渠道 KPI、满意度、自动化回报与预测趋势，为战略决策提供依据。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">核心 KPI</h2>
+                <p class="section-subtitle">聚焦本季度关键指标，可下钻至渠道或团队。</p>
+              </div>
+              <div class="button-bar">
+                <a class="button" href="channel-analytics.html">查看渠道分析</a>
+                <a class="button-secondary" href="automation-performance.html">跳转自动化成效</a>
+              </div>
+            </div>
+            <div class="metrics-grid">
+              <article class="metric-card">
+                <div class="label">CSAT</div>
+                <div class="value">4.6 / 5</div>
+                <div class="trend">同比 +0.4</div>
+              </article>
+              <article class="metric-card">
+                <div class="label">首次响应时间</div>
+                <div class="value">12 分钟</div>
+                <div class="trend warning">高于目标 10 分钟</div>
+              </article>
+              <article class="metric-card">
+                <div class="label">工单解决时间</div>
+                <div class="value">6.2 小时</div>
+                <div class="trend">趋势下降 8%</div>
+              </article>
+              <article class="metric-card">
+                <div class="label">自动化节省工时</div>
+                <div class="value">+1680 h</div>
+                <div class="trend">季度节省成本 24%</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="analyst,supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">渠道表现</h2>
+                <p class="section-subtitle">对比不同渠道的满意度、处理效率与成本。</p>
+              </div>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>满意度趋势</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">聊天 4.5、邮件 4.7、电话 4.6、社媒 4.2。</p>
+              </div>
+              <div class="chart-card">
+                <h3>成本结构</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">人力成本 58%，技术成本 24%，外包 18%。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">预测与模拟</h2>
+                <p class="section-subtitle">基于历史数据预测需求并模拟不同策略的影响。</p>
+              </div>
+            </div>
+            <div class="columns-2">
+              <div class="card">
+                <h3>需求预测</h3>
+                <p>预计下周工单量 12,300 单，较本周增长 6%。</p>
+                <div class="highlight-list" style="margin-top: 14px;">
+                  <div class="highlight-item">📈 建议提前调配 5 名聊天客服</div>
+                  <div class="highlight-item">🤖 扩充 Answer Bot 知识库 12 篇文章</div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>策略模拟</h3>
+                <p>若增加聊天机器人预算 10%，预计节省人力 180 小时。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="role-locked">客服代表仅能查看与个人绩效相关的摘要，请切换至“运营分析师”或“客服主管”了解完整仪表盘。</div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">在主要界面之后补充运营洞察的业务价值。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              仪表盘整合多个视角的数据，演示者可通过按钮跳转至“渠道体验分析”或“自动化成效中心”。主管角色可查看部分图表，客服代表则受限，仅展示权限差异，满足多角色演示需求。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
