@@ -2,83 +2,1589 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>WhatsApp 即时通信 原型概览</title>
+    <title>WhatsApp 多角色体验原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 40%, #f8fafc 100%);
+        color: #0f172a;
+      }
+      .app-shell {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+      }
+      header.topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        background: radial-gradient(circle at 30% 30%, #34d399, #059669);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        box-shadow: 0 12px 32px rgba(5, 150, 105, 0.25);
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+      .brand span {
+        display: block;
+        font-size: 14px;
+        color: #475569;
+      }
+      .role-switcher {
+        display: flex;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 8px;
+        border-radius: 999px;
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(15, 23, 42, 0.05);
+      }
+      .role-button {
+        border: none;
+        background: transparent;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e293b;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .role-button:hover {
+        background: rgba(59, 130, 246, 0.08);
+      }
+      .role-button.active {
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: #fff;
+        box-shadow: 0 16px 24px rgba(79, 70, 229, 0.22);
+      }
+      .hero {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: 0 24px 42px rgba(15, 23, 42, 0.14);
+        margin-bottom: 24px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+        border: 1px solid rgba(15, 23, 42, 0.05);
+      }
+      .hero-primary {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .hero-primary h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .hero-tagline {
+        font-size: 15px;
+        color: #475569;
+        line-height: 1.6;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .hero-actions button {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .hero-actions button.primary {
+        background: linear-gradient(135deg, #16a34a, #22c55e);
+        color: #fff;
+        box-shadow: 0 14px 28px rgba(34, 197, 94, 0.25);
+      }
+      .hero-actions button.secondary {
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+      }
+      .hero-actions button:hover {
+        transform: translateY(-2px);
+      }
+      .hero-stat {
+        background: rgba(241, 245, 249, 0.8);
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+      .hero-stat span.value {
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .hero-stat span.label {
+        font-size: 13px;
+        color: #475569;
+      }
+      .hero-stat span.trend {
+        font-size: 12px;
+        color: #059669;
+        font-weight: 600;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 24px;
+      }
+      .sidebar {
+        background: rgba(15, 23, 42, 0.86);
+        color: #f8fafc;
+        border-radius: 24px;
+        padding: 24px 18px;
+        box-shadow: 0 20px 36px rgba(15, 23, 42, 0.35);
+        min-height: 560px;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: rgba(226, 232, 240, 0.78);
+      }
+      .menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 18px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .menu-item {
+        border: none;
+        background: rgba(255, 255, 255, 0.04);
+        color: inherit;
+        padding: 12px 16px;
+        border-radius: 14px;
+        text-align: left;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+      .menu-item span {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateX(4px);
+      }
+      .menu-item.active {
+        background: linear-gradient(135deg, rgba(96, 165, 250, 0.22), rgba(129, 140, 248, 0.28));
+        box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.45);
+      }
+      main.content {
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 24px 44px rgba(15, 23, 42, 0.16);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .content section {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .section-header h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .section-header .meta {
+        font-size: 13px;
+        color: #64748b;
+      }
+      .card-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .card {
+        background: rgba(248, 250, 252, 0.92);
+        border-radius: 20px;
+        padding: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 14px 24px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .card h3 {
+        margin: 0;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .badge {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        padding: 4px 8px;
+        border-radius: 10px;
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+      }
+      .feature-list {
+        margin: 0;
+        padding-left: 18px;
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .list-board {
+        display: grid;
+        gap: 14px;
+      }
+      .list-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(248, 250, 252, 0.9);
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+      .list-row strong {
+        font-size: 14px;
+      }
+      .list-row span {
+        font-size: 12px;
+        color: #475569;
+      }
+      .kanban {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .kanban-column {
+        background: rgba(248, 250, 252, 0.92);
+        border-radius: 18px;
+        padding: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 14px;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .kanban-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 12px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .kanban-card span {
+        font-size: 12px;
+        color: #475569;
+      }
+      .timeline {
+        position: relative;
+        margin-left: 12px;
+        padding-left: 18px;
+        border-left: 2px dashed rgba(148, 163, 184, 0.4);
+        display: grid;
+        gap: 16px;
+      }
+      .timeline-item {
+        position: relative;
+        padding: 12px 16px;
+        background: rgba(241, 245, 249, 0.8);
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+      }
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -26px;
+        top: 16px;
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: #38bdf8;
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25);
+      }
+      .timeline-item strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+      }
+      .split-panels {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+      .panel {
+        background: rgba(248, 250, 252, 0.92);
+        border-radius: 20px;
+        padding: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        display: grid;
+        gap: 12px;
+      }
+      .panel h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .pill-set {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.15);
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      @media (max-width: 960px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          min-height: auto;
+          display: flex;
+          flex-direction: row;
+          overflow-x: auto;
+          gap: 12px;
+        }
+        .sidebar h3 {
+          display: none;
+        }
+        .menu-list {
+          flex-direction: row;
+          margin: 0;
+        }
+        .menu-item {
+          flex-direction: column;
+          align-items: flex-start;
+          min-width: 160px;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>WhatsApp 即时通信 原型</h1>
-      <p class="tagline">端到端加密的全球通讯与商业服务平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>全球消费者、中小企业客服团队</p>
-        <p><strong>核心痛点：</strong>跨国通信成本高、客户服务需要便捷高效</p>
-        <p><strong>价值主张：</strong>通过免费消息、语音视频通话与企业 API 打造高可靠通讯网络</p>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-logo">WA</div>
+          <div>
+            <h1>WhatsApp 原型工作台</h1>
+            <span>多角色体验 · 菜单驱动 · 高保真虚拟功能演示</span>
+          </div>
+        </div>
+        <div class="role-switcher" id="roleSwitcher"></div>
+      </header>
+      <section class="hero" id="hero"></section>
+      <div class="layout">
+        <aside class="sidebar">
+          <h3>功能菜单</h3>
+          <ul class="menu-list" id="menuList"></ul>
+        </aside>
+        <main class="content" id="content"></main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>个人用户发送文本、语音与视频消息</li><li>群聊协作与家庭成员共享媒体内容</li><li>企业利用 WhatsApp Business 提供客服与营销</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>即时消息</h3>
-              <p class="goal">功能目标：提供安全、低延迟的消息收发体验</p>
-              <ul>
-                <li>端到端加密文本、语音与文件传输</li><li>消息撤回、置顶与标签管理</li><li>状态（Stories）发布与阅后即焚</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>音视频通话</h3>
-              <p class="goal">功能目标：满足跨区域实时沟通需求</p>
-              <ul>
-                <li>单人及多人语音视频通话</li><li>屏幕共享与虚拟背景</li><li>弱网优化与语音信箱</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商业服务</h3>
-              <p class="goal">功能目标：帮助企业通过 WhatsApp 触达和服务客户</p>
-              <ul>
-                <li>WhatsApp Business App 店铺目录</li><li>消息模板、自动回复与客服分配</li><li>企业 API 集成 CRM 与营销自动化</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>安全与设备管理</h3>
-              <p class="goal">功能目标：保障账号安全并支持多设备协同</p>
-              <ul>
-                <li>登录设备管理与多端同步</li><li>两步验证与风险登录警报</li><li>数据备份与恢复选项</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>消息发送成功率与平均延迟</li><li>语音视频通话成功率与通话时长</li><li>WhatsApp Business 激活商户数与会话转化</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script>
+      const roles = {
+        consumer: {
+          name: '用户端',
+          icon: '👤',
+          tagline: '轻松连接好友、家人与兴趣圈层',
+          hero: {
+            title: '即时沟通主面板',
+            subtitle: '专注沉浸式聊天体验，秒级获取状态动态与支付信息',
+            metrics: [
+              { label: '未读消息', value: '12', trend: '+3' },
+              { label: '在线设备', value: '3', trend: '多端同步' },
+              { label: '收藏快捷', value: '8', trend: '常用操作' }
+            ],
+            actions: [
+              { type: 'primary', label: '新建聊天' },
+              { type: 'secondary', label: '创建群组' }
+            ]
+          },
+          menu: [
+            {
+              id: 'chat-hub',
+              label: '聊天中心',
+              icon: '💬',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>会话矩阵</h2>
+                    <div class="meta">支持拖拽排序、过滤与即时预览</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>个人对话</h3>
+                      <div class="badge-row">
+                        <span class="badge">端到端加密</span>
+                        <span class="badge">智能回复</span>
+                      </div>
+                      <ul class="feature-list">
+                        <li>聊天气泡实时展示，支持长按批量操作</li>
+                        <li>快捷入口：语音、视频、文件、位置</li>
+                        <li>置顶联系人与消息标签快速筛选</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>群聊空间</h3>
+                      <div class="badge-row">
+                        <span class="badge">协同看板</span>
+                        <span class="badge">发言检测</span>
+                      </div>
+                      <ul class="feature-list">
+                        <li>群公告、投票、活动预约一体化</li>
+                        <li>沉浸式话题线程，自动整理讨论</li>
+                        <li>高亮重点消息并推送到摘要</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>媒体集锦</h3>
+                      <div class="badge-row">
+                        <span class="badge">自动分类</span>
+                        <span class="badge">AI 精选</span>
+                      </div>
+                      <ul class="feature-list">
+                        <li>照片、视频、文档、语音分栏展示</li>
+                        <li>共享相册生成故事卡片</li>
+                        <li>智能搜索：人脸、地点、文件类型</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>实时互动面板</h2>
+                    <div class="meta">消息流、待办和置顶工具位于同屏</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>动态消息流</h3>
+                      <div class="pill-set">
+                        <span class="pill">优先联系人</span>
+                        <span class="pill">稍后处理</span>
+                        <span class="pill">沉浸模式</span>
+                      </div>
+                      <div class="list-board">
+                        <div class="list-row"><strong>Joey</strong><span>语音消息 · 00:23 · 自动转文字</span></div>
+                        <div class="list-row"><strong>家庭群</strong><span>共享账单 · 支付请求待确认</span></div>
+                        <div class="list-row"><strong>旅行计划</strong><span>AI 摘要：3 条未读行程更新</span></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>多设备同步</h3>
+                      <ul class="feature-list">
+                        <li>桌面端扫码秒连，移动端无缝接续</li>
+                        <li>离线设备快速唤醒与安全提醒</li>
+                        <li>同步进度条与故障自动诊断</li>
+                      </ul>
+                      <div class="pill-set">
+                        <span class="pill">iPhone 在线</span>
+                        <span class="pill">Web Beta</span>
+                        <span class="pill">平板镜像</span>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>沉浸工具栏</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>快速语音</strong><span>长按开始录制</span></div>
+                        <div class="list-row"><strong>共享白板</strong><span>低延迟协同绘制</span></div>
+                        <div class="list-row"><strong>即时翻译</strong><span>自动识别语种</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'status-channel',
+              label: '状态与频道',
+              icon: '📡',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>故事与短视频</h2>
+                    <div class="meta">48 小时故事、精选合集、音乐同步</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>个人故事工作室</h3>
+                      <ul class="feature-list">
+                        <li>模板商店：旅行、日常、教育主题</li>
+                        <li>滤镜、贴纸、字幕一键自动生成</li>
+                        <li>受众分层：公开、密友、自定义</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>频道订阅</h3>
+                      <ul class="feature-list">
+                        <li>个性化推荐流，支持预告提醒</li>
+                        <li>频道管理员可发起投票和问答</li>
+                        <li>赞助位与创作者打赏模式可视化</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>互动数据洞察</h3>
+                      <ul class="feature-list">
+                        <li>观众完成率、互动热力、留存追踪</li>
+                        <li>A/B 封面测试实时反馈</li>
+                        <li>自动剪辑生成最佳片段合集</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>频道运营排程</h2>
+                    <div class="meta">时间轴展示即将发布的素材与任务</div>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>今天 · 19:30 旅行 Vlog 上线</strong>
+                      <span>配乐、滤镜、字幕自动匹配完成</span>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>明天 · 品牌合作直播预告</strong>
+                      <span>抽奖活动设置 3 个奖池，客服随时响应</span>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>周末 · 社群互动日历</strong>
+                      <span>频道管理员协同编辑贴文与留言回复</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'contacts',
+              label: '联系人与群组',
+              icon: '👥',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>联系人全景视图</h2>
+                    <div class="meta">以关系与标签为核心的通讯录体验</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>标签聚合</h3>
+                      <div class="pill-set">
+                        <span class="pill">家人</span>
+                        <span class="pill">同事</span>
+                        <span class="pill">常用</span>
+                        <span class="pill">收藏</span>
+                      </div>
+                      <ul class="feature-list">
+                        <li>自定义标签颜色与智能推荐</li>
+                        <li>批量分组分享与通知设置</li>
+                        <li>常联系评分保障置顶排序</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>群组矩阵</h3>
+                      <ul class="feature-list">
+                        <li>群类型：家人、项目、兴趣、课堂</li>
+                        <li>活动模板：投票、签到、问卷、日程</li>
+                        <li>成员权限：管理员、协作者、访客</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>智能提醒</h3>
+                      <ul class="feature-list">
+                        <li>生日祝福自动草稿</li>
+                        <li>久未联系提醒与暖场建议</li>
+                        <li>重要联系人消息优先推送</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>共享空间</h2>
+                    <div class="meta">会议纪要、文件夹与活动签到一站式</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>家庭空间</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>账单中心</strong><span>待确认金额 ¥268.00</span></div>
+                        <div class="list-row"><strong>家务轮值</strong><span>自动提醒：周末清洁</span></div>
+                        <div class="list-row"><strong>相册墙</strong><span>最新 24 张照片同步</span></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>项目群空间</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>任务面板</strong><span>冲刺剩余 3 天</span></div>
+                        <div class="list-row"><strong>会议纪要</strong><span>AI 摘要已同步</span></div>
+                        <div class="list-row"><strong>文件夹</strong><span>设计稿 · 需求文档 · 合同</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'payments',
+              label: '支付与订单',
+              icon: '💳',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>钱包一览</h2>
+                    <div class="meta">支持跨境支付、零钱充值、自动扣款</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>支付工具集</h3>
+                      <ul class="feature-list">
+                        <li>绑定银行卡、数字钱包与积分账户</li>
+                        <li>好友转账、红包、AA 收款快捷入口</li>
+                        <li>交易密码、人脸识别双重校验</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>消费动态</h3>
+                      <ul class="feature-list">
+                        <li>订单状态追踪：处理中、已完成、退款</li>
+                        <li>智能分类账本与预算提醒</li>
+                        <li>商家客服一键唤起并关联订单</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>跨境助手</h3>
+                      <ul class="feature-list">
+                        <li>汇率实时刷新与手续费透明计算</li>
+                        <li>旅途模式：自动换算当地货币</li>
+                        <li>安全提醒：异常设备尝试付款拦截</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>订单旅程</h2>
+                    <div class="meta">消息、客服、支付、物流全链路联动</div>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>下单 · 对话内完成商品配置</strong>
+                      <span>商家机器人提供规格选择与实时库存</span>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>支付 · 双因子确认</strong>
+                      <span>点击付款后自动弹出安全校验抽屉</span>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>物流 · 地图追踪</strong>
+                      <span>与聊天窗口同步更新送达时间并支持转单</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'lab',
+              label: '设置实验室',
+              icon: '🧪',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>个性化控制台</h2>
+                    <div class="meta">主题、通知、隐私、实验功能自由开关</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>主题与外观</h3>
+                      <div class="pill-set">
+                        <span class="pill">深色模式</span>
+                        <span class="pill">聊天气泡</span>
+                        <span class="pill">动态壁纸</span>
+                      </div>
+                      <ul class="feature-list">
+                        <li>支持自定义渐变、上传背景、AI 生成</li>
+                        <li>消息气泡圆角、字号、密度自由设置</li>
+                        <li>辅助功能：高对比度与屏幕阅读</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>通知中心</h3>
+                      <ul class="feature-list">
+                        <li>关键词提醒与静音窗口时段</li>
+                        <li>自适应摘要通知与提醒频率</li>
+                        <li>多设备同步声音与震动配置</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>实验室功能</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>AI 助手 Beta</strong><span>总结长对话</span></div>
+                        <div class="list-row"><strong>消息撤回延时</strong><span>拉伸至 2 小时</span></div>
+                        <div class="list-row"><strong>语音变声</strong><span>趣味音色切换</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `
+            }
+          ]
+        },
+        admin: {
+          name: '管理员端',
+          icon: '🛡️',
+          tagline: '全局安全、权限与系统配置中枢',
+          hero: {
+            title: '治理控制台',
+            subtitle: '统一审计日志、风控规则与跨区域部署',
+            metrics: [
+              { label: '实时在线', value: '48,219', trend: '全球集群' },
+              { label: '风险拦截', value: '1,208', trend: '+12% 本周' },
+              { label: '系统健康', value: '99.98%', trend: '运行正常' }
+            ],
+            actions: [
+              { type: 'primary', label: '发布变更' },
+              { type: 'secondary', label: '查看审计' }
+            ]
+          },
+          menu: [
+            {
+              id: 'overview',
+              label: '工作台概览',
+              icon: '📊',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>全局监控</h2>
+                    <div class="meta">多区域服务状态与告警实时刷新</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>服务健康</h3>
+                      <div class="badge-row">
+                        <span class="badge">美洲</span>
+                        <span class="badge">欧洲</span>
+                        <span class="badge">亚太</span>
+                      </div>
+                      <ul class="feature-list">
+                        <li>节点 CPU/内存、请求延迟分级可视</li>
+                        <li>故障预警推送至负责人与值班手机</li>
+                        <li>自动扩容/回缩策略一键启停</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>安全态势</h3>
+                      <ul class="feature-list">
+                        <li>登录失败热力图与异常登录轨迹</li>
+                        <li>垃圾注册、滥发行为实时阻断</li>
+                        <li>威胁等级分级处理流程可视化</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>审计事件</h3>
+                      <ul class="feature-list">
+                        <li>关键操作双签确认与责任人定位</li>
+                        <li>日志快照一键归档与保留策略</li>
+                        <li>风险事件回放支持时间轴追踪</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>值班流程</h2>
+                    <div class="meta">跨地区协作的响应剧本</div>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>待分配 <span>3</span></h4>
+                      <div class="kanban-card"><strong>API 异常峰值</strong><span>自动创建工单 · 待认领</span></div>
+                      <div class="kanban-card"><strong>登录高危预警</strong><span>收敛中 · 15 分钟复核</span></div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>处理中 <span>2</span></h4>
+                      <div class="kanban-card"><strong>媒体转码延迟</strong><span>回滚到稳定版本</span></div>
+                      <div class="kanban-card"><strong>合规审查</strong><span>等待法律团队确认</span></div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>已完成 <span>6</span></h4>
+                      <div class="kanban-card"><strong>证书更新</strong><span>自动部署成功</span></div>
+                      <div class="kanban-card"><strong>风控策略调优</strong><span>命中率提升 18%</span></div>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'user-control',
+              label: '用户与权限',
+              icon: '🔐',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>身份体系</h2>
+                    <div class="meta">支持企业认证、角色权限、审核流</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>账号架构</h3>
+                      <ul class="feature-list">
+                        <li>超级管理员、区域管理员、审计员</li>
+                        <li>权限模板快速套用与差异比对</li>
+                        <li>设备指纹识别与黑名单同步</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>企业认证</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>待审核 24</strong><span>本地化资料自动校验</span></div>
+                        <div class="list-row"><strong>加急处理</strong><span>人工+AI 双审</span></div>
+                        <div class="list-row"><strong>合规资料</strong><span>证照有效期提醒</span></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>访问策略</h3>
+                      <ul class="feature-list">
+                        <li>敏感操作强制 MFA 与审批</li>
+                        <li>会话日志精细化追踪</li>
+                        <li>临时访问自动过期</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>权限矩阵</h2>
+                    <div class="meta">按业务模块自定义权限粒度</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>通讯管理</h3>
+                      <ul class="feature-list">
+                        <li>全局广播审批、API 消息限额</li>
+                        <li>联系人导出、删除恢复控制</li>
+                        <li>数据留存策略按地区拆分</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>支付风控</h3>
+                      <ul class="feature-list">
+                        <li>限额管理、异常交易追踪</li>
+                        <li>黑白名单与风险评分模型</li>
+                        <li>人工复核与二次验证通道</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>运营工具</h3>
+                      <ul class="feature-list">
+                        <li>模板消息发布审批流</li>
+                        <li>活动看板读写权限拆分</li>
+                        <li>数据导出审计签名</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'security',
+              label: '安全风控',
+              icon: '🧩',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>威胁监测</h2>
+                    <div class="meta">实时捕获欺诈、垃圾信息与账号盗用</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>行为监控</h3>
+                      <ul class="feature-list">
+                        <li>群发频率、外链点击、异常登录判定</li>
+                        <li>机器学习模型实时更新命中率</li>
+                        <li>风险画像中心展示用户风险分层</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>交易防护</h3>
+                      <ul class="feature-list">
+                        <li>支付行为图谱与黑产关系链</li>
+                        <li>订单异常自动冻结并通知客服</li>
+                        <li>异地登录触发动态限额</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>内容检测</h3>
+                      <ul class="feature-list">
+                        <li>语义识别 + OCR + 音频转写</li>
+                        <li>涉政涉黄涉恐专项模型</li>
+                        <li>违规内容智能降权与人工复核</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>策略编排</h2>
+                    <div class="meta">可视化规则树与实时仿真测试</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>规则画布</h3>
+                      <ul class="feature-list">
+                        <li>拖拽式条件节点：事件、属性、行为</li>
+                        <li>分流实验：10% 测试、90% 生产</li>
+                        <li>策略版本对比与回滚</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>命中分析</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>垃圾消息</strong><span>命中率 92%</span></div>
+                        <div class="list-row"><strong>支付欺诈</strong><span>阻断 320 笔</span></div>
+                        <div class="list-row"><strong>违规账号</strong><span>冻结 102 个</span></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>响应剧本</h3>
+                      <ul class="feature-list">
+                        <li>自动通知客服与法务</li>
+                        <li>临时封禁时长策略</li>
+                        <li>用户申诉入口与跟进状态</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'content-audit',
+              label: '内容审核',
+              icon: '🗂️',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>审核工作台</h2>
+                    <div class="meta">多模态内容聚合，支持批量处理</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>文本审阅</h3>
+                      <ul class="feature-list">
+                        <li>高亮敏感词与上下文聚焦</li>
+                        <li>机器评分与人工二审对比</li>
+                        <li>历史决策回放与申诉入口</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>媒体审查</h3>
+                      <ul class="feature-list">
+                        <li>图片、视频逐帧标注</li>
+                        <li>音频转写自动标红风险语句</li>
+                        <li>模型置信度 & 人工反馈提升</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>频道治理</h3>
+                      <ul class="feature-list">
+                        <li>频道评级、违规积分、限流策略</li>
+                        <li>粉丝保护：未成年人内容过滤</li>
+                        <li>违规广播一键撤回</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>审核排班</h2>
+                    <div class="meta">确保 7x24 审核覆盖与效率</div>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>今日待处理 <span>128</span></h4>
+                      <div class="kanban-card"><strong>敏感词命中</strong><span>待人工复核 32 条</span></div>
+                      <div class="kanban-card"><strong>版权投诉</strong><span>待联系发布者</span></div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>在审 <span>54</span></h4>
+                      <div class="kanban-card"><strong>视频 AI 风险</strong><span>分配至高级审核员</span></div>
+                      <div class="kanban-card"><strong>诈骗举报</strong><span>联合风控核查</span></div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>已结案 <span>260</span></h4>
+                      <div class="kanban-card"><strong>违规频道封禁</strong><span>申诉期剩余 2 天</span></div>
+                      <div class="kanban-card"><strong>广告合规</strong><span>已通知商户整改</span></div>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'system',
+              label: '系统配置',
+              icon: '⚙️',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>版本与部署</h2>
+                    <div class="meta">支持蓝绿、金丝雀、区域分阶段发布</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>发布排程</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>核心服务</strong><span>金丝雀 5%</span></div>
+                        <div class="list-row"><strong>Web 客户端</strong><span>蓝绿部署中</span></div>
+                        <div class="list-row"><strong>API 网关</strong><span>滚动升级 · 2/4 区域完成</span></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>配置中心</h3>
+                      <ul class="feature-list">
+                        <li>动态参数一键回滚</li>
+                        <li>多租户隔离与定向策略</li>
+                        <li>密钥轮换与自动加密</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>容量规划</h3>
+                      <ul class="feature-list">
+                        <li>负载预测与成本分析</li>
+                        <li>CDN 热点自动扩容</li>
+                        <li>数据库分片可视化</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>合规中心</h2>
+                    <div class="meta">GDPR、LGPD、印度 IT Act 等统一管理</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>数据主权</h3>
+                      <ul class="feature-list">
+                        <li>数据驻留策略分国家维护</li>
+                        <li>数据访问轨迹完整追溯</li>
+                        <li>导出与删除请求自动化</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>合规评估</h3>
+                      <ul class="feature-list">
+                        <li>跨区域合规矩阵</li>
+                        <li>第三方供应商风险档案</li>
+                        <li>审核报告一键生成</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>政策播报</h3>
+                      <ul class="feature-list">
+                        <li>法规变动实时推送</li>
+                        <li>合规培训日程提醒</li>
+                        <li>留痕确认与员工签署</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+              `
+            }
+          ]
+        },
+        operations: {
+          name: '运营端',
+          icon: '🚀',
+          tagline: '增长活动、客服协同与数据洞察中心',
+          hero: {
+            title: '增长驾驶舱',
+            subtitle: '活动编排、客服调度与指标监控一体化',
+            metrics: [
+              { label: '活跃频道', value: '3,482', trend: '+8% 本周' },
+              { label: '客服在线', value: '864', trend: '排班稳定' },
+              { label: '转化率', value: '12.6%', trend: '+1.2% 环比' }
+            ],
+            actions: [
+              { type: 'primary', label: '创建活动' },
+              { type: 'secondary', label: '导出报表' }
+            ]
+          },
+          menu: [
+            {
+              id: 'dashboard',
+              label: '运营总览',
+              icon: '📈',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>关键指标</h2>
+                    <div class="meta">实时看板 · 支持筛选渠道与地区</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>用户增长</h3>
+                      <ul class="feature-list">
+                        <li>新增用户、活跃率、留存曲线</li>
+                        <li>渠道对比：广告、自然、推荐</li>
+                        <li>裂变任务完成度热力图</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>消息互动</h3>
+                      <ul class="feature-list">
+                        <li>会话开启率与平均响应时间</li>
+                        <li>机器人转人工占比</li>
+                        <li>高价值用户互动列表</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>收入构成</h3>
+                      <ul class="feature-list">
+                        <li>商业 API 消费与广告收入</li>
+                        <li>商家订阅、增值服务</li>
+                        <li>付款成功率与退款率</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>智能提醒</h2>
+                    <div class="meta">数据异常、活动表现实时推送</div>
+                  </div>
+                  <div class="list-board">
+                    <div class="list-row"><strong>频道互动骤降</strong><span>推送至频道运营人</span></div>
+                    <div class="list-row"><strong>客服排队超时</strong><span>自动升级至班长</span></div>
+                    <div class="list-row"><strong>活动拉新达标</strong><span>生成庆祝海报</span></div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'campaign',
+              label: '活动编排',
+              icon: '🧠',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>旅程设计器</h2>
+                    <div class="meta">跨渠道触点编排与自动化</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>触点节点</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>消息推送</strong><span>模板 + 个性变量</span></div>
+                        <div class="list-row"><strong>客服回访</strong><span>智能排班</span></div>
+                        <div class="list-row"><strong>小程序引导</strong><span>自动分流</span></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>人群策略</h3>
+                      <ul class="feature-list">
+                        <li>多维标签：活跃度、消费力、兴趣</li>
+                        <li>实时触发：行为事件、系统信号</li>
+                        <li>AB 实验：多版本内容对比</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>目标追踪</h3>
+                      <ul class="feature-list">
+                        <li>注册成功、支付完成、复购次数</li>
+                        <li>漏斗图自动生成</li>
+                        <li>异常预警与补救计划</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>素材资产库</h2>
+                    <div class="meta">多语言、多地区素材一键复用</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>模板中心</h3>
+                      <ul class="feature-list">
+                        <li>文本、图片、视频模板分类</li>
+                        <li>合规状态与版本管理</li>
+                        <li>协同编辑与审批历史</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>素材智能推荐</h3>
+                      <ul class="feature-list">
+                        <li>根据目标自动推荐最佳素材</li>
+                        <li>性能评分与历史表现对比</li>
+                        <li>多语言自动翻译与润色</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>渠道适配</h3>
+                      <ul class="feature-list">
+                        <li>WhatsApp、Facebook、Instagram 同步</li>
+                        <li>尺寸、时长自动裁剪</li>
+                        <li>投放预算联动提醒</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'service',
+              label: '客服排班',
+              icon: '🎧',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>客服大厅</h2>
+                    <div class="meta">机器人 + 人工协同处理多渠道咨询</div>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>机器人处理 <span>64%</span></h4>
+                      <div class="kanban-card"><strong>常见问题</strong><span>自动解答 1,205 次</span></div>
+                      <div class="kanban-card"><strong>查询订单</strong><span>交互表单完成 86%</span></div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>等待人工 <span>48</span></h4>
+                      <div class="kanban-card"><strong>高价值客户</strong><span>优先排队</span></div>
+                      <div class="kanban-card"><strong>退款申诉</strong><span>预计 2 分钟接入</span></div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>处理中 <span>132</span></h4>
+                      <div class="kanban-card"><strong>语音通话</strong><span>平均 6 分钟</span></div>
+                      <div class="kanban-card"><strong>实时协作</strong><span>运营+技术双线</span></div>
+                    </div>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>排班日历</h2>
+                    <div class="meta">覆盖全球时区 · 支持技能标签</div>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>09:00-12:00 · 美洲班</strong>
+                      <span>英语、葡语客服在线 180 人</span>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>12:00-18:00 · 亚太班</strong>
+                      <span>多语客服轮换 · 机器人策略调整</span>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>18:00-24:00 · 欧洲班</strong>
+                      <span>高峰预案开启 · 主管值守</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'experiments',
+              label: '数据实验',
+              icon: '🧪',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>实验广场</h2>
+                    <div class="meta">多版本对照、实时效果跟踪</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>实验列表</h3>
+                      <ul class="feature-list">
+                        <li>消息提醒频率测试</li>
+                        <li>频道推荐算法实验</li>
+                        <li>支付流程优化实验</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>指标监控</h3>
+                      <ul class="feature-list">
+                        <li>显著性实时计算</li>
+                        <li>多指标权重配置</li>
+                        <li>分层分析：地区、设备、角色</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>决策支持</h3>
+                      <ul class="feature-list">
+                        <li>推荐启用或回滚建议</li>
+                        <li>成本/收益评估面板</li>
+                        <li>实验沉淀库与最佳实践</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>数据管道</h2>
+                    <div class="meta">埋点、清洗、建模全流程可视</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>埋点采集</h3>
+                      <ul class="feature-list">
+                        <li>实时埋点监控与告警</li>
+                        <li>埋点版本管理与回溯</li>
+                        <li>隐私合规校验</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>数据建模</h3>
+                      <ul class="feature-list">
+                        <li>指标模板：DAU、会话成功率</li>
+                        <li>自定义漏斗与留存分析</li>
+                        <li>模型上线审批与版本管理</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>洞察输出</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>自动报告</strong><span>每周发送</span></div>
+                        <div class="list-row"><strong>可视化组件</strong><span>支持嵌入工作台</span></div>
+                        <div class="list-row"><strong>数据 API</strong><span>供外部系统调用</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: 'insights',
+              label: '市场洞察',
+              icon: '🔍',
+              content: `
+                <section>
+                  <div class="section-header">
+                    <h2>趋势雷达</h2>
+                    <div class="meta">消费者声音、行业热点、竞品追踪</div>
+                  </div>
+                  <div class="card-grid">
+                    <article class="card">
+                      <h3>社交聆听</h3>
+                      <ul class="feature-list">
+                        <li>热门话题云图</li>
+                        <li>情绪倾向仪表盘</li>
+                        <li>热点关联词推荐</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>竞品观察</h3>
+                      <ul class="feature-list">
+                        <li>竞品功能迭代时间线</li>
+                        <li>市场宣传素材合集</li>
+                        <li>差异化亮点标注</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>用户心声</h3>
+                      <ul class="feature-list">
+                        <li>社区反馈聚类</li>
+                        <li>客服记录主题拆解</li>
+                        <li>建议背书与优先级排序</li>
+                      </ul>
+                    </article>
+                  </div>
+                </section>
+                <section>
+                  <div class="section-header">
+                    <h2>策略画布</h2>
+                    <div class="meta">将洞察转化为行动计划</div>
+                  </div>
+                  <div class="split-panels">
+                    <div class="panel">
+                      <h3>机会识别</h3>
+                      <div class="list-board">
+                        <div class="list-row"><strong>青少年市场</strong><span>高频社交需求</span></div>
+                        <div class="list-row"><strong>跨境商户</strong><span>服务升级诉求</span></div>
+                        <div class="list-row"><strong>群体安全</strong><span>隐私体验优化</span></div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <h3>方案共创</h3>
+                      <ul class="feature-list">
+                        <li>跨团队协同白板</li>
+                        <li>动作清单与负责人同步</li>
+                        <li>进展提醒与里程碑跟踪</li>
+                      </ul>
+                    </div>
+                    <div class="panel">
+                      <h3>投放建议</h3>
+                      <ul class="feature-list">
+                        <li>目标人群拆解与预算建议</li>
+                        <li>内容策略搭配推荐</li>
+                        <li>风险提示与应急预案</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+              `
+            }
+          ]
+        }
+      };
+
+      const roleSwitcher = document.getElementById('roleSwitcher');
+      const heroContainer = document.getElementById('hero');
+      const menuList = document.getElementById('menuList');
+      const contentContainer = document.getElementById('content');
+
+      let currentRole = 'consumer';
+      let currentMenuId = roles[currentRole].menu[0].id;
+
+      const renderRoleSwitcher = () => {
+        roleSwitcher.innerHTML = '';
+        Object.entries(roles).forEach(([key, role]) => {
+          const button = document.createElement('button');
+          button.className = `role-button${key === currentRole ? ' active' : ''}`;
+          button.type = 'button';
+          button.textContent = `${role.icon} ${role.name}`;
+          button.addEventListener('click', () => {
+            if (currentRole !== key) {
+              currentRole = key;
+              currentMenuId = roles[currentRole].menu[0].id;
+              renderAll();
+            }
+          });
+          roleSwitcher.appendChild(button);
+        });
+      };
+
+      const renderHero = () => {
+        const { hero, tagline } = roles[currentRole];
+        heroContainer.innerHTML = `
+          <div class="hero-primary">
+            <h2>${hero.title}</h2>
+            <p class="hero-tagline">${tagline}</p>
+            <p class="hero-tagline">${hero.subtitle}</p>
+            <div class="hero-actions">
+              ${hero.actions
+                .map(
+                  (action) => `
+                    <button class="${action.type === 'primary' ? 'primary' : 'secondary'}" type="button">
+                      ${action.label}
+                    </button>
+                  `
+                )
+                .join('')}
+            </div>
+          </div>
+          ${hero.metrics
+            .map(
+              (metric) => `
+                <div class="hero-stat">
+                  <span class="value">${metric.value}</span>
+                  <span class="label">${metric.label}</span>
+                  <span class="trend">${metric.trend}</span>
+                </div>
+              `
+            )
+            .join('')}
+        `;
+      };
+
+      const renderMenu = () => {
+        menuList.innerHTML = '';
+        roles[currentRole].menu.forEach((item) => {
+          const button = document.createElement('button');
+          button.className = `menu-item${item.id === currentMenuId ? ' active' : ''}`;
+          button.type = 'button';
+          button.innerHTML = `<span>${item.icon} ${item.label}</span>`;
+          button.addEventListener('click', () => {
+            currentMenuId = item.id;
+            renderContent();
+            renderMenu();
+          });
+          menuList.appendChild(button);
+        });
+      };
+
+      const renderContent = () => {
+        const menu = roles[currentRole].menu.find((item) => item.id === currentMenuId);
+        contentContainer.innerHTML = menu ? menu.content : '';
+      };
+
+      const renderAll = () => {
+        renderRoleSwitcher();
+        renderHero();
+        renderMenu();
+        renderContent();
+      };
+
+      renderAll();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
