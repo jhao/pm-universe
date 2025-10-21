@@ -2,83 +2,1751 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Siemens Opcenter 原型概览</title>
+    <title>Siemens Opcenter 交互原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f4f6fb;
+        --sidebar-bg: #0f172a;
+        --sidebar-active: #2563eb;
+        --text: #0f172a;
+        --muted: #64748b;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --accent: #22d3ee;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .app {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background: var(--sidebar-bg);
+        color: #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 1;
+      }
+
+      .sidebar .brand {
+        padding: 32px 28px 20px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 22px;
+        color: #f8fafc;
+      }
+
+      .brand p {
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.72);
+      }
+
+      .menu-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px 0 24px;
+      }
+
+      .menu-item {
+        width: 100%;
+        border: none;
+        background: none;
+        color: inherit;
+        text-align: left;
+        padding: 14px 28px 14px 32px;
+        font-size: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .menu-item:hover {
+        background: rgba(148, 163, 184, 0.12);
+      }
+
+      .menu-item.active {
+        background: rgba(37, 99, 235, 0.25);
+        border-left: 3px solid var(--sidebar-active);
+        padding-left: 29px;
+      }
+
+      .menu-item .title {
+        font-weight: 600;
+        color: #f1f5f9;
+      }
+
+      .menu-item .desc {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.68);
+      }
+
+      .content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 32px;
+        background: var(--card);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+
+      .top-bar .system-title {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .system-title h2 {
+        margin: 0;
+        font-size: 24px;
+        color: var(--text);
+      }
+
+      .system-title span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .role-switcher {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switcher label {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .role-switcher select {
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        min-width: 180px;
+      }
+
+      main {
+        flex: 1;
+        padding: 32px 40px 48px;
+        overflow-y: auto;
+      }
+
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .page-header h1 {
+        margin: 0;
+        font-size: 30px;
+      }
+
+      .page-header p {
+        margin: 0;
+        font-size: 16px;
+        color: var(--muted);
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      .cards-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-two {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .grid-three {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 18px;
+        color: var(--text);
+      }
+
+      .card p, .card ul, .card li {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .kpi-number {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--sidebar-active);
+      }
+
+      .chart-placeholder {
+        height: 180px;
+        border-radius: 12px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(37, 99, 235, 0.08),
+          rgba(37, 99, 235, 0.08) 12px,
+          rgba(148, 163, 184, 0.12) 12px,
+          rgba(148, 163, 184, 0.12) 24px
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(15, 23, 42, 0.5);
+        font-size: 13px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th, td {
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+      }
+
+      th {
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .link-button {
+        border: none;
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+        padding: 8px 16px;
+        border-radius: 999px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .link-button:hover {
+        background: rgba(37, 99, 235, 0.22);
+      }
+
+      .secondary-button {
+        background: rgba(100, 116, 139, 0.16);
+        color: #0f172a;
+      }
+
+      .highlight-card {
+        border: 1px dashed var(--sidebar-active);
+        background: rgba(37, 99, 235, 0.06);
+      }
+
+      .page-description {
+        background: var(--card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        padding: 24px;
+      }
+
+      .page-description h3 {
+        margin: 0 0 12px;
+        font-size: 16px;
+      }
+
+      .page-description ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        display: grid;
+        gap: 8px;
+      }
+
+      .breadcrumb {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .breadcrumb span::after {
+        content: "/";
+        margin-left: 8px;
+        color: rgba(100, 116, 139, 0.5);
+      }
+
+      .breadcrumb span:last-child::after {
+        content: "";
+        margin: 0;
+      }
+
+      .status-pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status-good {
+        background: rgba(16, 185, 129, 0.12);
+        color: #047857;
+      }
+
+      .status-warning {
+        background: rgba(250, 204, 21, 0.18);
+        color: #b45309;
+      }
+
+      .status-critical {
+        background: rgba(239, 68, 68, 0.12);
+        color: #b91c1c;
+      }
+
+      @media (max-width: 1080px) {
+        .app {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          overflow-x: auto;
+        }
+
+        .sidebar .brand {
+          min-width: 220px;
+          border-bottom: none;
+          border-right: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .menu-list {
+          display: flex;
+          flex-direction: row;
+          padding: 0 16px;
+        }
+
+        .menu-item {
+          padding: 20px;
+          border-left: none;
+        }
+
+        .menu-item.active {
+          border-left: none;
+          border-bottom: 3px solid var(--sidebar-active);
+          padding-left: 20px;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Siemens Opcenter 原型</h1>
-      <p class="tagline">制造运营管理 (MOM) 平台，覆盖计划、生产与质量。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>制造企业生产运营、质量、计划团队</p>
-        <p><strong>核心痛点：</strong>生产执行数据孤岛、质量追溯难、计划与执行脱节</p>
-        <p><strong>价值主张：</strong>提供 MES、APS、质量管理一体化平台，实现数字化工厂</p>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <h1>Opcenter MOM</h1>
+          <p>计划 · 执行 · 质量 · 分析</p>
+        </div>
+        <nav class="menu-list" id="menuList"></nav>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="system-title">
+            <h2>Siemens Opcenter 数字化工厂</h2>
+            <span>统一的制造运营管理平台</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" aria-label="切换用户角色"></select>
+          </div>
+        </header>
+        <main id="mainContent"></main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>计划部门进行高级排程</li><li>车间执行采集生产数据</li><li>质量团队追踪检验与不良</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>生产执行 (MES)</h3>
-              <p class="goal">功能目标：实时掌握车间执行</p>
+    </div>
+
+    <script>
+      const roles = {
+        planner: {
+          label: "计划专员",
+          desc: "负责产能与物料协同计划",
+          menus: [
+            { id: "planner-dashboard", title: "计划总览", desc: "产能与订单健康度" },
+            { id: "capacity-scheduling", title: "能力排程", desc: "瓶颈识别与优化" },
+            { id: "order-commitment", title: "订单承诺", desc: "交期承诺与风险" },
+            { id: "material-visibility", title: "物料监控", desc: "缺件预警与联动" }
+          ]
+        },
+        supervisor: {
+          label: "车间主管",
+          desc: "掌控现场执行与资源调度",
+          menus: [
+            { id: "shopfloor-dashboard", title: "现场看板", desc: "工单节拍与异常" },
+            { id: "work-order-execution", title: "工单执行", desc: "派工与进度" },
+            { id: "equipment-operations", title: "设备状态", desc: "停机与维护" },
+            { id: "personnel-center", title: "人员管理", desc: "技能与排班" }
+          ]
+        },
+        quality: {
+          label: "质量工程师",
+          desc: "监控检验、CAPA 与 SPC",
+          menus: [
+            { id: "quality-dashboard", title: "质量仪表盘", desc: "不良与趋势" },
+            { id: "inspection-control", title: "检验任务", desc: "批次与进度" },
+            { id: "defect-handling", title: "不良处理", desc: "CAPA 执行" },
+            { id: "spc-monitoring", title: "SPC 监控", desc: "过程能力" }
+          ]
+        },
+        executive: {
+          label: "运营管理层",
+          desc: "聚焦绩效与跨工厂协同",
+          menus: [
+            { id: "executive-cockpit", title: "运营驾驶舱", desc: "核心 KPI 与预警" },
+            { id: "kpi-tracking", title: "KPI 跟踪", desc: "目标达成率" },
+            { id: "alert-center", title: "告警中心", desc: "事件流与响应" },
+            { id: "system-landscape", title: "系统配置", desc: "集成与权限" }
+          ]
+        }
+      };
+
+      const pages = {
+        "planner-dashboard": {
+          role: "planner",
+          title: "计划总览",
+          subtitle: "聚焦未来 4 周排程健康度与瓶颈预测",
+          tags: ["主看板", "预测", "跨工厂"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>排程健康指数</h3>
+                <div class="kpi-number">86%</div>
+                <p>产能利用率、物料齐套与关键订单状态综合评分。</p>
+                <div class="actions">
+                  <button class="link-button" data-target="schedule-scenario-detail">查看方案对比</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>关键订单节拍</h3>
+                <div class="chart-placeholder">甘特图 / 热力图占位</div>
+                <p>突出显示超期风险与冲突工序。</p>
+              </div>
+            </div>
+            <div class="card highlight-card">
+              <h3>即时洞察</h3>
               <ul>
-                <li>作业派工、工序跟踪</li><li>设备数据采集与工艺参数</li><li>报工、追溯与绩效指标</li>
+                <li>装配线 #3 周三产能紧张，建议跨班加班 2 小时。</li>
+                <li>订单 SO-20240318 物料齐套率 72%，需评估替代料。</li>
+                <li>APS 返回 3 个方案，方案 B 延迟订单下降 40%。</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>高级计划排程 (APS)</h3>
-              <p class="goal">功能目标：优化产能与交付</p>
+              <div class="actions">
+                <button class="link-button" data-target="material-shortage-detail">缺料详情</button>
+                <button class="link-button secondary-button" data-target="planner-dashboard-report">导出日报</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>集中呈现计划健康度、瓶颈资源与高优先级订单。</li>
+              <li>可一键跳转排程方案、缺料分析等专项页面。</li>
+              <li>用于晨会快速汇报与跨部门同步。</li>
+            </ul>
+          `
+        },
+        "capacity-scheduling": {
+          role: "planner",
+          title: "能力排程",
+          subtitle: "基于瓶颈资源的排程模拟与方案评估",
+          tags: ["模拟", "多方案", "产能"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>约束条件</h3>
+                <table>
+                  <thead>
+                    <tr><th>资源</th><th>约束说明</th><th>利用率</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>装配线 #3</td><td>周末维护停机</td><td><span class="status-pill status-warning">92%</span></td></tr>
+                    <tr><td>焊接工序</td><td>技能 A 操作员不足</td><td><span class="status-pill status-critical">105%</span></td></tr>
+                    <tr><td>测试间</td><td>转产切换 6 小时</td><td><span class="status-pill status-good">78%</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>方案对比</h3>
+                <table>
+                  <thead><tr><th>方案</th><th>延迟订单</th><th>加班成本</th><th>操作</th></tr></thead>
+                  <tbody>
+                    <tr><td>方案 A</td><td>8 单</td><td>¥ 12K</td><td><button class="link-button" data-target="schedule-scenario-detail">查看</button></td></tr>
+                    <tr><td>方案 B</td><td>5 单</td><td>¥ 18K</td><td><button class="link-button" data-target="schedule-scenario-detail">查看</button></td></tr>
+                    <tr><td>方案 C</td><td>12 单</td><td>¥ 4K</td><td><button class="link-button" data-target="schedule-scenario-detail">查看</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <h3>What-if 模拟时间轴</h3>
+              <div class="chart-placeholder">交互式甘特图 / 拖拽排程</div>
+              <div class="actions">
+                <button class="link-button" data-target="schedule-publish">提交执行</button>
+                <button class="link-button secondary-button" data-target="planner-dashboard">返回总览</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>评估多种约束组合下的产能利用情况。</li>
+              <li>允许将选定方案发布至 MES 执行。</li>
+              <li>模拟结果可导出并与生产、供应团队共享。</li>
+            </ul>
+          `
+        },
+        "order-commitment": {
+          role: "planner",
+          title: "订单承诺",
+          subtitle: "交期承诺看板与客户沟通建议",
+          tags: ["交期", "客户", "协同"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>承诺状态</h3>
+                <table>
+                  <thead><tr><th>客户订单</th><th>当前承诺</th><th>风险</th><th>下一步</th></tr></thead>
+                  <tbody>
+                    <tr><td>SO-20240318</td><td>3 月 28 日</td><td><span class="status-pill status-warning">物料缺件</span></td><td><button class="link-button" data-target="order-commitment-detail">调整建议</button></td></tr>
+                    <tr><td>SO-20240320</td><td>4 月 3 日</td><td><span class="status-pill status-good">可承诺</span></td><td><button class="link-button secondary-button" data-target="order-commitment-detail">发送确认</button></td></tr>
+                    <tr><td>SO-20240322</td><td>4 月 6 日</td><td><span class="status-pill status-critical">瓶颈产能</span></td><td><button class="link-button" data-target="capacity-scheduling">重新排程</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>客户沟通脚本</h3>
+                <p>预置沟通话术与可提供的替代方案。</p>
+                <ul>
+                  <li>同步关键客户承诺变更操作清单。</li>
+                  <li>自动附带排程截图与影响说明。</li>
+                  <li>支持抄送销售、供应链团队。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <h3>交期影响模拟</h3>
+              <div class="chart-placeholder">交期概率分布 / 蒙特卡洛</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>实时呈现客户订单承诺状态与风险等级。</li>
+              <li>提供标准化沟通模板，缩短跨部门确认时间。</li>
+              <li>可跳转排程页面重新评估交付能力。</li>
+            </ul>
+          `
+        },
+        "material-visibility": {
+          role: "planner",
+          title: "物料监控",
+          subtitle: "缺件预警与供应协同",
+          tags: ["供应链", "预警", "替代料"],
+          core: `
+            <div class="card">
+              <h3>关键物料缺口</h3>
+              <table>
+                <thead><tr><th>物料编码</th><th>需求量</th><th>缺口</th><th>影响订单</th><th>处理</th></tr></thead>
+                <tbody>
+                  <tr><td>PCBA-4558</td><td>420</td><td>60</td><td>SO-20240318</td><td><button class="link-button" data-target="material-shortage-detail">查看</button></td></tr>
+                  <tr><td>CABLE-8821</td><td>180</td><td>30</td><td>SO-20240312</td><td><button class="link-button" data-target="supplier-collaboration">通知供应商</button></td></tr>
+                  <tr><td>IC-7780</td><td>350</td><td>0</td><td>-</td><td><span class="status-pill status-good">安全</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>替代料推荐</h3>
+                <ul>
+                  <li>PCBA-4558 可替换：PCBA-4558B（需工程验证）。</li>
+                  <li>预计切换时间 1.5 天，可覆盖 45% 缺口。</li>
+                </ul>
+                <div class="actions">
+                  <button class="link-button" data-target="material-substitution-edit">发起替代验证</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>供应商响应</h3>
+                <div class="chart-placeholder">供应商承诺热力图</div>
+                <p>展示供应商到货确认与履约概率。</p>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>快速识别对排程影响最大的缺件。</li>
+              <li>指导供应协同动作并记录执行状态。</li>
+              <li>支持跳转替代料申请或供应商协同界面。</li>
+            </ul>
+          `
+        },
+        "shopfloor-dashboard": {
+          role: "supervisor",
+          title: "现场看板",
+          subtitle: "实时掌握工单节拍、异常与人员到岗",
+          tags: ["实时", "异常", "班组"],
+          core: `
+            <div class="cards-grid grid-three">
+              <div class="card">
+                <h3>工单达成率</h3>
+                <div class="kpi-number">94%</div>
+                <p>目标 96%，需关注焊接区延误。</p>
+              </div>
+              <div class="card">
+                <h3>异常事件</h3>
+                <ul>
+                  <li>设备 E-103 停机 35 分钟，等待维修。</li>
+                  <li>质检不合格率超阈值，已通知质量工程师。</li>
+                </ul>
+                <div class="actions">
+                  <button class="link-button" data-target="alert-detail">查看告警记录</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>到岗情况</h3>
+                <div class="chart-placeholder">出勤 / 技能矩阵</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>产线节拍曲线</h3>
+              <div class="chart-placeholder">节拍折线图</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>班前会统一确认生产节拍与异常。</li>
+              <li>与告警中心联动，快速分派责任人。</li>
+              <li>可跳转至工单执行查看具体作业。</li>
+            </ul>
+          `
+        },
+        "work-order-execution": {
+          role: "supervisor",
+          title: "工单执行",
+          subtitle: "派工、上报与作业指导",
+          tags: ["派工", "报工", "作业指导"],
+          core: `
+            <div class="card">
+              <table>
+                <thead><tr><th>工单</th><th>工序</th><th>负责人</th><th>进度</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td>WO-1023</td><td>装配</td><td>王伟</td><td>60%</td><td><button class="link-button" data-target="work-order-detail">查看</button></td></tr>
+                  <tr><td>WO-1024</td><td>测试</td><td>张敏</td><td>20%</td><td><button class="link-button" data-target="work-order-detail">查看</button></td></tr>
+                  <tr><td>WO-1025</td><td>包装</td><td>刘洋</td><td>待开工</td><td><button class="link-button" data-target="dispatch-edit">派工</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>作业指引</h3>
+                <p>展示 SOP、工艺参数与质量控制点。</p>
+              </div>
+              <div class="card">
+                <h3>异常处理</h3>
+                <ul>
+                  <li>已发起 2 条异常，等待质量确认。</li>
+                  <li>支持拍照上传与语音描述。</li>
+                </ul>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>统一查看工单执行进度与责任人。</li>
+              <li>可直接派工或查看详情页面。</li>
+              <li>整合作业指导、异常处理与报工入口。</li>
+            </ul>
+          `
+        },
+        "equipment-operations": {
+          role: "supervisor",
+          title: "设备状态",
+          subtitle: "OEE 监控、停机原因与维护排程",
+          tags: ["OEE", "维护", "预警"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>关键设备 OEE</h3>
+                <div class="chart-placeholder">OEE 雷达图</div>
+                <div class="actions">
+                  <button class="link-button" data-target="equipment-maintenance">维护计划</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>停机记录</h3>
+                <table>
+                  <thead><tr><th>设备</th><th>时长</th><th>原因</th><th>状态</th></tr></thead>
+                  <tbody>
+                    <tr><td>E-103</td><td>35 分钟</td><td>传感器故障</td><td><span class="status-pill status-warning">待确认</span></td></tr>
+                    <tr><td>E-205</td><td>12 分钟</td><td>换线</td><td><span class="status-pill status-good">已完成</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <h3>维护排程</h3>
+              <div class="chart-placeholder">维护甘特排程</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>监控核心设备 OEE 与停机原因。</li>
+              <li>提供维护排程并与 APS 计划联动。</li>
+              <li>可从停机记录进入维护单详情。</li>
+            </ul>
+          `
+        },
+        "personnel-center": {
+          role: "supervisor",
+          title: "人员管理",
+          subtitle: "技能矩阵、排班与培训跟踪",
+          tags: ["技能", "排班", "培训"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>班组排班</h3>
+                <div class="chart-placeholder">周历 / 班次表</div>
+              </div>
+              <div class="card">
+                <h3>技能证书到期预警</h3>
+                <table>
+                  <thead><tr><th>员工</th><th>技能</th><th>到期</th><th>处理</th></tr></thead>
+                  <tbody>
+                    <tr><td>王伟</td><td>焊接等级 A</td><td>2024-04-12</td><td><button class="link-button" data-target="operator-training">安排培训</button></td></tr>
+                    <tr><td>刘洋</td><td>装配等级 B</td><td>2024-05-30</td><td><button class="link-button" data-target="operator-shift-detail">调整排班</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <h3>人员负荷</h3>
+              <div class="chart-placeholder">技能负荷气泡图</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>统一管理班组排班、技能证书与培训。</li>
+              <li>点击员工即可进入排班或培训详情。</li>
+              <li>为跨班组资源调配提供依据。</li>
+            </ul>
+          `
+        },
+        "quality-dashboard": {
+          role: "quality",
+          title: "质量仪表盘",
+          subtitle: "检验、不良与 CAPA 执行情报",
+          tags: ["质量", "追溯", "CAPA"],
+          core: `
+            <div class="cards-grid grid-three">
+              <div class="card">
+                <h3>当日不良率</h3>
+                <div class="kpi-number">2.3%</div>
+                <p>目标 1.5%，主要来自装配与测试。</p>
+              </div>
+              <div class="card">
+                <h3>CAPA 进度</h3>
+                <ul>
+                  <li>进行中：5 项</li>
+                  <li>逾期：1 项 (Q-457)</li>
+                </ul>
+                <div class="actions">
+                  <button class="link-button" data-target="capa-edit">查看 CAPA</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>实验室排队</h3>
+                <div class="chart-placeholder">样品排队甘特图</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>关键质量趋势</h3>
+              <div class="chart-placeholder">良率 / 缺陷类型趋势</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>用于每日质量例会的核心仪表盘。</li>
+              <li>可快速跳转 CAPA、检验等作业页面。</li>
+              <li>整合实验室进度，保障测试按时完成。</li>
+            </ul>
+          `
+        },
+        "inspection-control": {
+          role: "quality",
+          title: "检验任务",
+          subtitle: "批次检验进度与样本覆盖率",
+          tags: ["检验", "实验室", "追溯"],
+          core: `
+            <div class="card">
+              <table>
+                <thead><tr><th>批次</th><th>检验类型</th><th>状态</th><th>样本覆盖率</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td>LOT-2301</td><td>入库检验</td><td><span class="status-pill status-good">进行中</span></td><td>78%</td><td><button class="link-button" data-target="inspection-detail">查看</button></td></tr>
+                  <tr><td>LOT-2302</td><td>过程检验</td><td><span class="status-pill status-warning">等待样本</span></td><td>32%</td><td><button class="link-button" data-target="inspection-detail">补录</button></td></tr>
+                  <tr><td>LOT-2303</td><td>出货检验</td><td><span class="status-pill status-critical">暂停</span></td><td>0%</td><td><button class="link-button" data-target="defect-handling">转 CAPA</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>抽样方案建议</h3>
+                <p>根据历史缺陷自动推荐加严 / 放宽策略。</p>
+              </div>
+              <div class="card">
+                <h3>实验室排程</h3>
+                <div class="chart-placeholder">仪器利用率热力图</div>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>统一查看批次检验进度与样本覆盖率。</li>
+              <li>支持跳转检验详情录入结果或发起 CAPA。</li>
+              <li>与实验室排程联动协调仪器资源。</li>
+            </ul>
+          `
+        },
+        "defect-handling": {
+          role: "quality",
+          title: "不良处理",
+          subtitle: "缺陷分类、根因分析与 CAPA 跟踪",
+          tags: ["缺陷", "CAPA", "闭环"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>缺陷汇总</h3>
+                <table>
+                  <thead><tr><th>缺陷类型</th><th>数量</th><th>占比</th><th>操作</th></tr></thead>
+                  <tbody>
+                    <tr><td>焊点虚焊</td><td>18</td><td>32%</td><td><button class="link-button" data-target="capa-edit">发起 CAPA</button></td></tr>
+                    <tr><td>功能异常</td><td>9</td><td>16%</td><td><button class="link-button" data-target="spc-monitoring">查看 SPC</button></td></tr>
+                    <tr><td>外观划伤</td><td>12</td><td>21%</td><td><button class="link-button" data-target="inspection-detail">追溯批次</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>根因分析</h3>
+                <div class="chart-placeholder">鱼骨图 / 5Why</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>CAPA 执行路线图</h3>
+              <div class="chart-placeholder">里程碑进度条</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>帮助识别高发缺陷并发起 CAPA。</li>
+              <li>支持跳转到 SPC 或检验页面进行佐证。</li>
+              <li>聚焦 CAPA 执行闭环与里程碑进展。</li>
+            </ul>
+          `
+        },
+        "spc-monitoring": {
+          role: "quality",
+          title: "SPC 监控",
+          subtitle: "关键参数的控制图与能力指数",
+          tags: ["控制图", "趋势", "预警"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>控制图</h3>
+                <div class="chart-placeholder">X-bar / R 控制图</div>
+                <div class="actions">
+                  <button class="link-button" data-target="spc-chart-detail">查看异常批次</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>过程能力指数</h3>
+                <p>Cpk: 1.45，Ppk: 1.31。</p>
+                <p>连续 2 次轻微越界，已通知车间。</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3>预警列表</h3>
+              <table>
+                <thead><tr><th>参数</th><th>趋势</th><th>动作</th></tr></thead>
+                <tbody>
+                  <tr><td>焊接温度</td><td><span class="status-pill status-warning">接近上限</span></td><td><button class="link-button" data-target="work-order-detail">通知班组</button></td></tr>
+                  <tr><td>测试电压</td><td><span class="status-pill status-good">稳定</span></td><td><button class="link-button secondary-button" data-target="spc-chart-detail">查看历史</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示关键参数控制图趋势与能力指数。</li>
+              <li>提供异常批次入口，便于追溯协同。</li>
+              <li>与车间执行和 CAPA 流程联动。</li>
+            </ul>
+          `
+        },
+        "executive-cockpit": {
+          role: "executive",
+          title: "运营驾驶舱",
+          subtitle: "集团级 KPI 与多工厂对标",
+          tags: ["战略", "多工厂", "预警"],
+          core: `
+            <div class="cards-grid grid-three">
+              <div class="card">
+                <h3>OEE (本周)</h3>
+                <div class="kpi-number">85%</div>
+                <p>对标目标 88%，差距来自华南工厂。</p>
+              </div>
+              <div class="card">
+                <h3>准交率</h3>
+                <div class="kpi-number">92%</div>
+                <p>连续 3 周提升，得益于 APS 优化。</p>
+              </div>
+              <div class="card">
+                <h3>质量合格率</h3>
+                <div class="kpi-number">98.5%</div>
+                <p>质量红线：97%，当前状态稳定。</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3>重点议题</h3>
               <ul>
-                <li>产能约束、物料约束排程</li><li>情景模拟与 What-if</li><li>计划执行协同与反馈</li>
+                <li>装配车间瓶颈：建议增派夜班或外协产能。</li>
+                <li>质量预警：Q-457 CAPA 逾期需督办。</li>
+                <li>交付风险：北美客户订单需提前沟通。</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>质量与实验室</h3>
-              <p class="goal">功能目标：确保产品质量与合规</p>
+              <div class="actions">
+                <button class="link-button" data-target="alert-center">查看告警中心</button>
+                <button class="link-button" data-target="kpi-tracking">查看 KPI 详情</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>面向管理层的高层驾驶舱，聚焦关键 KPI。</li>
+              <li>统一呈现跨工厂对标与重点议题。</li>
+              <li>可进一步下钻至告警中心或 KPI 页面。</li>
+            </ul>
+          `
+        },
+        "kpi-tracking": {
+          role: "executive",
+          title: "KPI 跟踪",
+          subtitle: "目标分解、责任人与改进行动",
+          tags: ["指标", "责任", "行动"],
+          core: `
+            <div class="card">
+              <table>
+                <thead><tr><th>KPI</th><th>目标</th><th>当前</th><th>责任人</th><th>改进行动</th></tr></thead>
+                <tbody>
+                  <tr><td>OEE</td><td>88%</td><td>85%</td><td>制造总监</td><td><button class="link-button" data-target="equipment-maintenance">查看计划</button></td></tr>
+                  <tr><td>准交率</td><td>95%</td><td>92%</td><td>计划经理</td><td><button class="link-button" data-target="order-commitment">联动计划</button></td></tr>
+                  <tr><td>不良率</td><td><1.8%</td><td>2.3%</td><td>质量经理</td><td><button class="link-button" data-target="quality-dashboard">质量行动</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>月度趋势</h3>
+                <div class="chart-placeholder">柱状 / 折线叠加</div>
+              </div>
+              <div class="card">
+                <h3>专项改进进度</h3>
+                <ul>
+                  <li>精益改善项目：已完成 60%。</li>
+                  <li>数字化工单上线：阶段评估中。</li>
+                </ul>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>追踪指标达成并落实责任人。</li>
+              <li>支持跳转至计划、质量等模块查看详情。</li>
+              <li>用于月度经营例会与绩效考核。</li>
+            </ul>
+          `
+        },
+        "alert-center": {
+          role: "executive",
+          title: "告警中心",
+          subtitle: "跨部门异常事件与响应状态",
+          tags: ["异常", "响应", "追踪"],
+          core: `
+            <div class="card">
+              <table>
+                <thead><tr><th>告警</th><th>类型</th><th>等级</th><th>响应人</th><th>状态</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td>AL-20240321</td><td>产能</td><td><span class="status-pill status-warning">高</span></td><td>计划部</td><td>处理中</td><td><button class="link-button" data-target="capacity-scheduling">查看排程</button></td></tr>
+                  <tr><td>AL-20240322</td><td>质量</td><td><span class="status-pill status-critical">紧急</span></td><td>质量部</td><td>待复盘</td><td><button class="link-button" data-target="defect-handling">跟进 CAPA</button></td></tr>
+                  <tr><td>AL-20240323</td><td>供应</td><td><span class="status-pill status-warning">中</span></td><td>供应链</td><td>已解决</td><td><button class="link-button secondary-button" data-target="material-visibility">查看缺件</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>响应 SLA</h3>
+              <div class="chart-placeholder">响应耗时箱线图</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>集中查看跨部门告警事件与响应状态。</li>
+              <li>支持跳转计划、质量、供应模块追溯根因。</li>
+              <li>提供 SLA 统计以提升响应速度。</li>
+            </ul>
+          `
+        },
+        "system-landscape": {
+          role: "executive",
+          title: "系统配置",
+          subtitle: "集成架构、权限与数据策略",
+          tags: ["集成", "权限", "主数据"],
+          core: `
+            <div class="cards-grid grid-two">
+              <div class="card">
+                <h3>系统集成拓扑</h3>
+                <div class="chart-placeholder">ERP / PLM / SCADA 架构图</div>
+                <div class="actions">
+                  <button class="link-button" data-target="integration-settings">集成详情</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>角色与权限</h3>
+                <p>计划、车间、质量、管理等角色一览。</p>
+                <ul>
+                  <li>支持精细化到工序、操作的权限配置。</li>
+                  <li>与企业 AD 同步实现单点登录。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <h3>主数据策略</h3>
+              <div class="chart-placeholder">主数据生命周期流程</div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示系统集成、权限策略与主数据流程。</li>
+              <li>可查看集成配置与接口状态。</li>
+              <li>适用于与 IT 团队沟通系统架构。</li>
+            </ul>
+          `
+        },
+        "schedule-scenario-detail": {
+          role: "planner",
+          title: "排程方案详情",
+          subtitle: "方案 B - 增加夜班 + 外协产能",
+          tags: ["模拟方案", "产能调整"],
+          core: `
+            <div class="card">
+              <h3>方案概览</h3>
               <ul>
-                <li>检验计划、不良记录与 CAPA</li><li>SPC 统计过程控制</li><li>实验室测试与配方管理</li>
+                <li>瓶颈资源：装配线 #3，增加夜班 2 小时。</li>
+                <li>外协产能：外协工厂承担 12% 子件装配。</li>
+                <li>延迟订单减少至 5 单，加班成本 ¥18K。</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>绩效与分析</h3>
-              <p class="goal">功能目标：提供运营洞察</p>
+            </div>
+            <div class="card">
+              <h3>影响评估</h3>
+              <div class="chart-placeholder">负荷曲线 / 成本比较</div>
+              <div class="actions">
+                <button class="link-button" data-target="capacity-scheduling">返回方案列表</button>
+                <button class="link-button" data-target="schedule-publish">提交执行</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>用于展示单个排程方案的指标与影响。</li>
+              <li>可返回方案列表或直接提交执行。</li>
+              <li>便于在评审会上展示方案优劣。</li>
+            </ul>
+          `
+        },
+        "schedule-publish": {
+          role: "planner",
+          title: "排程发布",
+          subtitle: "确认发布范围与通知对象",
+          tags: ["审批", "通知"],
+          core: `
+            <div class="card">
+              <h3>发布对象</h3>
+              <table>
+                <thead><tr><th>范围</th><th>包含工单</th><th>通知部门</th></tr></thead>
+                <tbody>
+                  <tr><td>装配线 #3</td><td>12 张</td><td>生产、质量、供应链</td></tr>
+                  <tr><td>外协工序</td><td>4 张</td><td>供应商管理</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>确认信息</h3>
+              <p>方案：B - 增加夜班 + 外协产能。</p>
+              <p>预计影响：延迟订单 5 → 2，成本 +¥18K。</p>
+              <div class="actions">
+                <button class="link-button" data-target="planner-dashboard">确认并发布</button>
+                <button class="link-button secondary-button" data-target="capacity-scheduling">取消</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>模拟排程后的发布确认页面。</li>
+              <li>确认影响范围与通知对象，保持同步。</li>
+              <li>可返回总览或继续调整方案。</li>
+            </ul>
+          `
+        },
+        "material-shortage-detail": {
+          role: "planner",
+          title: "缺料详情",
+          subtitle: "PCBA-4558 缺口分析",
+          tags: ["缺件", "供应链"],
+          core: `
+            <div class="card">
+              <h3>需求概览</h3>
+              <table>
+                <thead><tr><th>订单</th><th>需求量</th><th>预计到货</th><th>缺口</th></tr></thead>
+                <tbody>
+                  <tr><td>SO-20240318</td><td>220</td><td>180</td><td>40</td></tr>
+                  <tr><td>SO-20240320</td><td>200</td><td>180</td><td>20</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>缓解方案</h3>
               <ul>
-                <li>OEE、产量、良率仪表盘</li><li>事件警报与根因分析</li><li>与 PLM、ERP 的数据同步</li>
+                <li>催交供应商提前交付 60 件，需要审批。</li>
+                <li>替代料 PCBA-4558B 预计 1.5 天验证。</li>
               </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>计划达成率与排程稳定性</li><li>OEE 与良率趋势</li><li>质量问题响应时间与追溯完成率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+              <div class="actions">
+                <button class="link-button" data-target="supplier-collaboration">启动供应协同</button>
+                <button class="link-button secondary-button" data-target="material-visibility">返回列表</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>说明缺料影响的订单与数量。</li>
+              <li>提供替代料与催交的操作入口。</li>
+              <li>用于缺料会议展示应对方案。</li>
+            </ul>
+          `
+        },
+        "planner-dashboard-report": {
+          role: "planner",
+          title: "计划日报",
+          subtitle: "自动生成的管理用汇总",
+          tags: ["报表", "沟通"],
+          core: `
+            <div class="card">
+              <h3>核心指标</h3>
+              <div class="chart-placeholder">日报指标面板</div>
+            </div>
+            <div class="card">
+              <h3>备注与发送</h3>
+              <p>选择发送对象：生产、质量、供应链、管理层。</p>
+              <div class="actions">
+                <button class="link-button" data-target="planner-dashboard">返回总览</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示自动生成的计划日报模板。</li>
+              <li>可调整发送对象并生成图表。</li>
+              <li>辅助计划团队快速共享信息。</li>
+            </ul>
+          `
+        },
+        "order-commitment-detail": {
+          role: "planner",
+          title: "订单调整建议",
+          subtitle: "SO-20240318 交期沟通方案",
+          tags: ["交期", "客户沟通"],
+          core: `
+            <div class="card">
+              <h3>变更方案</h3>
+              <ul>
+                <li>建议交期：4 月 1 日，需客户确认。</li>
+                <li>补偿措施：提供免费加急物流。</li>
+                <li>风险说明：仍受 PCBA 缺件影响。</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>沟通记录</h3>
+              <div class="chart-placeholder">邮件 / 会议纪要摘要</div>
+              <div class="actions">
+                <button class="link-button" data-target="order-commitment">返回承诺看板</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>供计划与销售对齐订单承诺调整。</li>
+              <li>记录沟通内容并关联风险说明。</li>
+              <li>可快速返回承诺看板继续处理。</li>
+            </ul>
+          `
+        },
+        "supplier-collaboration": {
+          role: "planner",
+          title: "供应协同工作台",
+          subtitle: "缺件催交与补货计划",
+          tags: ["供应链协同", "催交"],
+          core: `
+            <div class="card">
+              <h3>供应商反馈</h3>
+              <table>
+                <thead><tr><th>供应商</th><th>承诺交期</th><th>补货数量</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr><td>供应商 A</td><td>3 月 27 日</td><td>40</td><td><span class="status-pill status-warning">待确认</span></td></tr>
+                  <tr><td>供应商 B</td><td>3 月 25 日</td><td>20</td><td><span class="status-pill status-good">已确认</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>协同动作</h3>
+              <ul>
+                <li>发起紧急采购审批。</li>
+                <li>共享 APS 排程截图给供应商。</li>
+              </ul>
+              <div class="actions">
+                <button class="link-button" data-target="material-visibility">返回缺件列表</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>集中处理供应商反馈与补货计划。</li>
+              <li>记录协同动作，便于追踪执行。</li>
+              <li>与物料监控页面互相跳转。</li>
+            </ul>
+          `
+        },
+        "material-substitution-edit": {
+          role: "planner",
+          title: "替代料申请",
+          subtitle: "PCBA-4558B 验证流程",
+          tags: ["工程变更", "替代料"],
+          core: `
+            <div class="card">
+              <h3>申请信息</h3>
+              <table>
+                <thead><tr><th>字段</th><th>内容</th></tr></thead>
+                <tbody>
+                  <tr><td>申请人</td><td>计划专员 - 李婷</td></tr>
+                  <tr><td>替代料</td><td>PCBA-4558B</td></tr>
+                  <tr><td>验证时长</td><td>1.5 天</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>审批流</h3>
+              <div class="chart-placeholder">流程节点示意</div>
+              <div class="actions">
+                <button class="link-button" data-target="material-visibility">提交并返回</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示替代料申请的关键字段与审批步骤。</li>
+              <li>可直接提交并返回物料监控。</li>
+              <li>用于演示工程与计划协同。</li>
+            </ul>
+          `
+        },
+        "work-order-detail": {
+          role: "supervisor",
+          title: "工单详情",
+          subtitle: "WO-1023 执行追踪",
+          tags: ["执行", "追溯"],
+          core: `
+            <div class="card">
+              <h3>进度信息</h3>
+              <table>
+                <thead><tr><th>工序</th><th>状态</th><th>报工时间</th></tr></thead>
+                <tbody>
+                  <tr><td>装配</td><td>进行中</td><td>10:32</td></tr>
+                  <tr><td>测试</td><td>待开始</td><td>-</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>质量控制点</h3>
+              <div class="chart-placeholder">控制计划 / 检查表</div>
+              <div class="actions">
+                <button class="link-button" data-target="work-order-execution">返回工单列表</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>对单个工单的进度与质量进行追溯。</li>
+              <li>包含控制点与作业指导信息。</li>
+              <li>支持返回工单列表继续调度。</li>
+            </ul>
+          `
+        },
+        "dispatch-edit": {
+          role: "supervisor",
+          title: "派工调整",
+          subtitle: "重新分配 WO-1025",
+          tags: ["派工", "资源调整"],
+          core: `
+            <div class="card">
+              <h3>排班建议</h3>
+              <div class="chart-placeholder">班组能力评估</div>
+            </div>
+            <div class="card">
+              <h3>操作</h3>
+              <p>选择合适的操作员并同步通知。</p>
+              <div class="actions">
+                <button class="link-button" data-target="work-order-execution">保存</button>
+                <button class="link-button secondary-button" data-target="work-order-execution">取消</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>演示派工调整时的资源评估。</li>
+              <li>提供保存与取消操作。</li>
+              <li>与工单执行页面闭环。</li>
+            </ul>
+          `
+        },
+        "equipment-maintenance": {
+          role: "supervisor",
+          title: "维护计划",
+          subtitle: "设备 E-103 维修任务",
+          tags: ["维护", "计划"],
+          core: `
+            <div class="card">
+              <h3>维护详情</h3>
+              <ul>
+                <li>计划时间：3 月 24 日 14:00-16:00。</li>
+                <li>所需备件：传感器组件。</li>
+                <li>责任人：设备工程师 张凯。</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>协同动作</h3>
+              <div class="chart-placeholder">维护任务看板</div>
+              <div class="actions">
+                <button class="link-button" data-target="equipment-operations">返回设备状态</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>呈现维护任务的时间、资源与责任人。</li>
+              <li>与设备状态页面互相跳转。</li>
+              <li>用于演示维护与生产协同。</li>
+            </ul>
+          `
+        },
+        "operator-training": {
+          role: "supervisor",
+          title: "培训安排",
+          subtitle: "焊接等级 A 复训计划",
+          tags: ["培训", "技能"],
+          core: `
+            <div class="card">
+              <h3>培训计划</h3>
+              <ul>
+                <li>时间：3 月 26 日 09:00-12:00。</li>
+                <li>讲师：工艺工程师 陈立。</li>
+                <li>地点：培训教室 A。</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>签到与评估</h3>
+              <div class="chart-placeholder">签到表 / 评估问卷</div>
+              <div class="actions">
+                <button class="link-button" data-target="personnel-center">返回人员管理</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示培训计划的关键信息。</li>
+              <li>包含签到与评估占位，便于演示。</li>
+              <li>与人员管理页面闭环。</li>
+            </ul>
+          `
+        },
+        "operator-shift-detail": {
+          role: "supervisor",
+          title: "排班详情",
+          subtitle: "刘洋 - 下周班次",
+          tags: ["排班", "人员"],
+          core: `
+            <div class="card">
+              <h3>班次安排</h3>
+              <div class="chart-placeholder">周排班表格</div>
+            </div>
+            <div class="card">
+              <h3>调整建议</h3>
+              <p>建议调至夜班以支援装配线 #3。</p>
+              <div class="actions">
+                <button class="link-button" data-target="personnel-center">确认调整</button>
+                <button class="link-button secondary-button" data-target="personnel-center">返回</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示个人排班与调整建议。</li>
+              <li>提供确认与返回操作。</li>
+              <li>支持与人员管理页面联动。</li>
+            </ul>
+          `
+        },
+        "capa-edit": {
+          role: "quality",
+          title: "CAPA 详情",
+          subtitle: "Q-457 纠正预防措施",
+          tags: ["CAPA", "纠正措施"],
+          core: `
+            <div class="card">
+              <h3>问题描述</h3>
+              <p>焊点虚焊导致功能不良，影响批次 LOT-2303。</p>
+            </div>
+            <div class="card">
+              <h3>行动计划</h3>
+              <ul>
+                <li>短期：增加抽检频次。</li>
+                <li>中期：优化焊接工艺参数。</li>
+                <li>长期：导入自动焊接检测。</li>
+              </ul>
+              <div class="actions">
+                <button class="link-button" data-target="defect-handling">返回不良处理</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示 CAPA 的问题、行动与状态。</li>
+              <li>便于质量例会讨论进展。</li>
+              <li>可返回不良处理继续追踪。</li>
+            </ul>
+          `
+        },
+        "inspection-detail": {
+          role: "quality",
+          title: "检验详情",
+          subtitle: "LOT-2301 检验记录",
+          tags: ["检验", "记录"],
+          core: `
+            <div class="card">
+              <h3>样本记录</h3>
+              <div class="chart-placeholder">样本检验结果表</div>
+            </div>
+            <div class="card">
+              <h3>问题追踪</h3>
+              <p>发现 2 项轻微缺陷，已生成偏差单。</p>
+              <div class="actions">
+                <button class="link-button" data-target="inspection-control">返回检验任务</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示批次检验结果与问题追踪。</li>
+              <li>支持返回检验任务继续处理。</li>
+              <li>便于与不良处理联动。</li>
+            </ul>
+          `
+        },
+        "spc-chart-detail": {
+          role: "quality",
+          title: "SPC 异常批次",
+          subtitle: "焊接温度超限分析",
+          tags: ["控制图", "异常分析"],
+          core: `
+            <div class="card">
+              <h3>异常点</h3>
+              <div class="chart-placeholder">超限点标记图</div>
+            </div>
+            <div class="card">
+              <h3>处理措施</h3>
+              <p>已通知车间调整温度参数，并安排复检。</p>
+              <div class="actions">
+                <button class="link-button" data-target="spc-monitoring">返回 SPC 监控</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示 SPC 控制图的异常批次细节。</li>
+              <li>提供处理措施与返回入口。</li>
+              <li>帮助质量与车间快速闭环。</li>
+            </ul>
+          `
+        },
+        "alert-detail": {
+          role: "executive",
+          title: "告警详情",
+          subtitle: "AL-20240321 产能预警",
+          tags: ["告警", "响应"],
+          core: `
+            <div class="card">
+              <h3>告警摘要</h3>
+              <p>装配线 #3 未来 48 小时产能不足 12%。</p>
+            </div>
+            <div class="card">
+              <h3>响应进度</h3>
+              <ul>
+                <li>计划部：已启动方案 B 模拟。</li>
+                <li>车间：确认可加班 2 小时。</li>
+              </ul>
+              <div class="actions">
+                <button class="link-button" data-target="alert-center">返回告警中心</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>用于说明单个告警的响应情况。</li>
+              <li>关联计划与车间的行动。</li>
+              <li>可返回告警中心查看其他事件。</li>
+            </ul>
+          `
+        },
+        "integration-settings": {
+          role: "executive",
+          title: "集成配置详情",
+          subtitle: "ERP / PLM / MES 接口状态",
+          tags: ["集成", "接口"],
+          core: `
+            <div class="card">
+              <h3>接口一览</h3>
+              <table>
+                <thead><tr><th>系统</th><th>方向</th><th>频率</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr><td>ERP</td><td>ERP → MES</td><td>小时级</td><td><span class="status-pill status-good">正常</span></td></tr>
+                  <tr><td>PLM</td><td>PLM → MES</td><td>日级</td><td><span class="status-pill status-warning">延迟</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>维护操作</h3>
+              <p>可执行重试、暂停或通知 IT 支持。</p>
+              <div class="actions">
+                <button class="link-button" data-target="system-landscape">返回系统配置</button>
+              </div>
+            </div>
+          `,
+          description: `
+            <h3>页面要点</h3>
+            <ul>
+              <li>展示关键集成接口及状态。</li>
+              <li>提供维护操作入口。</li>
+              <li>便于 IT 与业务团队协同。</li>
+            </ul>
+          `
+        }
+      };
+
+      let currentRole = "planner";
+      let currentPage = "";
+
+      const roleSelect = document.getElementById("roleSelect");
+      const menuList = document.getElementById("menuList");
+      const mainContent = document.getElementById("mainContent");
+
+      function renderRoleOptions() {
+        roleSelect.innerHTML = "";
+        Object.entries(roles).forEach(([key, value]) => {
+          const option = document.createElement("option");
+          option.value = key;
+          option.textContent = `${value.label} · ${value.desc}`;
+          roleSelect.appendChild(option);
+        });
+      }
+
+      function renderMenu(roleKey) {
+        const role = roles[roleKey];
+        menuList.innerHTML = "";
+        role.menus.forEach((item) => {
+          const button = document.createElement("button");
+          button.className = "menu-item";
+          button.dataset.page = item.id;
+          button.innerHTML = `<span class="title">${item.title}</span><span class="desc">${item.desc}</span>`;
+          menuList.appendChild(button);
+        });
+      }
+
+      function highlightMenu(pageId) {
+        [...menuList.children].forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.page === pageId);
+        });
+      }
+
+      function buildPageHtml(page) {
+        const tags = page.tags?.length
+          ? `<div class="tag-list">${page.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div>`
+          : "";
+        return `
+          <section class="page">
+            <div class="page-header">
+              <div class="breadcrumb"><span>${roles[page.role].label}</span><span>${page.title}</span></div>
+              <h1>${page.title}</h1>
+              <p>${page.subtitle}</p>
+              ${tags}
+            </div>
+            <div class="page-core">${page.core}</div>
+            <div class="page-description">${page.description}</div>
+          </section>
+        `;
+      }
+
+      function loadPage(pageId) {
+        const page = pages[pageId];
+        if (!page) return;
+        currentPage = pageId;
+        mainContent.innerHTML = buildPageHtml(page);
+        if (page.role !== currentRole) {
+          currentRole = page.role;
+          roleSelect.value = currentRole;
+          renderMenu(currentRole);
+        }
+        highlightMenu(pageId);
+      }
+
+      function handleRoleChange(roleKey) {
+        currentRole = roleKey;
+        renderMenu(roleKey);
+        const firstPage = roles[roleKey].menus[0]?.id;
+        if (firstPage) {
+          loadPage(firstPage);
+        }
+      }
+
+      roleSelect.addEventListener("change", (event) => {
+        handleRoleChange(event.target.value);
+      });
+
+      menuList.addEventListener("click", (event) => {
+        const button = event.target.closest(".menu-item");
+        if (button) {
+          loadPage(button.dataset.page);
+        }
+      });
+
+      mainContent.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-target]");
+        if (target) {
+          event.preventDefault();
+          loadPage(target.dataset.target);
+        }
+      });
+
+      renderRoleOptions();
+      roleSelect.value = currentRole;
+      handleRoleChange(currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
