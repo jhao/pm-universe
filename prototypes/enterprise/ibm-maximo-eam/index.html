@@ -636,7 +636,7 @@
           <strong>IBM Maximo EAM 指挥舱</strong>
           <span>企业资产全生命周期管理 &amp; 运维协同原型</span>
         </div>
-        <nav class="system-nav">
+        <nav class="system-nav" aria-label="角色快捷切换">
           <button type="button" data-role-target="assetManager" data-view-target="asset-dashboard">资产指挥中心</button>
           <button type="button" data-role-target="maintenanceSupervisor" data-view-target="workorder-center">维护战情室</button>
           <button type="button" data-role-target="fieldTechnician" data-view-target="tech-tasks">移动现场</button>
@@ -665,14 +665,21 @@
           </section>
           <section class="menu-section">
             <h3>功能导航</h3>
-            <ul class="menu-list" id="menuList"></ul>
+            <ul class="menu-list" id="menuList" role="tablist" aria-label="角色功能菜单"></ul>
           </section>
           <div class="menu-hint">
             提示：点击不同菜单即可在右侧展示该功能的核心界面示意。可通过顶部快速切换角色，右侧每个页面底部包含该页面的业务说明。
           </div>
         </aside>
         <main class="main-view">
-          <div id="viewContainer" class="view-container"></div>
+          <div
+            id="viewContainer"
+            class="view-container"
+            role="region"
+            aria-live="polite"
+            aria-label="功能页面内容展示"
+            tabindex="-1"
+          ></div>
         </main>
       </div>
     </div>
@@ -4311,6 +4318,7 @@
         const role = roleConfigurations[roleKey];
         if (!role) return;
         currentRoleKey = roleKey;
+        document.body.dataset.activeRole = roleKey;
         roleSelect.value = roleKey;
         roleTitle.textContent = `${role.name}视角`;
         roleDescription.textContent = role.description;
@@ -4322,15 +4330,22 @@
           const isActive = button.dataset.roleTarget === roleKey;
           button.classList.toggle('active', isActive);
           button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          button.setAttribute('aria-current', isActive ? 'page' : 'false');
         });
 
         menuList.innerHTML = '';
-        role.menus.forEach((menu) => {
+        role.menus.forEach((menu, index) => {
           const item = document.createElement('li');
+          item.setAttribute('role', 'presentation');
           const button = document.createElement('button');
           button.type = 'button';
           button.className = 'menu-item';
           button.dataset.menuId = menu.id;
+          button.setAttribute('role', 'tab');
+          button.setAttribute('aria-selected', 'false');
+          button.setAttribute('aria-current', 'false');
+          button.setAttribute('aria-controls', 'viewContainer');
+          button.setAttribute('tabindex', index === 0 ? '0' : '-1');
           button.innerHTML = `<strong>${menu.icon} ${menu.label}</strong><span>${menu.caption}</span>`;
           button.addEventListener('click', () => {
             renderView(menu.id, { fromMenu: true });
@@ -4357,7 +4372,11 @@
       function highlightMenu(menuId) {
         const buttons = menuList.querySelectorAll('.menu-item');
         buttons.forEach((button) => {
-          button.classList.toggle('active', button.dataset.menuId === menuId);
+          const isActive = button.dataset.menuId === menuId;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          button.setAttribute('aria-current', isActive ? 'page' : 'false');
+          button.setAttribute('tabindex', isActive ? '0' : '-1');
         });
       }
 
@@ -4382,6 +4401,8 @@
         } else if (options.returnTo) {
           highlightMenu(options.returnTo);
         }
+
+        viewContainer.setAttribute('aria-busy', 'true');
 
         const title = view.title || view.label;
         const subtitle = view.subtitle || view.caption || '';
@@ -4422,6 +4443,8 @@
         `;
 
         attachContentInteractions(viewContainer);
+        viewContainer.setAttribute('aria-busy', 'false');
+        viewContainer.focus();
       }
 
       function attachContentInteractions(scope) {
@@ -4463,6 +4486,7 @@
         });
       });
 
+      document.body.dataset.activeRole = currentRoleKey;
       renderRole(currentRoleKey);
     </script>
     <script type="module" src="../../menu.js"></script>
