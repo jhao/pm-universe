@@ -1188,6 +1188,130 @@
                 </section>
               `,
             },
+            {
+              id: 'capital-governance',
+              icon: '💼',
+              label: '投资治理中心',
+              caption: '资本项目、预算执行与汇报',
+              title: '资产投资与预算治理',
+              subtitle: '统筹资本项目立项、预算对比与管理层汇报',
+              summary:
+                '投资治理中心帮助资产经理从项目、预算与汇报三个层面协同工作，确保资本开支透明、受控，并能快速生成对内对外的沟通材料。',
+              highlights: [
+                '掌握资本项目执行率与风险等级',
+                '实时对比 CAPEX / OPEX 预算执行差异',
+                '一键生成管理层汇报并推送相关方',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">CAPEX 执行率</div>
+                    <div class="metric-value">68%</div>
+                    <div class="metric-trend">剩余预算 ¥10.3M</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">预算偏差</div>
+                    <div class="metric-value">¥0.6M</div>
+                    <div class="metric-trend warning">集中在能源效率项目</div>
+                  </div>
+                  <div class="metric-card accent-rose">
+                    <div class="metric-label">关键资本项目</div>
+                    <div class="metric-value">5</div>
+                    <div class="metric-trend positive">高风险项目 1 个</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>资本项目进展</h3>
+                      <p>按阶段展示本季度重点项目执行情况。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="capital-request" data-return-view="capital-governance">查看立项详情</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>项目</th>
+                        <th>阶段</th>
+                        <th>预算 / 执行</th>
+                        <th>风险</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>炼油压缩机更新</td>
+                        <td>实施中</td>
+                        <td>¥8.2M / 54%</td>
+                        <td><span class="status-pill warning">关注</span></td>
+                        <td><button class="link" data-view-target="capital-request" data-return-view="capital-governance">立项档案</button></td>
+                      </tr>
+                      <tr>
+                        <td>能源效率改造</td>
+                        <td>审批中</td>
+                        <td>¥3.4M / —</td>
+                        <td><span class="status-pill info">等待审批</span></td>
+                        <td><button class="link" data-view-target="scenario-detail" data-return-view="capital-governance">策略对比</button></td>
+                      </tr>
+                      <tr>
+                        <td>输电线路扩容</td>
+                        <td>计划中</td>
+                        <td>¥5.1M / 0%</td>
+                        <td><span class="status-pill success">可控</span></td>
+                        <td><button class="link" data-view-target="resource-calendar" data-return-view="capital-governance">安排窗口</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>预算执行监控</h3>
+                      <p>对比 CAPEX / OPEX 执行、预测与偏差原因。</p>
+                    </div>
+                    <button class="ghost" data-view-target="budget-compare" data-return-view="capital-governance">查看预算详情</button>
+                  </div>
+                  <div class="map-mock">
+                    <strong>预算偏差热力</strong>
+                    <div>CAPEX 偏差 +¥0.4M · 受压缩机更新影响</div>
+                    <div>OPEX 偏差 +¥0.2M · 设备维护费用上升</div>
+                    <div>点击可钻取至具体项目或成本中心。</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>汇报与沟通</h3>
+                      <p>快速整理高层关注的亮点、风险与决策事项。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="executive-briefing" data-return-view="capital-governance">生成管理简报</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>亮点</h4>
+                      <div class="board-card">
+                        <span>资产可用率 97.2%，预测性维护节省 ¥3.6M</span>
+                        <span>能源效率项目预计节省能耗 12%</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>风险</h4>
+                      <div class="board-card">
+                        <span>压缩机更新项目需加速供应链协调</span>
+                        <span>能源效率项目预算偏差需审批确认</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>决策事项</h4>
+                      <div class="board-card">
+                        <span>提交 Q2 追加预算方案</span>
+                        <span>确定能源效率项目里程碑验收标准</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
           ],
         },
         maintenanceSupervisor: {
