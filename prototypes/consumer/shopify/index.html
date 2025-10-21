@@ -2,83 +2,2317 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Shopify 跨境电商平台 原型概览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shopify 跨境电商平台 多角色原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --accent: #22d3ee;
+        --accent-soft: rgba(34, 211, 238, 0.16);
+        --sidebar-bg: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        --surface: #f4f6fb;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --border-color: rgba(148, 163, 184, 0.35);
+        --card-bg: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--surface);
+        color: var(--text-primary);
+      }
+
+      .app {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background: var(--sidebar-bg);
+        color: #e2e8f0;
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        box-shadow: 4px 0 24px rgba(15, 23, 42, 0.25);
+      }
+
+      .sidebar h1 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        color: #f8fafc;
+      }
+
+      .sidebar p {
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.75);
+      }
+
+      .role-switcher {
+        display: grid;
+        gap: 10px;
+      }
+
+      .role-button {
+        border: none;
+        background: rgba(148, 163, 184, 0.12);
+        color: #e2e8f0;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s ease, background 0.2s ease;
+        cursor: pointer;
+      }
+
+      .role-button span {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .role-button:hover {
+        transform: translateX(4px);
+        background: rgba(148, 163, 184, 0.24);
+      }
+
+      .role-button.active {
+        background: var(--accent);
+        color: #0f172a;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.28);
+      }
+
+      .menu-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .menu-item {
+        border: none;
+        background: transparent;
+        color: inherit;
+        padding: 12px 14px;
+        border-radius: 10px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+
+      .menu-item small {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.65);
+      }
+
+      .menu-item:hover {
+        background: rgba(148, 163, 184, 0.18);
+        transform: translateX(4px);
+      }
+
+      .menu-item.active {
+        background: rgba(15, 23, 42, 0.72);
+        color: #f8fafc;
+        box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.2);
+      }
+
+      main {
+        flex: 1;
+        padding: 32px 36px 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .topbar-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .role-context {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-label {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-dark, var(--accent));
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .role-tagline {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      #pageTitle {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      #pageDescription {
+        margin: 0;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        max-width: 720px;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .search-wrapper {
+        position: relative;
+      }
+
+      .search-wrapper input {
+        padding: 10px 14px 10px 34px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        background: #ffffff;
+        font-size: 14px;
+        min-width: 200px;
+      }
+
+      .search-wrapper span {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #94a3b8;
+      }
+
+      .action-button {
+        border: 1px solid transparent;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .action-button.primary {
+        background: var(--accent);
+        color: #0f172a;
+        box-shadow: 0 12px 20px rgba(34, 211, 238, 0.25);
+      }
+
+      .action-button.ghost {
+        background: #ffffff;
+        color: var(--text-primary);
+        border-color: var(--border-color);
+      }
+
+      .action-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .content-section {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 24px 28px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .content-section h2 {
+        margin: 0 0 16px;
+        font-size: 20px;
+      }
+
+      .section-description {
+        margin: -8px 0 16px;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .metric-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .metric-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 16px;
+        padding: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .metric-card strong {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .metric-trend {
+        font-size: 12px;
+        color: var(--accent);
+      }
+
+      .metric-icon {
+        font-size: 18px;
+        opacity: 0.85;
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .info-card {
+        border-radius: 18px;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.02) 0%, rgba(15, 23, 42, 0.08) 100%);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .info-card .tag {
+        align-self: flex-start;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .info-card footer {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      thead tr {
+        background: rgba(148, 163, 184, 0.12);
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      tbody tr:hover {
+        background: rgba(148, 163, 184, 0.12);
+      }
+
+      .table-footnote {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .split-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .split-column {
+        background: linear-gradient(160deg, rgba(15, 23, 42, 0.02) 0%, rgba(15, 23, 42, 0.08) 100%);
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .split-column ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--text-secondary);
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .form-field {
+        background: rgba(15, 23, 42, 0.02);
+        border-radius: 14px;
+        padding: 14px 16px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .form-field label {
+        display: block;
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+      }
+
+      .form-field span {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 14px;
+        position: relative;
+        padding-left: 20px;
+      }
+
+      .timeline::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: rgba(148, 163, 184, 0.4);
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 24px;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #ffffff;
+        border: 3px solid var(--accent);
+        border-radius: 50%;
+        left: -1px;
+        top: 4px;
+      }
+
+      .timeline-item h3 {
+        margin: 0 0 4px;
+        font-size: 14px;
+      }
+
+      .timeline-item time {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .kanban {
+        display: grid;
+        gap: 16px;
+      }
+
+      .kanban-column {
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.02);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .kanban-column h3 {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .kanban-card {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 12px 14px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+      }
+
+      .kanban-card .badge {
+        align-self: flex-start;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag-list span {
+        padding: 2px 8px;
+        background: rgba(148, 163, 184, 0.18);
+        border-radius: 999px;
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+
+      .chart {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .chart-legend {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .legend-item span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .chart-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .chart-bar {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.18);
+        height: 12px;
+      }
+
+      .chart-segment {
+        height: 100%;
+      }
+
+      .checklist {
+        display: grid;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .checklist-item .status {
+        width: 18px;
+        height: 18px;
+        border-radius: 6px;
+        display: grid;
+        place-items: center;
+        background: rgba(148, 163, 184, 0.18);
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+      }
+
+      @media (max-width: 1120px) {
+        .app {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+
+        .menu-list {
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .menu-item {
+          flex: 1 1 200px;
+        }
+
+        main {
+          padding: 24px;
+        }
+
+        .topbar {
+          flex-direction: column;
+        }
+
+        .top-actions {
+          width: 100%;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Shopify 跨境电商平台 原型</h1>
-      <p class="tagline">帮助商家快速搭建在线商店并扩展全球零售渠道。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>中小商家、DTC 品牌、电商运营团队</p>
-        <p><strong>核心痛点：</strong>缺乏快速建站与全渠道运营能力</p>
-        <p><strong>价值主张：</strong>提供 SaaS 化建站、支付、物流与营销工具的一体化平台</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>商家创建独立站并配置主题</li><li>运营团队管理订单、库存与履约</li><li>营销团队投放广告并分析销售数据</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>店铺搭建与主题</h3>
-              <p class="goal">功能目标：降低电商网站搭建门槛</p>
-              <ul>
-                <li>可视化主题编辑器与模板市场</li><li>自定义域名、导航与页面布局</li><li>多语言、多货币与 SEO 设置</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商品与订单管理</h3>
-              <p class="goal">功能目标：确保库存与订单流程顺畅</p>
-              <ul>
-                <li>商品 SKU、变体与库存预警</li><li>订单生命周期、退款与售后</li><li>POS、社交电商等多渠道同步</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>支付与结算</h3>
-              <p class="goal">功能目标：提供安全便捷的收款体验</p>
-              <ul>
-                <li>Shopify Payments 与第三方支付集成</li><li>分期、订阅与礼品卡支持</li><li>税费计算、账期结算与对账</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>营销与增长</h3>
-              <p class="goal">功能目标：帮助商家扩大客流与复购</p>
-              <ul>
-                <li>折扣、优惠码与会员计划</li><li>邮件、短信与自动化营销</li><li>广告投放归因与数据分析</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>店铺上线周期与主题转化率</li><li>GMV、平均订单价值与复购率</li><li>营销活动 ROI 与客户获取成本</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="app">
+      <aside class="sidebar">
+        <div>
+          <h1>Shopify 跨境电商</h1>
+          <p>多角色全流程功能原型演示</p>
+        </div>
+        <div class="role-switcher" id="roleSwitcher"></div>
+        <div class="menu-list" id="menuList"></div>
+      </aside>
+      <main>
+        <div class="topbar">
+          <div class="topbar-meta">
+            <div class="role-context">
+              <span class="role-label" id="roleLabel">角色</span>
+              <span class="role-tagline" id="roleTagline"></span>
+            </div>
+            <h1 id="pageTitle">页面标题</h1>
+            <p id="pageDescription">页面描述</p>
+          </div>
+          <div class="top-actions" id="topActions"></div>
+        </div>
+        <div class="content" id="content"></div>
+      </main>
+    </div>
+
+    <script>
+      const roleConfigs = {
+        customer: {
+          label: '用户端',
+          tagline: '聚焦买家在跨境购物过程中的体验',
+          accent: '#22d3ee',
+          accentSoft: 'rgba(34, 211, 238, 0.18)',
+          sidebarBg: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
+          menu: [
+            {
+              id: 'customer-dashboard',
+              title: '买家首页',
+              description: '个性化推荐、会员权益与实时优惠的统一呈现。',
+              actions: [
+                { label: '刷新推荐', style: 'ghost' },
+                { label: '开启推送', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'metrics',
+                  columns: 3,
+                  items: [
+                    {
+                      icon: '🎁',
+                      label: '待领取优惠',
+                      value: '3',
+                      trend: '今日新增 1'
+                    },
+                    {
+                      icon: '🛍️',
+                      label: '心愿单商品',
+                      value: '12',
+                      trend: '4 件降价提醒'
+                    },
+                    {
+                      icon: '🚚',
+                      label: '物流动态',
+                      value: '2 条',
+                      trend: '包裹已到转运中心'
+                    }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '推荐模块',
+                  columns: 3,
+                  items: [
+                    {
+                      tag: '限时秒杀',
+                      title: '全球精选耳机 8 折秒杀',
+                      body: '限量 200 件，距结束 02:14:32。',
+                      footer: '立即抢购'
+                    },
+                    {
+                      tag: '新品首发',
+                      title: '春季新品系列 组合优惠',
+                      body: '满 ¥299 减 ¥50，叠加跨境包邮券。',
+                      footer: '查看详情'
+                    },
+                    {
+                      tag: '会员专享',
+                      title: 'PLUS 会员 9 折 + 运费险',
+                      body: '全年享受优先发货与售后直连。',
+                      footer: '了解权益'
+                    }
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '智能旅程提醒',
+                  items: [
+                    {
+                      time: '09:30',
+                      title: '推送今日主打',
+                      description: '基于浏览历史推荐潮流单品。'
+                    },
+                    {
+                      time: '11:20',
+                      title: '降价提醒',
+                      description: '心愿单商品价格下调 15%。'
+                    },
+                    {
+                      time: '18:00',
+                      title: '发货通知',
+                      description: '客服助手推送包裹出库动态。'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'customer-product',
+              title: '商品详情页',
+              description: '通过多媒体展示、信任背书与购买转化组件提升转化率。',
+              actions: [
+                { label: '生成搭配', style: 'ghost' },
+                { label: '加入对比', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'split',
+                  columns: [
+                    {
+                      title: '主视觉体验',
+                      items: [
+                        '高清图片 + 视频轮播',
+                        '3D 试穿与尺寸对照',
+                        '颜色 / 尺码快速筛选'
+                      ]
+                    },
+                    {
+                      title: '信任与促销',
+                      items: [
+                        '跨境物流：7-10 天送达',
+                        '买二免一 + 返现券',
+                        '买家秀评分 4.8 / 5'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: 'SKU 库存快照',
+                  headers: ['SKU', '颜色', '尺码', '库存', '发货地'],
+                  rows: [
+                    ['SKU-001', '曜石黑', 'M', '现货 58', '广州保税仓'],
+                    ['SKU-002', '雾霾蓝', 'L', '低库存 12', '宁波前置仓'],
+                    ['SKU-003', '砂岩白', 'S', '在途 35', '深圳备货中']
+                  ],
+                  footnote: '库存数据实时同步至购物车与结账流程。'
+                },
+                {
+                  type: 'form',
+                  title: '一键购买浮层',
+                  fields: [
+                    {
+                      label: '选择套装',
+                      value: '基础款（含 2 年保修）'
+                    },
+                    { label: '配送方式', value: '标准（包税） / 加急（72 小时）' },
+                    { label: '售后保障', value: '7 天无理由 + 国际联保' }
+                  ],
+                  actions: [
+                    { label: '加入购物车', style: 'ghost' },
+                    { label: '立即购买', style: 'primary' }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'customer-checkout',
+              title: '购物车与结账',
+              description: '展示跨境购物流程、费用明细与支付方式选项。',
+              actions: [
+                { label: '分享购物车', style: 'ghost' },
+                { label: '一键支付', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'table',
+                  title: '购物车清单',
+                  headers: ['商品', '规格', '数量', '售价', '优惠', '合计'],
+                  rows: [
+                    ['智能降噪耳机', '曜石黑 / M', '1', '¥ 1,299', '- ¥ 100', '¥ 1,199'],
+                    ['旅行收纳套装', '三件套', '2', '¥ 399', '- ¥ 60', '¥ 738'],
+                    ['跨境运费', '包税', '-', '¥ 80', '会员免运', '¥ 0']
+                  ],
+                  footnote: '支持多币种显示，自动计算关税与折扣。'
+                },
+                {
+                  type: 'metrics',
+                  columns: 3,
+                  title: '支付方式偏好',
+                  items: [
+                    { icon: '💳', label: '信用卡', value: '65%', trend: '3D Secure 已启用' },
+                    { icon: '📱', label: '数字钱包', value: '22%', trend: 'Apple Pay / Google Pay' },
+                    { icon: '💱', label: '本地支付', value: '13%', trend: 'Klarna 分期' }
+                  ]
+                },
+                {
+                  type: 'chart',
+                  title: '结账流程转化',
+                  legend: [
+                    { label: '完成率', color: '#22d3ee' },
+                    { label: '流失率', color: '#94a3b8' }
+                  ],
+                  categories: [
+                    {
+                      label: '地址信息',
+                      segments: [
+                        { label: '完成', value: 78, color: '#22d3ee' },
+                        { label: '流失', value: 22, color: '#94a3b8' }
+                      ]
+                    },
+                    {
+                      label: '支付确认',
+                      segments: [
+                        { label: '完成', value: 71, color: '#22d3ee' },
+                        { label: '流失', value: 29, color: '#94a3b8' }
+                      ]
+                    },
+                    {
+                      label: '风控验证',
+                      segments: [
+                        { label: '完成', value: 67, color: '#22d3ee' },
+                        { label: '流失', value: 33, color: '#94a3b8' }
+                      ]
+                    }
+                  ],
+                  footnote: '转化率可与 A/B 测试结果联动对比。'
+                },
+                {
+                  type: 'checklist',
+                  title: '风控提示',
+                  items: [
+                    { status: '✓', label: '地址匹配物流范围且已完成税号校验。' },
+                    { status: '✓', label: '设备指纹与历史行为一致。' },
+                    { status: '!', label: '建议开启短信二次验证保障支付安全。' }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'customer-orders',
+              title: '订单中心',
+              description: '展示订单全生命周期状态、售后入口与增值服务。',
+              actions: [
+                { label: '批量催发货', style: 'ghost' },
+                { label: '申请售后', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'kanban',
+                  title: '订单状态看板',
+                  columns: [
+                    {
+                      title: '待付款',
+                      items: [
+                        { title: '#SO-1298', badge: '¥ 389', meta: '剩余 12:10 自动取消' }
+                      ]
+                    },
+                    {
+                      title: '待发货',
+                      items: [
+                        {
+                          title: '#SO-1276',
+                          badge: '优先发货',
+                          meta: '仓库：深圳保税仓',
+                          tags: ['合单', '跨境包税']
+                        }
+                      ]
+                    },
+                    {
+                      title: '运输中',
+                      items: [
+                        {
+                          title: '#SO-1234',
+                          badge: '轨迹更新',
+                          meta: '已到达香港中转中心',
+                          tags: ['派送中']
+                        }
+                      ]
+                    },
+                    {
+                      title: '已完成',
+                      items: [
+                        {
+                          title: '#SO-1189',
+                          badge: '待评价',
+                          meta: '7 天内评价得积分',
+                          tags: ['延保中']
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '物流轨迹示例',
+                  items: [
+                    {
+                      time: '08:20',
+                      title: '包裹出库',
+                      description: '深圳保税仓完成装车扫描。'
+                    },
+                    {
+                      time: '12:45',
+                      title: '口岸报关',
+                      description: '完成清关申报，预计 6 小时放行。'
+                    },
+                    {
+                      time: '17:30',
+                      title: '国际运输',
+                      description: '航班 CZ3078 已起飞，预计 22:10 抵达。'
+                    }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '售后与增值服务',
+                  columns: 3,
+                  items: [
+                    {
+                      tag: '换货进度',
+                      title: '尺码不合适申请换货',
+                      body: '预计 3 个工作日完成审核。',
+                      footer: '查看凭证'
+                    },
+                    {
+                      tag: '延长保修',
+                      title: '延长一年国际保修',
+                      body: '尊享专属客服通道与快速换新。',
+                      footer: '升级服务'
+                    },
+                    {
+                      tag: '邀请好友',
+                      title: '好友首单立返 ¥ 80',
+                      body: '成功邀请 3 位好友再送运费券。',
+                      footer: '立即分享'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'customer-support',
+              title: '客服与会员中心',
+              description: 'AI 智能客服、工单升级与会员成长体系的集中体验。',
+              actions: [
+                { label: '查看 FAQ', style: 'ghost' },
+                { label: '直连人工', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'split',
+                  columns: [
+                    {
+                      title: '智能客服',
+                      items: [
+                        '多语言意图识别 + 对话模板',
+                        '快捷入口：物流、售后、发票',
+                        '知识库命中率 92%'
+                      ]
+                    },
+                    {
+                      title: '人工升级',
+                      items: [
+                        '当前排队人数 3',
+                        '预计等待 02:30',
+                        '支持语音 / 视频连线'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '会员成长任务',
+                  columns: 2,
+                  items: [
+                    {
+                      tag: '成长值 +80',
+                      title: '完成本周购物任务',
+                      body: '任意消费满 ¥ 500，赠运费险 + 折扣券。',
+                      footer: '去完成'
+                    },
+                    {
+                      tag: '积分商城',
+                      title: '兑换跨境包邮券',
+                      body: '3000 积分可兑换 3 张包邮券。',
+                      footer: '立即兑换'
+                    }
+                  ]
+                },
+                {
+                  type: 'form',
+                  title: '问题反馈单',
+                  fields: [
+                    { label: '问题类型', value: '支付失败 / 优惠券不可用' },
+                    { label: '联系方式', value: '已绑定邮箱 +86 ···· 3210' },
+                    { label: '期望处理时效', value: '24 小时内回访' }
+                  ],
+                  actions: [
+                    { label: '上传凭证', style: 'ghost' },
+                    { label: '提交工单', style: 'primary' }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        admin: {
+          label: '管理员端',
+          tagline: '覆盖商家后台的运营、配置与数据洞察',
+          accent: '#6366f1',
+          accentSoft: 'rgba(99, 102, 241, 0.18)',
+          sidebarBg: 'linear-gradient(180deg, #1f1b3a 0%, #312e81 100%)',
+          menu: [
+            {
+              id: 'admin-dashboard',
+              title: '经营仪表盘',
+              description: '实时监控 GMV、渠道表现与关键提醒。',
+              actions: [
+                { label: '导出日报', style: 'ghost' },
+                { label: '创建提醒', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'metrics',
+                  columns: 4,
+                  items: [
+                    { icon: '💰', label: '今日 GMV', value: '¥ 1,284,320', trend: '+18% vs 昨日' },
+                    { icon: '🧾', label: '支付订单', value: '2,386', trend: '成功率 97.2%' },
+                    { icon: '📦', label: '待发货', value: '312', trend: '仓配 SLA 5.2h' },
+                    { icon: '🌐', label: '渠道 GMV', value: '37%', trend: '社交渠道贡献' }
+                  ]
+                },
+                {
+                  type: 'chart',
+                  title: '多渠道收入趋势（近 7 日）',
+                  legend: [
+                    { label: '独立站', color: '#6366f1' },
+                    { label: '社交电商', color: '#f59e0b' },
+                    { label: '线下 POS', color: '#22c55e' }
+                  ],
+                  categories: [
+                    {
+                      label: '周一',
+                      segments: [
+                        { label: '独立站', value: 68, color: '#6366f1' },
+                        { label: '社交', value: 40, color: '#f59e0b' },
+                        { label: 'POS', value: 22, color: '#22c55e' }
+                      ]
+                    },
+                    {
+                      label: '周三',
+                      segments: [
+                        { label: '独立站', value: 72, color: '#6366f1' },
+                        { label: '社交', value: 46, color: '#f59e0b' },
+                        { label: 'POS', value: 28, color: '#22c55e' }
+                      ]
+                    },
+                    {
+                      label: '周五',
+                      segments: [
+                        { label: '独立站', value: 85, color: '#6366f1' },
+                        { label: '社交', value: 52, color: '#f59e0b' },
+                        { label: 'POS', value: 36, color: '#22c55e' }
+                      ]
+                    }
+                  ],
+                  footnote: '支持切换更多渠道与广告维度。'
+                },
+                {
+                  type: 'cards',
+                  title: '运营提醒',
+                  columns: 3,
+                  items: [
+                    {
+                      tag: '库存预警',
+                      title: '爆品 SKU-002 低于安全库存',
+                      body: '建议触发海外仓补货单。',
+                      footer: '发起补货'
+                    },
+                    {
+                      tag: '营销待審',
+                      title: '“黑五预热”自动化流程待审核',
+                      body: '包含 6 个触点与 3 个分群。',
+                      footer: '查看流程'
+                    },
+                    {
+                      tag: '系统通知',
+                      title: '支付渠道升级',
+                      body: 'Stripe 已支持新币种 JPY 结算。',
+                      footer: '立即配置'
+                    }
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '后台动态记录',
+                  items: [
+                    {
+                      time: '09:10',
+                      title: '系统生成 GMV 日报',
+                      description: '已同步至邮箱与飞书机器人。'
+                    },
+                    {
+                      time: '11:30',
+                      title: '运营提交促销审批',
+                      description: '等待管理员确认并上线。'
+                    },
+                    {
+                      time: '14:05',
+                      title: '仓库同步库存',
+                      description: '广州仓补录到货 1,200 件。'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-products',
+              title: '商品与类目管理',
+              description: '覆盖上新审核、内容管理与定价策略。',
+              actions: [
+                { label: '批量导入', style: 'ghost' },
+                { label: '创建商品', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'split',
+                  columns: [
+                    {
+                      title: '上新流程',
+                      items: [
+                        '提交资料 → 质检 → 类目分配',
+                        '内容校对（图 / 描述 / 标签）',
+                        '定价策略：自动 / 手动'
+                      ]
+                    },
+                    {
+                      title: '内容模块',
+                      items: [
+                        '多语言描述同步',
+                        'SEO 关键词建议',
+                        '合规检查：FDA / CE / MSDS'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '商品池列表',
+                  headers: ['SKU', '类目', '状态', '库存', '价格', '负责人'],
+                  rows: [
+                    ['SKU-002', '消费电子', '待审核', '120', '¥ 1,299', '王雪'],
+                    ['SKU-105', '家居生活', '已上线', '560', '¥ 399', '陈凯'],
+                    ['SKU-326', '美妆个护', '优化中', '320', '¥ 199', 'Alice']
+                  ],
+                  footnote: '支持按渠道、语言和标签多维过滤。'
+                },
+                {
+                  type: 'checklist',
+                  title: '上新必备检查项',
+                  items: [
+                    { status: '✓', label: '商品素材完成版权核验。' },
+                    { status: '✓', label: '物流限制与禁运品提示已配置。' },
+                    { status: '!', label: '建议补充德语描述提升欧洲站点转化。' }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-orders',
+              title: '订单与履约',
+              description: '多仓发货、跨境清关与售后协调的统一后台。',
+              actions: [
+                { label: '打印面单', style: 'ghost' },
+                { label: '创建履约任务', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'kanban',
+                  title: '履约进度',
+                  columns: [
+                    {
+                      title: '待分配',
+                      items: [
+                        { title: '#SO-2201', badge: '新客', meta: '等待仓库接单', tags: ['高价值'] }
+                      ]
+                    },
+                    {
+                      title: '拣货中',
+                      items: [
+                        { title: '#SO-2178', badge: '广州仓', meta: '预计 40 分钟完成', tags: ['跨境免税'] }
+                      ]
+                    },
+                    {
+                      title: '清关中',
+                      items: [
+                        { title: '#SO-2099', badge: '香港口岸', meta: '待补充报关资料', tags: ['敏感品'] }
+                      ]
+                    },
+                    {
+                      title: '售后处理中',
+                      items: [
+                        { title: '#SO-1980', badge: '换货', meta: '等待客户寄回', tags: ['优先'] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '渠道履约表现',
+                  headers: ['渠道', '订单量', '履约 SLA', '异常率', '客服响应'],
+                  rows: [
+                    ['独立站', '1,620', '4.5 h', '1.8%', '15 min'],
+                    ['社交商城', '820', '6.2 h', '2.4%', '28 min'],
+                    ['线下 POS', '310', '即刻', '0.6%', '10 min']
+                  ],
+                  footnote: '点击指标可展开查看单号与异常详情。'
+                },
+                {
+                  type: 'timeline',
+                  title: '履约 SLA 预警',
+                  items: [
+                    {
+                      time: '10:00',
+                      title: '仓库处理超时',
+                      description: '广州仓 12 单超过 6 小时未出库。'
+                    },
+                    {
+                      time: '13:20',
+                      title: '清关补税提醒',
+                      description: '英国线路需补交增值税。'
+                    },
+                    {
+                      time: '16:40',
+                      title: '售后工单升级',
+                      description: '黑五退款高峰触发应急预案。'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-marketing',
+              title: '营销自动化',
+              description: '自动化旅程、渠道预算与投放归因管理。',
+              actions: [
+                { label: '导入人群', style: 'ghost' },
+                { label: '新建自动化', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'metrics',
+                  columns: 3,
+                  items: [
+                    { icon: '📈', label: '活动转化率', value: '4.6%', trend: '+0.8% 提升' },
+                    { icon: '👥', label: '触达用户', value: '182k', trend: '新客占比 36%' },
+                    { icon: '💸', label: '平均 CAC', value: '¥ 86', trend: '较上周下降 12%' }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '旅程模板',
+                  columns: 3,
+                  items: [
+                    {
+                      tag: '新客引导',
+                      title: '首购 3 步曲线',
+                      body: '欢迎邮件 → 激活提醒 → 优惠催付。',
+                      footer: '查看路径'
+                    },
+                    {
+                      tag: '复购唤醒',
+                      title: '沉睡用户激活',
+                      body: '分群触达 + 智能优惠券。',
+                      footer: '复制模板'
+                    },
+                    {
+                      tag: '会员成长',
+                      title: '积分双倍日',
+                      body: '推送 + 小程序任务联动。',
+                      footer: '安排档期'
+                    }
+                  ]
+                },
+                {
+                  type: 'chart',
+                  title: '渠道 ROI 对比',
+                  legend: [
+                    { label: '投入', color: '#94a3b8' },
+                    { label: '回收', color: '#6366f1' }
+                  ],
+                  categories: [
+                    {
+                      label: 'Facebook Ads',
+                      segments: [
+                        { label: '投入', value: 48, color: '#94a3b8' },
+                        { label: '回收', value: 72, color: '#6366f1' }
+                      ]
+                    },
+                    {
+                      label: 'Google SEM',
+                      segments: [
+                        { label: '投入', value: 55, color: '#94a3b8' },
+                        { label: '回收', value: 83, color: '#6366f1' }
+                      ]
+                    },
+                    {
+                      label: 'KOL 带货',
+                      segments: [
+                        { label: '投入', value: 32, color: '#94a3b8' },
+                        { label: '回收', value: 54, color: '#6366f1' }
+                      ]
+                    }
+                  ],
+                  footnote: '支持切换到毛利、复购等指标。'
+                },
+                {
+                  type: 'form',
+                  title: '自动化触点配置',
+                  fields: [
+                    { label: '触发条件', value: '加购 24 小时未下单' },
+                    { label: '渠道', value: '邮件 + 短信 + 小程序消息' },
+                    { label: '激励策略', value: '满 ¥ 499 减 ¥ 80 + 积分加倍' }
+                  ],
+                  actions: [
+                    { label: '保存草稿', style: 'ghost' },
+                    { label: '发布旅程', style: 'primary' }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-finance',
+              title: '结算与财务',
+              description: '对账、结算、发票与税务管理。',
+              actions: [
+                { label: '生成对账单', style: 'ghost' },
+                { label: '发起提现', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'metrics',
+                  columns: 3,
+                  items: [
+                    { icon: '🏦', label: '待结算金额', value: '¥ 3,820,560', trend: '账期 T+7' },
+                    { icon: '📤', label: '本月提现', value: '¥ 1,200,000', trend: '处理中 3 笔' },
+                    { icon: '🧮', label: '税费占比', value: '8.6%', trend: '含增值税与关税' }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '渠道结算计划',
+                  headers: ['渠道', '周期', '状态', '金额', '负责人'],
+                  rows: [
+                    ['Shopify Payments', 'T+7', '进行中', '¥ 1,580,320', '财务-李娜'],
+                    ['PayPal', 'T+3', '已结算', '¥ 980,420', '财务-王立'],
+                    ['COD 代收', '月结', '待对账', '¥ 620,880', '财务-陈颖']
+                  ],
+                  footnote: '支持导出至 ERP 与税务报表。'
+                },
+                {
+                  type: 'cards',
+                  title: '风险与提醒',
+                  columns: 2,
+                  items: [
+                    {
+                      tag: '税务提醒',
+                      title: '英国增值税即将到期',
+                      body: '需在 05-28 前完成申报与缴纳。',
+                      footer: '查看详情'
+                    },
+                    {
+                      tag: '合规审核',
+                      title: '大额提现待 KYC 审核',
+                      body: '提供护照 / 公司证明以完成合规。',
+                      footer: '上传资料'
+                    }
+                  ]
+                },
+                {
+                  type: 'checklist',
+                  title: '结算日常流程',
+                  items: [
+                    { status: '✓', label: '核对各渠道对账文件。' },
+                    { status: '✓', label: '校准汇率与手续费。' },
+                    { status: '!', label: '审核新增税收政策影响。' }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-team',
+              title: '团队与权限',
+              description: '多角色协作、审批流与操作日志。',
+              actions: [
+                { label: '邀请成员', style: 'ghost' },
+                { label: '配置审批流', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'split',
+                  columns: [
+                    {
+                      title: '角色矩阵',
+                      items: [
+                        '超级管理员：全局权限',
+                        '运营经理：营销 / 订单',
+                        '客服主管：售后 / 工单'
+                      ]
+                    },
+                    {
+                      title: '审批策略',
+                      items: [
+                        '金额 > ¥ 50,000 触发双人审批',
+                        '异常退款需财务复核',
+                        '权限每季度复审'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '待审批事项',
+                  columns: 2,
+                  items: [
+                    {
+                      tag: '角色调整',
+                      title: '运营-陈凯申请营销权限',
+                      body: '原因：负责新客拉新活动。',
+                      footer: '审批记录'
+                    },
+                    {
+                      tag: '审批通过',
+                      title: '财务-李娜完成大额退款审批',
+                      body: '退款单号 #RF-2031，金额 ¥ 5,680。',
+                      footer: '查看日志'
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '操作日志',
+                  headers: ['时间', '成员', '动作', '模块', '来源 IP'],
+                  rows: [
+                    ['09:32', '张伟', '修改商品售价', '商品管理', '116.23.*.*'],
+                    ['11:18', 'Alice', '发布营销旅程', '营销自动化', '52.13.*.*'],
+                    ['15:06', '王雪', '导出订单数据', '订单中心', '139.9.*.*']
+                  ],
+                  footnote: '支持异常行为自动告警。'
+                }
+              ]
+            }
+          ]
+        },
+        operations: {
+          label: '运营端',
+          tagline: '聚焦渠道拓展、库存调度与服务质量',
+          accent: '#f97316',
+          accentSoft: 'rgba(249, 115, 22, 0.18)',
+          sidebarBg: 'linear-gradient(180deg, #331e0c 0%, #7c2d12 100%)',
+          menu: [
+            {
+              id: 'ops-overview',
+              title: '渠道运营总览',
+              description: '监控多渠道指标、告警与重点事项。',
+              actions: [
+                { label: '同步渠道数据', style: 'ghost' },
+                { label: '创建周报', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'metrics',
+                  columns: 4,
+                  items: [
+                    { icon: '🛒', label: '渠道 GMV', value: '¥ 860,320', trend: '+12% 周环比' },
+                    { icon: '📈', label: '新客数', value: '18,620', trend: '社媒占比 42%' },
+                    { icon: '📣', label: '活动上线', value: '8 个', trend: '3 个待审批' },
+                    { icon: '⚠️', label: '风险告警', value: '5', trend: '需及时处理' }
+                  ]
+                },
+                {
+                  type: 'chart',
+                  title: '渠道覆盖与转化漏斗',
+                  legend: [
+                    { label: '曝光', color: '#fed7aa' },
+                    { label: '点击', color: '#fb923c' },
+                    { label: '下单', color: '#f97316' }
+                  ],
+                  categories: [
+                    {
+                      label: '自有站',
+                      segments: [
+                        { label: '曝光', value: 92, color: '#fed7aa' },
+                        { label: '点击', value: 54, color: '#fb923c' },
+                        { label: '下单', value: 26, color: '#f97316' }
+                      ]
+                    },
+                    {
+                      label: '社媒引流',
+                      segments: [
+                        { label: '曝光', value: 120, color: '#fed7aa' },
+                        { label: '点击', value: 72, color: '#fb923c' },
+                        { label: '下单', value: 34, color: '#f97316' }
+                      ]
+                    },
+                    {
+                      label: '联盟分销',
+                      segments: [
+                        { label: '曝光', value: 68, color: '#fed7aa' },
+                        { label: '点击', value: 36, color: '#fb923c' },
+                        { label: '下单', value: 16, color: '#f97316' }
+                      ]
+                    }
+                  ],
+                  footnote: '可切换至地区、渠道、投放素材等维度。'
+                },
+                {
+                  type: 'cards',
+                  title: '重点关注事项',
+                  columns: 3,
+                  items: [
+                    {
+                      tag: '转化异常',
+                      title: '法国站支付成功率下降 6%',
+                      body: '关联 Stripe 风控升级，需联合排查。',
+                      footer: '查看详情'
+                    },
+                    {
+                      tag: '新品推广',
+                      title: '旅行箱渠道首发',
+                      body: '预计 5 月上线 12 个国家渠道。',
+                      footer: '制定计划'
+                    },
+                    {
+                      tag: '服务质量',
+                      title: '客服响应超 SLA',
+                      body: '周末场景待补充排班与机器人话术。',
+                      footer: '优化排班'
+                    }
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '本周里程碑',
+                  items: [
+                    {
+                      time: '周一',
+                      title: '完成 TikTok 渠道开户',
+                      description: '已接入商品实时同步。'
+                    },
+                    {
+                      time: '周三',
+                      title: '跨境仓补货计划确认',
+                      description: '重点补货 SKU-002 / SKU-318。'
+                    },
+                    {
+                      time: '周五',
+                      title: '发布 618 预热 campaign',
+                      description: '投放素材已审核通过。'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'ops-inventory',
+              title: '库存与调度',
+              description: '多仓库存、在途补货与调拨策略。',
+              actions: [
+                { label: '生成补货单', style: 'ghost' },
+                { label: '智能调拨', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'table',
+                  title: '重点 SKU 库存',
+                  headers: ['SKU', '仓库', '可售', '在途', '周转天数', '建议'],
+                  rows: [
+                    ['SKU-002', '广州仓', '120', '300', '6 天', '优先补货法国站'],
+                    ['SKU-318', '德国仓', '45', '120', '4 天', '需要加急空运'],
+                    ['SKU-411', '美国仓', '560', '0', '18 天', '可调拨至加拿大']
+                  ],
+                  footnote: '指标实时同步 ERP 与仓储系统。'
+                },
+                {
+                  type: 'split',
+                  columns: [
+                    {
+                      title: '补货优先级',
+                      items: [
+                        '销量增长 > 20% SKU',
+                        '毛利率 > 35% 高价值品',
+                        '跨境运输周期 > 10 天品类'
+                      ]
+                    },
+                    {
+                      title: '调拨策略',
+                      items: [
+                        '美国 → 加拿大：缓解旺季需求',
+                        '德国 → 法国：覆盖法语区站点',
+                        '新加坡 → 澳洲：提升东南亚履约速度'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'checklist',
+                  title: '库存健康检查',
+                  items: [
+                    { status: '✓', label: '周转天数 < 30 天 SKU 占比 78%。' },
+                    { status: '✓', label: '滞销库存（>90 天）清理计划已制定。' },
+                    { status: '!', label: '建议启用 AI 预测模型 v2 进行需求预估。' }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'ops-campaign',
+              title: '活动策划中心',
+              description: '活动生命周期、预算分配与执行进度。',
+              actions: [
+                { label: '导入预算表', style: 'ghost' },
+                { label: '新建活动', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'kanban',
+                  title: '活动进度',
+                  columns: [
+                    {
+                      title: '策划中',
+                      items: [
+                        { title: '618 全球购', badge: '跨部门', meta: '等待素材确认', tags: ['全渠道'] }
+                      ]
+                    },
+                    {
+                      title: '设计制作',
+                      items: [
+                        { title: '夏季轻户外', badge: '设计中', meta: '预计 05-16 完成', tags: ['新品'] }
+                      ]
+                    },
+                    {
+                      title: '上线准备',
+                      items: [
+                        { title: '母亲节礼遇', badge: '待投放', meta: '预算 ¥ 300k', tags: ['会员运营'] }
+                      ]
+                    },
+                    {
+                      title: '复盘中',
+                      items: [
+                        { title: '黑五返场', badge: '复盘', meta: 'ROI 4.2', tags: ['完成'] }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '预算概览',
+                  columns: 3,
+                  items: [
+                    {
+                      tag: '社媒投放',
+                      title: '预算 ¥ 480k',
+                      body: '投放渠道：TikTok / Instagram / YouTube',
+                      footer: '查看分配'
+                    },
+                    {
+                      tag: '站内活动',
+                      title: '预算 ¥ 260k',
+                      body: '重点品类：消费电子 / 美妆',
+                      footer: '调整资源'
+                    },
+                    {
+                      tag: 'KOL 合作',
+                      title: '预算 ¥ 180k',
+                      body: '已签约 12 位达人，3 位待确认。',
+                      footer: '管理名单'
+                    }
+                  ]
+                },
+                {
+                  type: 'form',
+                  title: '活动排期表单',
+                  fields: [
+                    { label: '活动周期', value: '2024-05-20 ~ 2024-06-20' },
+                    { label: '核心指标', value: 'GMV ¥ 2,000,000 | 新客 50k' },
+                    { label: '协同部门', value: '商品、设计、客服、物流' }
+                  ],
+                  actions: [
+                    { label: '同步至日历', style: 'ghost' },
+                    { label: '确认排期', style: 'primary' }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'ops-support',
+              title: '客服与体验',
+              description: '服务质量、工单处理与知识库建设。',
+              actions: [
+                { label: '导出 SLA 报告', style: 'ghost' },
+                { label: '优化知识库', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'metrics',
+                  columns: 3,
+                  items: [
+                    { icon: '⏱️', label: '首响时长', value: '2.6 分钟', trend: '目标 3 分钟内' },
+                    { icon: '😊', label: 'CSAT', value: '4.72 / 5', trend: '+0.12 周环比' },
+                    { icon: '📨', label: '当日工单', value: '1,280', trend: 'AI 机器人解决 58%' }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '渠道工单分布',
+                  headers: ['渠道', '工单量', '处理中', '超 SLA', '满意度'],
+                  rows: [
+                    ['站内消息', '620', '48', '6', '4.8'],
+                    ['社交私信', '380', '66', '12', '4.5'],
+                    ['邮件', '210', '24', '4', '4.7']
+                  ],
+                  footnote: '可进一步查看具体客服与话术表现。'
+                },
+                {
+                  type: 'timeline',
+                  title: '重要升级记录',
+                  items: [
+                    {
+                      time: '09:15',
+                      title: '支付失败批量升级',
+                      description: '20 单集中在法国用户。'
+                    },
+                    {
+                      time: '12:30',
+                      title: '物流延迟处理',
+                      description: '与跨境仓确认航班延误解决方案。'
+                    },
+                    {
+                      time: '17:10',
+                      title: 'VIP 用户关怀回访',
+                      description: '由客服主管直接跟进。'
+                    }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '知识库待优化',
+                  columns: 2,
+                  items: [
+                    {
+                      tag: '高频问题',
+                      title: '如何追踪跨境物流进度',
+                      body: '需补充图片引导与多语言版本。',
+                      footer: '更新文档'
+                    },
+                    {
+                      tag: '售后流程',
+                      title: '换货与退货时间说明',
+                      body: '与海外仓 SLA 同步后再发布。',
+                      footer: '校对发布'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'ops-analytics',
+              title: '数据洞察',
+              description: '监控漏斗、用户分层与商品表现。',
+              actions: [
+                { label: '下载数据集', style: 'ghost' },
+                { label: '创建看板', style: 'primary' }
+              ],
+              sections: [
+                {
+                  type: 'chart',
+                  title: '站内用户行为漏斗',
+                  legend: [
+                    { label: '到达', color: '#fed7aa' },
+                    { label: '浏览', color: '#fb923c' },
+                    { label: '加购', color: '#f97316' },
+                    { label: '下单', color: '#c2410c' }
+                  ],
+                  categories: [
+                    {
+                      label: '首页入口',
+                      segments: [
+                        { label: '到达', value: 100, color: '#fed7aa' },
+                        { label: '浏览', value: 72, color: '#fb923c' },
+                        { label: '加购', value: 28, color: '#f97316' },
+                        { label: '下单', value: 12, color: '#c2410c' }
+                      ]
+                    },
+                    {
+                      label: '营销落地页',
+                      segments: [
+                        { label: '到达', value: 86, color: '#fed7aa' },
+                        { label: '浏览', value: 64, color: '#fb923c' },
+                        { label: '加购', value: 30, color: '#f97316' },
+                        { label: '下单', value: 14, color: '#c2410c' }
+                      ]
+                    },
+                    {
+                      label: '社媒直播',
+                      segments: [
+                        { label: '到达', value: 74, color: '#fed7aa' },
+                        { label: '浏览', value: 58, color: '#fb923c' },
+                        { label: '加购', value: 24, color: '#f97316' },
+                        { label: '下单', value: 10, color: '#c2410c' }
+                      ]
+                    }
+                  ],
+                  footnote: '可与分群 / A/B 测试结果联动分析。'
+                },
+                {
+                  type: 'split',
+                  columns: [
+                    {
+                      title: '重点洞察',
+                      items: [
+                        '北美地区回购率 32%，高于平均 6%。',
+                        '移动端结账速度影响转化 3.4%。',
+                        '会员专享券带来客单价提升 18%。'
+                      ]
+                    },
+                    {
+                      title: '下一步行动',
+                      items: [
+                        '对高潜力分群发起二次触达。',
+                        '优化移动端结账表单字段。',
+                        '扩展会员权益至更多品类。'
+                      ]
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '用户分层表现',
+                  headers: ['人群', '人数', '近 30 日 GMV', '客单价', '复购率'],
+                  rows: [
+                    ['高价值 VIP', '12,800', '¥ 12,380,000', '¥ 968', '42%'],
+                    ['新客首购', '82,600', '¥ 6,420,000', '¥ 232', '8%'],
+                    ['沉睡回流', '18,400', '¥ 2,180,000', '¥ 188', '15%']
+                  ],
+                  footnote: '支持导出至 BI 或与 CRM 同步。'
+                }
+              ]
+            }
+          ]
+        }
+      };
+      const roleSwitcher = document.getElementById('roleSwitcher');
+      const menuList = document.getElementById('menuList');
+      const roleLabel = document.getElementById('roleLabel');
+      const roleTagline = document.getElementById('roleTagline');
+      const pageTitle = document.getElementById('pageTitle');
+      const pageDescription = document.getElementById('pageDescription');
+      const topActions = document.getElementById('topActions');
+      const content = document.getElementById('content');
+
+      const roleOrder = ['customer', 'admin', 'operations'];
+      let currentRole = 'customer';
+      let currentMenu = null;
+
+      function renderRoleSwitcher() {
+        roleSwitcher.innerHTML = '';
+        roleOrder.forEach((roleKey) => {
+          const config = roleConfigs[roleKey];
+          const button = document.createElement('button');
+          button.className = 'role-button';
+          button.dataset.role = roleKey;
+          button.innerHTML = `${config.label}<span>${config.tagline}</span>`;
+          button.addEventListener('click', () => setRole(roleKey));
+          roleSwitcher.appendChild(button);
+        });
+      }
+
+      function updateTheme(config) {
+        document.documentElement.style.setProperty('--accent', config.accent);
+        document.documentElement.style.setProperty('--accent-soft', config.accentSoft);
+        document.documentElement.style.setProperty('--sidebar-bg', config.sidebarBg);
+      }
+
+      function setRole(roleKey) {
+        if (!roleConfigs[roleKey]) return;
+        currentRole = roleKey;
+        updateTheme(roleConfigs[roleKey]);
+        Array.from(roleSwitcher.children).forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.role === roleKey);
+        });
+        roleLabel.textContent = `${roleConfigs[roleKey].label}视角`;
+        roleTagline.textContent = roleConfigs[roleKey].tagline;
+        renderMenu();
+      }
+
+      function renderMenu() {
+        menuList.innerHTML = '';
+        const { menu } = roleConfigs[currentRole];
+        menu.forEach((item, index) => {
+          const button = document.createElement('button');
+          button.className = 'menu-item';
+          button.dataset.menuId = item.id;
+          button.innerHTML = `${item.title}<small>${item.description}</small>`;
+          button.addEventListener('click', () => setActiveMenu(item.id));
+          menuList.appendChild(button);
+          if (index === 0) {
+            setActiveMenu(item.id);
+          }
+        });
+      }
+
+      function setActiveMenu(menuId) {
+        currentMenu = menuId;
+        Array.from(menuList.children).forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.menuId === menuId);
+        });
+        const menuConfig = roleConfigs[currentRole].menu.find((item) => item.id === menuId);
+        if (menuConfig) {
+          renderPage(menuConfig);
+        } else {
+          renderEmptyState();
+        }
+      }
+
+      function renderPage(config) {
+        pageTitle.textContent = config.title;
+        pageDescription.textContent = config.description;
+        renderTopActions(config.actions || []);
+        renderSections(config.sections || []);
+      }
+
+      function renderTopActions(actions) {
+        topActions.innerHTML = '';
+        const search = document.createElement('div');
+        search.className = 'search-wrapper';
+        search.innerHTML = '<span>🔍</span><input type="search" placeholder="搜索功能 / 订单 / SKU" />';
+        topActions.appendChild(search);
+        actions.forEach((action) => {
+          const button = document.createElement('button');
+          button.className = `action-button ${action.style || 'ghost'}`;
+          button.textContent = action.label;
+          topActions.appendChild(button);
+        });
+      }
+
+      function renderSections(sections) {
+        content.innerHTML = '';
+        if (!sections.length) {
+          renderEmptyState();
+          return;
+        }
+        sections.forEach((section) => {
+          const sectionEl = document.createElement('section');
+          sectionEl.className = `content-section section-${section.type}`;
+          if (section.title) {
+            const title = document.createElement('h2');
+            title.textContent = section.title;
+            sectionEl.appendChild(title);
+          }
+          if (section.description) {
+            const desc = document.createElement('p');
+            desc.className = 'section-description';
+            desc.textContent = section.description;
+            sectionEl.appendChild(desc);
+          }
+          const renderer = sectionRenderers[section.type];
+          if (renderer) {
+            renderer(sectionEl, section);
+          }
+          content.appendChild(sectionEl);
+        });
+      }
+
+      function renderEmptyState() {
+        content.innerHTML = '<div class="empty-state">暂无内容，请选择具体菜单项。</div>';
+      }
+
+      const sectionRenderers = {
+        metrics(container, section) {
+          const grid = document.createElement('div');
+          grid.className = 'metric-grid';
+          const columns = section.columns || section.items.length;
+          grid.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
+          section.items.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'metric-card';
+            if (item.icon) {
+              const icon = document.createElement('div');
+              icon.className = 'metric-icon';
+              icon.textContent = item.icon;
+              card.appendChild(icon);
+            }
+            const label = document.createElement('span');
+            label.textContent = item.label;
+            label.style.color = 'var(--text-secondary)';
+            card.appendChild(label);
+            const value = document.createElement('strong');
+            value.textContent = item.value;
+            card.appendChild(value);
+            if (item.trend) {
+              const trend = document.createElement('span');
+              trend.className = 'metric-trend';
+              trend.textContent = item.trend;
+              card.appendChild(trend);
+            }
+            grid.appendChild(card);
+          });
+          container.appendChild(grid);
+        },
+        cards(container, section) {
+          const grid = document.createElement('div');
+          grid.className = 'card-grid';
+          const columns = section.columns || section.items.length;
+          grid.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
+          section.items.forEach((item) => {
+            const card = document.createElement('article');
+            card.className = 'info-card';
+            if (item.tag) {
+              const tag = document.createElement('span');
+              tag.className = 'tag';
+              tag.textContent = item.tag;
+              card.appendChild(tag);
+            }
+            const title = document.createElement('h3');
+            title.textContent = item.title;
+            title.style.margin = '0';
+            title.style.fontSize = '16px';
+            card.appendChild(title);
+            if (item.body) {
+              const body = document.createElement('p');
+              body.textContent = item.body;
+              body.style.margin = '0';
+              body.style.color = 'var(--text-secondary)';
+              body.style.lineHeight = '1.6';
+              card.appendChild(body);
+            }
+            if (item.footer) {
+              const footer = document.createElement('footer');
+              footer.textContent = item.footer;
+              card.appendChild(footer);
+            }
+            if (item.tags) {
+              const tagList = document.createElement('div');
+              tagList.className = 'tag-list';
+              item.tags.forEach((tagText) => {
+                const span = document.createElement('span');
+                span.textContent = tagText;
+                tagList.appendChild(span);
+              });
+              card.appendChild(tagList);
+            }
+            grid.appendChild(card);
+          });
+          container.appendChild(grid);
+        },
+        table(container, section) {
+          const table = document.createElement('table');
+          const thead = document.createElement('thead');
+          const headerRow = document.createElement('tr');
+          section.headers.forEach((header) => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
+          });
+          thead.appendChild(headerRow);
+          table.appendChild(thead);
+          const tbody = document.createElement('tbody');
+          section.rows.forEach((row) => {
+            const tr = document.createElement('tr');
+            row.forEach((cell) => {
+              const td = document.createElement('td');
+              td.textContent = cell;
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+          table.appendChild(tbody);
+          container.appendChild(table);
+          if (section.footnote) {
+            const note = document.createElement('p');
+            note.className = 'table-footnote';
+            note.textContent = section.footnote;
+            container.appendChild(note);
+          }
+        },
+        split(container, section) {
+          const grid = document.createElement('div');
+          grid.className = 'split-grid';
+          grid.style.gridTemplateColumns = `repeat(${section.columns.length}, minmax(0, 1fr))`;
+          section.columns.forEach((column) => {
+            const colEl = document.createElement('div');
+            colEl.className = 'split-column';
+            const title = document.createElement('h3');
+            title.textContent = column.title;
+            title.style.margin = '0 0 6px';
+            title.style.fontSize = '15px';
+            colEl.appendChild(title);
+            const list = document.createElement('ul');
+            column.items.forEach((item) => {
+              const li = document.createElement('li');
+              li.textContent = item;
+              list.appendChild(li);
+            });
+            colEl.appendChild(list);
+            grid.appendChild(colEl);
+          });
+          container.appendChild(grid);
+        },
+        form(container, section) {
+          const grid = document.createElement('div');
+          grid.className = 'form-grid';
+          section.fields.forEach((field) => {
+            const fieldEl = document.createElement('div');
+            fieldEl.className = 'form-field';
+            const label = document.createElement('label');
+            label.textContent = field.label;
+            const value = document.createElement('span');
+            value.textContent = field.value;
+            fieldEl.appendChild(label);
+            fieldEl.appendChild(value);
+            grid.appendChild(fieldEl);
+          });
+          container.appendChild(grid);
+          if (section.actions) {
+            const actions = document.createElement('div');
+            actions.className = 'form-actions';
+            section.actions.forEach((action) => {
+              const button = document.createElement('button');
+              button.className = `action-button ${action.style || 'ghost'}`;
+              button.textContent = action.label;
+              actions.appendChild(button);
+            });
+            container.appendChild(actions);
+          }
+        },
+        timeline(container, section) {
+          const timeline = document.createElement('div');
+          timeline.className = 'timeline';
+          section.items.forEach((item) => {
+            const itemEl = document.createElement('div');
+            itemEl.className = 'timeline-item';
+            const time = document.createElement('time');
+            time.textContent = item.time;
+            itemEl.appendChild(time);
+            const title = document.createElement('h3');
+            title.textContent = item.title;
+            itemEl.appendChild(title);
+            if (item.description) {
+              const desc = document.createElement('p');
+              desc.textContent = item.description;
+              desc.style.margin = '0';
+              desc.style.color = 'var(--text-secondary)';
+              itemEl.appendChild(desc);
+            }
+            timeline.appendChild(itemEl);
+          });
+          container.appendChild(timeline);
+        },
+        kanban(container, section) {
+          const grid = document.createElement('div');
+          grid.className = 'kanban';
+          grid.style.gridTemplateColumns = `repeat(${section.columns.length}, minmax(0, 1fr))`;
+          section.columns.forEach((column) => {
+            const colEl = document.createElement('div');
+            colEl.className = 'kanban-column';
+            const title = document.createElement('h3');
+            title.textContent = column.title;
+            colEl.appendChild(title);
+            column.items.forEach((item) => {
+              const card = document.createElement('div');
+              card.className = 'kanban-card';
+              if (item.badge) {
+                const badge = document.createElement('span');
+                badge.className = 'badge';
+                badge.textContent = item.badge;
+                card.appendChild(badge);
+              }
+              const cardTitle = document.createElement('strong');
+              cardTitle.textContent = item.title;
+              card.appendChild(cardTitle);
+              if (item.meta) {
+                const meta = document.createElement('span');
+                meta.style.fontSize = '12px';
+                meta.style.color = 'var(--text-secondary)';
+                meta.textContent = item.meta;
+                card.appendChild(meta);
+              }
+              if (item.tags) {
+                const tags = document.createElement('div');
+                tags.className = 'tag-list';
+                item.tags.forEach((tagText) => {
+                  const span = document.createElement('span');
+                  span.textContent = tagText;
+                  tags.appendChild(span);
+                });
+                card.appendChild(tags);
+              }
+              colEl.appendChild(card);
+            });
+            grid.appendChild(colEl);
+          });
+          container.appendChild(grid);
+        },
+        chart(container, section) {
+          const chart = document.createElement('div');
+          chart.className = 'chart';
+          if (section.legend) {
+            const legend = document.createElement('div');
+            legend.className = 'chart-legend';
+            section.legend.forEach((item) => {
+              const legendItem = document.createElement('span');
+              legendItem.className = 'legend-item';
+              legendItem.innerHTML = `<span style="background:${item.color}"></span>${item.label}`;
+              legend.appendChild(legendItem);
+            });
+            chart.appendChild(legend);
+          }
+          const max = Math.max(
+            ...section.categories.map((category) =>
+              category.segments.reduce((total, seg) => total + seg.value, 0)
+            )
+          );
+          section.categories.forEach((category) => {
+            const row = document.createElement('div');
+            row.className = 'chart-row';
+            const label = document.createElement('span');
+            label.style.minWidth = '110px';
+            label.textContent = category.label;
+            row.appendChild(label);
+            const bar = document.createElement('div');
+            bar.className = 'chart-bar';
+            const total = category.segments.reduce((sum, seg) => sum + seg.value, 0);
+            category.segments.forEach((segment) => {
+              const segEl = document.createElement('div');
+              segEl.className = 'chart-segment';
+              const width = total === 0 ? 0 : (segment.value / max) * 100;
+              segEl.style.width = `${width}%`;
+              segEl.style.background = segment.color;
+              segEl.title = `${segment.label}: ${segment.value}`;
+              bar.appendChild(segEl);
+            });
+            row.appendChild(bar);
+            chart.appendChild(row);
+          });
+          if (section.footnote) {
+            const note = document.createElement('p');
+            note.className = 'table-footnote';
+            note.textContent = section.footnote;
+            chart.appendChild(note);
+          }
+          container.appendChild(chart);
+        },
+        checklist(container, section) {
+          const list = document.createElement('div');
+          list.className = 'checklist';
+          section.items.forEach((item) => {
+            const itemEl = document.createElement('div');
+            itemEl.className = 'checklist-item';
+            const status = document.createElement('span');
+            status.className = 'status';
+            status.textContent = item.status;
+            itemEl.appendChild(status);
+            const label = document.createElement('span');
+            label.textContent = item.label;
+            itemEl.appendChild(label);
+            list.appendChild(itemEl);
+          });
+          container.appendChild(list);
+        }
+      };
+
+      renderRoleSwitcher();
+      setRole(currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
