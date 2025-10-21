@@ -2,83 +2,3403 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>IBM Maximo EAM 原型概览</title>
+    <title>IBM Maximo EAM 多角色原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --blue-900: #0b1f3a;
+        --blue-700: #1d4ed8;
+        --blue-100: #e0ecff;
+        --slate-900: #0f172a;
+        --slate-700: #334155;
+        --slate-600: #475569;
+        --slate-500: #64748b;
+        --slate-200: #e2e8f0;
+        --emerald-500: #10b981;
+        --emerald-100: #d1fae5;
+        --amber-500: #f59e0b;
+        --rose-500: #f43f5e;
+        --violet-500: #8b5cf6;
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        background-color: #f4f6fb;
+        color: var(--slate-900);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #f4f6fb;
+      }
+
+      .app-shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 32px;
+        background: linear-gradient(135deg, #0b1f3a 0%, #162b4d 100%);
+        color: #f8fafc;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.35);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .brand-block {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .brand-block strong {
+        font-size: 20px;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-block span {
+        font-size: 14px;
+        color: rgba(226, 232, 240, 0.75);
+      }
+
+      .system-nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .system-nav button {
+        appearance: none;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.18);
+        color: #e2e8f0;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+
+      .system-nav button:hover {
+        background: rgba(255, 255, 255, 0.28);
+        transform: translateY(-1px);
+      }
+
+      .role-switcher {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(15, 23, 42, 0.55);
+        padding: 8px 14px;
+        border-radius: 12px;
+      }
+
+      .role-switcher label {
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.86);
+      }
+
+      .role-switcher select {
+        border: none;
+        border-radius: 10px;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        background: #e2e8f0;
+        color: var(--slate-900);
+        cursor: pointer;
+      }
+
+      .layout {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .sidebar {
+        width: 300px;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.82) 100%);
+        color: #e2e8f0;
+        padding: 28px 24px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18);
+      }
+
+      .role-context h2 {
+        margin: 0 0 6px;
+        font-size: 20px;
+      }
+
+      .role-context p {
+        margin: 0;
+        font-size: 14px;
+        color: rgba(226, 232, 240, 0.72);
+        line-height: 1.6;
+      }
+
+      .role-highlights {
+        margin-top: 16px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(30, 41, 59, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .role-highlights li {
+        font-size: 13px;
+        line-height: 1.7;
+        color: rgba(226, 232, 240, 0.9);
+        margin-bottom: 6px;
+      }
+
+      .role-highlights li:last-child {
+        margin-bottom: 0;
+      }
+
+      .menu-section h3 {
+        margin: 0 0 10px;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: rgba(148, 163, 184, 0.75);
+      }
+
+      .menu-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .menu-item {
+        border: none;
+        border-radius: 12px;
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+        background: transparent;
+        color: #e2e8f0;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+        text-align: left;
+      }
+
+      .menu-item span {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.64);
+      }
+
+      .menu-item strong {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .menu-item:hover {
+        background: rgba(148, 163, 184, 0.22);
+        transform: translateX(4px);
+      }
+
+      .menu-item.active {
+        background: rgba(59, 130, 246, 0.32);
+        color: #fff;
+        box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.4);
+      }
+
+      .menu-hint {
+        margin-top: auto;
+        font-size: 12px;
+        line-height: 1.7;
+        color: rgba(148, 163, 184, 0.72);
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 14px;
+        padding: 12px 16px;
+      }
+
+      .main-view {
+        flex: 1;
+        padding: 36px 40px 48px;
+        overflow-y: auto;
+      }
+
+      .view-container {
+        max-width: 1120px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .view-article {
+        background: #fff;
+        border-radius: 20px;
+        padding: 28px 32px;
+        box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .view-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .view-header h1 {
+        margin: 0;
+        font-size: 28px;
+        color: var(--slate-900);
+      }
+
+      .view-header p {
+        margin: 4px 0 0;
+        font-size: 15px;
+        color: var(--slate-500);
+      }
+
+      .view-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .ghost {
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        background: rgba(99, 102, 241, 0.08);
+        color: var(--violet-500);
+        padding: 8px 16px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.2s ease;
+      }
+
+      .ghost:hover {
+        background: rgba(99, 102, 241, 0.18);
+      }
+
+      .view-core {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .metric-card {
+        border-radius: 18px;
+        padding: 20px 22px;
+        background: linear-gradient(160deg, rgba(15, 118, 110, 0.12), rgba(14, 116, 144, 0.18));
+        color: var(--slate-900);
+      }
+
+      .metric-card.accent-blue {
+        background: linear-gradient(160deg, rgba(59, 130, 246, 0.14), rgba(37, 99, 235, 0.18));
+      }
+
+      .metric-card.accent-amber {
+        background: linear-gradient(160deg, rgba(251, 191, 36, 0.22), rgba(217, 119, 6, 0.16));
+      }
+
+      .metric-card.accent-rose {
+        background: linear-gradient(160deg, rgba(248, 113, 113, 0.18), rgba(225, 29, 72, 0.16));
+      }
+
+      .metric-label {
+        font-size: 13px;
+        color: rgba(15, 23, 42, 0.68);
+      }
+
+      .metric-value {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 8px 0;
+      }
+
+      .metric-trend {
+        font-size: 13px;
+      }
+
+      .metric-trend.positive {
+        color: #0d9488;
+      }
+
+      .metric-trend.negative {
+        color: #ef4444;
+      }
+
+      .panel {
+        background: #f8fafc;
+        border-radius: 18px;
+        padding: 20px 22px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .panel-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .panel-header h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .panel-header p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: var(--slate-500);
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .data-table th,
+      .data-table td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .data-table tbody tr:hover {
+        background: rgba(191, 219, 254, 0.26);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(148, 163, 184, 0.22);
+        color: var(--slate-700);
+      }
+
+      .status-pill.success {
+        background: rgba(16, 185, 129, 0.16);
+        color: #047857;
+      }
+
+      .status-pill.warning {
+        background: rgba(245, 158, 11, 0.16);
+        color: #b45309;
+      }
+
+      .status-pill.danger {
+        background: rgba(244, 63, 94, 0.18);
+        color: #be123c;
+      }
+
+      .status-pill.info {
+        background: rgba(79, 70, 229, 0.16);
+        color: #4338ca;
+      }
+
+      .link,
+      .link-button {
+        background: none;
+        border: none;
+        color: var(--blue-700);
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .pill-button {
+        border: none;
+        background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 18px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 18px;
+        align-items: center;
+        background: rgba(226, 232, 240, 0.6);
+        border-radius: 14px;
+        padding: 12px 16px;
+      }
+
+      .timeline-item strong {
+        font-size: 14px;
+      }
+
+      .checklist {
+        display: grid;
+        gap: 12px;
+      }
+
+      .checklist-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(226, 232, 240, 0.5);
+      }
+
+      .board {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .board-column {
+        background: rgba(226, 232, 240, 0.6);
+        border-radius: 16px;
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .board-column h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .board-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+        display: grid;
+        gap: 6px;
+      }
+
+      .view-foot {
+        background: rgba(226, 232, 240, 0.4);
+        border-radius: 16px;
+        padding: 18px 20px;
+      }
+
+      .view-foot h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        color: var(--slate-700);
+      }
+
+      .view-foot ul {
+        margin: 0;
+        padding-left: 20px;
+        font-size: 14px;
+        line-height: 1.8;
+        color: var(--slate-600);
+      }
+
+      .badge-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .badge {
+        border-radius: 12px;
+        background: rgba(148, 163, 184, 0.24);
+        padding: 10px 14px;
+        font-size: 13px;
+        color: var(--slate-700);
+      }
+
+      .map-mock {
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(2, 132, 199, 0.18));
+        padding: 18px;
+        color: var(--slate-900);
+        min-height: 220px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .map-legend {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.74);
+        font-size: 12px;
+      }
+
+      .kanban-tag {
+        display: inline-flex;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: rgba(59, 130, 246, 0.14);
+        color: #1d4ed8;
+        font-weight: 600;
+      }
+
+      @media (max-width: 1180px) {
+        .layout {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: auto;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 32px;
+          overflow-x: auto;
+        }
+
+        .menu-section {
+          min-width: 280px;
+        }
+
+        .main-view {
+          padding: 28px 24px 40px;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+
+        .system-nav {
+          width: 100%;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+        }
+
+        .layout {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          flex-direction: column;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>IBM Maximo EAM 原型</h1>
-      <p class="tagline">企业资产管理与运维优化平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>设备运维团队、资产经理、能源与公用事业企业</p>
-        <p><strong>核心痛点：</strong>关键资产维护成本高、数据分散、停机风险大</p>
-        <p><strong>价值主张：</strong>通过资产全生命周期管理与预测性维护，降低停机与成本</p>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <strong>IBM Maximo EAM 指挥舱</strong>
+          <span>企业资产全生命周期管理 &amp; 运维协同原型</span>
+        </div>
+        <nav class="system-nav">
+          <button type="button" data-role-target="assetManager" data-view-target="asset-dashboard">资产指挥中心</button>
+          <button type="button" data-role-target="maintenanceSupervisor" data-view-target="workorder-center">维护战情室</button>
+          <button type="button" data-role-target="fieldTechnician" data-view-target="tech-tasks">移动现场</button>
+          <button type="button" data-role-target="inventoryPlanner" data-view-target="inventory-overview">备件保障</button>
+        </nav>
+        <div class="role-switcher">
+          <label for="roleSelect">角色视角</label>
+          <select id="roleSelect" aria-label="选择用户角色">
+            <option value="assetManager">资产经理</option>
+            <option value="maintenanceSupervisor">维护主管</option>
+            <option value="fieldTechnician">现场技师</option>
+            <option value="inventoryPlanner">库存与采购专员</option>
+          </select>
+        </div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar">
+          <section class="role-context">
+            <h2 id="roleTitle">资产经理视角</h2>
+            <p id="roleDescription">聚焦关键资产绩效、预算与风险预警。</p>
+            <ul class="role-highlights" id="roleHighlights">
+              <li>实时掌握资产健康评分与停机风险</li>
+              <li>管理资产投资组合与资本化计划</li>
+              <li>联动维护与供应链，实现成本优化</li>
+            </ul>
+          </section>
+          <section class="menu-section">
+            <h3>功能导航</h3>
+            <ul class="menu-list" id="menuList"></ul>
+          </section>
+          <div class="menu-hint">
+            提示：点击不同菜单即可在右侧展示该功能的核心界面示意。可通过顶部快速切换角色，右侧每个页面底部包含该页面的业务说明。
+          </div>
+        </aside>
+        <main class="main-view">
+          <div id="viewContainer" class="view-container"></div>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>资产登记、巡检与工单处理</li><li>维护计划与备件库存管理</li><li>管理层查看资产健康与风险</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>资产登记与配置</h3>
-              <p class="goal">功能目标：构建资产基线数据</p>
-              <ul>
-                <li>资产分类、层级与位置</li><li>技术规格、保修与合同</li><li>变更管理与审计轨迹</li>
-              </ul>
+    </div>
+    <script>
+      const roleConfigurations = {
+        assetManager: {
+          name: '资产经理',
+          description: '聚焦资产价值、健康度与投资回报，统筹资本开支与风险控制。',
+          highlights: [
+            '资产健康与KPI一屏掌控',
+            '预测性维护带来的节省趋势',
+            '与财务计划联动的投资组合视角',
+          ],
+          menus: [
+            {
+              id: 'asset-dashboard',
+              icon: '📊',
+              label: '资产健康仪表盘',
+              caption: '关键资产健康、停机风险与告警',
+              title: '资产健康仪表盘',
+              subtitle: '实时监控关键资产风险与投资回报状态',
+              summary:
+                '资产经理通过仪表盘掌握全局资产运行情况，关注健康评分、停机预警与资本计划执行，为投资决策提供依据。',
+              highlights: [
+                '支持钻取单一资产详情与预测性维护模型',
+                '联动维护团队快速派单与资源协调',
+                '自动汇总各厂区告警，并按风险等级优先级排序',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">资产可用率</div>
+                    <div class="metric-value">97.2%</div>
+                    <div class="metric-trend positive">↑ 本月较上月 +1.8%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">停机风险资产</div>
+                    <div class="metric-value">12</div>
+                    <div class="metric-trend negative">↓ 警报处理剩余 3 项</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">维护成本 / 预算</div>
+                    <div class="metric-value">86%</div>
+                    <div class="metric-trend">预算执行达成率 92%</div>
+                  </div>
+                  <div class="metric-card accent-rose">
+                    <div class="metric-label">预计节省</div>
+                    <div class="metric-value">¥3.6M</div>
+                    <div class="metric-trend positive">预测性维护贡献 62%</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>高风险资产监控</h3>
+                      <p>按健康评分排序，展示实时传感器状态与影响评估。</p>
+                    </div>
+                    <button class="ghost" data-view-target="asset-health-model" data-return-view="asset-dashboard">健康模型评估</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>资产</th>
+                        <th>健康评分</th>
+                        <th>关键告警</th>
+                        <th>行动</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>炼油压缩机 #MX-204</td>
+                        <td><span class="status-pill danger">55 / 100</span></td>
+                        <td>预测 36 小时内停机</td>
+                        <td><button class="link" data-view-target="asset-detail" data-return-view="asset-dashboard">资产详情</button></td>
+                      </tr>
+                      <tr>
+                        <td>冷却水泵 #CW-31</td>
+                        <td><span class="status-pill warning">62 / 100</span></td>
+                        <td>震动超阈值 +15%</td>
+                        <td><button class="link" data-view-target="workorder-dispatch" data-return-view="asset-dashboard">快速派单</button></td>
+                      </tr>
+                      <tr>
+                        <td>输电线路 #TX-118</td>
+                        <td><span class="status-pill warning">68 / 100</span></td>
+                        <td>天气风险预警，需巡检</td>
+                        <td><button class="link" data-view-target="inspection-brief" data-return-view="asset-dashboard">安排巡检</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>跨厂区事件时间线</h3>
+                      <p>整合资产事件、维护活动与业务影响评估。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="executive-briefing" data-return-view="asset-dashboard">生成管理层简报</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>09:20</strong>
+                      <div>
+                        <div><span class="status-pill danger">高</span> MX-204 触发温度异常，预测剩余寿命 42 小时。</div>
+                        <button class="link" data-view-target="asset-detail" data-return-view="asset-dashboard">查看资产趋势</button>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>10:05</strong>
+                      <div>维护团队已提交临时工单 WO-5897，等待资本审批。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>13:40</strong>
+                      <div>财务提醒：油气事业部 CAPEX 余额 18%，建议评估替换方案。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'asset-hierarchy',
+              icon: '🗂️',
+              label: '资产目录与层级',
+              caption: '资产树、位置、合同信息',
+              title: '资产目录与层级视图',
+              subtitle: '统一的资产结构、位置与合同信息维护',
+              summary:
+                '资产目录展示企业级资产的结构关系，支持快速定位资产位置、合同信息与生命周期状态，为配置管理和审计提供基础。',
+              highlights: [
+                '支持多层级位置树与跨站点搜索',
+                '可快速跳转到合同、保修及变更记录',
+                '提供资产批量导入、版本对比与审计轨迹',
+              ],
+              core: `
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>资产层级导航</h3>
+                      <p>选择厂区与系统层级，查看资产的关键信息摘要。</p>
+                    </div>
+                    <button class="ghost" data-view-target="asset-import" data-return-view="asset-hierarchy">批量导入资产</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>区域 / 厂区</h4>
+                      <div class="board-card">
+                        <strong>华东能源中心</strong>
+                        <span class="status-pill info">78 台资产</span>
+                        <button class="link" data-view-target="asset-detail" data-return-view="asset-hierarchy">查看子资产</button>
+                      </div>
+                      <div class="board-card">
+                        <strong>西南输电基地</strong>
+                        <span class="status-pill info">52 台资产</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>系统 / 子系统</h4>
+                      <div class="board-card">
+                        <strong>压缩机系统</strong>
+                        <div class="badge-grid">
+                          <span class="badge">运行资产 12</span>
+                          <span class="badge">待报废 1</span>
+                          <span class="badge">保修期 3</span>
+                        </div>
+                        <button class="link" data-view-target="change-log" data-return-view="asset-hierarchy">变更记录</button>
+                      </div>
+                      <div class="board-card">
+                        <strong>蒸汽供应系统</strong>
+                        <span class="status-pill warning">维护计划更新</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>资产卡片</h4>
+                      <div class="board-card">
+                        <strong>MX-204 炼油压缩机</strong>
+                        <span class="status-pill warning">健康 55 / 100</span>
+                        <span>合同：KR-2024-08，供应商 ABB</span>
+                        <button class="pill-button" data-view-target="asset-detail" data-return-view="asset-hierarchy">进入资产台账</button>
+                      </div>
+                      <div class="board-card">
+                        <strong>MX-205 炼油压缩机</strong>
+                        <span class="status-pill success">健康 92 / 100</span>
+                        <span>保修到期：2025-06-30</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>资产变更与审计</h3>
+                      <p>记录资产关键字段的变更历史，支持合规审计。</p>
+                    </div>
+                    <button class="ghost" data-view-target="change-request" data-return-view="asset-hierarchy">发起变更审批</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>时间</th>
+                        <th>字段</th>
+                        <th>旧值 → 新值</th>
+                        <th>责任人</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>2024-03-18</td>
+                        <td>保修到期</td>
+                        <td>2024-06-30 → 2025-06-30</td>
+                        <td>张敏</td>
+                      </tr>
+                      <tr>
+                        <td>2024-02-04</td>
+                        <td>资产位置</td>
+                        <td>装置区 A3 → 装置区 B1</td>
+                        <td>王建</td>
+                      </tr>
+                      <tr>
+                        <td>2024-01-26</td>
+                        <td>合同</td>
+                        <td>KR-2023-11 → KR-2024-08</td>
+                        <td>系统同步</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              `,
+            },
+            {
+              id: 'asset-analytics',
+              icon: '📈',
+              label: '资产绩效分析',
+              caption: '生命周期、风险与收益分析',
+              title: '资产绩效与风险分析',
+              subtitle: '结合 IoT 与财务数据，衡量资产生命周期表现',
+              summary:
+                '通过资产绩效分析，资产经理可以洞察资产生命周期阶段、健康趋势和停机风险，支持资本预算与置换决策。',
+              highlights: [
+                '综合展示生命周期阶段与折旧情况',
+                '可模拟不同维护策略对 ROI 的影响',
+                '与风险模型联动生成替换/升级建议',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">生命周期阶段</div>
+                    <div class="metric-value">成熟期 58%</div>
+                    <div class="metric-trend">临界期资产 14 台</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">年度 ROI</div>
+                    <div class="metric-value">13.6%</div>
+                    <div class="metric-trend positive">比行业均值高 2.4%</div>
+                  </div>
+                  <div class="metric-card accent-rose">
+                    <div class="metric-label">停机成本暴露</div>
+                    <div class="metric-value">¥8.2M</div>
+                    <div class="metric-trend negative">需重点关注 4 台资产</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>生命周期视图</h3>
+                      <p>不同资产在生命周期各阶段的数量与对应成本。</p>
+                    </div>
+                    <button class="ghost" data-view-target="renewal-simulation" data-return-view="asset-analytics">模拟更换方案</button>
+                  </div>
+                  <div class="map-mock">
+                    <strong>生命周期分布</strong>
+                    <div class="map-legend">
+                      <span class="legend-item"><span class="status-pill success">引入期</span> 16%</span>
+                      <span class="legend-item"><span class="status-pill info">成长期</span> 21%</span>
+                      <span class="legend-item"><span class="status-pill warning">成熟期</span> 43%</span>
+                      <span class="legend-item"><span class="status-pill danger">衰退期</span> 20%</span>
+                    </div>
+                    <div>衰退期资产集中在压缩机与输电线路，预计未来 9 个月需安排资本替换。</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>策略影响模拟</h3>
+                      <p>对比不同维护策略下的 ROI 与停机时间。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="scenario-detail" data-return-view="asset-analytics">进入场景分析</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>方案</th>
+                        <th>年度 ROI</th>
+                        <th>停机时间</th>
+                        <th>结论</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>现状（纠正性维护）</td>
+                        <td>9.4%</td>
+                        <td>204 小时</td>
+                        <td>高停机风险</td>
+                      </tr>
+                      <tr>
+                        <td>预防性维护加强</td>
+                        <td>11.8%</td>
+                        <td>142 小时</td>
+                        <td>需增加备件库存</td>
+                      </tr>
+                      <tr>
+                        <td>预测性维护 + 升级</td>
+                        <td>14.2%</td>
+                        <td>86 小时</td>
+                        <td><span class="status-pill success">推荐</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: 'capital-planning',
+              icon: '💰',
+              label: '投资与预算协同',
+              caption: 'CAPEX / OPEX 对比与审批',
+              title: '资本投资与预算协同',
+              subtitle: '衔接资产替换、预算执行与项目排期',
+              summary:
+                '资产经理可在此规划年度投资组合，对比 CAPEX/OPEX，跟踪审批进度，并协调财务与维护团队推进项目落地。',
+              highlights: [
+                'CAPEX 与 OPEX 一屏对比，掌握预算执行',
+                '快速生成投资立项并跟踪审批',
+                '联动维护计划评估替换优先级',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">年度 CAPEX 已执行</div>
+                    <div class="metric-value">72%</div>
+                    <div class="metric-trend">剩余预算 ¥12.4M</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">OPEX 与预算对比</div>
+                    <div class="metric-value">¥18.7M</div>
+                    <div class="metric-trend negative">较预算 +6%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">在途投资项目</div>
+                    <div class="metric-value">9</div>
+                    <div class="metric-trend positive">审批完成率 67%</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>投资组合面板</h3>
+                      <p>按照优先级排序的资本项目及其财务影响。</p>
+                    </div>
+                    <button class="ghost" data-view-target="capital-request" data-return-view="capital-planning">发起新投资申请</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>高优先级</h4>
+                      <div class="board-card">
+                        <strong>压缩机更新计划</strong>
+                        <span class="status-pill danger">停机风险高</span>
+                        <span>预算：¥8.2M · ROI 18%</span>
+                        <button class="link" data-view-target="scenario-detail" data-return-view="capital-planning">查看收益测算</button>
+                      </div>
+                      <div class="board-card">
+                        <strong>输电线路升级</strong>
+                        <span class="status-pill warning">审批中</span>
+                        <span>预算：¥4.6M · 减排 12%</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>进行中项目</h4>
+                      <div class="board-card">
+                        <strong>能源管理平台</strong>
+                        <span class="status-pill info">执行进度 64%</span>
+                        <span>供应商：西门子</span>
+                        <button class="link" data-view-target="budget-compare" data-return-view="capital-planning">查看预算使用</button>
+                      </div>
+                      <div class="board-card">
+                        <strong>现场移动终端</strong>
+                        <span class="status-pill success">按计划</span>
+                        <span>交付预计：2024-07-18</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>待评估</h4>
+                      <div class="board-card">
+                        <strong>备件仓库扩建</strong>
+                        <span class="status-pill info">库存风险</span>
+                        <button class="pill-button" data-view-target="replenishment-run" data-return-view="capital-planning">查看库存预测</button>
+                      </div>
+                      <div class="board-card">
+                        <strong>智能点检机器人</strong>
+                        <span class="status-pill warning">技术评估</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+        maintenanceSupervisor: {
+          name: '维护主管',
+          description: '协调维护计划、工单执行与资源调度，确保任务按时闭环。',
+          highlights: [
+            '掌握今日待办与异常工单',
+            '保障维护计划执行率与安全合规',
+            '实时协调人力、备件与停机窗口',
+          ],
+          menus: [
+            {
+              id: 'workorder-center',
+              icon: '🛠️',
+              label: '今日工单中心',
+              caption: '工单队列、告警转工单、执行进度',
+              title: '今日工单中心',
+              subtitle: '监控工单进展、处理异常并协调资源',
+              summary:
+                '维护主管在工单中心调度日常任务，处理异常工单、确认安全措施并追踪执行状态，确保关键任务按 SLA 完成。',
+              highlights: [
+                '支持一键升级告警为工单并派工',
+                '工单状态实时刷新，显示阻塞原因',
+                '联动备件与技师排班，减少等待时间',
+              ],
+              core: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>工单队列</h3>
+                      <p>按优先级和 SLA 展示当日重点工单。</p>
+                    </div>
+                    <button class="ghost" data-view-target="workorder-detail" data-return-view="workorder-center">创建快速工单</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>工单编号</th>
+                        <th>资产</th>
+                        <th>优先级</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>WO-5897</td>
+                        <td>压缩机 MX-204</td>
+                        <td><span class="status-pill danger">紧急</span></td>
+                        <td>待派工</td>
+                        <td><button class="link" data-view-target="workorder-dispatch" data-return-view="workorder-center">派工</button></td>
+                      </tr>
+                      <tr>
+                        <td>WO-5889</td>
+                        <td>冷却塔循环泵</td>
+                        <td><span class="status-pill warning">高</span></td>
+                        <td>执行中 · 65%</td>
+                        <td><button class="link" data-view-target="workorder-detail" data-return-view="workorder-center">查看详情</button></td>
+                      </tr>
+                      <tr>
+                        <td>WO-5873</td>
+                        <td>输电线路 TX-118</td>
+                        <td><span class="status-pill warning">高</span></td>
+                        <td>等待停机窗口</td>
+                        <td><button class="link" data-view-target="resource-calendar" data-return-view="workorder-center">协调计划</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>风险与阻塞提醒</h3>
+                      <p>自动识别超期、缺件、技师未到位等阻塞因素。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="incident-brief" data-return-view="workorder-center">现场协调</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>缺件</strong>
+                      <div>WO-5897 缺少密封垫片，预计到货 2 小时。<button class="link" data-view-target="inventory-detail" data-return-view="workorder-center">查询库存</button></div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>安全</strong>
+                      <div>WO-5889 风险评估待确认，需上传隔离照片。<button class="link" data-view-target="compliance-report" data-return-view="workorder-center">审核安全</button></div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>人力</strong>
+                      <div>夜班技师空缺 1 人，建议从巡检班调配。<button class="link" data-view-target="resource-calendar" data-return-view="workorder-center">调整排班</button></div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'maintenance-plan',
+              icon: '🗓️',
+              label: '维护计划排程',
+              caption: '周期计划、停机窗口与依赖',
+              title: '维护计划排程',
+              subtitle: '编排预防性维护与项目停机窗口',
+              summary:
+                '维护计划排程帮助主管综合停机窗口、人员与备件保障，制定预防性维护计划并跟踪执行差异。',
+              highlights: [
+                '支持拖拽调整任务与停机窗口',
+                '展示备件与人力准备情况',
+                '自动识别与其他计划的冲突',
+              ],
+              core: `
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>周度计划甘特图</h3>
+                      <p>拖拽任务以调整时间，查看冲突与资源占用。</p>
+                    </div>
+                    <button class="ghost" data-view-target="plan-adjust" data-return-view="maintenance-plan">导出维护计划</button>
+                  </div>
+                  <div class="map-mock">
+                    <strong>本周关键维护</strong>
+                    <div class="badge-grid">
+                      <span class="badge">周二 08:00 — MX-204 轴承更换</span>
+                      <span class="badge">周三 14:00 — CW-31 震动复检</span>
+                      <span class="badge">周五 09:30 — 输电线路 TX-118 巡检</span>
+                    </div>
+                    <div>点击任务卡片可查看准备状态或调整到其他停机窗口。</div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>准备情况</h3>
+                      <p>显示工器具、备件、人力是否就绪。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="inventory-detail" data-return-view="maintenance-plan">校验备件</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>任务</th>
+                        <th>备件</th>
+                        <th>技师</th>
+                        <th>安全许可</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>MX-204 轴承更换</td>
+                        <td><span class="status-pill warning">待到货</span></td>
+                        <td><span class="status-pill success">已就位</span></td>
+                        <td><button class="link" data-view-target="compliance-report" data-return-view="maintenance-plan">待审批</button></td>
+                      </tr>
+                      <tr>
+                        <td>CW-31 震动复检</td>
+                        <td><span class="status-pill success">齐备</span></td>
+                        <td><span class="status-pill warning">缺巡检班</span></td>
+                        <td><span class="status-pill success">完成</span></td>
+                      </tr>
+                      <tr>
+                        <td>TX-118 巡检</td>
+                        <td><span class="status-pill success">齐备</span></td>
+                        <td><span class="status-pill success">已指派</span></td>
+                        <td><button class="link" data-view-target="plan-adjust" data-return-view="maintenance-plan">调整许可</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              `,
+            },
+            {
+              id: 'resource-hub',
+              icon: '👷',
+              label: '资源调度中心',
+              caption: '人力、技师排班与技能匹配',
+              title: '资源调度中心',
+              subtitle: '即时了解班组负载与技能覆盖情况',
+              summary:
+                '资源调度中心整合人员、技能与班次，支持维护主管快速调配技师、审核加班并协调跨班组支援。',
+              highlights: [
+                '技能矩阵识别可用技师与认证',
+                '班组负载热力图辅助调度',
+                '支持跨站点支援与外协管理',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">今日工时负载</div>
+                    <div class="metric-value">82%</div>
+                    <div class="metric-trend warning">夜班负载 94%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">可调配技师</div>
+                    <div class="metric-value">7</div>
+                    <div class="metric-trend positive">新增认证 2 人</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">外协任务</div>
+                    <div class="metric-value">3</div>
+                    <div class="metric-trend">需审核合同</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>班组技能矩阵</h3>
+                      <p>查看各班组技能覆盖、资质有效期与可调配性。</p>
+                    </div>
+                    <button class="ghost" data-view-target="resource-calendar" data-return-view="resource-hub">打开排班日历</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>班组</th>
+                        <th>关键技能</th>
+                        <th>认证有效期</th>
+                        <th>负载</th>
+                        <th>调配</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>旋机班</td>
+                        <td>振动诊断 / 激光对中</td>
+                        <td>2025-04-12</td>
+                        <td><span class="status-pill warning">88%</span></td>
+                        <td><button class="link" data-view-target="resource-calendar" data-return-view="resource-hub">调整</button></td>
+                      </tr>
+                      <tr>
+                        <td>电仪班</td>
+                        <td>继电保护 / 热像检测</td>
+                        <td>2024-11-02</td>
+                        <td><span class="status-pill success">64%</span></td>
+                        <td><button class="link" data-view-target="workorder-dispatch" data-return-view="resource-hub">指派</button></td>
+                      </tr>
+                      <tr>
+                        <td>外协-管道</td>
+                        <td>现场焊接</td>
+                        <td>2024-07-18</td>
+                        <td><span class="status-pill warning">75%</span></td>
+                        <td><button class="link" data-view-target="compliance-report" data-return-view="resource-hub">检查资质</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: 'safety-compliance',
+              icon: '🛡️',
+              label: '安全与合规',
+              caption: '许可、事故、整改追踪',
+              title: '安全与合规指挥台',
+              subtitle: '跟踪安全许可、事故调查与整改闭环',
+              summary:
+                '维护主管在此审核作业许可证、追踪事故调查和整改措施，确保安全风险闭环并形成审计记录。',
+              highlights: [
+                '全流程数字化作业许可证审批',
+                '自动拉通事故调查进展与责任人',
+                '整改措施闭环率实时监控',
+              ],
+              core: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>作业许可证</h3>
+                      <p>查看待审批与即将到期的安全许可。</p>
+                    </div>
+                    <button class="ghost" data-view-target="compliance-report" data-return-view="safety-compliance">审批许可</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>许可编号</th>
+                        <th>作业类型</th>
+                        <th>状态</th>
+                        <th>截止</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>PTW-4312</td>
+                        <td>动火作业</td>
+                        <td><span class="status-pill warning">待复核</span></td>
+                        <td>今日 17:00</td>
+                        <td><button class="link" data-view-target="compliance-report" data-return-view="safety-compliance">复核资料</button></td>
+                      </tr>
+                      <tr>
+                        <td>PTW-4308</td>
+                        <td>受限空间</td>
+                        <td><span class="status-pill success">有效</span></td>
+                        <td>2024-04-04</td>
+                        <td><button class="link" data-view-target="incident-brief" data-return-view="safety-compliance">现场核查</button></td>
+                      </tr>
+                      <tr>
+                        <td>PTW-4304</td>
+                        <td>高处作业</td>
+                        <td><span class="status-pill warning">资料缺失</span></td>
+                        <td>2024-04-02</td>
+                        <td><button class="link" data-view-target="plan-adjust" data-return-view="safety-compliance">补充资料</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>事故与整改</h3>
+                      <p>跟踪事故调查、整改行动与复查状态。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="incident-brief" data-return-view="safety-compliance">查看事故详情</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>调查中</strong>
+                      <div>2024-03-18 输电线路险情，等待根因分析。<button class="link" data-view-target="incident-root-cause" data-return-view="safety-compliance">查看调查</button></div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>整改执行</strong>
+                      <div>2024-03-12 化学品泄漏整改，跟踪措施完成率 80%。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>复查通过</strong>
+                      <div>2024-02-26 动火管理专项，复查结论：合规，纳入经验库。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+        fieldTechnician: {
+          name: '现场技师',
+          description: '执行巡检与维修任务，反馈现场数据并保障安全作业。',
+          highlights: [
+            '掌握今日任务与所需工器具',
+            '移动端离线记录巡检与照片',
+            '快速上报故障并触发支援流程',
+          ],
+          menus: [
+            {
+              id: 'tech-tasks',
+              icon: '📋',
+              label: '我的任务',
+              caption: '今日任务、导航与签到',
+              title: '技师任务工作台',
+              subtitle: '查看今日任务、签到与反馈进展',
+              summary:
+                '技师可在任务工作台查看待办任务、位置与所需物资，完成签到、拍照与语音反馈，保障任务按标准执行。',
+              highlights: [
+                '支持 NFC / 二维码 签到与安全确认',
+                '实时同步照片、语音与测量数据',
+                '任务完成自动回传维护主管审批',
+              ],
+              core: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>今日任务</h3>
+                      <p>已根据技能匹配与位置优化生成路线。</p>
+                    </div>
+                    <button class="ghost" data-view-target="resource-calendar" data-return-view="tech-tasks">查看排班</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>时间</th>
+                        <th>任务</th>
+                        <th>地点</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>08:30</td>
+                        <td>MX-204 轴承诊断</td>
+                        <td>装置区 B1</td>
+                        <td><span class="status-pill warning">待签到</span></td>
+                        <td><button class="pill-button" data-view-target="tech-task-detail" data-return-view="tech-tasks">开始</button></td>
+                      </tr>
+                      <tr>
+                        <td>11:00</td>
+                        <td>CW-31 震动复检</td>
+                        <td>冷却塔平台</td>
+                        <td><span class="status-pill info">准备中</span></td>
+                        <td><button class="link" data-view-target="spares-request" data-return-view="tech-tasks">领用备件</button></td>
+                      </tr>
+                      <tr>
+                        <td>15:00</td>
+                        <td>TX-118 巡检</td>
+                        <td>输电走廊</td>
+                        <td><span class="status-pill success">已安排</span></td>
+                        <td><button class="link" data-view-target="inspection-detail" data-return-view="tech-tasks">查看任务包</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>现场提醒</h3>
+                      <p>结合安全清单与实时天气，提醒作业注意事项。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="incident-brief" data-return-view="tech-tasks">呼叫支援</button>
+                  </div>
+                  <div class="checklist">
+                    <div class="checklist-item">
+                      <span class="status-pill warning">安全</span>
+                      <div>动火许可待确认，需上传隔离照片后方可启动任务。<button class="link" data-view-target="compliance-report" data-return-view="tech-tasks">上传资料</button></div>
+                    </div>
+                    <div class="checklist-item">
+                      <span class="status-pill info">天气</span>
+                      <div>今日 14:00 有雷暴预警，输电巡检需携带防雷装备。</div>
+                    </div>
+                    <div class="checklist-item">
+                      <span class="status-pill success">备件</span>
+                      <div>已为 MX-204 准备密封垫片与润滑油，仓库待领用。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'mobile-inspection',
+              icon: '🛰️',
+              label: '移动巡检',
+              caption: '离线记录、拍照与语音',
+              title: '移动巡检记录',
+              subtitle: '分步指引巡检并记录异常证据',
+              summary:
+                '移动巡检模块提供标准化检查路线、支持离线记录、拍照上传与语音备注，确保巡检数据完整可靠。',
+              highlights: [
+                '标准化任务步骤与安全确认',
+                '支持拍照、录音与 IoT 数据叠加',
+                '离线缓存，信号恢复后自动同步',
+              ],
+              core: `
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>巡检步骤</h3>
+                      <p>逐项执行检查，并记录测量结果。</p>
+                    </div>
+                    <button class="ghost" data-view-target="inspection-detail" data-return-view="mobile-inspection">查看路线图</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>步骤</th>
+                        <th>检查项</th>
+                        <th>标准</th>
+                        <th>记录</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>轴承温度</td>
+                        <td>&lt; 75℃</td>
+                        <td><span class="status-pill warning">78℃</span></td>
+                        <td><button class="link" data-view-target="failure-analysis" data-return-view="mobile-inspection">标记异常</button></td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>振动值</td>
+                        <td>&lt; 3.5 mm/s</td>
+                        <td><span class="status-pill success">3.1 mm/s</span></td>
+                        <td><button class="link" data-view-target="tech-task-detail" data-return-view="mobile-inspection">录音备注</button></td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>润滑状态</td>
+                        <td>油位 60%-80%</td>
+                        <td><span class="status-pill info">70%</span></td>
+                        <td><button class="link" data-view-target="spares-request" data-return-view="mobile-inspection">追加物料</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>多媒体记录</h3>
+                      <p>查看已上传的照片、录音与备注。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="inspection-detail" data-return-view="mobile-inspection">预览报告</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>照片</h4>
+                      <div class="board-card">
+                        <strong>轴承温度点</strong>
+                        <span class="status-pill warning">需复核</span>
+                        <span>拍摄人：王建 · 08:45</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>语音</h4>
+                      <div class="board-card">
+                        <strong>震动异常说明</strong>
+                        <span>语音 32s</span>
+                        <button class="link" data-view-target="tech-task-detail" data-return-view="mobile-inspection">播放</button>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>备注</h4>
+                      <div class="board-card">
+                        <strong>建议动作</strong>
+                        <span>建议提前安排轴承更换，参考预测工单。</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'incident-report',
+              icon: '🚨',
+              label: '故障上报',
+              caption: '异常提报、派单与协同',
+              title: '故障上报与协同',
+              subtitle: '快速记录故障，触发协同流程',
+              summary:
+                '现场技师可快速上报异常，附上照片与描述，自动触发维护主管、备件与安全团队协同处理。',
+              highlights: [
+                '异常上报联动资产、位置与历史工单',
+                '支持语音转文字、自动生成初步诊断',
+                '可跟踪审批、派单与支援进度',
+              ],
+              core: `
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>异常上报表单</h3>
+                      <p>填写异常描述，附加照片或语音。</p>
+                    </div>
+                    <button class="ghost" data-view-target="failure-analysis" data-return-view="incident-report">查看历史案例</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>基础信息</h4>
+                      <div class="board-card">
+                        <span>资产：MX-204 炼油压缩机</span>
+                        <span>位置：装置区 B1</span>
+                        <span>检测到：轴承温度 78℃</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>描述</h4>
+                      <div class="board-card">
+                        <span>伴随轻微震动与噪音，疑似润滑不足。</span>
+                        <button class="link" data-view-target="tech-task-detail" data-return-view="incident-report">添加语音</button>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>附件</h4>
+                      <div class="board-card">
+                        <span>照片 2 张 · 热像图 1 张</span>
+                        <button class="link" data-view-target="inspection-detail" data-return-view="incident-report">预览附件</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>协同进度</h3>
+                      <p>异常提交后自动生成工单，并跟踪支援状态。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="workorder-dispatch" data-return-view="incident-report">查看派单</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>0'</strong>
+                      <div>异常上报完成，生成临时工单 WO-5897。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>+6'</strong>
+                      <div>维护主管审核并派单给旋机班。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>+15'</strong>
+                      <div>仓库准备密封垫片，预计 11:30 可领用。</div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'spare-requests',
+              icon: '📦',
+              label: '备件与申请',
+              caption: '领料、借用与归还',
+              title: '备件领用中心',
+              subtitle: '查看备件可用性并提交申请',
+              summary:
+                '技师可快速查询备件库存、提交领用申请或归还记录，与库存专员协同保障任务物料。',
+              highlights: [
+                '与库存系统实时同步库存数量',
+                '支持扫码领用与归还确认',
+                '可查看审批状态与到货时间',
+              ],
+              core: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>常用备件</h3>
+                      <p>根据任务推荐即将使用的备件。</p>
+                    </div>
+                    <button class="ghost" data-view-target="inventory-detail" data-return-view="spare-requests">查看库存明细</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>备件</th>
+                        <th>库存</th>
+                        <th>仓库</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>密封垫片 MX204-A</td>
+                        <td>36</td>
+                        <td>主仓 A</td>
+                        <td><span class="status-pill success">可领用</span></td>
+                        <td><button class="pill-button" data-view-target="spares-request" data-return-view="spare-requests">提交申请</button></td>
+                      </tr>
+                      <tr>
+                        <td>轴承套件 MX204-B</td>
+                        <td>4</td>
+                        <td>备仓 C</td>
+                        <td><span class="status-pill warning">库存紧张</span></td>
+                        <td><button class="link" data-view-target="inventory-detail" data-return-view="spare-requests">查看 ETA</button></td>
+                      </tr>
+                      <tr>
+                        <td>润滑油 L-68</td>
+                        <td>128</td>
+                        <td>主仓 B</td>
+                        <td><span class="status-pill success">库存充足</span></td>
+                        <td><button class="link" data-view-target="spares-request" data-return-view="spare-requests">补领</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>申请状态</h3>
+                      <p>追踪申请审批与出库进度。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="spares-request" data-return-view="spare-requests">新建申请</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>待审批</strong>
+                      <div>申请 #SR-2034 · 密封垫片 4 件 · 库存专员审核中。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>已出库</strong>
+                      <div>申请 #SR-2031 · 润滑油 10 桶 · 待技师签收。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>归还待检</strong>
+                      <div>申请 #SR-2027 · 扭矩扳手 · 仓库检验中。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+        inventoryPlanner: {
+          name: '库存与采购专员',
+          description: '保障备件库存与采购协同，降低缺件风险并控制成本。',
+          highlights: [
+            '实时掌握关键备件安全库存',
+            '采购订单执行与到货预估',
+            '供应商绩效与合同履约率',
+          ],
+          menus: [
+            {
+              id: 'inventory-overview',
+              icon: '🏭',
+              label: '库存总览',
+              caption: '安全库存、仓库热力与风险',
+              title: '库存总览仪表盘',
+              subtitle: '监控关键备件库存、风险与消耗趋势',
+              summary:
+                '库存总览展示各仓库库存水平、风险预警与补货建议，帮助库存专员及时采取行动，保障维护任务物料供应。',
+              highlights: [
+                '多仓库安全库存与消耗趋势总览',
+                '自动识别缺件风险并生成补货任务',
+                '联动维护计划预测未来需求',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">关键备件安全库存</div>
+                    <div class="metric-value">92%</div>
+                    <div class="metric-trend">缺件风险 3 项</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">本月消耗金额</div>
+                    <div class="metric-value">¥2.4M</div>
+                    <div class="metric-trend negative">较计划 +8%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">在途采购订单</div>
+                    <div class="metric-value">14</div>
+                    <div class="metric-trend positive">预计本周到货 6 单</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>仓库热力</h3>
+                      <p>可视化各仓库库存利用率与缺件风险。</p>
+                    </div>
+                    <button class="ghost" data-view-target="inventory-detail" data-return-view="inventory-overview">查看仓库详情</button>
+                  </div>
+                  <div class="map-mock">
+                    <strong>仓库利用率</strong>
+                    <div class="map-legend">
+                      <span class="legend-item"><span class="status-pill success">主仓 A</span> 利用率 68%</span>
+                      <span class="legend-item"><span class="status-pill warning">备仓 C</span> 利用率 92%</span>
+                      <span class="legend-item"><span class="status-pill danger">外协仓</span> 缺件风险</span>
+                    </div>
+                    <div>点击区域可查看详细库存结构及在途订单。</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>补货提醒</h3>
+                      <p>结合维护计划预测的需求，自动生成补货建议。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="replenishment-run" data-return-view="inventory-overview">生成补货计划</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>备件</th>
+                        <th>当前库存</th>
+                        <th>安全库存</th>
+                        <th>建议动作</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>密封垫片 MX204-A</td>
+                        <td>36</td>
+                        <td>30</td>
+                        <td>保持正常领用</td>
+                        <td><button class="link" data-view-target="spares-request" data-return-view="inventory-overview">查看申请</button></td>
+                      </tr>
+                      <tr>
+                        <td>轴承套件 MX204-B</td>
+                        <td>4</td>
+                        <td>8</td>
+                        <td><span class="status-pill danger">紧急补货</span></td>
+                        <td><button class="pill-button" data-view-target="purchase-detail" data-return-view="inventory-overview">创建采购单</button></td>
+                      </tr>
+                      <tr>
+                        <td>润滑油 L-68</td>
+                        <td>128</td>
+                        <td>90</td>
+                        <td><span class="status-pill success">充足</span></td>
+                        <td><button class="link" data-view-target="budget-compare" data-return-view="inventory-overview">查看成本</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: 'purchase-orders',
+              icon: '📑',
+              label: '采购订单',
+              caption: '在途订单、审批与收货',
+              title: '采购订单执行',
+              subtitle: '跟踪采购订单审批、到货与异常',
+              summary:
+                '采购订单执行面板展示订单状态、到货进度与审批流程，支持快速处理异常与对账。',
+              highlights: [
+                '订单生命周期一屏跟踪',
+                '自动关联收货、验收与发票状态',
+                '支持异常提醒与供应商协同',
+              ],
+              core: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>订单列表</h3>
+                      <p>按状态与紧急程度排序的采购订单。</p>
+                    </div>
+                    <button class="ghost" data-view-target="purchase-detail" data-return-view="purchase-orders">新建采购订单</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>订单号</th>
+                        <th>供应商</th>
+                        <th>金额</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>PO-240315</td>
+                        <td>ABB</td>
+                        <td>¥4.2M</td>
+                        <td><span class="status-pill warning">待收货</span></td>
+                        <td><button class="link" data-view-target="purchase-detail" data-return-view="purchase-orders">跟踪到货</button></td>
+                      </tr>
+                      <tr>
+                        <td>PO-240289</td>
+                        <td>SKF</td>
+                        <td>¥1.1M</td>
+                        <td><span class="status-pill success">已完成</span></td>
+                        <td><button class="link" data-view-target="budget-compare" data-return-view="purchase-orders">对账</button></td>
+                      </tr>
+                      <tr>
+                        <td>PO-240301</td>
+                        <td>本地供应商</td>
+                        <td>¥0.38M</td>
+                        <td><span class="status-pill danger">交期延迟</span></td>
+                        <td><button class="link" data-view-target="supplier-scorecard" data-return-view="purchase-orders">联系供应商</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>审批与协同</h3>
+                      <p>展示订单审批流程、异常提醒与沟通记录。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="purchase-detail" data-return-view="purchase-orders">打开审批流</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>审批</strong>
+                      <div>PO-240315 财务审批通过，等待法务审合同。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>物流</strong>
+                      <div>PO-240301 集装箱延迟 2 天，建议启用备用供应商。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>发票</strong>
+                      <div>PO-240289 发票待入账，提醒财务处理。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'supplier-management',
+              icon: '🤝',
+              label: '供应商管理',
+              caption: '绩效、合同与风险',
+              title: '供应商绩效面板',
+              subtitle: '评估供应商绩效与风险预警',
+              summary:
+                '供应商绩效面板整合交期、质量与成本指标，识别风险并指导供应商改善与合同谈判。',
+              highlights: [
+                '供应商绩效评分与排名',
+                '质量、交付、成本多维度分析',
+                '风险预警与整改跟踪',
+              ],
+              core: `
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>绩效评分</h3>
+                      <p>综合交付、质量与响应速度生成评分。</p>
+                    </div>
+                    <button class="ghost" data-view-target="supplier-scorecard" data-return-view="supplier-management">查看评分卡</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>供应商</th>
+                        <th>评分</th>
+                        <th>交付准时率</th>
+                        <th>质量合格率</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>ABB</td>
+                        <td><span class="status-pill success">4.6 / 5</span></td>
+                        <td>96%</td>
+                        <td>99%</td>
+                        <td><button class="link" data-view-target="purchase-detail" data-return-view="supplier-management">查看合同</button></td>
+                      </tr>
+                      <tr>
+                        <td>SKF</td>
+                        <td><span class="status-pill success">4.2 / 5</span></td>
+                        <td>93%</td>
+                        <td>98%</td>
+                        <td><button class="link" data-view-target="supplier-scorecard" data-return-view="supplier-management">绩效详情</button></td>
+                      </tr>
+                      <tr>
+                        <td>本地供应商</td>
+                        <td><span class="status-pill warning">3.4 / 5</span></td>
+                        <td>78%</td>
+                        <td>94%</td>
+                        <td><button class="link" data-view-target="incident-root-cause" data-return-view="supplier-management">发起整改</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>风险提醒</h3>
+                      <p>监控合同到期、交期延误与质量缺陷。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="supplier-scorecard" data-return-view="supplier-management">生成改善计划</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>合同</strong>
+                      <div>ABB 备件框架合同 90 天后到期，需启动续签。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>交付</strong>
+                      <div>本地供应商近 3 月交期延迟率 22%。<button class="link" data-view-target="purchase-detail" data-return-view="supplier-management">查看延迟订单</button></div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>质量</strong>
+                      <div>SKF 提供的轴承近期合格率下降 3%，建议抽检。</div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'replenishment-planning',
+              icon: '📊',
+              label: '补货计划',
+              caption: '预测需求、策略与审批',
+              title: '补货计划与策略',
+              subtitle: '根据预测需求制定补货策略并提交审批',
+              summary:
+                '补货计划模块基于维护计划、历史消耗和供应商能力生成补货建议，支持策略模拟与审批。',
+              highlights: [
+                '支持策略模拟比较成本与服务水平',
+                '自动匹配最佳供应商与交期',
+                '补货计划一键提交审批并跟踪状态',
+              ],
+              core: `
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>预测需求</h3>
+                      <p>根据维护计划与历史消耗预测未来需求。</p>
+                    </div>
+                    <button class="ghost" data-view-target="replenishment-run" data-return-view="replenishment-planning">重新预测</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>备件</th>
+                        <th>预测需求 (30 天)</th>
+                        <th>当前库存</th>
+                        <th>缺口</th>
+                        <th>建议</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>密封垫片 MX204-A</td>
+                        <td>52</td>
+                        <td>36</td>
+                        <td>16</td>
+                        <td><span class="status-pill warning">常规补货</span></td>
+                      </tr>
+                      <tr>
+                        <td>轴承套件 MX204-B</td>
+                        <td>18</td>
+                        <td>4</td>
+                        <td>14</td>
+                        <td><span class="status-pill danger">加急采购</span></td>
+                      </tr>
+                      <tr>
+                        <td>润滑油 L-68</td>
+                        <td>90</td>
+                        <td>128</td>
+                        <td>-38</td>
+                        <td><span class="status-pill success">暂不补货</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>策略模拟</h3>
+                      <p>对比不同补货策略下的成本与服务水平。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="replenishment-run" data-return-view="replenishment-planning">生成审批单</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>策略</th>
+                        <th>响应时间</th>
+                        <th>预计成本</th>
+                        <th>服务水平</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>常规补货</td>
+                        <td>7 天</td>
+                        <td>¥0.42M</td>
+                        <td>92%</td>
+                        <td><button class="link" data-view-target="budget-compare" data-return-view="replenishment-planning">查看预算</button></td>
+                      </tr>
+                      <tr>
+                        <td>加急采购</td>
+                        <td>3 天</td>
+                        <td>¥0.58M</td>
+                        <td>98%</td>
+                        <td><button class="link" data-view-target="purchase-detail" data-return-view="replenishment-planning">提交审批</button></td>
+                      </tr>
+                      <tr>
+                        <td>共享库存</td>
+                        <td>5 天</td>
+                        <td>¥0.36M</td>
+                        <td>90%</td>
+                        <td><button class="link" data-view-target="inventory-detail" data-return-view="replenishment-planning">协调调拨</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              `,
+            },
+          ],
+        },
+
+      const extraViews = {
+        'workorder-detail': {
+          title: '工单详情 WO-5897',
+          subtitle: '查看工单步骤、工时与安全措施',
+          summary:
+            '工单详情整合任务步骤、人员、工时与安全措施，支持维护主管与技师协同更新进度。',
+          highlights: [
+            '任务步骤支持勾选完成与备注',
+            '实时同步工时与备件消耗',
+            '关联风险评估与安全许可',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>执行步骤</h3>
+                  <p>轴承更换工单 · 预计工时 6 小时</p>
+                </div>
+                <button class="pill-button" data-view-target="resource-calendar" data-return-view="workorder-detail">调整排班</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>步骤</th>
+                    <th>负责人</th>
+                    <th>预计工时</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>拆卸防护罩</td>
+                    <td>王建</td>
+                    <td>0.8h</td>
+                    <td><span class="status-pill success">完成</span></td>
+                  </tr>
+                  <tr>
+                    <td>拆换轴承</td>
+                    <td>李强</td>
+                    <td>3.5h</td>
+                    <td><span class="status-pill warning">进行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>复装与试运行</td>
+                    <td>张伟</td>
+                    <td>1.7h</td>
+                    <td><span class="status-pill info">待开始</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
-            
-            <section class="module">
-              <h3>维护工单</h3>
-              <p class="goal">功能目标：标准化维护流程</p>
-              <ul>
-                <li>预防性、预测性维护计划</li><li>工单派工、工时与材料</li><li>移动巡检与离线作业</li>
-              </ul>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>安全与资源</h3>
+                  <p>列出安全许可、备件与工器具准备。</p>
+                </div>
+                <button class="ghost" data-view-target="compliance-report" data-return-view="workorder-detail">查看许可</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>安全</h4>
+                  <div class="board-card">
+                    <span>动火许可：待复核</span>
+                    <span>隔离措施：已完成</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>备件</h4>
+                  <div class="board-card">
+                    <span>密封垫片 · 4 件</span>
+                    <span>轴承套件 · 1 套</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>工器具</h4>
+                  <div class="board-card">
+                    <span>扭矩扳手 · 校准有效</span>
+                    <span>热像仪 · 已预订</span>
+                  </div>
+                </div>
+              </div>
             </section>
-            
-            <section class="module">
-              <h3>备件与库存</h3>
-              <p class="goal">功能目标：确保物料供应</p>
-              <ul>
-                <li>备件目录、库存与采购</li><li>库存优化与最小库存</li><li>供应商绩效与成本控制</li>
-              </ul>
+          `,
+        },
+        'workorder-dispatch': {
+          title: '工单派工板',
+          subtitle: '选择合适技师并协调备件与时间',
+          summary:
+            '工单派工板支持维护主管选择合适的技师、确认所需备件并预约停机时间，实现快速响应。',
+          highlights: [
+            '支持按技能、班组筛选技师',
+            '同步查看备件库存与到货时间',
+            '可预约停机窗口并通知相关方',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>派工选择</h3>
+                  <p>为 WO-5897 选择合适技师与时间。</p>
+                </div>
+                <button class="pill-button" data-view-target="resource-calendar" data-return-view="workorder-dispatch">打开排班表</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>技师</th>
+                    <th>技能</th>
+                    <th>空闲时间</th>
+                    <th>推荐理由</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>王建</td>
+                    <td>轴承诊断</td>
+                    <td>今日 10:00-12:00</td>
+                    <td><span class="status-pill success">最佳匹配</span></td>
+                  </tr>
+                  <tr>
+                    <td>李强</td>
+                    <td>旋机维修</td>
+                    <td>今日 13:00-17:00</td>
+                    <td>需调换班次</td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
-            
-            <section class="module">
-              <h3>分析与安全</h3>
-              <p class="goal">功能目标：监控资产健康与合规</p>
-              <ul>
-                <li>资产健康评分与 KPI</li><li>安全、环境与合规管理</li><li>IoT 数据集成与预测分析</li>
-              </ul>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>备件与停机</h3>
+                  <p>确认备件准备与停机窗口。</p>
+                </div>
+                <button class="ghost" data-view-target="inventory-detail" data-return-view="workorder-dispatch">检查库存</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>备件状态</h4>
+                  <div class="board-card">
+                    <span>密封垫片 · 可立即领用</span>
+                    <span>轴承套件 · 预计到货 2 小时</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>停机窗口</h4>
+                  <div class="board-card">
+                    <span>推荐：今日 13:30-16:30</span>
+                    <span>生产影响：产能下降 12%</span>
+                  </div>
+                </div>
+              </div>
             </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>设备可用率与停机时间</li><li>维护工单按时完成率</li><li>备件库存周转与成本节省</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+          `,
+        },
+        'plan-adjust': {
+          title: '维护计划调整',
+          subtitle: '对维护计划进行调整与审批',
+          summary:
+            '调整维护计划时间、资源与许可，自动通知相关角色并记录审批。',
+          highlights: [
+            '支持拖拽调整时间与资源',
+            '可选择备选停机窗口',
+            '自动触发审批与通知',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>计划调整</h3>
+                  <p>MX-204 轴承更换 · 原计划 3 月 28 日 08:00</p>
+                </div>
+                <button class="pill-button" data-view-target="maintenance-plan" data-from-menu="true">返回维护计划</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>原计划</strong>
+                  <div>3 月 28 日 08:00-12:00 · 需停机 4 小时</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>调整</strong>
+                  <div>建议改为 3 月 28 日 13:00-17:00，避开生产高峰。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>审批</strong>
+                  <div>维护主管审批中，需资产经理确认。</div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'incident-brief': {
+          title: '现场协同战情板',
+          subtitle: '多角色协同处理现场事件',
+          summary:
+            '战情板用于协调现场事件的响应，聚合事件状态、责任人和沟通记录。',
+          highlights: [
+            '实时更新事件处理进度',
+            '支持添加语音、照片与聊天记录',
+            '自动记录行动项与责任人',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>事件状态</h3>
+                  <p>MX-204 温度异常 · 升级为黄色事件</p>
+                </div>
+                <button class="pill-button" data-view-target="incident-root-cause" data-return-view="incident-brief">查看根因分析</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>09:20</strong>
+                  <div>技师上报异常并上传照片。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>09:32</strong>
+                  <div>维护主管派单给旋机班，备件准备中。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>09:48</strong>
+                  <div>安全专员确认动火许可，允许开工。</div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'resource-calendar': {
+          title: '排班日历',
+          subtitle: '查看班组排班与可用性',
+          summary:
+            '排班日历展示各班组和技师的排班情况，支持快速调配人力。',
+          highlights: [
+            '按班组、技能筛选可用人员',
+            '支持加班申请与审批',
+            '同步移动端任务安排',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>今日排班</h3>
+                  <p>显示技师班组的工作与空闲时段。</p>
+                </div>
+                <button class="ghost" data-view-target="resource-hub" data-from-menu="true">返回资源中心</button>
+              </div>
+              <div class="map-mock">
+                <strong>班组负载热力</strong>
+                <div>旋机班：上午 86% · 下午 72%</div>
+                <div>电仪班：全天 64%</div>
+                <div>巡检班：上午 58% · 下午 62%</div>
+              </div>
+            </section>
+          `,
+        },
+        'compliance-report': {
+          title: '安全许可与合规核查',
+          subtitle: '审核作业许可证与安全措施',
+          summary:
+            '安全许可页面展示作业许可证的审批状态、安全措施与现场照片，保障作业合规。',
+          highlights: [
+            '支持线上签署与审批',
+            '记录隔离措施与风险评估',
+            '关联现场照片与视频',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>动火作业许可 PTW-4312</h3>
+                  <p>申请人：王建 · 作业时间：今日 13:00-17:00</p>
+                </div>
+                <button class="pill-button" data-view-target="safety-compliance" data-from-menu="true">返回安全面板</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>审批流程</h4>
+                  <div class="board-card">
+                    <span>申请人 → 维护主管 → 安全专员 → 运行确认</span>
+                    <span>当前：安全专员待确认</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>隔离措施</h4>
+                  <div class="board-card">
+                    <span>电源隔离完成</span>
+                    <span>消防器材就位</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>现场照片</h4>
+                  <div class="board-card">
+                    <span>已上传 3 张照片，待审核。</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'incident-root-cause': {
+          title: '事故根因分析',
+          subtitle: '使用 5Why 与鱼骨图分析根因',
+          summary:
+            '通过结构化方法分析事故根因，生成整改措施并指定责任人。',
+          highlights: [
+            '支持多种分析方法模板',
+            '可分配整改措施与截止时间',
+            '自动追踪落实情况',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>根因分析</h3>
+                  <p>MX-204 温度异常事件</p>
+                </div>
+                <button class="pill-button" data-view-target="incident-brief" data-return-view="incident-root-cause">返回战情板</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>5 Why</strong>
+                  <div>润滑油劣化 → 供油不足 → 油泵过滤器堵塞 → 维护周期过长。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>整改</strong>
+                  <div>新增油质检测点 · 调整维护周期至 2 周。</div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'inspection-brief': {
+          title: '巡检任务分解',
+          subtitle: '安排巡检路线与任务包',
+          summary:
+            '巡检任务分解页面展示巡检路线、任务包与安全要求，支持维护主管快速派发。',
+          highlights: [
+            '自动生成巡检路线图',
+            '可附加安全提示与注意事项',
+            '支持离线下载任务包',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>巡检路线</h3>
+                  <p>输电线路 TX-118 · 3 个检查点</p>
+                </div>
+                <button class="pill-button" data-view-target="mobile-inspection" data-from-menu="true">派发至移动端</button>
+              </div>
+              <div class="map-mock">
+                <strong>路线图</strong>
+                <div>站点 A → 站点 B → 站点 C</div>
+                <div>预计耗时 2 小时 · 需要携带防雷装备</div>
+              </div>
+            </section>
+          `,
+        },
+        'tech-task-detail': {
+          title: '任务操作指引',
+          subtitle: '现场任务的操作步骤与注意事项',
+          summary:
+            '为技师提供详细的操作步骤、工器具清单与安全注意事项，确保标准化执行。',
+          highlights: [
+            '步骤支持图片、视频指引',
+            '可记录测量数据与备注',
+            '自动同步至工单进度',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>步骤说明</h3>
+                  <p>MX-204 轴承诊断任务</p>
+                </div>
+                <button class="ghost" data-view-target="tech-tasks" data-from-menu="true">返回我的任务</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>步骤</th>
+                    <th>操作说明</th>
+                    <th>需要工具</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>读取温度、振动数据并拍照</td>
+                    <td>红外测温仪、振动分析仪</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>记录油位并采样</td>
+                    <td>油样瓶、记录板</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+        },
+        'inspection-detail': {
+          title: '巡检任务包',
+          subtitle: '离线巡检包与数据回传',
+          summary:
+            '巡检任务包包含检查项、路线、附件与离线缓存状态，支持技师准备和执行巡检。',
+          highlights: [
+            '离线缓存状态提示',
+            '可下载附件与安全手册',
+            '执行后自动回传数据',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>任务包内容</h3>
+                  <p>TX-118 巡检 · 需拍摄 6 张照片</p>
+                </div>
+                <button class="pill-button" data-view-target="mobile-inspection" data-from-menu="true">开始巡检</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>检查项</h4>
+                  <div class="board-card">
+                    <span>绝缘子检查</span>
+                    <span>导线紧固</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>附件</h4>
+                  <div class="board-card">
+                    <span>安全手册.pdf</span>
+                    <span>历史缺陷清单.xlsx</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'failure-analysis': {
+          title: '故障分析案例',
+          subtitle: '查看历史故障案例与处理经验',
+          summary:
+            '故障分析库提供类似资产的故障案例与处理经验，帮助技师快速定位问题。',
+          highlights: [
+            '按资产、症状快速检索',
+            '包含处理步骤与耗材',
+            '可收藏常用案例',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>相关案例</h3>
+                  <p>显示 3 个与当前症状类似的案例。</p>
+                </div>
+                <button class="ghost" data-view-target="incident-report" data-from-menu="true">返回上报页</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>案例</th>
+                    <th>症状</th>
+                    <th>处理措施</th>
+                    <th>耗时</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>MX-178 轴承异常</td>
+                    <td>温度升高 + 异响</td>
+                    <td>更换润滑油 + 轴承</td>
+                    <td>6 小时</td>
+                  </tr>
+                  <tr>
+                    <td>MX-192 震动超标</td>
+                    <td>振动 RMS 4.5</td>
+                    <td>调整对中 + 加固</td>
+                    <td>5 小时</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+        },
+        'spares-request': {
+          title: '备件申请流程',
+          subtitle: '提交、审批与领用备件',
+          summary:
+            '备件申请页面支持填写需求、查看审批状态与领用记录，确保备件管理合规。',
+          highlights: [
+            '自动带入任务与资产信息',
+            '支持扫码领用与归还',
+            '审批流程实时可见',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>申请单 SR-2034</h3>
+                  <p>密封垫片 4 件 · 用于 WO-5897</p>
+                </div>
+                <button class="pill-button" data-view-target="inventory-detail" data-return-view="spares-request">查看库存</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>审批状态</h4>
+                  <div class="board-card">
+                    <span>维护主管：已同意</span>
+                    <span>库存专员：待审核</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>领用记录</h4>
+                  <div class="board-card">
+                    <span>上次领用：2024-02-18 · 2 件</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'inventory-detail': {
+          title: '仓库库存明细',
+          subtitle: '查看仓库库存结构与出入库记录',
+          summary:
+            '库存明细提供仓库库存结构、批次与出入库记录，可支持调拨与补货决策。',
+          highlights: [
+            '展示库存批次与有效期',
+            '支持库存转移与冻结',
+            '可导出库存报表',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>主仓 A - 库存结构</h3>
+                  <p>关键备件 156 项 · 库存金额 ¥12.8M</p>
+                </div>
+                <button class="ghost" data-view-target="inventory-overview" data-from-menu="true">返回库存总览</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>备件</th>
+                    <th>数量</th>
+                    <th>批次</th>
+                    <th>有效期</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>密封垫片 MX204-A</td>
+                    <td>36</td>
+                    <td>2024Q1-01</td>
+                    <td>2025-12-31</td>
+                  </tr>
+                  <tr>
+                    <td>轴承套件 MX204-B</td>
+                    <td>4</td>
+                    <td>2023Q4-03</td>
+                    <td>2024-09-30</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+        },
+        'purchase-detail': {
+          title: '采购订单详情',
+          subtitle: '查看采购订单执行与协同信息',
+          summary:
+            '采购订单详情包含交付计划、收货记录、发票与沟通记录，便于跟踪执行。',
+          highlights: [
+            '交期、物流、验收实时更新',
+            '可记录异常与补救措施',
+            '关联供应商绩效数据',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>订单 PO-240315</h3>
+                  <p>供应商：ABB · 金额 ¥4.2M</p>
+                </div>
+                <button class="pill-button" data-view-target="purchase-orders" data-from-menu="true">返回订单列表</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>交付计划</h4>
+                  <div class="board-card">
+                    <span>预计到货：2024-04-05</span>
+                    <span>运输方式：海运</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>收货记录</h4>
+                  <div class="board-card">
+                    <span>部分收货：2024-03-18 · 50%</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>沟通记录</h4>
+                  <div class="board-card">
+                    <span>2024-03-20 供应商确认延迟 2 天</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'supplier-scorecard': {
+          title: '供应商评分卡',
+          subtitle: '查看供应商综合绩效',
+          summary:
+            '供应商评分卡展示交付、质量、成本、合作度等指标，并提供改善建议。',
+          highlights: [
+            '绩效评分趋势图',
+            '问题与改善行动跟踪',
+            '可共享给供应商',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>ABB 供应商评分</h3>
+                  <p>评分 4.6 / 5 · 最近 6 个月保持稳定。</p>
+                </div>
+                <button class="ghost" data-view-target="supplier-management" data-from-menu="true">返回供应商面板</button>
+              </div>
+              <div class="map-mock">
+                <strong>绩效趋势</strong>
+                <div>交付准时率：96% → 98%</div>
+                <div>质量合格率：99% → 99%</div>
+                <div>成本偏差：-3%</div>
+              </div>
+            </section>
+          `,
+        },
+        'replenishment-run': {
+          title: '补货计划执行',
+          subtitle: '生成补货任务与审批',
+          summary:
+            '补货计划执行页面汇总预测需求、策略选择与审批状态，实现补货决策闭环。',
+          highlights: [
+            '自动生成补货任务与审批单',
+            '可调整采购策略与供应商',
+            '与库存、采购模块实时联动',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>补货任务列表</h3>
+                  <p>包含预测缺口与推荐策略。</p>
+                </div>
+                <button class="pill-button" data-view-target="replenishment-planning" data-from-menu="true">返回补货计划</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>任务</th>
+                    <th>策略</th>
+                    <th>数量</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>MX204-B 轴承补货</td>
+                    <td>加急采购</td>
+                    <td>14</td>
+                    <td><span class="status-pill warning">待审批</span></td>
+                  </tr>
+                  <tr>
+                    <td>L-68 润滑油调拨</td>
+                    <td>共享库存</td>
+                    <td>38</td>
+                    <td><span class="status-pill success">已执行</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+        },
+
+        'asset-detail': {
+          title: '资产台账详情 - MX-204',
+          subtitle: '查看资产基础信息、传感器趋势与维护记录',
+          summary:
+            '资产详情页面汇集资产结构、传感器趋势、维护记录与相关文档，支持资产经理、维护主管和技师进行跨团队协同。',
+          highlights: [
+            '传感器趋势可切换温度、振动等指标',
+            '维护记录支持快速跳转到工单详情',
+            '附件支持 3D 模型、手册与合规证书',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>资产概览</h3>
+                  <p>压缩机 · 投产 2017 · 供应商 ABB · 价值 ¥12.6M</p>
+                </div>
+                <button class="pill-button" data-view-target="workorder-dispatch" data-return-view="asset-detail">新建维护工单</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>运行状态</h4>
+                  <div class="board-card">
+                    <span>健康评分：<span class="status-pill warning">55 / 100</span></span>
+                    <span>当前负载：82%</span>
+                    <span>剩余寿命预测：42 小时</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>技术参数</h4>
+                  <div class="board-card">
+                    <span>型号：MX-204</span>
+                    <span>功率：450 kW</span>
+                    <span>保修到期：2025-06-30</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>文档</h4>
+                  <div class="board-card">
+                    <span>手册 · 维护指南 · 3D 爆炸图</span>
+                    <button class="link" data-view-target="change-log" data-return-view="asset-detail">查看变更记录</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>传感器趋势</h3>
+                  <p>温度、振动、压力 24 小时趋势，异常点高亮。</p>
+                </div>
+                <button class="ghost" data-view-target="asset-health-model" data-return-view="asset-detail">查看预测模型</button>
+              </div>
+              <div class="map-mock">
+                <strong>温度与振动趋势</strong>
+                <div>温度：72℃ → 79℃ · 振动：2.9 → 4.1 mm/s</div>
+                <div>异常点已关联至工单 WO-5897。</div>
+              </div>
+            </section>
+          `,
+        },
+        'asset-health-model': {
+          title: '资产健康评分模型',
+          subtitle: '预测性维护模型输出与关键因子',
+          summary:
+            '模型基于传感器、历史工单与环境数据计算资产健康评分，给出剩余寿命预测与关键风险因子。',
+          highlights: [
+            '可视化模型贡献度，识别影响因素',
+            '支持调整阈值并模拟策略',
+            '可生成 PDF 报告共享',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>模型输出</h3>
+                  <p>健康评分 55 / 100 · 剩余寿命 42 小时</p>
+                </div>
+                <button class="pill-button" data-view-target="scenario-detail" data-return-view="asset-health-model">模拟维护策略</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>关键因子</h4>
+                  <div class="board-card">
+                    <span>轴承温度贡献 42%</span>
+                    <span>振动 RMS 贡献 28%</span>
+                    <span>历史故障频率 18%</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>建议动作</h4>
+                  <div class="board-card">
+                    <span>建议 24 小时内停机检修</span>
+                    <span>优先检查润滑与轴承间隙</span>
+                    <button class="link" data-view-target="workorder-dispatch" data-return-view="asset-health-model">生成工单</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'asset-import': {
+          title: '资产批量导入向导',
+          subtitle: '通过模板导入资产数据并校验',
+          summary:
+            '提供资产批量导入流程，支持模板下载、字段映射与数据校验，保障资产主数据质量。',
+          highlights: [
+            '模板支持多站点、多层级字段',
+            '校验重复、缺失与格式问题',
+            '导入结果生成审计报告',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>导入步骤</h3>
+                  <p>下载模板 → 上传文件 → 校验 → 导入成功</p>
+                </div>
+                <button class="pill-button" data-view-target="change-log" data-return-view="asset-import">查看审计记录</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>步骤 1</strong>
+                  <div>下载最新资产模板，包含分类、位置、合同字段。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>步骤 2</strong>
+                  <div>上传资产数据文件，系统自动校验 32 项规则。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>步骤 3</strong>
+                  <div>校验通过后生成导入批次，支持回滚。</div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'change-log': {
+          title: '资产变更记录',
+          subtitle: '追踪资产关键字段的变更历史',
+          summary:
+            '展示资产的重要变更历史，支持审计追踪与责任划分，保障数据合规性。',
+          highlights: [
+            '支持字段筛选与时间过滤',
+            '可导出审计报表',
+            '关联变更审批与执行人',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>变更历史</h3>
+                  <p>展示近 6 个月的关键变更记录。</p>
+                </div>
+                <button class="ghost" data-view-target="change-request" data-return-view="change-log">发起新变更</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>字段</th>
+                    <th>旧值</th>
+                    <th>新值</th>
+                    <th>执行人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2024-03-18 09:32</td>
+                    <td>保修到期</td>
+                    <td>2024-06-30</td>
+                    <td>2025-06-30</td>
+                    <td>张敏</td>
+                  </tr>
+                  <tr>
+                    <td>2024-02-04 16:12</td>
+                    <td>资产位置</td>
+                    <td>装置区 A3</td>
+                    <td>装置区 B1</td>
+                    <td>王建</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+        },
+        'change-request': {
+          title: '资产变更审批',
+          subtitle: '提交资产变更并跟踪审批状态',
+          summary:
+            '用于提交资产关键字段变更，自动通知相关角色审批，并记录审批流程。',
+          highlights: [
+            '支持附件、说明与风险评估',
+            '自动通知相关责任人审批',
+            '审批结果写回资产台账',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>变更表单</h3>
+                  <p>填写变更原因与影响评估。</p>
+                </div>
+                <button class="pill-button" data-view-target="change-log" data-return-view="change-request">查看历史审批</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>基础信息</h4>
+                  <div class="board-card">
+                    <span>资产：MX-204</span>
+                    <span>字段：保修到期</span>
+                    <span>当前：2024-06-30</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>变更说明</h4>
+                  <div class="board-card">
+                    <span>供应商确认延长 1 年保修，附合同修订。</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>审批流</h4>
+                  <div class="board-card">
+                    <span>资产经理 → 维护主管 → 财务</span>
+                    <span>当前：维护主管审批中</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'renewal-simulation': {
+          title: '资产更换方案模拟',
+          subtitle: '比较不同更换方案的成本与收益',
+          summary:
+            '通过模拟不同的资产替换方案，评估成本、停机时间与收益，辅助决策。',
+          highlights: [
+            '方案对比成本、停机、ROI',
+            '支持导出方案报告',
+            '可关联资本预算流程',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>方案对比</h3>
+                  <p>从成本与停机角度比较不同替换方案。</p>
+                </div>
+                <button class="pill-button" data-view-target="capital-request" data-return-view="renewal-simulation">创建投资立项</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>方案</th>
+                    <th>一次性成本</th>
+                    <th>停机时间</th>
+                    <th>ROI</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>整机更换</td>
+                    <td>¥8.2M</td>
+                    <td>48 小时</td>
+                    <td>18%</td>
+                    <td>健康评分恢复至 95</td>
+                  </tr>
+                  <tr>
+                    <td>大修 + 升级</td>
+                    <td>¥4.6M</td>
+                    <td>36 小时</td>
+                    <td>14%</td>
+                    <td>需 3 月内再检</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+        },
+        'scenario-detail': {
+          title: '维护策略场景分析',
+          subtitle: '比较不同维护策略的成本与停机表现',
+          summary:
+            '通过场景分析对比不同维护策略下的关键指标，为资产经理选择最佳策略提供依据。',
+          highlights: [
+            '场景参数可调整预测模型',
+            '结果可同步到预算与维护计划',
+            '支持保存为策略模板',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>场景参数</h3>
+                  <p>调整维护频次、备件策略与升级计划。</p>
+                </div>
+                <button class="ghost" data-view-target="budget-compare" data-return-view="scenario-detail">同步至预算</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>现状</h4>
+                  <div class="board-card">
+                    <span>停机时间：204 小时/年</span>
+                    <span>维护成本：¥6.8M</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>预测性维护</h4>
+                  <div class="board-card">
+                    <span>停机时间：86 小时/年</span>
+                    <span>维护成本：¥5.9M</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>升级改造</h4>
+                  <div class="board-card">
+                    <span>停机时间：64 小时/年</span>
+                    <span>维护成本：¥6.4M</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'capital-request': {
+          title: '投资立项申请',
+          subtitle: '提交资本项目并跟踪审批进度',
+          summary:
+            '用于提交资本投资项目，包含项目说明、财务测算与风险评估，审批通过后同步至预算与计划。',
+          highlights: [
+            '模板化填写投资背景、收益与风险',
+            '自动计算 ROI、回收期',
+            '审批流程透明可追踪',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>项目信息</h3>
+                  <p>压缩机更新计划 · 预算 ¥8.2M · 回收期 3.2 年</p>
+                </div>
+                <button class="pill-button" data-view-target="budget-compare" data-return-view="capital-request">查看预算分配</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>收益分析</h4>
+                  <div class="board-card">
+                    <span>预测节省停机损失 ¥3.6M/年</span>
+                    <span>能耗降低 12%</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>风险评估</h4>
+                  <div class="board-card">
+                    <span>供应风险：中</span>
+                    <span>实施风险：低</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'budget-compare': {
+          title: '预算执行对比',
+          subtitle: 'CAPEX / OPEX 执行情况与预测',
+          summary:
+            '展示预算执行与预测差异，支持资产经理和财务团队调整计划。',
+          highlights: [
+            'CAPEX / OPEX 可视化对比',
+            '预测差异与原因说明',
+            '可导出报表用于汇报',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>预算对比</h3>
+                  <p>年度预算 ¥32M · 已执行 68%</p>
+                </div>
+                <button class="ghost" data-view-target="executive-briefing" data-return-view="budget-compare">生成管理简报</button>
+              </div>
+              <div class="map-mock">
+                <strong>费用趋势</strong>
+                <div>CAPEX：本月执行 ¥3.1M · 预测偏差 +0.4M</div>
+                <div>OPEX：本月执行 ¥1.8M · 预测偏差 +0.2M</div>
+              </div>
+            </section>
+          `,
+        },
+        'executive-briefing': {
+          title: '管理层简报',
+          subtitle: '生成高层汇报所需的关键指标与摘要',
+          summary:
+            '一键汇总资产健康、维护执行与预算情况，生成管理层汇报简报，可导出为 PPT/ PDF。',
+          highlights: [
+            '自动拉取关键 KPI 与重大风险',
+            '可插入重点资产详情与工单进展',
+            '支持选择受众（CEO、运营 VP 等）',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>简报概要</h3>
+                  <p>包含资产健康、维护执行、预算与安全事件四大板块。</p>
+                </div>
+                <button class="pill-button" data-view-target="scenario-detail" data-return-view="executive-briefing">添加策略分析</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>关键亮点</h4>
+                  <div class="board-card">
+                    <span>资产可用率 97.2%，环比 +1.8%</span>
+                    <span>高风险资产 12 台，已启动处置</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>待决策事项</h4>
+                  <div class="board-card">
+                    <span>压缩机更新项目需资本审批</span>
+                    <span>供应商交付延迟需关注</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+      };
+      let currentRoleKey = 'assetManager';
+      let currentMenuId = null;
+
+      const roleSelect = document.getElementById('roleSelect');
+      const roleTitle = document.getElementById('roleTitle');
+      const roleDescription = document.getElementById('roleDescription');
+      const roleHighlights = document.getElementById('roleHighlights');
+      const menuList = document.getElementById('menuList');
+      const viewContainer = document.getElementById('viewContainer');
+
+      function renderRole(roleKey, initialViewId) {
+        const role = roleConfigurations[roleKey];
+        if (!role) return;
+        currentRoleKey = roleKey;
+        roleSelect.value = roleKey;
+        roleTitle.textContent = `${role.name}视角`;
+        roleDescription.textContent = role.description;
+        roleHighlights.innerHTML = role.highlights
+          .map((item) => `<li>${item}</li>`)
+          .join('');
+
+        menuList.innerHTML = '';
+        role.menus.forEach((menu) => {
+          const item = document.createElement('li');
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'menu-item';
+          button.dataset.menuId = menu.id;
+          button.innerHTML = `<strong>${menu.icon} ${menu.label}</strong><span>${menu.caption}</span>`;
+          button.addEventListener('click', () => {
+            renderView(menu.id, { fromMenu: true });
+          });
+          item.appendChild(button);
+          menuList.appendChild(item);
+        });
+
+        const targetView = initialViewId || role.menus[0]?.id;
+        if (targetView) {
+          renderView(targetView, { fromMenu: true });
+        } else {
+          viewContainer.innerHTML = '';
+        }
+      }
+
+      function getMenuName(roleKey, menuId) {
+        const role = roleConfigurations[roleKey];
+        if (!role) return '';
+        const menu = role.menus.find((m) => m.id === menuId);
+        return menu ? menu.label : '';
+      }
+
+      function highlightMenu(menuId) {
+        const buttons = menuList.querySelectorAll('.menu-item');
+        buttons.forEach((button) => {
+          button.classList.toggle('active', button.dataset.menuId === menuId);
+        });
+      }
+
+      function renderView(viewId, options = {}) {
+        const role = roleConfigurations[currentRoleKey];
+        let view = role?.menus.find((menu) => menu.id === viewId);
+        let isMenuView = true;
+
+        if (!view) {
+          view = extraViews[viewId];
+          isMenuView = false;
+        }
+
+        if (!view) {
+          console.warn('未找到视图：', viewId);
+          return;
+        }
+
+        if (isMenuView) {
+          currentMenuId = viewId;
+          highlightMenu(viewId);
+        } else if (options.returnTo) {
+          highlightMenu(options.returnTo);
+        }
+
+        const title = view.title || view.label;
+        const subtitle = view.subtitle || view.caption || '';
+        const summary = view.summary || '';
+        const highlights = view.highlights || [];
+
+        let backButtonMarkup = '';
+        if (!isMenuView) {
+          const backId = options.returnTo || currentMenuId;
+          if (backId) {
+            const backLabel = options.returnLabel || getMenuName(currentRoleKey, backId) || '上一级';
+            backButtonMarkup = `<button class="ghost" data-view-target="${backId}" data-from-menu="true">← 返回 ${backLabel}</button>`;
+          }
+        } else if (options.fromMenu) {
+          highlightMenu(viewId);
+        }
+
+        viewContainer.innerHTML = `
+          <article class="view-article${isMenuView ? '' : ' detail-view'}">
+            <header class="view-header">
+              <div>
+                <h1>${title}</h1>
+                ${subtitle ? `<p>${subtitle}</p>` : ''}
+              </div>
+              <div class="view-actions">
+                ${backButtonMarkup}
+              </div>
+            </header>
+            <div class="view-core">
+              ${view.core || ''}
+            </div>
+            <section class="view-foot">
+              <h3>页面业务说明</h3>
+              <p>${summary}</p>
+              ${highlights.length ? `<ul>${highlights.map((item) => `<li>${item}</li>`).join('')}</ul>` : ''}
+            </section>
+          </article>
+        `;
+
+        attachContentInteractions(viewContainer);
+      }
+
+      function attachContentInteractions(scope) {
+        scope.querySelectorAll('[data-view-target]').forEach((element) => {
+          element.addEventListener('click', (event) => {
+            event.preventDefault();
+            const target = element.dataset.viewTarget;
+            const roleTarget = element.dataset.roleTarget;
+            if (roleTarget) {
+              renderRole(roleTarget, target);
+              return;
+            }
+
+            const options = {};
+            if (element.dataset.returnView) {
+              options.returnTo = element.dataset.returnView;
+              if (element.dataset.returnLabel) {
+                options.returnLabel = element.dataset.returnLabel;
+              }
+            }
+            if (element.dataset.fromMenu === 'true') {
+              options.fromMenu = true;
+            }
+
+            renderView(target, options);
+          });
+        });
+      }
+
+      roleSelect.addEventListener('change', (event) => {
+        renderRole(event.target.value);
+      });
+
+      document.querySelectorAll('.system-nav button').forEach((button) => {
+        button.addEventListener('click', () => {
+          const roleTarget = button.dataset.roleTarget;
+          const viewTarget = button.dataset.viewTarget;
+          renderRole(roleTarget, viewTarget);
+        });
+      });
+
+      renderRole(currentRoleKey);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
