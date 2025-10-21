@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 留样档案库</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="sample-archive">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>样品管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">留样策略需满足法规要求并记录保留期限与处置动作。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导出档案</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">留样档案库</h1>
+              <p class="hero-subtitle">集中管理所有留样批次的存储位置、保质期、取用与销毁记录，支持快速追溯。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="storage-allocation.html?role=sample">仓位管理</a>
+              <a class="secondary-btn" href="sample-detail.html?role=sample">查看样品详情</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">留样清单</span>
+              <div class="segmented">
+                <button class="active">全部</button>
+                <button>即将到期</button>
+                <button>取样中</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>批次</th>
+                    <th>存储位置</th>
+                    <th>保留至</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BT-230420-06</td>
+                    <td>留样库 L03-02</td>
+                    <td>2024-04-20</td>
+                    <td><span class="badge success">正常</span></td>
+                    <td class="table-actions"><a href="sample-detail.html?role=sample">详情</a></td>
+                  </tr>
+                  <tr>
+                    <td>BT-230401-11</td>
+                    <td>冷冻库 F01-08</td>
+                    <td>2023-06-01</td>
+                    <td><span class="badge warning">即将到期</span></td>
+                    <td class="table-actions">
+                      <a href="capa-tracking.html?role=qa">提交销毁</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>BT-230512-07</td>
+                    <td>留样库 L05-01</td>
+                    <td>2024-05-12</td>
+                    <td><span class="badge info">复检取样</span></td>
+                    <td class="table-actions">
+                      <a href="analyst-worklist.html?role=analyst">通知分析</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="split-layout">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">取样记录</span>
+                <a class="link-btn" href="test-batch-detail.html?role=analyst">查看批次</a>
+              </div>
+              <div class="panel-body">
+                <div class="history">
+                  <div class="history-item">
+                    <span>2023-05-18 09:12</span>
+                    <span>BT-230512-07 · 分析复检</span>
+                  </div>
+                  <div class="history-item">
+                    <span>2023-05-10 14:30</span>
+                    <span>BT-230401-11 · QA 抽检</span>
+                  </div>
+                  <div class="history-item">
+                    <span>2023-04-28 10:05</span>
+                    <span>BT-230420-06 · 客诉调查</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">留样策略</span>
+                <a class="link-btn" href="config-workbench.html?role=admin">调整策略</a>
+              </div>
+              <div class="panel-body">
+                <div class="note-card">医药成品需保留 1 年；原料及中间体依照法规保留 6 个月；危化品需单独存储并记录温度。</div>
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>保留期限</strong>
+                    <span>依产品类别自动计算</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>取样审批</strong>
+                    <span>需 QA 与分析双签</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>销毁流程</strong>
+                    <span>自动生成证书</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>留样档案库用于管理样品保留、取样、销毁的全生命周期记录，满足法规追溯要求。</p>
+            <ul class="clean">
+              <li>支持批量导出留样清单与取样记录。</li>
+              <li>策略调整由系统管理员维护并自动生效。</li>
+              <li>留样销毁需生成电子证书并由 QA 审批。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -2,83 +2,502 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>LabWare LIMS 原型概览</title>
-    <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
-    </style>
+    <title>LabWare LIMS - 角色总览</title>
+    <link rel="stylesheet" href="labware.css" />
   </head>
-  <body>
-    <header>
-      <h1>LabWare LIMS 原型</h1>
-      <p class="tagline">实验室信息管理系统，支持多行业检验流程。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>质量检测实验室、医药研发、食品安全机构</p>
-        <p><strong>核心痛点：</strong>实验流程复杂、样品追踪难、合规要求严格</p>
-        <p><strong>价值主张：</strong>提供样品、测试、数据与合规的一体化管理</p>
+  <body data-page="role-home">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>样品管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">
+          <strong>实验室快讯</strong><br />
+          今日有 3 个仪器计划维护，晚班需要完成 12 个微生物检测批次。
+        </div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">通知中心</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <div class="role-dashboard" data-role-panel="sample">
+            <section class="page-hero">
+              <div>
+                <h1 class="hero-title">样品管理员 · 今日概览</h1>
+                <p class="hero-subtitle">追踪入场样品、协调批次排程与存储位分配，保障实验室收样高效准确。</p>
+              </div>
+              <div class="hero-actions">
+                <a class="primary-btn" href="sample-intake.html?role=sample">开启接收班次</a>
+                <a class="secondary-btn" href="storage-allocation.html?role=sample">库存调拨</a>
+              </div>
+            </section>
+            <section class="stats-grid">
+              <div class="stat-card">
+                <span class="label">待接收样品</span>
+                <span class="value">18</span>
+                <span class="trend">+5 新预约</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">逾期批次</span>
+                <span class="value">2</span>
+                <span class="trend" style="color: var(--danger);">需要优先排程</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">空闲存储位</span>
+                <span class="value">42</span>
+                <span class="trend">冷藏区 28 位</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">留样到期提醒</span>
+                <span class="value">7</span>
+                <span class="trend">下周需处理</span>
+              </div>
+            </section>
+            <section class="grid-two">
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">今日到达批次</span>
+                  <a class="link-btn" href="batch-tracking.html?role=sample">查看追踪</a>
+                </div>
+                <div class="panel-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>批次号</th>
+                        <th>客户</th>
+                        <th>品类</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>BT-230518-01</td>
+                        <td>医药集团 A</td>
+                        <td>无菌检查</td>
+                        <td><span class="badge warning">待分配</span></td>
+                        <td class="table-actions">
+                          <a href="sample-intake.html?role=sample">分配</a>
+                          <a href="sample-detail.html?role=sample">详情</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>BT-230518-02</td>
+                        <td>食品企业 B</td>
+                        <td>农残检测</td>
+                        <td><span class="badge info">温控中</span></td>
+                        <td class="table-actions">
+                          <a href="storage-allocation.html?role=sample">入库</a>
+                          <a href="sample-detail.html?role=sample">详情</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>BT-230518-05</td>
+                        <td>第三方 CRO</td>
+                        <td>稳定性考察</td>
+                        <td><span class="badge success">已交接</span></td>
+                        <td class="table-actions">
+                          <a href="batch-tracking.html?role=sample">追踪</a>
+                          <a href="sample-detail.html?role=sample">详情</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">流程监控</span>
+                  <div class="segmented">
+                    <button class="active">收样</button>
+                    <button>入库</button>
+                    <button>留样</button>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="workflow">
+                    <div class="workflow-step">
+                      <span class="step-index">1</span>
+                      <div class="step-content">
+                        <span class="step-title">预约确认</span>
+                        <span class="step-desc">8 个预约等待确认，需要校验检测方案。</span>
+                      </div>
+                    </div>
+                    <div class="workflow-step">
+                      <span class="step-index">2</span>
+                      <div class="step-content">
+                        <span class="step-title">收样登记</span>
+                        <span class="step-desc">3 个批次等待扫码入库。</span>
+                      </div>
+                    </div>
+                    <div class="workflow-step">
+                      <span class="step-index">3</span>
+                      <div class="step-content">
+                        <span class="step-title">任务分派</span>
+                        <span class="step-desc">关联 12 个检测项目，需匹配分析人员。</span>
+                      </div>
+                    </div>
+                  </div>
+                  <a class="link-btn" href="sample-intake.html?role=sample">进入工作台</a>
+                </div>
+              </div>
+            </section>
+            <section class="business-notes">
+              <h3>业务说明</h3>
+              <p>样品管理员负责样品预约与接收、批次状态更新及存储位配置，通过统一工作台快速完成扫码入库与流转。</p>
+              <ul class="clean">
+                <li>接收流程需验证样品合规性并生成标签。</li>
+                <li>批次追踪实时呈现物流、测试与存储状态。</li>
+                <li>与库存系统同步，确保冷链与危险品隔离。</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="role-dashboard" data-role-panel="analyst">
+            <section class="page-hero">
+              <div>
+                <h1 class="hero-title">分析人员 · 今日任务</h1>
+                <p class="hero-subtitle">快速掌握待执行的实验任务、仪器排程与复核状态，让测试执行更加标准可控。</p>
+              </div>
+              <div class="hero-actions">
+                <a class="primary-btn" href="analyst-worklist.html?role=analyst">打开工作清单</a>
+                <a class="secondary-btn" href="test-execution.html?role=analyst">查看 SOP</a>
+              </div>
+            </section>
+            <section class="stats-grid">
+              <div class="stat-card">
+                <span class="label">待执行任务</span>
+                <span class="value">9</span>
+                <span class="trend">3 个高优先级</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">仪器利用率</span>
+                <span class="value">82%</span>
+                <span class="trend">GC-MS 空闲 2 小时</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">结果待复核</span>
+                <span class="value">5</span>
+                <span class="trend">预计 18:30 完成</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">偏差草稿</span>
+                <span class="value">1</span>
+                <span class="trend" style="color: var(--warning);">需补充说明</span>
+              </div>
+            </section>
+            <section class="grid-two">
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">待办任务</span>
+                  <a class="link-btn" href="analyst-worklist.html?role=analyst">查看全部</a>
+                </div>
+                <div class="panel-body">
+                  <div class="card-table">
+                    <div class="card-table-row">
+                      <div class="row-main">
+                        <strong>稳定性-加速阶段（Day 14）</strong>
+                        <span class="row-sub">批次 BT-230412-07 · 8 个测试项目</span>
+                      </div>
+                      <a href="test-batch-detail.html?role=analyst">进入</a>
+                    </div>
+                    <div class="card-table-row">
+                      <div class="row-main">
+                        <strong>微生物限度检测</strong>
+                        <span class="row-sub">批次 BT-230518-03 · 需无菌培养</span>
+                      </div>
+                      <a href="test-execution.html?role=analyst">执行</a>
+                    </div>
+                    <div class="card-table-row">
+                      <div class="row-main">
+                        <strong>溶出度曲线复核</strong>
+                        <span class="row-sub">结果待签名 · 预计 2 小时</span>
+                      </div>
+                      <a href="result-entry.html?role=analyst">录入</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">仪器排程</span>
+                  <div class="tab-bar">
+                    <div class="tab active">今日</div>
+                    <div class="tab">本周</div>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <ul class="timeline">
+                    <li class="timeline-item">
+                      <div class="timeline-content">
+                        <strong>09:00 - HPLC-02</strong>
+                        <span class="meta">溶出度测试 · 操作人：李晨</span>
+                      </div>
+                    </li>
+                    <li class="timeline-item">
+                      <div class="timeline-content">
+                        <strong>11:30 - GC-MS-01</strong>
+                        <span class="meta">有机残留分析 · 操作人：王颖</span>
+                      </div>
+                    </li>
+                    <li class="timeline-item">
+                      <div class="timeline-content">
+                        <strong>14:00 - ICP-OES</strong>
+                        <span class="meta">重金属测试 · 操作人：陈宇</span>
+                      </div>
+                    </li>
+                  </ul>
+                  <a class="link-btn" href="test-execution.html?role=analyst">查看排程</a>
+                </div>
+              </div>
+            </section>
+            <section class="business-notes">
+              <h3>业务说明</h3>
+              <p>分析人员通过工作清单掌握测试任务、遵循 SOP 执行并录入结果，异常时及时发起偏差报告与沟通。</p>
+              <ul class="clean">
+                <li>仪器排程结合资质与维护状态自动匹配。</li>
+                <li>结果录入需完成双人复核与电子签名。</li>
+                <li>偏差上报自动同步至质量主管。</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="role-dashboard" data-role-panel="qa">
+            <section class="page-hero">
+              <div>
+                <h1 class="hero-title">质量主管 · 合规驾驶舱</h1>
+                <p class="hero-subtitle">掌控批次放行、报告签发与审计准备情况，及时跟进 CAPA 闭环进度。</p>
+              </div>
+              <div class="hero-actions">
+                <a class="primary-btn" href="qa-release.html?role=qa">处理待放行</a>
+                <a class="secondary-btn" href="report-center.html?role=qa">生成报告</a>
+              </div>
+            </section>
+            <section class="stats-grid">
+              <div class="stat-card">
+                <span class="label">待放行批次</span>
+                <span class="value">6</span>
+                <span class="trend">其中 2 个需补证据</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">报告签发率</span>
+                <span class="value">94%</span>
+                <span class="trend">+3% 较上周</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">审计发现</span>
+                <span class="value">1</span>
+                <span class="trend" style="color: var(--danger);">待根因分析</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">CAPA 准时率</span>
+                <span class="value">88%</span>
+                <span class="trend">目标 ≥ 90%</span>
+              </div>
+            </section>
+            <section class="grid-two">
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">待放行列表</span>
+                  <a class="link-btn" href="qa-release.html?role=qa">打开审核视图</a>
+                </div>
+                <div class="panel-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>批次</th>
+                        <th>产品</th>
+                        <th>风险等级</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>BT-230401-11</td>
+                        <td>注射剂 5ml</td>
+                        <td><span class="badge warning">中</span></td>
+                        <td><span class="badge info">等待 QA</span></td>
+                        <td class="table-actions">
+                          <a href="qa-release.html?role=qa">审核</a>
+                          <a href="release-detail.html?role=qa">详情</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>BT-230412-07</td>
+                        <td>片剂稳定性</td>
+                        <td><span class="badge success">低</span></td>
+                        <td><span class="badge success">分析完成</span></td>
+                        <td class="table-actions">
+                          <a href="report-center.html?role=qa">生成报告</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>BT-230425-03</td>
+                        <td>原料药杂质</td>
+                        <td><span class="badge danger">高</span></td>
+                        <td><span class="badge warning">待 CAPA</span></td>
+                        <td class="table-actions">
+                          <a href="capa-tracking.html?role=qa">跟进 CAPA</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">审计准备</span>
+                  <a class="link-btn" href="compliance-audit.html?role=qa">查看审计计划</a>
+                </div>
+                <div class="panel-body">
+                  <div class="kpi-trio">
+                    <div class="kpi">
+                      <span>审计证据包</span>
+                      <strong>14/16</strong>
+                      <span class="trend">2 个待补齐</span>
+                    </div>
+                    <div class="kpi">
+                      <span>培训合规率</span>
+                      <strong>98%</strong>
+                      <span class="trend">本周 3 人完成考试</span>
+                    </div>
+                    <div class="kpi">
+                      <span>偏差响应时间</span>
+                      <strong>4.2h</strong>
+                      <span class="trend">目标 ≤ 5h</span>
+                    </div>
+                  </div>
+                  <div class="note-card">FDA 年度审计预约在 6 月，请提前完成 SOP 更新及仪器校准证明。</div>
+                </div>
+              </div>
+            </section>
+            <section class="business-notes">
+              <h3>业务说明</h3>
+              <p>质量主管需要在批次放行前完成数据复核、报告签发及风险评估，并对偏差与 CAPA 进行闭环管理。</p>
+              <ul class="clean">
+                <li>审核视图提供测试数据、偏差和附件证据。</li>
+                <li>报告生成支持模板化与电子签名。</li>
+                <li>合规台账记录审计计划、整改与跟踪。</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="role-dashboard" data-role-panel="admin">
+            <section class="page-hero">
+              <div>
+                <h1 class="hero-title">系统管理员 · 运营监控</h1>
+                <p class="hero-subtitle">维护用户权限、接口连通性与系统健康状况，确保实验室平台稳定安全运行。</p>
+              </div>
+              <div class="hero-actions">
+                <a class="primary-btn" href="user-admin.html?role=admin">管理权限</a>
+                <a class="secondary-btn" href="system-monitoring.html?role=admin">查看监控</a>
+              </div>
+            </section>
+            <section class="stats-grid">
+              <div class="stat-card">
+                <span class="label">接口成功率</span>
+                <span class="value">99.4%</span>
+                <span class="trend">LIMS ↔ ERP 稳定</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">待审批用户</span>
+                <span class="value">4</span>
+                <span class="trend">QA 团队新增</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">系统告警</span>
+                <span class="value">1</span>
+                <span class="trend" style="color: var(--danger);">仪器接口重试</span>
+              </div>
+              <div class="stat-card">
+                <span class="label">配置变更窗口</span>
+                <span class="value">周五</span>
+                <span class="trend">需提前提交流程</span>
+              </div>
+            </section>
+            <section class="grid-two">
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">接口健康</span>
+                  <a class="link-btn" href="instrument-integration.html?role=admin">接口面板</a>
+                </div>
+                <div class="panel-body">
+                  <div class="chart-placeholder">实时数据流量图（示意）</div>
+                  <div class="highlight-line">
+                    <strong>ERP 同步</strong>
+                    <span>延迟 2 分钟</span>
+                  </div>
+                  <div class="highlight-line">
+                    <strong>MES 回写</strong>
+                    <span>成功率 100%</span>
+                  </div>
+                  <div class="highlight-line">
+                    <strong>仪器驱动</strong>
+                    <span>1 个重试待查</span>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">权限审批</span>
+                  <a class="link-btn" href="user-admin.html?role=admin">立即处理</a>
+                </div>
+                <div class="panel-body">
+                  <div class="card-table">
+                    <div class="card-table-row">
+                      <div class="row-main">
+                        <strong>王颖 · QA 主管</strong>
+                        <span class="row-sub">申请访问 报告生成中心</span>
+                      </div>
+                      <a href="user-admin.html?role=admin">审批</a>
+                    </div>
+                    <div class="card-table-row">
+                      <div class="row-main">
+                        <strong>陈宇 · 分析人员</strong>
+                        <span class="row-sub">请求新增仪器资质：ICP-OES</span>
+                      </div>
+                      <a href="user-admin.html?role=admin">审批</a>
+                    </div>
+                    <div class="card-table-row">
+                      <div class="row-main">
+                        <strong>外协账号 · 第三方实验室</strong>
+                        <span class="row-sub">需要访问 留样档案库</span>
+                      </div>
+                      <a href="config-workbench.html?role=admin">配置</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="business-notes">
+              <h3>业务说明</h3>
+              <p>系统管理员负责维护用户权限、整合上下游系统接口以及监控平台性能，确保 LIMS 稳定合规。</p>
+              <ul class="clean">
+                <li>统一管理角色模板与 SOP 访问控制。</li>
+                <li>接口监控显示延迟、错误与告警处理。</li>
+                <li>配置工作台支持环境、流程与主数据设置。</li>
+              </ul>
+            </section>
+          </div>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>实验室接收样品并分配测试</li><li>分析人员录入结果并复核</li><li>质量主管生成报告与合规审计</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>样品与批次管理</h3>
-              <p class="goal">功能目标：确保样品全流程可追溯</p>
-              <ul>
-                <li>样品登记、条码与链路</li><li>批次、批号与状态跟踪</li><li>存储条件与保留管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>测试与工作流程</h3>
-              <p class="goal">功能目标：标准化实验操作流程</p>
-              <ul>
-                <li>测试方法、SOP 与模板</li><li>任务分配、排程与仪器管理</li><li>结果录入、复核与异常处理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>数据管理与报告</h3>
-              <p class="goal">功能目标：保证数据质量与合规</p>
-              <ul>
-                <li>数据审核、电子签名与审计轨迹</li><li>自定义报告与证书生成</li><li>与 ELN、ERP 系统集成</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>合规与质量</h3>
-              <p class="goal">功能目标：满足行业法规与认证</p>
-              <ul>
-                <li>ISO、GMP、FDA 等合规支持</li><li>偏差、CAPA 与质量指标</li><li>仪器校准与资产管理</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>样品处理周期与准时率</li><li>数据审核通过率与异常闭环</li><li>合规审计发现与整改效率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

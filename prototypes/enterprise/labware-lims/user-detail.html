@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 用户详情</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="user-detail">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>系统管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">审批用户需记录电子签名与原因。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">审批记录</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">用户详情 · 王颖</h1>
+              <p class="hero-subtitle">查看用户信息、角色申请与审批历史，完成访问权限管理。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="user-admin.html?role=admin">返回列表</a>
+            </div>
+          </section>
+
+          <section class="two-column">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">基本信息</span>
+                <a class="link-btn" href="config-workbench.html?role=admin">调整角色</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>部门</strong>
+                    <span>质量管理</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>申请角色</strong>
+                    <span>QA 主管</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>资质</strong>
+                    <span>质量审核、CAPA 管理</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>账号状态</strong>
+                    <span class="badge warning">待审批</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">审批动作</span>
+                <a class="link-btn" href="integration-log.html?role=admin">查看日志</a>
+              </div>
+              <div class="panel-body">
+                <div class="form-grid">
+                  <div class="form-control">
+                    <label>审批结果</label>
+                    <select>
+                      <option>批准</option>
+                      <option>拒绝</option>
+                      <option>退回补充</option>
+                    </select>
+                  </div>
+                  <div class="form-control">
+                    <label>有效期</label>
+                    <input type="date" />
+                  </div>
+                  <div class="form-control" style="grid-column: 1 / -1;">
+                    <label>备注</label>
+                    <textarea placeholder="填写审批意见"></textarea>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="primary-btn" type="button">提交审批</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">审批历史</span>
+              <a class="link-btn" href="user-admin.html?role=admin">刷新</a>
+            </div>
+            <div class="panel-body">
+              <div class="history">
+                <div class="history-item">
+                  <span>2023-04-10</span>
+                  <span>申请分析人员角色 · 已通过</span>
+                </div>
+                <div class="history-item">
+                  <span>2023-02-05</span>
+                  <span>调岗至质量管理 · 权限更新</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>用户详情页面用于审批用户申请并维护历史记录。</p>
+            <ul class="clean">
+              <li>审批需填入有效期与审批意见。</li>
+              <li>历史记录供审计追溯。</li>
+              <li>可跳转到角色配置与接口日志。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 样品详情示例</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="sample-detail">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>样品管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">样品详情页面展示完整的链路信息，便于跨角色协同。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">打印标签</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">样品详情 · BT-230518-01</h1>
+              <p class="hero-subtitle">展示样品基础信息、检验计划、存储状态与流程记录，支持快速跳转到相关页面。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="batch-tracking.html?role=sample">批次追踪</a>
+              <a class="secondary-btn" href="analyst-worklist.html?role=analyst">分派分析</a>
+            </div>
+          </section>
+
+          <section class="two-column">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">基础信息</span>
+                <a class="link-btn" href="sample-registration.html?role=sample">编辑预约</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>客户</strong>
+                    <span>医药集团 A</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>样品类型</strong>
+                    <span>注射剂 · 无菌检查</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>收样时间</strong>
+                    <span>2023-05-18 09:12</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>温控要求</strong>
+                    <span class="badge info">2-8℃</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>留样计划</strong>
+                    <span>保留至 2024-05-18</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">检验计划</span>
+                <a class="link-btn" href="test-execution.html?role=analyst">查看 SOP</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>微生物限度</strong>
+                    <span>负责人：王颖 · 截止 05-19</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>含量测定</strong>
+                    <span>负责人：陈宇 · 截止 05-20</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>外观检查</strong>
+                    <span>负责人：赵晨 · 截止 05-19</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>仪器预约</strong>
+                    <span>HPLC-02 · 05-18 13:00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="two-column">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">存储与流转</span>
+                <a class="link-btn" href="storage-allocation.html?role=sample">调整仓位</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>当前仓位</strong>
+                    <span>冷藏区 R02-05</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>最近调拨</strong>
+                    <span>2023-05-18 11:30 · 移至分析室</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>温控记录</strong>
+                    <span>范围 3.1℃ - 4.0℃</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>留样状态</strong>
+                    <span>待留样 · 预约 05-20</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">流程时间轴</span>
+                <a class="link-btn" href="qa-release.html?role=qa">查看审核</a>
+              </div>
+              <div class="panel-body">
+                <ul class="timeline">
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>2023-05-18 09:12</strong>
+                      <span class="meta">样品接收完成，生成批次</span>
+                    </div>
+                  </li>
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>2023-05-18 10:05</strong>
+                      <span class="meta">任务分派至分析人员</span>
+                    </div>
+                  </li>
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>2023-05-18 13:00</strong>
+                      <span class="meta">HPLC-02 仪器预约确认</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>样品详情页面提供跨角色共享的核心信息，可跳转至接收、分析、质量及系统模块，支持多角色协同。</p>
+            <ul class="clean">
+              <li>信息分区展示基础属性、检测计划、存储与流程。</li>
+              <li>可直接发起调拨、编辑预约或查看 SOP。</li>
+              <li>与 QA 审核及 CAPA 页面互通。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

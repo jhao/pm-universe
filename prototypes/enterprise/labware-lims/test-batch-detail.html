@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 批次详情示例</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="test-batch-detail">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>分析人员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">批次详情可跨角色共享，用于查看整体执行状态。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导出报告</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">批次详情 · BT-230412-07</h1>
+              <p class="hero-subtitle">展示批次执行状态、任务进度、结果与质量信息，支持跨角色协同。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="analyst-worklist.html?role=analyst">返回工作清单</a>
+              <a class="secondary-btn" href="qa-release.html?role=qa">查看 QA 审核</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">进度总览</span>
+              <div class="segmented">
+                <button class="active">执行</button>
+                <button>质量</button>
+                <button>留样</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <span class="label">执行完成度</span>
+                  <span class="value">78%</span>
+                  <span class="trend">剩余 2 个测试</span>
+                </div>
+                <div class="stat-card">
+                  <span class="label">结果复核</span>
+                  <span class="value">3 / 5</span>
+                  <span class="trend">预计今晚完成</span>
+                </div>
+                <div class="stat-card">
+                  <span class="label">偏差</span>
+                  <span class="value">1</span>
+                  <span class="trend" style="color: var(--warning);">等待 QA</span>
+                </div>
+                <div class="stat-card">
+                  <span class="label">留样状态</span>
+                  <span class="value">计划中</span>
+                  <span class="trend">05-20</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">任务进度</span>
+                <a class="link-btn" href="test-execution.html?role=analyst">继续执行</a>
+              </div>
+              <div class="panel-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>测试项目</th>
+                      <th>状态</th>
+                      <th>负责人</th>
+                      <th>截止</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>溶出度</td>
+                      <td><span class="badge warning">待执行</span></td>
+                      <td>李晨</td>
+                      <td>05-18</td>
+                    </tr>
+                    <tr>
+                      <td>含量测定</td>
+                      <td><span class="badge info">复核中</span></td>
+                      <td>陈宇</td>
+                      <td>05-18</td>
+                    </tr>
+                    <tr>
+                      <td>微生物限度</td>
+                      <td><span class="badge success">完成</span></td>
+                      <td>王颖</td>
+                      <td>05-17</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">质量信息</span>
+                <a class="link-btn" href="capa-tracking.html?role=qa">查看 CAPA</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>偏差 DV-20230518-01</strong>
+                    <span>状态：处理中</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>报告草稿</strong>
+                    <span>QA 王颖 · 待签名</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>CAPA 任务</strong>
+                    <span>根因分析中</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">时间线</span>
+              <a class="link-btn" href="batch-tracking.html?role=sample">全流程追踪</a>
+            </div>
+            <div class="panel-body">
+              <ul class="timeline">
+                <li class="timeline-item">
+                  <div class="timeline-content">
+                    <strong>05-17 10:00</strong>
+                    <span class="meta">完成微生物限度测试</span>
+                  </div>
+                </li>
+                <li class="timeline-item">
+                  <div class="timeline-content">
+                    <strong>05-18 09:00</strong>
+                    <span class="meta">HPLC 预约确认</span>
+                  </div>
+                </li>
+                <li class="timeline-item">
+                  <div class="timeline-content">
+                    <strong>05-18 10:45</strong>
+                    <span class="meta">偏差 DV-20230518-01 提交 QA</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>批次详情页面整合执行、质量、存储等信息，帮助团队及时了解整体进度。</p>
+            <ul class="clean">
+              <li>统计关键指标并显示任务状态。</li>
+              <li>质量信息与 CAPA、报告生成互通。</li>
+              <li>时间线展示重要事件与里程碑。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 批次追踪中心</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="batch-tracking">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>样品管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">批次进度自动联动分析结果与 QA 审核，确保状态透明。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导出追踪</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">批次追踪中心</h1>
+              <p class="hero-subtitle">可视化展示样品批次在收样、分析、复核、放行各阶段的进度，并及时预警瓶颈。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="sample-intake.html?role=sample">返回接收</a>
+              <a class="secondary-btn" href="sample-detail.html?role=sample">查看样品</a>
+            </div>
+          </section>
+
+          <section class="board">
+            <div class="board-column">
+              <h4>收样中</h4>
+              <div class="board-card">
+                <strong>BT-230518-09</strong>
+                <span>客户：医药集团 C</span>
+                <span class="badge warning">待扫码</span>
+              </div>
+              <div class="board-card">
+                <strong>BT-230518-12</strong>
+                <span>客户：食品企业 D</span>
+                <span class="badge info">温控检测</span>
+              </div>
+            </div>
+            <div class="board-column">
+              <h4>分析中</h4>
+              <div class="board-card">
+                <strong>BT-230510-03</strong>
+                <span>项目：农残检测</span>
+                <span class="badge success">已分派</span>
+              </div>
+              <div class="board-card">
+                <strong>BT-230512-07</strong>
+                <span>项目：稳定性 Day 28</span>
+                <span class="badge warning">等待仪器</span>
+              </div>
+            </div>
+            <div class="board-column">
+              <h4>复核中</h4>
+              <div class="board-card">
+                <strong>BT-230505-02</strong>
+                <span>项目：微生物限度</span>
+                <span class="badge info">QA 审核</span>
+              </div>
+              <div class="board-card">
+                <strong>BT-230507-05</strong>
+                <span>项目：含量测定</span>
+                <span class="badge warning">待补充原始数据</span>
+              </div>
+            </div>
+            <div class="board-column">
+              <h4>已放行</h4>
+              <div class="board-card">
+                <strong>BT-230420-06</strong>
+                <span>报告已签发</span>
+                <span class="badge success">完成</span>
+              </div>
+              <div class="board-card">
+                <strong>BT-230426-08</strong>
+                <span>CAPA 完成</span>
+                <span class="badge success">归档</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="split-layout">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">瓶颈预警</span>
+                <a class="link-btn" href="analyst-worklist.html?role=analyst">协调分析</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>HPLC 排队超过 6 小时</span>
+                    <span>影响 3 个批次</span>
+                  </div>
+                  <div class="list-item">
+                    <span>QA 待审核 > 48 小时</span>
+                    <span>批次 BT-230505-02</span>
+                  </div>
+                  <div class="list-item">
+                    <span>危化品存储超 48 小时</span>
+                    <span>需加急测试</span>
+                  </div>
+                </div>
+                <div class="alert">提醒分析负责人调度仪器，并通知 QA 优先处理待审核批次。</div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">批次里程碑</span>
+                <a class="link-btn" href="test-batch-detail.html?role=analyst">查看批次详情</a>
+              </div>
+              <div class="panel-body">
+                <ul class="timeline">
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>BT-230510-03 · 09:30</strong>
+                      <span class="meta">完成分析，待结果录入</span>
+                    </div>
+                  </li>
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>BT-230512-07 · 11:10</strong>
+                      <span class="meta">仪器故障转人工复核</span>
+                    </div>
+                  </li>
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>BT-230505-02 · 15:45</strong>
+                      <span class="meta">QA 发起补资料请求</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>批次追踪为样品管理员提供完整的流程视角，可联动分析、QA 与存储模块的最新状态，并支持瓶颈预警。</p>
+            <ul class="clean">
+              <li>看板展示不同阶段批次数量与进度。</li>
+              <li>瓶颈预警基于 SLA 与资源占用实时计算。</li>
+              <li>可跳转至分析或 QA 页面进行协调。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

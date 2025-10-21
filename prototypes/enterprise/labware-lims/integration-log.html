@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 接口日志示例</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="integration-log">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>系统管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">接口日志用于排查系统间数据同步问题。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导出日志</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">接口日志 · 近 24 小时</h1>
+              <p class="hero-subtitle">查看各接口调用情况、错误详情与重试结果，支持快速排障。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="secondary-btn" href="instrument-integration.html?role=admin">返回接口面板</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">日志过滤</span>
+              <div class="segmented">
+                <button class="active">全部</button>
+                <button>错误</button>
+                <button>重试</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="form-grid">
+                <div class="form-control">
+                  <label>接口</label>
+                  <select>
+                    <option>全部</option>
+                    <option>HPLC-02</option>
+                    <option>GC-MS-01</option>
+                    <option>ERP 同步</option>
+                  </select>
+                </div>
+                <div class="form-control">
+                  <label>时间范围</label>
+                  <input type="datetime-local" />
+                </div>
+                <div class="form-control">
+                  <label>关键字</label>
+                  <input type="text" placeholder="输入样品号或错误码" />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" type="button">应用筛选</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">接口事件</span>
+              <a class="link-btn" href="system-monitoring.html?role=admin">查看监控</a>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>接口</th>
+                    <th>级别</th>
+                    <th>详情</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>05-18 10:15</td>
+                    <td>GC-MS-01</td>
+                    <td><span class="badge danger">错误</span></td>
+                    <td>数据包超时</td>
+                    <td><span class="badge warning">重试中</span></td>
+                  </tr>
+                  <tr>
+                    <td>05-18 09:50</td>
+                    <td>ERP 同步</td>
+                    <td><span class="badge info">信息</span></td>
+                    <td>订单同步成功</td>
+                    <td><span class="badge success">完成</span></td>
+                  </tr>
+                  <tr>
+                    <td>05-18 09:30</td>
+                    <td>HPLC-02</td>
+                    <td><span class="badge warning">警告</span></td>
+                    <td>流量计短时波动</td>
+                    <td><span class="badge success">已恢复</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>接口日志页面提供详细事件与过滤工具，便于排查跨系统数据问题。</p>
+            <ul class="clean">
+              <li>可按接口、时间、关键字过滤。</li>
+              <li>记录错误、警告、信息等级别。</li>
+              <li>与系统监控、仪器面板联动。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

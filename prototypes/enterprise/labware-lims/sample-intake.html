@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 样品接收工作台</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="sample-intake">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>样品管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">
+          核心提醒：收样需核对 SOP、确保温控记录齐备后再入库。
+        </div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">扫描设备连接</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">样品接收工作台</h1>
+              <p class="hero-subtitle">统一处理预约、扫码登记、条码打印及交接确认，让样品入场数据自动同步至批次追踪。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="sample-registration.html?role=sample">新建预约</a>
+              <a class="secondary-btn" href="batch-tracking.html?role=sample">查看批次</a>
+            </div>
+          </section>
+
+          <section class="stats-grid">
+            <div class="stat-card">
+              <span class="label">待处理预约</span>
+              <span class="value">12</span>
+              <span class="trend">其中 4 个危化品</span>
+            </div>
+            <div class="stat-card">
+              <span class="label">今日已登记</span>
+              <span class="value">36</span>
+              <span class="trend">平均用时 3 分钟</span>
+            </div>
+            <div class="stat-card">
+              <span class="label">条码打印</span>
+              <span class="value">128</span>
+              <span class="trend">打印机正常</span>
+            </div>
+            <div class="stat-card">
+              <span class="label">交接异常</span>
+              <span class="value">1</span>
+              <span class="trend" style="color: var(--warning);">需补充温控记录</span>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">到达预约队列</span>
+              <div class="segmented">
+                <button class="active">全部</button>
+                <button>危化</button>
+                <button>冷藏</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>预约编号</th>
+                    <th>客户</th>
+                    <th>样品类型</th>
+                    <th>温控</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>AP-230518-09</td>
+                    <td>医药集团 A</td>
+                    <td>成品-注射剂</td>
+                    <td><span class="badge info">2-8℃</span></td>
+                    <td><span class="badge warning">待核对</span></td>
+                    <td class="table-actions">
+                      <a href="sample-registration.html?role=sample">编辑</a>
+                      <a href="sample-detail.html?role=sample">登记</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>AP-230518-12</td>
+                    <td>食品企业 B</td>
+                    <td>原料-谷物</td>
+                    <td><span class="badge neutral">常温</span></td>
+                    <td><span class="badge success">已交接</span></td>
+                    <td class="table-actions">
+                      <a href="sample-detail.html?role=sample">查看</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>AP-230518-13</td>
+                    <td>第三方 CRO</td>
+                    <td>稳定性样品</td>
+                    <td><span class="badge info">冷冻</span></td>
+                    <td><span class="badge warning">待入库</span></td>
+                    <td class="table-actions">
+                      <a href="storage-allocation.html?role=sample">入库</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="split-layout">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">扫码入场</span>
+                <a class="link-btn" href="sample-detail.html?role=sample">查看标签</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>扫描码：BT-230518-01</strong>
+                    <span><span class="status-dot success"></span>温控正常</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>检验项目</strong>
+                    <span class="inline-tags">
+                      <span>微生物限度</span>
+                      <span>含量测定</span>
+                      <span>外观</span>
+                    </span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>已生成工单</strong>
+                    <span>WO-20230518-001</span>
+                  </div>
+                </div>
+                <a class="link-btn" href="batch-tracking.html?role=sample">跳转至批次追踪</a>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">待办提醒</span>
+                <a class="link-btn" href="sample-archive.html?role=sample">留样处理</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>交接记录上传</span>
+                    <span>4 条待补全</span>
+                  </div>
+                  <div class="list-item">
+                    <span>危化品审批</span>
+                    <span>2 条待 QA 签名</span>
+                  </div>
+                  <div class="list-item">
+                    <span>留样到期</span>
+                    <span>7 天内 5 条</span>
+                  </div>
+                </div>
+                <div class="business-notes">
+                  <h3>操作提示</h3>
+                  <p>核对预约与实际样品数量，异常需立即通知 QA 与分析负责人。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>接收工作台整合预约、扫码、条码打印、入库与任务分派流程，减少手工录入与沟通成本。</p>
+            <ul class="clean">
+              <li>支持批量扫码、自动匹配检测计划。</li>
+              <li>温控、危化品要求实时提醒。</li>
+              <li>与批次追踪、存储模块联动。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

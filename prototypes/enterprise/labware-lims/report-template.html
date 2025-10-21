@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 报告模板编辑</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="report-template">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>质量主管</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">模板可进行模块化配置与版本管理。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">预览模板</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">报告模板编辑</h1>
+              <p class="hero-subtitle">自定义报告章节、数据来源与样式，满足不同客户与法规要求。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="secondary-btn" href="report-center.html?role=qa">返回报告中心</a>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">模板结构</span>
+                <a class="link-btn" href="report-center.html?role=qa">应用模板</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>章节 1</strong>
+                    <span>封面与客户信息</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>章节 2</strong>
+                    <span>检测结果</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>章节 3</strong>
+                    <span>偏差 &amp; CAPA 摘要</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>章节 4</strong>
+                    <span>签名与声明</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">章节详情</span>
+                <a class="link-btn" href="report-center.html?role=qa">保存</a>
+              </div>
+              <div class="panel-body">
+                <div class="form-grid">
+                  <div class="form-control">
+                    <label>章节标题</label>
+                    <input type="text" value="检测结果" />
+                  </div>
+                  <div class="form-control">
+                    <label>数据来源</label>
+                    <select>
+                      <option>LIMS 数据表</option>
+                      <option>外部系统</option>
+                    </select>
+                  </div>
+                  <div class="form-control" style="grid-column: 1 / -1;">
+                    <label>内容模板</label>
+                    <textarea placeholder="编辑报告正文模板">
+<table>
+  <tr><th>项目</th><th>结果</th><th>规格</th></tr>
+  <tr><td>{{test_name}}</td><td>{{result}}</td><td>{{limit}}</td></tr>
+</table>
+                    </textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>模板编辑器提供模块化配置、版本管理与预览，确保报告输出统一。</p>
+            <ul class="clean">
+              <li>章节结构可拖拽调整顺序。</li>
+              <li>支持变量占位符自动填充数据。</li>
+              <li>保存后自动生成新版本并通知相关人员。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
