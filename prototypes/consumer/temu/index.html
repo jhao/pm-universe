@@ -2,83 +2,2705 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Temu 跨境折扣平台 原型概览</title>
+    <title>Temu 跨境折扣平台 角色原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --bg-surface: #f4f6fb;
+        --bg-panel: #ffffff;
+        --bg-sidebar: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+        --color-primary: #f97316;
+        --color-accent: #0ea5e9;
+        --color-text: #0f172a;
+        --color-text-light: #64748b;
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        --radius-sm: 10px;
+        --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.08);
+        --shadow-md: 0 16px 32px rgba(15, 23, 42, 0.12);
+        --shadow-lg: 0 26px 44px rgba(15, 23, 42, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg-surface);
+        font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        color: var(--color-text);
+      }
+
+      .prototype-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 320px;
+        background: var(--bg-sidebar);
+        color: #f8fafc;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .sidebar-logo {
+        font-size: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: 0.04em;
+      }
+
+      .sidebar-logo span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 14px;
+        background: rgba(249, 115, 22, 0.18);
+        color: #f97316;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .role-switch {
+        display: flex;
+        gap: 10px;
+        background: rgba(15, 23, 42, 0.6);
+        padding: 8px;
+        border-radius: var(--radius-md);
+      }
+
+      .role-switch button {
+        flex: 1;
+        border: none;
+        border-radius: var(--radius-sm);
+        background: transparent;
+        color: rgba(226, 232, 240, 0.76);
+        font-size: 14px;
+        font-weight: 500;
+        padding: 10px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .role-switch button.active {
+        background: rgba(248, 250, 252, 0.16);
+        color: #f8fafc;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      }
+
+      .role-summary {
+        background: rgba(15, 23, 42, 0.55);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .role-summary h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .role-summary p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.72);
+        line-height: 1.6;
+      }
+
+      .role-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .role-badge {
+        background: rgba(148, 163, 184, 0.22);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        color: rgba(248, 250, 252, 0.9);
+      }
+
+      .sidebar-menu {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 6px;
+      }
+
+      .menu-section + .menu-section {
+        margin-top: 24px;
+      }
+
+      .menu-section h3 {
+        margin: 0 0 10px 0;
+        font-size: 13px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: rgba(226, 232, 240, 0.56);
+      }
+
+      .menu-item {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: inherit;
+        text-align: left;
+        padding: 12px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.15s ease;
+      }
+
+      .menu-item:hover {
+        background: rgba(148, 163, 184, 0.18);
+        transform: translateX(3px);
+      }
+
+      .menu-item.active {
+        background: rgba(248, 250, 252, 0.16);
+        box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
+      }
+
+      .menu-item-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.45);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+
+      .menu-item-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .menu-item-text strong {
+        font-size: 14px;
+      }
+
+      .menu-item-text span {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.7);
+      }
+
+      .main-area {
+        flex: 1;
+        padding: 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .breadcrumb {
+        font-size: 13px;
+        color: var(--color-text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .top-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .top-actions button {
+        border: none;
+        border-radius: 999px;
+        background: #e2e8f0;
+        color: #0f172a;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .top-actions button.primary {
+        background: var(--color-primary);
+        color: #fff;
+        box-shadow: 0 10px 18px rgba(249, 115, 22, 0.28);
+      }
+
+      .top-actions button:hover {
+        background: #cbd5f5;
+      }
+
+      .top-actions button.primary:hover {
+        background: #ea580c;
+      }
+
+      .view-headline {
+        background: var(--bg-panel);
+        border-radius: var(--radius-lg);
+        padding: 26px 30px;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .view-title {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: -0.02em;
+      }
+
+      .view-subtitle {
+        margin: 10px 0 0 0;
+        font-size: 15px;
+        color: var(--color-text-light);
+        line-height: 1.7;
+      }
+
+      .view-metrics {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .metric-pill {
+        background: rgba(14, 165, 233, 0.12);
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        min-width: 140px;
+      }
+
+      .metric-pill strong {
+        display: block;
+        font-size: 16px;
+      }
+
+      .metric-pill span {
+        font-size: 12px;
+        color: var(--color-text-light);
+      }
+
+      .view-content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .panel {
+        background: var(--bg-panel);
+        border-radius: var(--radius-lg);
+        padding: 24px 28px;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .panel-header h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .panel-header span {
+        font-size: 12px;
+        color: var(--color-text-light);
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .product-card {
+        border-radius: var(--radius-md);
+        padding: 18px;
+        background: linear-gradient(160deg, rgba(248, 113, 113, 0.08), rgba(251, 191, 36, 0.08));
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .product-card h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .product-card .price {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--color-primary);
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.14);
+        color: var(--color-text-light);
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .data-table thead {
+        background: #f1f5f9;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 12px;
+        font-size: 13px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .status {
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status.success {
+        background: rgba(16, 185, 129, 0.12);
+        color: #059669;
+      }
+
+      .status.pending {
+        background: rgba(251, 191, 36, 0.12);
+        color: #d97706;
+      }
+
+      .status.alert {
+        background: rgba(239, 68, 68, 0.12);
+        color: #dc2626;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 16px;
+      }
+
+      .timeline-item {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .timeline-item strong {
+        min-width: 110px;
+        font-size: 13px;
+        color: var(--color-text-light);
+      }
+
+      .timeline-card {
+        flex: 1;
+        background: #f8fafc;
+        border-radius: var(--radius-md);
+        padding: 14px 16px;
+      }
+
+      .kanban {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .kanban-column {
+        background: #f8fafc;
+        border-radius: var(--radius-md);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--color-text-light);
+      }
+
+      .kanban-card {
+        background: #fff;
+        border-radius: var(--radius-sm);
+        padding: 12px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .flex-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .highlight-card {
+        border-radius: var(--radius-md);
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(59, 130, 246, 0.1));
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .highlight-card strong {
+        font-size: 15px;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.14);
+        color: #0284c7;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fafc;
+        border-radius: var(--radius-sm);
+        padding: 14px 18px;
+      }
+
+      .list-item strong {
+        font-size: 14px;
+      }
+
+      .list-item span {
+        font-size: 12px;
+        color: var(--color-text-light);
+      }
+
+      .ab-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .ab-card {
+        border-radius: var(--radius-md);
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .ab-card h4 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .ab-metric {
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .ab-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      @media (max-width: 1180px) {
+        .prototype-shell {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .main-area {
+          padding: 24px;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Temu 跨境折扣平台 原型</h1>
-      <p class="tagline">极致低价与拼团玩法的跨境电商应用。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>价格敏感型消费者、工厂型卖家</p>
-        <p><strong>核心痛点：</strong>消费者希望以最低价格购买新奇商品，供应商需拓展海外渠道</p>
-        <p><strong>价值主张：</strong>通过直连工厂、拼团优惠与补贴策略，提供超低价购物体验</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>用户参与限时拼团并分享给好友</li><li>卖家通过平台上新并同步库存</li><li>运营团队配置补贴与活动玩法</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>活动场景与拼团</h3>
-              <p class="goal">功能目标：利用社交裂变提升订单量</p>
-              <ul>
-                <li>拼单、砍价与新人礼包</li><li>限时秒杀、百亿补贴与签到</li><li>分享邀请与社交传播激励</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商品与供应链</h3>
-              <p class="goal">功能目标：保障低价商品的充足供应</p>
-              <ul>
-                <li>工厂入驻、质检与报价</li><li>库存同步、预售与备货</li><li>海外仓与物流优化</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>订单与售后</h3>
-              <p class="goal">功能目标：提升低价购物的信任度</p>
-              <ul>
-                <li>订单跟踪与配送提醒</li><li>无忧退货、退款与客服在线</li><li>评价体系与用户保障</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>数据与增长</h3>
-              <p class="goal">功能目标：通过数据驱动活动策略</p>
-              <ul>
-                <li>用户分层与补贴策略管理</li><li>活动效果分析与成本监控</li><li>市场洞察与品类规划</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>拼团成功率与分享转化率</li><li>履约成本控制与退货率</li><li>用户新增、日活与购买频次</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="prototype-shell">
+      <aside class="sidebar">
+        <div class="sidebar-logo"><span>T</span>Temu Commerce OS</div>
+        <div class="role-switch">
+          <button type="button" class="active" data-role="user">用户端</button>
+          <button type="button" data-role="admin">管理员端</button>
+          <button type="button" data-role="ops">运营端</button>
+        </div>
+        <div class="role-summary">
+          <h2 id="activeRoleName">用户端体验</h2>
+          <p id="activeRoleDesc">面向终端消费者的沉浸式购物流程，可视化展示拼团、补贴与订单服务。</p>
+          <div class="role-badges" id="roleBadges"></div>
+        </div>
+        <nav class="sidebar-menu" id="sidebarMenu"></nav>
+      </aside>
+      <main class="main-area">
+        <div class="top-bar">
+          <div class="breadcrumb" id="viewBreadcrumb">用户端 / 首页推荐</div>
+          <div class="top-actions">
+            <button type="button">导出布局</button>
+            <button type="button" class="primary">模拟场景播放</button>
+          </div>
+        </div>
+        <section class="view-headline">
+          <div>
+            <h1 class="view-title" id="viewTitle">首页推荐流</h1>
+            <p class="view-subtitle" id="viewSubtitle">基于实时补贴和兴趣标签生成的核心货架，覆盖新品、爆款与海外直邮精选。</p>
+          </div>
+          <div class="view-metrics" id="viewMetrics"></div>
+        </section>
+        <section class="view-content" id="viewContent"></section>
+      </main>
+    </div>
+
+    <script>
+      const ROLE_CONFIG = {
+        user: {
+          name: '用户端体验',
+          description: '面向终端消费者的沉浸式购物流程，可视化展示拼团、补贴与订单服务。',
+          badges: ['社交拼团', '跨境直邮', '极速退款'],
+          metrics: [
+            { label: '今日拼团成功率', value: '68% ↑2.5%' },
+            { label: '补贴成交额', value: '¥4.3M' },
+          ],
+          menu: [
+            {
+              section: '首页体验',
+              items: [
+                {
+                  id: 'user-home',
+                  icon: '🛒',
+                  label: '首页推荐',
+                  hint: '爆款实时刷新',
+                  title: '首页推荐流',
+                  subtitle: '基于实时补贴和兴趣标签生成的核心货架，覆盖新品、爆款与海外直邮精选。',
+                  metrics: [
+                    { label: 'UV 到达率', value: '92%' },
+                    { label: '转化率', value: '14.6%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>核心场景轮播</h3>
+                        <span>已接入 6 个业务位 | 自动依据库存补贴排名</span>
+                      </div>
+                      <div class="card-grid">
+                        <article class="product-card">
+                          <h4>新人 0.99 美妆礼盒</h4>
+                          <div class="price">¥0.99</div>
+                          <div class="tag-list">
+                            <span class="tag">限购 1 件</span>
+                            <span class="tag">新客必领</span>
+                            <span class="tag">海外直邮</span>
+                          </div>
+                        </article>
+                        <article class="product-card">
+                          <h4>全屋收纳组合 12 件套</h4>
+                          <div class="price">¥39.9</div>
+                          <div class="tag-list">
+                            <span class="tag">工厂直供</span>
+                            <span class="tag">48 小时发货</span>
+                            <span class="tag">拼团立减 ¥5</span>
+                          </div>
+                        </article>
+                        <article class="product-card">
+                          <h4>智能扫拖一体机器人</h4>
+                          <div class="price">¥699</div>
+                          <div class="tag-list">
+                            <span class="tag">百亿补贴</span>
+                            <span class="tag">晒图返券 ¥80</span>
+                            <span class="tag">热销 12.8 万</span>
+                          </div>
+                        </article>
+                        <article class="product-card">
+                          <h4>全球买手精选饰品包</h4>
+                          <div class="price">¥19.9</div>
+                          <div class="tag-list">
+                            <span class="tag">限时包邮</span>
+                            <span class="tag">潮流趋势</span>
+                            <span class="tag">达人口碑</span>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>频道矩阵</h3>
+                        <span>按兴趣动态排序</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>限时秒杀 · 19:00 开抢</strong>
+                          <p>提前曝光即将开场的尖货秒杀场，提示库存和补贴力度，支持预约提醒。</p>
+                          <div class="chip-row">
+                            <span class="chip">库存 1,200</span>
+                            <span class="chip">预约 8,942</span>
+                          </div>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>拼团广场</strong>
+                          <p>展示好友拼团进度与即将截团的热度商品，支持一键分享。</p>
+                          <div class="chip-row">
+                            <span class="chip">社交裂变值 86</span>
+                            <span class="chip">待成团 143 单</span>
+                          </div>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>直播专场</strong>
+                          <p>嵌入直播间预告与主播热度榜，支持预约与开播提醒。</p>
+                          <div class="chip-row">
+                            <span class="chip">直播热度 9.4</span>
+                            <span class="chip">GMV 目标 ¥1.2M</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'user-groupbuy',
+                  icon: '🤝',
+                  label: '限时拼团',
+                  hint: '实时成团态势',
+                  title: '限时拼团指挥台',
+                  subtitle: '沉浸式呈现开团-参团-催团的全流程，结合倒计时、拼团氛围与奖励引导。',
+                  metrics: [
+                    { label: '成团进度', value: '84%' },
+                    { label: '平均拉新人数', value: '3.6 人' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>热门拼团房间</h3>
+                        <span>实时刷新 · 45s 前更新</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>拼团名称</th>
+                            <th>团长</th>
+                            <th>参团人数</th>
+                            <th>剩余时间</th>
+                            <th>激励</th>
+                            <th>状态</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>跨境零食 8 国礼包</td>
+                            <td>Abby 🇺🇸</td>
+                            <td>3/5</td>
+                            <td>08:32</td>
+                            <td>邀好友返券 ¥15</td>
+                            <td><span class="status pending">催团中</span></td>
+                          </tr>
+                          <tr>
+                            <td>家居收纳 6 件套</td>
+                            <td>Yuki 🇯🇵</td>
+                            <td>4/4</td>
+                            <td>00:59</td>
+                            <td>免运券 + 返现 5%</td>
+                            <td><span class="status success">已成团</span></td>
+                          </tr>
+                          <tr>
+                            <td>蓝牙耳机音质版</td>
+                            <td>Lucas 🇨🇦</td>
+                            <td>2/3</td>
+                            <td>14:50</td>
+                            <td>拉新得周边</td>
+                            <td><span class="status pending">火速扩散</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>拼团动线</h3>
+                        <span>自动识别薄弱环节</span>
+                      </div>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <strong>开团阶段</strong>
+                          <div class="timeline-card">
+                            <p>弹出优惠券雨与话术模板，提示团长分享到 WhatsApp、Instagram。</p>
+                            <div class="chip-row">
+                              <span class="chip">分享率 72%</span>
+                              <span class="chip">曝光 48,312</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>参团阶段</strong>
+                          <div class="timeline-card">
+                            <p>展示实时参团名单与距离成团差值，提供补位红包与免邮券。</p>
+                            <div class="chip-row">
+                              <span class="chip">人均参团时长 3'15"</span>
+                              <span class="chip">拉新 GMV ¥820K</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>催团阶段</strong>
+                          <div class="timeline-card">
+                            <p>推送动态提醒，支持一键补贴升级与客服介入，保障成团体验。</p>
+                            <div class="chip-row">
+                              <span class="chip">催团转化 41%</span>
+                              <span class="chip">客服介入率 6%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'user-live',
+                  icon: '📺',
+                  label: '直播抢购',
+                  hint: '互动带货',
+                  title: '直播抢购剧场',
+                  subtitle: '集合直播预告、互动任务与榜单激励，形成持续转化闭环。',
+                  metrics: [
+                    { label: '直播停留', value: '12m 48s' },
+                    { label: '互动转化', value: '21%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>今日直播排班</h3>
+                        <span>自动匹配受众画像</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>19:30 海外直邮专场 · 主播 Daisy</strong>
+                          <p>覆盖美国、加拿大用户，主推节日礼盒与生活小家电。</p>
+                          <div class="chip-row">
+                            <span class="chip">预约 12,430</span>
+                            <span class="chip">连麦任务 3/5</span>
+                          </div>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>21:00 拼团夜市 · 主播 Leo</strong>
+                          <p>突出满件折扣和拼团补贴，打通好友助力和红包雨机制。</p>
+                          <div class="chip-row">
+                            <span class="chip">引导拼团 486</span>
+                            <span class="chip">转粉率 18%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>互动任务面板</h3>
+                        <span>用户完成度实时可视</span>
+                      </div>
+                      <div class="kanban">
+                        <div class="kanban-column">
+                          <h4>互动中</h4>
+                          <div class="kanban-card">
+                            <strong>弹幕抽奖</strong>
+                            <span>剩余 02:36</span>
+                            <div class="tag-list">
+                              <span class="tag">参与 3.1 万</span>
+                              <span class="tag">中奖率 2%</span>
+                            </div>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>加购清单挑战</strong>
+                            <span>目标 8 件 · 已完成 6 件</span>
+                          </div>
+                        </div>
+                        <div class="kanban-column">
+                          <h4>激励待发</h4>
+                          <div class="kanban-card">
+                            <strong>首单红包</strong>
+                            <span>匹配支付节点 · 已触发 423 次</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>粉丝团升级礼包</strong>
+                            <span>目标新增粉丝 5K · 已达成 62%</span>
+                          </div>
+                        </div>
+                        <div class="kanban-column">
+                          <h4>复盘沉淀</h4>
+                          <div class="kanban-card">
+                            <strong>直播口碑库</strong>
+                            <span>沉淀达人话术与用户点评 · 可复用</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>短视频二创素材</strong>
+                            <span>剪辑进度 4/7 · 预计明日投放</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+            {
+              section: '订单与服务',
+              items: [
+                {
+                  id: 'user-order',
+                  icon: '📦',
+                  label: '订单中心',
+                  hint: '多状态切换',
+                  title: '订单中心总览',
+                  subtitle: '覆盖全部订单状态与补贴权益，支持一键催发货、售后与客服跟进。',
+                  metrics: [
+                    { label: '待收货', value: '1,268 单' },
+                    { label: '售后中', value: '3.2%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>订单状态视图</h3>
+                        <span>支持按国家、物流公司筛选</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>订单号</th>
+                            <th>商品</th>
+                            <th>金额</th>
+                            <th>状态</th>
+                            <th>节点</th>
+                            <th>操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>TU94856231</td>
+                            <td>智能手持挂烫机</td>
+                            <td>¥129</td>
+                            <td><span class="status pending">待发货</span></td>
+                            <td>仓库分拣 · 预计 6h</td>
+                            <td><span class="tag">催发货</span></td>
+                          </tr>
+                          <tr>
+                            <td>TU94855890</td>
+                            <td>真丝睡衣套装</td>
+                            <td>¥219</td>
+                            <td><span class="status success">运输中</span></td>
+                            <td>跨境航班 · 预计 3 天到港</td>
+                            <td><span class="tag">追踪</span></td>
+                          </tr>
+                          <tr>
+                            <td>TU94854177</td>
+                            <td>拼团-空气炸锅</td>
+                            <td>¥269</td>
+                            <td><span class="status alert">售后处理中</span></td>
+                            <td>待收回件 · 退款审核中</td>
+                            <td><span class="tag">联系客服</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>权益提醒</h3>
+                        <span>保障订单安全感</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>延误补贴</strong>
+                          <p>如超时未发货，自动发放 ¥20 无门槛券。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>碎屏险</strong>
+                          <p>针对高客单价电子类商品，出具一键理赔入口。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>关税补贴</strong>
+                          <p>若产生关税，自动抵扣并提供账单证明。</p>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'user-logistics',
+                  icon: '✈️',
+                  label: '物流追踪',
+                  hint: '可视化轨迹',
+                  title: '跨境物流追踪',
+                  subtitle: '展示跨境节点进度、航班信息与最后一公里自提选择。',
+                  metrics: [
+                    { label: '妥投准时率', value: '96%' },
+                    { label: '自提转化', value: '41%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>航线视图</h3>
+                        <span>华南仓 → 洛杉矶海外仓</span>
+                      </div>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <strong>05-08 09:40</strong>
+                          <div class="timeline-card">
+                            <p>包裹已完成出库，称重 1.6kg，生成国际面单。</p>
+                            <div class="tag-list">
+                              <span class="tag">扫描员：A-12</span>
+                              <span class="tag">预计航班 CZ327</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>05-09 13:26</strong>
+                          <div class="timeline-card">
+                            <p>航班落地洛杉矶，清关资料自动同步。</p>
+                            <div class="tag-list">
+                              <span class="tag">海关放行 34min</span>
+                              <span class="tag">关税补贴已触发</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>05-10 16:48</strong>
+                          <div class="timeline-card">
+                            <p>末端配送交接，用户可选择“自提柜”或“门到门”。</p>
+                            <div class="tag-list">
+                              <span class="tag">自提奖励积分 +200</span>
+                              <span class="tag">配送商：UPS</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>服务助手</h3>
+                        <span>AI 实时答疑</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>关于关税</strong>
+                            <span>自动告知补贴金额与账单下载路径</span>
+                          </div>
+                          <span class="status success">已解决</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>更改地址</strong>
+                            <span>在转运前仍可修改，AI 提醒操作截止时间</span>
+                          </div>
+                          <span class="status pending">处理中</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>催派件</strong>
+                            <span>调用海外仓 SLA，预计派送时间段</span>
+                          </div>
+                          <span class="status success">已派单</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'user-service',
+                  icon: '🛠️',
+                  label: '售后服务',
+                  hint: '一键退换',
+                  title: '售后服务中心',
+                  subtitle: '集中展示退款、退货与客服协同，保障低价场景下的信任感。',
+                  metrics: [
+                    { label: '无忧退货覆盖率', value: '98%' },
+                    { label: '人工介入率', value: '7%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>售后状态</h3>
+                        <span>支持批量查询</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>单号</th>
+                            <th>类型</th>
+                            <th>进度</th>
+                            <th>补贴</th>
+                            <th>客服</th>
+                            <th>最后更新</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>AR563201</td>
+                            <td>仅退款</td>
+                            <td><span class="status success">退款完成</span></td>
+                            <td>额外赔付 ¥15</td>
+                            <td>Amy · AI 复核</td>
+                            <td>05-08 18:20</td>
+                          </tr>
+                          <tr>
+                            <td>AR563033</td>
+                            <td>退货退款</td>
+                            <td><span class="status pending">上门取件</span></td>
+                            <td>免运费</td>
+                            <td>Leon · 海外客服</td>
+                            <td>05-08 16:42</td>
+                          </tr>
+                          <tr>
+                            <td>AR562992</td>
+                            <td>以换代修</td>
+                            <td><span class="status pending">仓库质检</span></td>
+                            <td>延保 6 个月</td>
+                            <td>AI 工单助手</td>
+                            <td>05-08 11:18</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>服务配置</h3>
+                        <span>自动命中高风险订单</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>一键理赔</strong>
+                          <p>30 秒内完成退货标签生成与运费补贴。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>先退后寄</strong>
+                          <p>针对低价标品，支持直接退款并保留商品。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>智能翻译客服</strong>
+                          <p>多语种实时翻译，覆盖 11 个主要国家。</p>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+            {
+              section: '个人资产',
+              items: [
+                {
+                  id: 'user-wallet',
+                  icon: '🎁',
+                  label: '优惠钱包',
+                  hint: '多券融合',
+                  title: '优惠钱包中心',
+                  subtitle: '整合补贴券、拼团红包与返现余额，支持智能抵扣策略。',
+                  metrics: [
+                    { label: '可用补贴', value: '¥268' },
+                    { label: '返现金额', value: '¥93.5' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>权益卡包</h3>
+                        <span>到期提醒一键推送</span>
+                      </div>
+                      <div class="card-grid">
+                        <article class="product-card">
+                          <h4>百亿补贴券</h4>
+                          <div class="price">¥80</div>
+                          <div class="tag-list">
+                            <span class="tag">满 ¥299 可用</span>
+                            <span class="tag">5 天后到期</span>
+                          </div>
+                        </article>
+                        <article class="product-card">
+                          <h4>拼团神券</h4>
+                          <div class="price">¥30</div>
+                          <div class="tag-list">
+                            <span class="tag">拼团专享</span>
+                            <span class="tag">限 3 人团</span>
+                          </div>
+                        </article>
+                        <article class="product-card">
+                          <h4>返现余额</h4>
+                          <div class="price">¥93.50</div>
+                          <div class="tag-list">
+                            <span class="tag">可提现</span>
+                            <span class="tag">消费抵扣 100%</span>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>智能抵扣策略</h3>
+                        <span>推荐最佳使用顺序</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>家电补贴季</strong>
+                            <span>建议优先使用百亿补贴券，叠加返现余额 30%</span>
+                          </div>
+                          <span class="status success">已启用</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>拼团超级周</strong>
+                            <span>锁定 3 个热门团，可同步分享红包链接</span>
+                          </div>
+                          <span class="status pending">待配置</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>跨境免邮日</strong>
+                            <span>免邮券 + 返现抵扣，预计节省 ¥54</span>
+                          </div>
+                          <span class="status success">进行中</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'user-wishlist',
+                  icon: '🧡',
+                  label: '心愿单',
+                  hint: '智能订阅',
+                  title: '心愿单智能订阅',
+                  subtitle: '聚合跨店收藏和降价提醒，联动达人推荐与补贴激励。',
+                  metrics: [
+                    { label: '关注商品', value: '42 个' },
+                    { label: '降价通知', value: '本周 12 条' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>热度分层</h3>
+                        <span>自动聚合同类选品</span>
+                      </div>
+                      <div class="kanban">
+                        <div class="kanban-column">
+                          <h4>高潜入手</h4>
+                          <div class="kanban-card">
+                            <strong>戴森吹风机 国际版</strong>
+                            <span>补贴后 ¥1,999 · 近期 3 次降价</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>露营车顶帐篷</strong>
+                            <span>达人成团推荐 · 关注 12,340 人</span>
+                          </div>
+                        </div>
+                        <div class="kanban-column">
+                          <h4>比价观察</h4>
+                          <div class="kanban-card">
+                            <strong>4K 投影仪</strong>
+                            <span>竞品价 ¥2,899 · Temu ¥2,399</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>真皮通勤包</strong>
+                            <span>预计 3 天后触发补贴券</span>
+                          </div>
+                        </div>
+                        <div class="kanban-column">
+                          <h4>收藏夹</h4>
+                          <div class="kanban-card">
+                            <strong>手工银饰</strong>
+                            <span>支持定制刻字 · 可预约达人直播</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>儿童益智玩具 5 件套</strong>
+                            <span>拼团优惠 ¥29.9 · 周销量 2.3 万</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>提醒策略</h3>
+                        <span>可与 Push 中台联动</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>达人直播关联</strong>
+                            <span>当关注商品进入直播间时自动提醒</span>
+                          </div>
+                          <span class="status success">已绑定</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>拼团成团提醒</strong>
+                            <span>好友发起心愿单商品拼团时推送</span>
+                          </div>
+                          <span class="status pending">审核中</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>补贴提价预警</strong>
+                            <span>补贴即将到期时提前 12 小时提醒</span>
+                          </div>
+                          <span class="status success">开启</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'user-notify',
+                  icon: '🔔',
+                  label: '消息中心',
+                  hint: '多通道触达',
+                  title: '消息中心',
+                  subtitle: '聚合拼团、物流、优惠券等多通道消息，支持一键管理偏好与沉浸式查看。',
+                  metrics: [
+                    { label: '今日触达', value: '23 条' },
+                    { label: '互动打开率', value: '62%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>消息流</h3>
+                        <span>按优先级排序</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>拼团即将截团 · 空气炸锅</strong>
+                            <span>缺 1 人成团 · 分享给好友再减 ¥10</span>
+                          </div>
+                          <span class="status pending">待处理</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>物流进度更新</strong>
+                            <span>跨境清关完成 · 预计 2 日送达</span>
+                          </div>
+                          <span class="status success">已读</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>返现到账提醒</strong>
+                            <span>拼团返现 ¥18.6 已入账 · 点击查看</span>
+                          </div>
+                          <span class="status success">已领取</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>触达偏好</h3>
+                        <span>支持拖拽排序</span>
+                      </div>
+                      <div class="chip-row">
+                        <span class="chip">App 推送 · 高</span>
+                        <span class="chip">短信 · 中</span>
+                        <span class="chip">邮件 · 低</span>
+                        <span class="chip">WhatsApp · 高</span>
+                        <span class="chip">Messenger · 中</span>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+          ],
+        },
+        admin: {
+          name: '平台管理员工作台',
+          description: '聚焦入驻审核、风控监控与系统治理，确保合规与稳定运营。',
+          badges: ['全局监控', '风控预警', '权限治理'],
+          metrics: [
+            { label: '在线商家', value: '23,410' },
+            { label: '违规拦截', value: '98 次/日' },
+          ],
+          menu: [
+            {
+              section: '治理总览',
+              items: [
+                {
+                  id: 'admin-dashboard',
+                  icon: '📊',
+                  label: '平台总览',
+                  hint: '实时指标',
+                  title: '平台运行指挥台',
+                  subtitle: '核心指标、商家健康度与风控态势一屏尽览，支持异常回溯。',
+                  metrics: [
+                    { label: 'GMV', value: '¥86M/日' },
+                    { label: '系统可用性', value: '99.98%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>指标看板</h3>
+                        <span>可切换 7 日 / 30 日视图</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>GMV 与补贴成本</strong>
+                          <p>GMV: ¥86M · 补贴成本占比 18.2% · 环比 +6.4%</p>
+                          <div class="chip-row">
+                            <span class="chip">客单价 ¥72</span>
+                            <span class="chip">订单量 1.2M</span>
+                          </div>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>用户健康度</strong>
+                          <p>DAU 1,830 万 · 留存 32.5% · 投诉率 0.36%</p>
+                          <div class="chip-row">
+                            <span class="chip">净推荐值 54</span>
+                            <span class="chip">退款率 2.9%</span>
+                          </div>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>技术指标</strong>
+                          <p>请求成功率 99.98% · 错误峰值 220/min · 延迟 P95 280ms</p>
+                          <div class="chip-row">
+                            <span class="chip">告警解决 94%</span>
+                            <span class="chip">宕机 0</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>异常分布</h3>
+                        <span>实时聚合工单与告警</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>跨境物流延迟</strong>
+                            <span>美国西部 · SLA 超时 6%</span>
+                          </div>
+                          <span class="status alert">需要关注</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>站内支付调单</strong>
+                            <span>信用卡失败率 1.6% · 已回滚</span>
+                          </div>
+                          <span class="status success">已恢复</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>商家违规上新</strong>
+                            <span>敏感类目 · 已冻结 28 个商品</span>
+                          </div>
+                          <span class="status pending">复审中</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'admin-govern',
+                  icon: '🧭',
+                  label: '合规巡检',
+                  hint: '日常抽检',
+                  title: '合规巡检中心',
+                  subtitle: '对重点类目进行图文/资质双重校验，自动触发冻结与申诉流程。',
+                  metrics: [
+                    { label: '抽检通过', value: '94%' },
+                    { label: '待复核', value: '312 个' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>重点类目</h3>
+                        <span>美妆 · 母婴 · 医疗器械</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>类目</th>
+                            <th>抽检量</th>
+                            <th>资质状态</th>
+                            <th>整改期限</th>
+                            <th>操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>美妆个护</td>
+                            <td>320</td>
+                            <td><span class="status pending">缺进口备案</span></td>
+                            <td>48 小时</td>
+                            <td><span class="tag">催补资料</span></td>
+                          </tr>
+                          <tr>
+                            <td>婴幼儿用品</td>
+                            <td>210</td>
+                            <td><span class="status success">齐全</span></td>
+                            <td>-</td>
+                            <td><span class="tag">抽检报告</span></td>
+                          </tr>
+                          <tr>
+                            <td>智能穿戴</td>
+                            <td>128</td>
+                            <td><span class="status alert">违规宣传</span></td>
+                            <td>立即</td>
+                            <td><span class="tag">下架</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>巡检日程</h3>
+                        <span>自动同步至团队日历</span>
+                      </div>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <strong>09:30</strong>
+                          <div class="timeline-card">
+                            <p>跨境美妆资质抽查 · 联动第三方检测机构。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>14:00</strong>
+                          <div class="timeline-card">
+                            <p>母婴热销品牌专项回溯 · 样品复检。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>18:30</strong>
+                          <div class="timeline-card">
+                            <p>违规宣传聚类分析 · 触发自动下架。</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+            {
+              section: '商家管理',
+              items: [
+                {
+                  id: 'admin-merchant',
+                  icon: '🏭',
+                  label: '入驻审核',
+                  hint: '工厂资质',
+                  title: '商家入驻审核台',
+                  subtitle: '展示入驻漏斗、资质校验与对接跟进，支持批量操作。',
+                  metrics: [
+                    { label: '今日提交', value: '482' },
+                    { label: '平均审核时长', value: '3.2 小时' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>入驻漏斗</h3>
+                        <span>实时更新</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>提交资料</strong>
+                          <p>通过率 92% · 自动识别缺失字段。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>资质审核</strong>
+                          <p>AI OCR 校验，异常自动流转人工复核。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>对接完成</strong>
+                          <p>签约 & 保证金缴纳，平均 1.8 天。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>待办列表</h3>
+                        <span>可按地区、类目筛选</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>工厂名称</th>
+                            <th>主营类目</th>
+                            <th>责任人</th>
+                            <th>状态</th>
+                            <th>最后更新</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>宁波海川纺织</td>
+                            <td>服饰</td>
+                            <td>Linda</td>
+                            <td><span class="status pending">缺测试报告</span></td>
+                            <td>05-08 20:16</td>
+                          </tr>
+                          <tr>
+                            <td>顺德炊具工厂</td>
+                            <td>家电</td>
+                            <td>Kevin</td>
+                            <td><span class="status success">已通过</span></td>
+                            <td>05-08 18:45</td>
+                          </tr>
+                          <tr>
+                            <td>泉州鞋业联合</td>
+                            <td>鞋靴</td>
+                            <td>Ada</td>
+                            <td><span class="status pending">补充合同</span></td>
+                            <td>05-08 17:08</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'admin-product',
+                  icon: '🗂️',
+                  label: '商品池',
+                  hint: '池位治理',
+                  title: '商品池管理器',
+                  subtitle: '管理爆款池、潜力池与风险池，支持快速上下架与补贴审批。',
+                  metrics: [
+                    { label: '爆款池', value: '1,320' },
+                    { label: '风险池', value: '68' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>池位概览</h3>
+                        <span>自动同步销量 & 评分</span>
+                      </div>
+                      <div class="card-grid">
+                        <article class="product-card">
+                          <h4>爆款池</h4>
+                          <div class="price">Top GMV · 24h 更新</div>
+                          <div class="tag-list">
+                            <span class="tag">转化 28%</span>
+                            <span class="tag">补贴审批</span>
+                          </div>
+                        </article>
+                        <article class="product-card">
+                          <h4>潜力池</h4>
+                          <div class="price">新上架 7 天内</div>
+                          <div class="tag-list">
+                            <span class="tag">达人联动</span>
+                            <span class="tag">A/B 测试中</span>
+                          </div>
+                        </article>
+                        <article class="product-card">
+                          <h4>风险池</h4>
+                          <div class="price">舆情 & 体验</div>
+                          <div class="tag-list">
+                            <span class="tag">售后率 >5%</span>
+                            <span class="tag">调价监控</span>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>操作轨迹</h3>
+                        <span>最近 24 小时</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>下架违规宣传商品</strong>
+                            <span>操作者：Alice · 商品 ID 283910</span>
+                          </div>
+                          <span class="status alert">完成</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>补贴审批通过</strong>
+                            <span>操作者：Tom · 商品 ID 178234</span>
+                          </div>
+                          <span class="status success">已执行</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>添加至潜力池</strong>
+                            <span>操作者：Mia · 商品 ID 199823</span>
+                          </div>
+                          <span class="status pending">待复核</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'admin-fulfill',
+                  icon: '🚚',
+                  label: '履约监控',
+                  hint: '供应链视角',
+                  title: '履约监控大屏',
+                  subtitle: '联动仓储、干线、末端三段数据，及时定位异常并触发补救。',
+                  metrics: [
+                    { label: '履约准时', value: '95.4%' },
+                    { label: '异常包裹', value: '4,320 件' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>履约链路</h3>
+                        <span>自动标记异常节点</span>
+                      </div>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <strong>仓储</strong>
+                          <div class="timeline-card">
+                            <p>华南仓出库 98% 准时 · 温控异常 12 单。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>干线</strong>
+                          <div class="timeline-card">
+                            <p>美西航线受天气影响 · 追加航班处理中。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>末端</strong>
+                          <div class="timeline-card">
+                            <p>UPS 配送 · 派送延迟 2.1%，触发补贴提醒。</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>保障动作</h3>
+                        <span>异常自动触发</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>智能改派</strong>
+                          <p>延迟超过 12 小时，自动改派至备用物流商。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>补贴升级</strong>
+                          <p>针对 VIP 用户追加 15% 补贴保障体验。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>客服协同</strong>
+                          <p>生成优先工单，推送至海外客服中心。</p>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+            {
+              section: '风控与系统',
+              items: [
+                {
+                  id: 'admin-risk',
+                  icon: '🚨',
+                  label: '风控预警',
+                  hint: '风险雷达',
+                  title: '风控预警雷达',
+                  subtitle: '聚合交易、评价、履约等多维信号，实时标记异常链路。',
+                  metrics: [
+                    { label: '实时告警', value: '42 条' },
+                    { label: '处置完成率', value: '89%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>风险热力</h3>
+                        <span>高优先级 · 支持分层</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>支付风险</strong>
+                          <p>同卡多账号下单 · 触发二次验证。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>评价异常</strong>
+                          <p>异常差评聚类 · 自动派单客服复核。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>履约延迟</strong>
+                          <p>美西仓库爆仓 · 启动备援仓发货。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>处置中心</h3>
+                        <span>协同法务 / 客服</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>交易风控升级</strong>
+                            <span>疑似盗刷 · 已冻结账户</span>
+                          </div>
+                          <span class="status alert">处理中</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>舆情监测</strong>
+                            <span>社媒负面 12 条 · 已回应</span>
+                          </div>
+                          <span class="status success">完成</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>物流延迟补偿</strong>
+                            <span>批量发放 ¥20 体验券</span>
+                          </div>
+                          <span class="status success">执行中</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'admin-permission',
+                  icon: '🛡️',
+                  label: '权限管理',
+                  hint: '矩阵分级',
+                  title: '权限矩阵配置',
+                  subtitle: '支持按角色、部门、业务域进行精细化授权与审批。',
+                  metrics: [
+                    { label: '活跃账号', value: '4,860' },
+                    { label: '变更审批', value: '12/日' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>角色矩阵</h3>
+                        <span>支持拖拽配置</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>角色</th>
+                            <th>数据权限</th>
+                            <th>操作权限</th>
+                            <th>审批流</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>品类运营</td>
+                            <td>类目读写</td>
+                            <td>补贴申请 / 商品上下架</td>
+                            <td>2 级审批</td>
+                          </tr>
+                          <tr>
+                            <td>客服主管</td>
+                            <td>订单读写</td>
+                            <td>补偿审核 / 工单指派</td>
+                            <td>1 级审批</td>
+                          </tr>
+                          <tr>
+                            <td>风控专家</td>
+                            <td>全链路读</td>
+                            <td>风控拦截 / 白名单</td>
+                            <td>3 级审批</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>审批快照</h3>
+                        <span>今日 12 条</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>新增跨境仓权限</strong>
+                            <span>申请人：June · 状态：待经理审批</span>
+                          </div>
+                          <span class="status pending">待审批</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>风控白名单变更</strong>
+                            <span>申请人：Ray · 状态：已审批</span>
+                          </div>
+                          <span class="status success">生效</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>运营后台导出权限</strong>
+                            <span>申请人：Ivy · 状态：拒绝</span>
+                          </div>
+                          <span class="status alert">驳回</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'admin-system',
+                  icon: '⚙️',
+                  label: '系统设置',
+                  hint: '服务可观测',
+                  title: '系统设置中心',
+                  subtitle: '统一管理服务开关、灰度发布与审计日志，保障平台稳定。',
+                  metrics: [
+                    { label: '当前灰度', value: '20%' },
+                    { label: '回滚记录', value: '0 次' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>服务开关</h3>
+                        <span>支持一键灰度</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>拼团服务</strong>
+                            <span>版本 4.3.2 · 灰度 20%</span>
+                          </div>
+                          <span class="status success">运行中</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>补贴引擎</strong>
+                            <span>版本 2.8.0 · 灰度 0%</span>
+                          </div>
+                          <span class="status pending">待发布</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>跨境清关 API</strong>
+                            <span>版本 1.6.5 · 灰度 100%</span>
+                          </div>
+                          <span class="status success">稳定</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>审计日志</h3>
+                        <span>最近 2 小时</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>发布审批通过</strong>
+                            <span>操作者：DevOps-01</span>
+                          </div>
+                          <span class="status success">完成</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>权限调整</strong>
+                            <span>操作者：Admin-03</span>
+                          </div>
+                          <span class="status pending">复核中</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>系统报警确认</strong>
+                            <span>操作者：SRE-07</span>
+                          </div>
+                          <span class="status success">已确认</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+          ],
+        },
+        ops: {
+          name: '运营策略驾驶舱',
+          description: '连接活动策划、补贴策略与增长玩法，驱动 GMV 和用户心智。',
+          badges: ['活动排期', '补贴策略', '增长实验'],
+          metrics: [
+            { label: '活动成交', value: '¥36M/周' },
+            { label: '新增用户', value: '1.3M' },
+          ],
+          menu: [
+            {
+              section: '活动策划',
+              items: [
+                {
+                  id: 'ops-calendar',
+                  icon: '🗓️',
+                  label: '活动排期',
+                  hint: '日历视图',
+                  title: '活动排期总览',
+                  subtitle: '统一排布全站活动与频道资源，支持冲突检测与资源锁定。',
+                  metrics: [
+                    { label: '本周活动', value: '18 场' },
+                    { label: '资源锁定', value: '92%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>本周日程</h3>
+                        <span>冲突检测通过</span>
+                      </div>
+                      <div class="kanban">
+                        <div class="kanban-column">
+                          <h4>周一 - 爆款清仓</h4>
+                          <div class="kanban-card">
+                            <strong>服饰清仓夜场</strong>
+                            <span>资源位：App 首页 / Push</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>家居低价日</strong>
+                            <span>达人联动 · TikTok 直播</span>
+                          </div>
+                        </div>
+                        <div class="kanban-column">
+                          <h4>周三 - 拼团节</h4>
+                          <div class="kanban-card">
+                            <strong>百亿补贴拼团</strong>
+                            <span>货架资源 4 个 · 预算 ¥1.8M</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>海外仓新品首发</strong>
+                            <span>直播带货 · 主播 Daisy</span>
+                          </div>
+                        </div>
+                        <div class="kanban-column">
+                          <h4>周五 - 新人爆发</h4>
+                          <div class="kanban-card">
+                            <strong>新人百元礼包</strong>
+                            <span>短信 + 推送 · 预算 ¥0.6M</span>
+                          </div>
+                          <div class="kanban-card">
+                            <strong>团长激励赛</strong>
+                            <span>社群裂变 · 激励券 12,000 张</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>资源锁定</h3>
+                        <span>冲突提醒</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>App 顶通</strong>
+                            <span>占用：拼团节 · 周三 18:00-22:00</span>
+                          </div>
+                          <span class="status success">已确认</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>Push 资源</strong>
+                            <span>占用：新人爆发 · 周五 10:00</span>
+                          </div>
+                          <span class="status pending">待文案</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>达人直播位</strong>
+                            <span>占用：海外仓首发 · 周三 20:00</span>
+                          </div>
+                          <span class="status success">锁定</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'ops-subsidy',
+                  icon: '💸',
+                  label: '补贴策略',
+                  hint: 'ROI 监控',
+                  title: '补贴策略工作台',
+                  subtitle: '定义补贴梯度、目标人群与成本预警，实时监控 ROI。',
+                  metrics: [
+                    { label: 'ROI', value: '4.8' },
+                    { label: '补贴消耗', value: '¥5.6M' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>策略组合</h3>
+                        <span>按品类拆分</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>家电加码</strong>
+                          <p>补贴 12% · 目标转化 18% · 预算 ¥2M。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>跨境零食</strong>
+                          <p>补贴 8% · 拉新占比 42% · 预算 ¥1.1M。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>美妆新品</strong>
+                          <p>补贴 15% · 达人带货 · 预算 ¥1.6M。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>预警列表</h3>
+                        <span>实时触发</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>家电加码 · 成本超标</strong>
+                            <span>CPA 上升 18% · 建议调降补贴 2%</span>
+                          </div>
+                          <span class="status alert">需处理</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>零食组合 · 成交低于预期</strong>
+                            <span>需补充达人内容 · GMV -12%</span>
+                          </div>
+                          <span class="status pending">排期中</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>美妆新品 · 留存表现好</strong>
+                            <span>建议延长补贴周期 3 天</span>
+                          </div>
+                          <span class="status success">建议通过</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'ops-abtest',
+                  icon: '🧪',
+                  label: 'A/B 实验',
+                  hint: '实验矩阵',
+                  title: 'A/B 实验中心',
+                  subtitle: '多实验并行，监控指标波动，支持快速终止与推广。',
+                  metrics: [
+                    { label: '进行中', value: '12 个' },
+                    { label: '显著提升', value: '5 个' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>实验矩阵</h3>
+                        <span>实时显著性</span>
+                      </div>
+                      <div class="ab-grid">
+                        <div class="ab-card">
+                          <h4>首页排版 · 货架布局</h4>
+                          <div class="ab-metric">+6.8%</div>
+                          <div class="ab-meta">
+                            <span>指标：点击率</span>
+                            <span>显著：Yes</span>
+                          </div>
+                        </div>
+                        <div class="ab-card">
+                          <h4>拼团分享话术</h4>
+                          <div class="ab-metric">+12.4%</div>
+                          <div class="ab-meta">
+                            <span>指标：分享率</span>
+                            <span>显著：Yes</span>
+                          </div>
+                        </div>
+                        <div class="ab-card">
+                          <h4>补贴券层级</h4>
+                          <div class="ab-metric">-3.2%</div>
+                          <div class="ab-meta">
+                            <span>指标：ROI</span>
+                            <span>显著：No</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>决策建议</h3>
+                        <span>AI 自动生成</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>推广实验 #1032</strong>
+                            <span>首页排版实验建议推广至 60% 流量</span>
+                          </div>
+                          <span class="status success">通过</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>终止实验 #1040</strong>
+                            <span>补贴券层级实验 ROI 下降，建议终止</span>
+                          </div>
+                          <span class="status alert">终止</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>迭代实验 #1051</strong>
+                            <span>拼团分享话术继续扩展样本</span>
+                          </div>
+                          <span class="status pending">推进中</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+            {
+              section: '内容与达人',
+              items: [
+                {
+                  id: 'ops-content',
+                  icon: '📰',
+                  label: '内容运营',
+                  hint: '选题编排',
+                  title: '内容运营面板',
+                  subtitle: '打造内容货架，联动图文、视频与直播，提高用户心智。',
+                  metrics: [
+                    { label: '内容转化', value: '8.2%' },
+                    { label: '人均阅读', value: '4.6 篇' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>内容清单</h3>
+                        <span>按体裁分类</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>标题</th>
+                            <th>形式</th>
+                            <th>目标人群</th>
+                            <th>上线时间</th>
+                            <th>状态</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>「5 美元搞定夏日穿搭」</td>
+                            <td>短视频</td>
+                            <td>美国 · 女 18-24</td>
+                            <td>05-09 18:00</td>
+                            <td><span class="status success">已上线</span></td>
+                          </tr>
+                          <tr>
+                            <td>「厨房收纳 10 件套评测」</td>
+                            <td>图文</td>
+                            <td>加拿大 · 家庭</td>
+                            <td>05-10 09:00</td>
+                            <td><span class="status pending">待发布</span></td>
+                          </tr>
+                          <tr>
+                            <td>「拼团省钱挑战」</td>
+                            <td>直播回放</td>
+                            <td>美国 · 全量</td>
+                            <td>05-08 22:00</td>
+                            <td><span class="status success">热推</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>选题池</h3>
+                        <span>结合热点趋势</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>夏日户外季</strong>
+                          <p>对接露营、户外运动达人，共创内容。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>毕业季礼物</strong>
+                          <p>聚焦毕业送礼场景，联动礼品工厂。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>开学囤货</strong>
+                          <p>提前筹备学习用品与宿舍收纳。</p>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'ops-kol',
+                  icon: '🎤',
+                  label: '达人合作',
+                  hint: '合作流程',
+                  title: '达人合作工作台',
+                  subtitle: '管理达人签约、内容生产与激励结算，保障投放效果。',
+                  metrics: [
+                    { label: '合作达人', value: '860 位' },
+                    { label: 'ROI', value: '3.6' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>合作流程</h3>
+                        <span>自动追踪节点</span>
+                      </div>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <strong>签约</strong>
+                          <div class="timeline-card">
+                            <p>合同模板在线签署 · 激励政策自动匹配。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>内容生产</strong>
+                          <div class="timeline-card">
+                            <p>脚本协同 · 审核 24 小时内完成。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>效果复盘</strong>
+                          <div class="timeline-card">
+                            <p>自动生成数据报表 · 结算周期 T+7。</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>达人表现榜</h3>
+                        <span>按 GMV 排序</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>达人</th>
+                            <th>平台</th>
+                            <th>GMV</th>
+                            <th>转化率</th>
+                            <th>结算状态</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Daisy</td>
+                            <td>TikTok</td>
+                            <td>¥1.6M</td>
+                            <td>18%</td>
+                            <td><span class="status success">已结算</span></td>
+                          </tr>
+                          <tr>
+                            <td>Leo</td>
+                            <td>Instagram</td>
+                            <td>¥1.1M</td>
+                            <td>15%</td>
+                            <td><span class="status pending">对账中</span></td>
+                          </tr>
+                          <tr>
+                            <td>Amy</td>
+                            <td>YouTube</td>
+                            <td>¥0.9M</td>
+                            <td>12%</td>
+                            <td><span class="status success">已结算</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'ops-push',
+                  icon: '📣',
+                  label: 'Push 中台',
+                  hint: '多通道编排',
+                  title: 'Push 中台',
+                  subtitle: '统一编排 Push / SMS / 邮件 / 社媒触达策略，保障频控。',
+                  metrics: [
+                    { label: '触达用户', value: '5.8M' },
+                    { label: '打开率', value: '26%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>触达编排</h3>
+                        <span>模板一键复用</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>拼团节 · 第一波</strong>
+                            <span>Push + WhatsApp · 05-09 10:00</span>
+                          </div>
+                          <span class="status success">已发送</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>新人补贴 · 激活</strong>
+                            <span>短信 + 邮件 · 05-09 14:00</span>
+                          </div>
+                          <span class="status pending">待审核</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>退货挽回 · 体验券</strong>
+                            <span>邮件 · 05-09 16:00</span>
+                          </div>
+                          <span class="status success">排队中</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>频控策略</h3>
+                        <span>自动降噪</span>
+                      </div>
+                      <div class="chip-row">
+                        <span class="chip">每日触达上限：3</span>
+                        <span class="chip">静默期：22:00-08:00</span>
+                        <span class="chip">优先级：活动 > 服务 > 营销</span>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+            {
+              section: '增长中台',
+              items: [
+                {
+                  id: 'ops-growth',
+                  icon: '📈',
+                  label: '用户增长',
+                  hint: '拉新漏斗',
+                  title: '增长漏斗分析',
+                  subtitle: '拉新、转化、留存全链路监控，自动推荐最优策略。',
+                  metrics: [
+                    { label: '拉新转化', value: '11.2%' },
+                    { label: '次日留存', value: '32%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>拉新漏斗</h3>
+                        <span>数据实时刷新</span>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>阶段</th>
+                            <th>人数</th>
+                            <th>转化率</th>
+                            <th>策略</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>曝光</td>
+                            <td>38M</td>
+                            <td>--</td>
+                            <td>达人种草 / 信息流广告</td>
+                          </tr>
+                          <tr>
+                            <td>到店</td>
+                            <td>6.4M</td>
+                            <td>16.8%</td>
+                            <td>新人礼包 / 首单补贴</td>
+                          </tr>
+                          <tr>
+                            <td>注册</td>
+                            <td>3.6M</td>
+                            <td>56.3%</td>
+                            <td>手机号 + 社媒一键登录</td>
+                          </tr>
+                          <tr>
+                            <td>首单</td>
+                            <td>1.3M</td>
+                            <td>36.1%</td>
+                            <td>拼团激励 / 返现</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>策略建议</h3>
+                        <span>AI 推荐</span>
+                      </div>
+                      <div class="list">
+                        <div class="list-item">
+                          <div>
+                            <strong>加大新人礼包投放</strong>
+                            <span>预计首单转化提升 3.6%</span>
+                          </div>
+                          <span class="status success">建议采纳</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>优化注册流程</strong>
+                            <span>缩短表单字段 · 提升 1.8%</span>
+                          </div>
+                          <span class="status pending">设计评审</span>
+                        </div>
+                        <div class="list-item">
+                          <div>
+                            <strong>社群裂变激活</strong>
+                            <span>投放团长激励赛 · 预计新增 12 万</span>
+                          </div>
+                          <span class="status success">排期中</span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+                {
+                  id: 'ops-retention',
+                  icon: '🔁',
+                  label: '留存关怀',
+                  hint: '用户运营',
+                  title: '留存关怀中心',
+                  subtitle: '细分人群标签，匹配唤醒、复购与会员权益策略。',
+                  metrics: [
+                    { label: '沉睡用户唤醒', value: '23%' },
+                    { label: '会员复购', value: '38%' },
+                  ],
+                  content: `
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>人群分层</h3>
+                        <span>支持拖拽调整</span>
+                      </div>
+                      <div class="flex-grid">
+                        <div class="highlight-card">
+                          <strong>沉睡用户</strong>
+                          <p>90 天未下单 · 推送组合券 + 内容唤醒。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>高价值会员</strong>
+                          <p>近 30 天消费 > ¥500 · 增加专属客服。</p>
+                        </div>
+                        <div class="highlight-card">
+                          <strong>拼团达人</strong>
+                          <p>成团 10 次以上 · 提供团长激励。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-header">
+                        <h3>触达剧本</h3>
+                        <span>多触点编排</span>
+                      </div>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <strong>第 1 天</strong>
+                          <div class="timeline-card">
+                            <p>推送补贴券，附带心愿单商品降价提示。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>第 3 天</strong>
+                          <div class="timeline-card">
+                            <p>发送达人精选内容，强调拼团优惠。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <strong>第 7 天</strong>
+                          <div class="timeline-card">
+                            <p>客服专线回访，高价值用户赠送体验券。</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                },
+              ],
+            },
+          ],
+        },
+      };
+      const state = {
+        role: 'user',
+        activeId: 'user-home',
+      };
+
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const viewContent = document.getElementById('viewContent');
+      const viewTitle = document.getElementById('viewTitle');
+      const viewSubtitle = document.getElementById('viewSubtitle');
+      const viewMetrics = document.getElementById('viewMetrics');
+      const viewBreadcrumb = document.getElementById('viewBreadcrumb');
+      const roleNameEl = document.getElementById('activeRoleName');
+      const roleDescEl = document.getElementById('activeRoleDesc');
+      const roleBadgesEl = document.getElementById('roleBadges');
+      const roleButtons = document.querySelectorAll('.role-switch button');
+
+      const renderRoleMeta = (roleKey) => {
+        const config = ROLE_CONFIG[roleKey];
+        roleNameEl.textContent = config.name;
+        roleDescEl.textContent = config.description;
+        roleBadgesEl.innerHTML = '';
+        config.badges.forEach((badge) => {
+          const span = document.createElement('span');
+          span.className = 'role-badge';
+          span.textContent = badge;
+          roleBadgesEl.appendChild(span);
+        });
+      };
+
+      const renderMetrics = (metrics) => {
+        viewMetrics.innerHTML = '';
+        metrics.forEach((metric) => {
+          const pill = document.createElement('div');
+          pill.className = 'metric-pill';
+          pill.innerHTML = `<strong>${metric.value}</strong><span>${metric.label}</span>`;
+          viewMetrics.appendChild(pill);
+        });
+      };
+
+      const findItemById = (roleKey, itemId) => {
+        const sections = ROLE_CONFIG[roleKey].menu;
+        for (const section of sections) {
+          for (const item of section.items) {
+            if (item.id === itemId) {
+              return { section, item };
+            }
+          }
+        }
+        return null;
+      };
+
+      const renderContent = (roleKey, itemId) => {
+        const match = findItemById(roleKey, itemId);
+        if (!match) return;
+        const { section, item } = match;
+        viewTitle.textContent = item.title;
+        viewSubtitle.textContent = item.subtitle;
+        renderMetrics(item.metrics || []);
+        viewContent.innerHTML = item.content;
+        viewBreadcrumb.textContent = `${ROLE_CONFIG[roleKey].name} / ${section.section} / ${item.label}`;
+      };
+
+      const renderMenu = (roleKey) => {
+        sidebarMenu.innerHTML = '';
+        ROLE_CONFIG[roleKey].menu.forEach((section) => {
+          const sectionEl = document.createElement('section');
+          sectionEl.className = 'menu-section';
+
+          const title = document.createElement('h3');
+          title.textContent = section.section;
+          sectionEl.appendChild(title);
+
+          section.items.forEach((item) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'menu-item';
+            button.dataset.itemId = item.id;
+
+            const icon = document.createElement('span');
+            icon.className = 'menu-item-icon';
+            icon.textContent = item.icon;
+
+            const text = document.createElement('span');
+            text.className = 'menu-item-text';
+            text.innerHTML = `<strong>${item.label}</strong><span>${item.hint}</span>`;
+
+            button.appendChild(icon);
+            button.appendChild(text);
+
+            if (item.id === state.activeId) {
+              button.classList.add('active');
+            }
+
+            button.addEventListener('click', () => {
+              state.activeId = item.id;
+              updateActiveMenu();
+              renderContent(roleKey, item.id);
+            });
+
+            sectionEl.appendChild(button);
+          });
+
+          sidebarMenu.appendChild(sectionEl);
+        });
+      };
+
+      const updateActiveMenu = () => {
+        document.querySelectorAll('.menu-item').forEach((el) => {
+          if (el.dataset.itemId === state.activeId) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active');
+          }
+        });
+      };
+
+      const switchRole = (roleKey) => {
+        state.role = roleKey;
+        const firstSection = ROLE_CONFIG[roleKey].menu[0];
+        state.activeId = firstSection.items[0].id;
+        roleButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.role === roleKey);
+        });
+        renderRoleMeta(roleKey);
+        renderMenu(roleKey);
+        renderMetrics(ROLE_CONFIG[roleKey].metrics || []);
+        renderContent(roleKey, state.activeId);
+      };
+
+      roleButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.dataset.role !== state.role) {
+            switchRole(button.dataset.role);
+          }
+        });
+      });
+
+      // 初始化渲染
+      switchRole(state.role);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
