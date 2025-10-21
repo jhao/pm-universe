@@ -2,83 +2,3625 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Smartsheet 协作表格 原型概览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smartsheet 企业协作平台 · 角色原型演示</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --bg: #f2f4f8;
+        --text: #0f172a;
+        --muted: #64748b;
+        --card: #ffffff;
+        --accent: #2563eb;
+        --accent-soft: #dbeafe;
+        --border: #e2e8f0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 264px;
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        color: #fff;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18);
+      }
+
+      .sidebar::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.3), transparent 55%);
+        pointer-events: none;
+      }
+
+      .sidebar-header {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 32px;
+      }
+
+      .sidebar-logo {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .sidebar-desc {
+        margin-top: 6px;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.75);
+      }
+
+      .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .nav-button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 14px;
+        background: transparent;
+        color: rgba(241, 245, 249, 0.92);
+        font-size: 15px;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+
+      .nav-button:hover {
+        background: rgba(241, 245, 249, 0.12);
+        transform: translateX(4px);
+      }
+
+      .nav-button.is-active {
+        background: rgba(148, 163, 184, 0.25);
+        box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.2);
+        color: #fff;
+      }
+
+      .nav-button span.icon {
+        font-size: 18px;
+      }
+
+      .main-stage {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      .topbar {
+        padding: 24px 36px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .topbar-info h1 {
+        font-size: 24px;
+        margin-bottom: 6px;
+      }
+
+      .topbar-info p {
+        color: #475569;
+        font-size: 14px;
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .role-switcher label {
+        font-size: 12px;
+        color: #64748b;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .role-switcher select {
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+        font-size: 14px;
+        color: var(--text);
+        min-width: 160px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+      }
+
+      .view-container {
+        flex: 1;
+        padding: 32px 48px 48px;
+        overflow-y: auto;
+      }
+
+      .view-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        align-items: flex-start;
+        margin-bottom: 24px;
+      }
+
+      .view-title {
+        font-size: 26px;
+        margin: 8px 0;
+      }
+
+      .view-subtitle {
+        color: #475569;
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+        font-size: 12px;
+      }
+
+      .view-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .primary-button,
+      .ghost-button {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .primary-button {
+        background: linear-gradient(135deg, #2563eb, #4338ca);
+        color: #fff;
+        box-shadow: 0 10px 22px rgba(37, 99, 235, 0.28);
+      }
+
+      .ghost-button {
+        background: rgba(37, 99, 235, 0.08);
+        color: #1d4ed8;
+      }
+
+      .primary-button:hover,
+      .ghost-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 24px rgba(37, 99, 235, 0.2);
+      }
+
+      .view-body {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .core-section {
+        background: var(--card);
+        border-radius: 20px;
+        padding: 24px 28px;
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 18px;
+      }
+
+      .section-tools {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        border: none;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 13px;
+        background: rgba(148, 163, 184, 0.16);
+        color: #334155;
+        cursor: pointer;
+      }
+
+      .chip.interactive {
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+      }
+
+      .metrics-grid,
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .metric-card {
+        border-radius: 18px;
+        padding: 20px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(226, 232, 240, 0.55));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .metric-card header {
+        font-size: 14px;
+        color: #475569;
+      }
+
+      .metric-value {
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .status-good {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.16), rgba(16, 185, 129, 0.08));
+      }
+
+      .status-watch {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.1));
+      }
+
+      .status-risk {
+        background: linear-gradient(135deg, rgba(248, 113, 113, 0.2), rgba(239, 68, 68, 0.1));
+      }
+
+      .trend {
+        font-size: 13px;
+        color: #166534;
+      }
+
+      .timeline-table,
+      .data-table {
+        width: 100%;
+        border-spacing: 0;
+      }
+
+      .timeline-table thead th,
+      .data-table thead th {
+        text-align: left;
+        font-size: 13px;
+        color: #64748b;
+        padding-bottom: 10px;
+      }
+
+      .timeline-table tbody td,
+      .data-table tbody td {
+        padding: 10px 0;
+        border-bottom: 1px dashed rgba(148, 163, 184, 0.4);
+        font-size: 14px;
+      }
+
+      .bar-track {
+        height: 10px;
+        background: rgba(148, 163, 184, 0.2);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .bar-value {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #2563eb, #60a5fa);
+      }
+
+      .kanban {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+      }
+
+      .kanban-lane {
+        flex: 1;
+        background: rgba(148, 163, 184, 0.12);
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      .lane-title {
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #0f172a;
+      }
+
+      .ticket {
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
+        margin-bottom: 12px;
+      }
+
+      .ticket strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #0f172a;
+      }
+
+      .ticket-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 10px;
+        font-size: 12px;
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+      }
+
+      .link-button {
+        border: none;
+        background: none;
+        color: var(--accent);
+        font-size: 14px;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .link-button::after {
+        content: ' →';
+      }
+
+      .detail-columns {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .insight-card {
+        border-radius: 16px;
+        padding: 18px;
+        background: rgba(37, 99, 235, 0.1);
+      }
+
+      .heatmap {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+      }
+
+      .heatmap div {
+        border-radius: 12px;
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 13px;
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .heatmap div.danger {
+        background: rgba(239, 68, 68, 0.15);
+        color: #b91c1c;
+      }
+
+      .heatmap div.warn {
+        background: rgba(245, 158, 11, 0.18);
+        color: #b45309;
+      }
+
+      .note {
+        background: rgba(148, 163, 184, 0.14);
+        border-radius: 14px;
+        padding: 14px 18px;
+        font-size: 13px;
+        color: #475569;
+      }
+
+      .approval-flow {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .flow-node {
+        padding: 12px 16px;
+        border-radius: 14px;
+        background: rgba(59, 130, 246, 0.12);
+        display: flex;
+        flex-direction: column;
+        min-width: 160px;
+        gap: 6px;
+      }
+
+      .flow-connector {
+        font-size: 18px;
+        color: #94a3b8;
+      }
+
+      .timeline-grid {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 16px;
+      }
+
+      .page-summary {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 18px;
+        padding: 20px 24px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .page-summary h3 {
+        margin-bottom: 12px;
+        font-size: 16px;
+        color: #0f172a;
+      }
+
+      .page-summary ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .back-button {
+        background: none;
+        border: none;
+        color: #64748b;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 48px;
+        color: #94a3b8;
+      }
+
+      @media (max-width: 960px) {
+        .app-shell {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          overflow-x: auto;
+          box-shadow: none;
+        }
+
+        .menu-list {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .main-stage {
+          flex: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Smartsheet 协作表格 原型</h1>
-      <p class="tagline">基于表格的企业级协作与项目管理平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>PMO、运营团队、市场活动经理</p>
-        <p><strong>核心痛点：</strong>电子表格协作困难、缺乏自动化与审批能力</p>
-        <p><strong>价值主张：</strong>结合表格灵活性与工作流程自动化，支持复杂项目管理</p>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">Smartsheet WorkApps</div>
+          <div class="sidebar-desc">系统菜单 · 根据角色自动切换</div>
+        </div>
+        <nav class="menu-list" id="systemMenu"></nav>
+      </aside>
+      <div class="main-stage">
+        <header class="topbar">
+          <div class="topbar-info">
+            <h1>Smartsheet 企业协作平台</h1>
+            <p>通过左侧菜单与右上角色切换，演示不同岗位的核心工作台</p>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSwitcher">角色切换</label>
+              <select id="roleSwitcher">
+                <option value="projectManager">项目经理</option>
+                <option value="approver">审批人</option>
+                <option value="teamMember">团队成员</option>
+                <option value="systemAdmin">系统管理员</option>
+              </select>
+            </div>
+          </div>
+        </header>
+        <main id="viewContainer" class="view-container"></main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>团队在表格中规划任务与资源</li><li>自动化提醒与审批驱动执行</li><li>管理者查看报告与仪表盘</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>表格与视图</h3>
-              <p class="goal">功能目标：在熟悉的表格界面中管理项目</p>
-              <ul>
-                <li>网格、甘特图、卡片与日历视图</li><li>行级讨论、附件与版本历史</li><li>跨表引用与数据透视</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>自动化工作流</h3>
-              <p class="goal">功能目标：减少手动跟进并标准化流程</p>
-              <ul>
-                <li>触发器、条件与动作配置</li><li>提醒、更新请求与审批</li><li>与 Slack、Teams、邮件集成</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>资源与投资组合</h3>
-              <p class="goal">功能目标：管理多项目资源分配</p>
-              <ul>
-                <li>资源视图与利用率监控</li><li>Portfolio WorkApps 与 Control Center</li><li>预算、成本与预测管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>报告与安全</h3>
-              <p class="goal">功能目标：提供企业级治理</p>
-              <ul>
-                <li>仪表盘与报告生成</li><li>数据连接器与 BI 集成</li><li>安全访问控制与审计日志</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>项目按时交付率与资源利用率</li><li>自动化流程覆盖率与响应时间</li><li>高层报告使用率与安全事件</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+
+    <script>
+      const roles = {
+        projectManager: {
+          label: '项目经理',
+          menus: [
+            { id: 'portfolio-dashboard', name: '项目组合总览', icon: '📊' },
+            { id: 'gantt-progress', name: '甘特进度表', icon: '🗂️' },
+            { id: 'collaboration-hub', name: '任务协同工作台', icon: '🤝' },
+            { id: 'risk-register', name: '风险问题库', icon: '🚨' },
+            { id: 'resource-forecast', name: '资源负载预测', icon: '🧭' }
+          ]
+        },
+        approver: {
+          label: '审批人',
+          menus: [
+            { id: 'approval-center', name: '待办审批中心', icon: '✅' },
+            { id: 'budget-change', name: '预算变更管理', icon: '💰' },
+            { id: 'milestone-signoff', name: '里程碑确认', icon: '📌' },
+            { id: 'approval-history', name: '审批历史与审计', icon: '📜' }
+          ]
+        },
+        teamMember: {
+          label: '团队成员',
+          menus: [
+            { id: 'my-tasks', name: '我的任务', icon: '📝' },
+            { id: 'time-entry', name: '填报工时', icon: '⏱️' },
+            { id: 'update-requests', name: '更新请求中心', icon: '📥' },
+            { id: 'knowledge-base', name: '项目知识库', icon: '📚' }
+          ]
+        },
+        systemAdmin: {
+          label: '系统管理员',
+          menus: [
+            { id: 'user-role', name: '用户与角色管理', icon: '🛡️' },
+            { id: 'template-library', name: '模板与解决方案库', icon: '🧩' },
+            { id: 'integration-center', name: '集成与 API', icon: '🔗' },
+            { id: 'security-audit', name: '安全审计中心', icon: '🔍' }
+          ]
+        }
+      };
+
+      const views = {};
+      views['portfolio-dashboard'] = {
+        title: '项目组合总览',
+        subtitle: '实时掌握组合层关键指标、里程碑与风险分布',
+        shortTitle: '组合总览',
+        tags: ['组合治理', '仪表盘'],
+        headerActions: `
+          <button class="primary-button" data-view="portfolio-health">导出健康报告</button>
+          <button class="ghost-button" data-view="portfolio-config">配置视图</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">组合健康速览</h3>
+              <div class="section-tools">
+                <button class="chip">筛选：Q3</button>
+                <button class="chip">负责人：全部</button>
+                <button class="chip interactive" data-view="portfolio-config">管理视图配置</button>
+              </div>
+            </div>
+            <div class="metrics-grid grid-3">
+              <article class="metric-card status-good">
+                <header>整体健康度</header>
+                <div class="metric-value">82%</div>
+                <div class="trend">+6% 较上周</div>
+                <button class="link-button" data-view="portfolio-health">查看健康评分板</button>
+              </article>
+              <article class="metric-card status-watch">
+                <header>关键里程碑达成率</header>
+                <div class="metric-value">74%</div>
+                <p>本周 3 个里程碑需关注</p>
+              </article>
+              <article class="metric-card status-risk">
+                <header>高风险项目</header>
+                <div class="metric-value">2</div>
+                <p>存在预算和资源双重预警</p>
+              </article>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">关键里程碑时间轴</h3>
+              <div class="section-tools">
+                <button class="chip">显示延迟</button>
+                <button class="link-button" data-view="project-omega">查看 Project Omega</button>
+              </div>
+            </div>
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>项目</th>
+                  <th>里程碑</th>
+                  <th>负责人</th>
+                  <th>计划完成</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Project Atlas</td>
+                  <td>客户验收</td>
+                  <td>李然</td>
+                  <td>8月18日</td>
+                  <td><span class="badge">按计划</span></td>
+                </tr>
+                <tr>
+                  <td>Project Omega</td>
+                  <td>上线准备</td>
+                  <td>周凯</td>
+                  <td>8月12日</td>
+                  <td><span class="badge">需关注</span></td>
+                </tr>
+                <tr>
+                  <td>Project Nova</td>
+                  <td>安全评估</td>
+                  <td>陈静</td>
+                  <td>8月25日</td>
+                  <td><span class="badge">延迟 3 天</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">组合优先级矩阵</h3>
+              <div class="section-tools">
+                <button class="chip">权重：收益/复杂度</button>
+                <button class="link-button" data-view="portfolio-config">调整权重</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>战略匹配</strong>
+                <p>Project Atlas 与 FY24 战略完全一致，建议保持最高优先级。</p>
+              </div>
+              <div class="insight-card">
+                <strong>资源占用</strong>
+                <p>Omega 项目资源利用率 112%，建议触发跨项目调配。</p>
+              </div>
+              <div class="insight-card">
+                <strong>自动化提醒</strong>
+                <p>本周将自动提醒 5 位项目经理填报周报并提交预算更新。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>帮助 PMO 汇总组合层指标，快速决策项目优先级与资源调配。</li>
+            <li>通过里程碑时间轴与矩阵洞察，识别异常并发起跨团队协同。</li>
+            <li>点击健康评分板或视图配置，可进一步演示治理与定制能力。</li>
+          </ul>
+        `
+      };
+      views['portfolio-health'] = {
+        title: '组合健康评分板',
+        subtitle: '基于进度、风险、预算与资源的综合评分模型',
+        shortTitle: '健康评分',
+        tags: ['智能评分', '治理预警'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">健康要素权重</h3>
+              <div class="section-tools">
+                <button class="chip">进度 40%</button>
+                <button class="chip">风险 25%</button>
+                <button class="chip">预算 20%</button>
+                <button class="chip">资源 15%</button>
+              </div>
+            </div>
+            <div class="heatmap">
+              <div>Atlas<br />88</div>
+              <div class="warn">Omega<br />62</div>
+              <div>Nova<br />79</div>
+              <div>Insight<br />84</div>
+              <div class="danger">Pulse<br />48</div>
+              <div>Venture<br />81</div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">自动生成治理建议</h3>
+              <button class="link-button" data-view="portfolio-config">调整评分模型</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>Omega：增加专家评审</strong>
+                <p>识别到外包质量风险，建议安排 8 月 9 日专家评审并更新测试策略。</p>
+              </div>
+              <div class="insight-card">
+                <strong>Pulse：预算消耗偏高</strong>
+                <p>本月消耗 150%，建议触发预算变更审批并对资源外包进行审计。</p>
+              </div>
+              <div class="insight-card">
+                <strong>Nova：资源瓶颈</strong>
+                <p>核心开发超负荷 26%，建议调用资源调配流程。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示健康评分的构成与权重，体现平台的智能治理能力。</li>
+            <li>通过治理建议引导用户到预算审批、资源调配等流程页面。</li>
+            <li>演示评分模型可配置，满足不同业务的灵活调整需求。</li>
+          </ul>
+        `
+      };
+      views['portfolio-config'] = {
+        title: '组合视图配置中心',
+        subtitle: '定义指标权重、过滤器与自动化规则',
+        shortTitle: '配置中心',
+        tags: ['配置', '自动化'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">指标与权重设置</h3>
+              <div class="section-tools">
+                <button class="chip">模板：PMO 标准版</button>
+                <button class="chip">共享给：领导团队</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>指标</th>
+                  <th>来源</th>
+                  <th>权重</th>
+                  <th>阈值</th>
+                  <th>动作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>进度偏差</td>
+                  <td>甘特视图</td>
+                  <td>40%</td>
+                  <td>&gt; 5 天</td>
+                  <td><button class="link-button" data-view="gantt-progress">跳转甘特</button></td>
+                </tr>
+                <tr>
+                  <td>风险等级</td>
+                  <td>风险库</td>
+                  <td>25%</td>
+                  <td>红色</td>
+                  <td><button class="link-button" data-view="risk-register">编辑风险</button></td>
+                </tr>
+                <tr>
+                  <td>预算消耗</td>
+                  <td>预算表</td>
+                  <td>20%</td>
+                  <td>&gt; 110%</td>
+                  <td><button class="link-button" data-view="budget-change">设置审批</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">自动化规则</h3>
+              <button class="link-button" data-view="approval-center">查看审批中心</button>
+            </div>
+            <div class="approval-flow">
+              <div class="flow-node">
+                <strong>触发器</strong>
+                <span>健康分 &lt; 60</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>条件</strong>
+                <span>风险等级 = 红色</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>动作</strong>
+                <span>发送治理周会报告</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>动作</strong>
+                <span>创建资源调配任务</span>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>允许项目经理自定义组合视图的指标与权重，贴合组织治理模型。</li>
+            <li>自动化规则直接关联审批与任务，保证治理措施能落地执行。</li>
+            <li>支持一键跳转到相关页面，演示跨模块联动的使用路径。</li>
+          </ul>
+        `
+      };
+      views['project-omega'] = {
+        title: 'Project Omega 项目概览',
+        subtitle: '重点关注上线准备阶段的风险与资源',
+        shortTitle: 'Omega',
+        tags: ['项目详情', '风险'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">阶段进度</h3>
+              <div class="section-tools">
+                <button class="chip">当前阶段：上线准备</button>
+                <button class="chip">负责人：周凯</button>
+              </div>
+            </div>
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>阶段</th>
+                  <th>完成度</th>
+                  <th>剩余工期</th>
+                  <th>风险</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>开发</td>
+                  <td>
+                    <div class="bar-track"><div class="bar-value" style="width: 100%"></div></div>
+                  </td>
+                  <td>已完成</td>
+                  <td><span class="badge">通过</span></td>
+                </tr>
+                <tr>
+                  <td>联调测试</td>
+                  <td>
+                    <div class="bar-track"><div class="bar-value" style="width: 82%"></div></div>
+                  </td>
+                  <td>4 天</td>
+                  <td><span class="badge">缺测试环境</span></td>
+                </tr>
+                <tr>
+                  <td>上线准备</td>
+                  <td>
+                    <div class="bar-track"><div class="bar-value" style="width: 45%"></div></div>
+                  </td>
+                  <td>8 天</td>
+                  <td><button class="link-button" data-view="risk-detail">查看风险</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">跨团队协同</h3>
+              <button class="link-button" data-view="collaboration-hub">打开协同工作台</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>上线清单</strong>
+                <p>12 项必须完成的动作，当前完成 6 项，存在变更管理缺口。</p>
+              </div>
+              <div class="insight-card">
+                <strong>审批待办</strong>
+                <p>预算追加审批 1 个，安全豁免审批 1 个，需要审批人快速处理。</p>
+              </div>
+              <div class="insight-card">
+                <strong>资源利用</strong>
+                <p>关键测试人员利用率 128%，建议启动资源调配。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>集中展示单个项目的阶段进度、风险与协同事项。</li>
+            <li>引导项目经理进入协同工作台或风险库处理具体问题。</li>
+            <li>强调上线准备的关键动作，为演练上线评审会议提供素材。</li>
+          </ul>
+        `
+      };
+      views['gantt-progress'] = {
+        title: '甘特进度表',
+        subtitle: '掌握计划 vs 实际的偏差，实时跟踪关键路径',
+        shortTitle: '甘特表',
+        tags: ['进度跟踪', '关键路径'],
+        headerActions: `
+          <button class="primary-button" data-view="iteration-detail">查看迭代详情</button>
+          <button class="ghost-button" data-view="critical-path">关键路径分析</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">项目时间线</h3>
+              <div class="section-tools">
+                <button class="chip">视图：甘特</button>
+                <button class="chip">范围：Project Atlas</button>
+                <button class="chip">基线对比</button>
+              </div>
+            </div>
+            <div class="timeline-grid">
+              <div class="note">
+                <strong>偏差提醒</strong><br />本周上线准备阶段延迟 3 天，系统已自动通知相关负责人并创建恢复计划任务。
+              </div>
+              <div>
+                <table class="timeline-table">
+                  <thead>
+                    <tr>
+                      <th>任务</th>
+                      <th>开始</th>
+                      <th>结束</th>
+                      <th>完成度</th>
+                      <th>偏差</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>需求冻结</td>
+                      <td>6/03</td>
+                      <td>6/21</td>
+                      <td>100%</td>
+                      <td>0 天</td>
+                    </tr>
+                    <tr>
+                      <td>开发迭代</td>
+                      <td>6/24</td>
+                      <td>7/26</td>
+                      <td>92%</td>
+                      <td>-1 天</td>
+                    </tr>
+                    <tr>
+                      <td>联调测试</td>
+                      <td>7/29</td>
+                      <td>8/16</td>
+                      <td>78%</td>
+                      <td class="status-risk">+3 天</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">资源 vs 进度</h3>
+              <button class="link-button" data-view="resource-forecast">跳转资源预测</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>关键路径</strong>
+                <p>测试环境搭建 ➜ 安全扫描 ➜ UAT，上任一环节延迟将影响上线。</p>
+              </div>
+              <div class="insight-card">
+                <strong>人力瓶颈</strong>
+                <p>测试团队已满载 126%，建议在资源页面拉取支援。</p>
+              </div>
+              <div class="insight-card">
+                <strong>自动提醒</strong>
+                <p>偏差 &gt; 3 天将触发 PMO 升级提醒，并同步到审批中心。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>以甘特图形式呈现计划与实际，突出偏差信息。</li>
+            <li>结合资源情况给出决策建议，并引导进入资源调配。</li>
+            <li>为周报或例会提供可视化素材，可继续查看迭代详情与关键路径。</li>
+          </ul>
+        `
+      };
+      views['iteration-detail'] = {
+        title: '迭代燃尽与交付板',
+        subtitle: '查看本迭代的任务燃尽、阻塞与交付列表',
+        shortTitle: '迭代详情',
+        tags: ['燃尽图', '敏捷'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">燃尽趋势</h3>
+              <div class="section-tools">
+                <button class="chip">迭代：Sprint 12</button>
+                <button class="chip">日期：7/29 - 8/16</button>
+              </div>
+            </div>
+            <div class="note">燃尽曲线略高于理想线，8 月 8 日触发了自动提醒，并创建了阻塞处理任务。</div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">阻塞清单</h3>
+              <button class="link-button" data-view="collaboration-hub">转到协同处理</button>
+            </div>
+            <div class="kanban">
+              <div class="kanban-lane">
+                <div class="lane-title">新阻塞</div>
+                <div class="ticket">
+                  <strong>支付接口测试环境不可用</strong>
+                  <p>等待基础架构团队恢复。</p>
+                  <div class="ticket-footer">
+                    <span>已等待 2 天</span>
+                    <span class="badge">高</span>
+                  </div>
+                </div>
+              </div>
+              <div class="kanban-lane">
+                <div class="lane-title">处理中</div>
+                <div class="ticket">
+                  <strong>合规审计确认</strong>
+                  <p>等待审计团队回复，预计 8/10 完成。</p>
+                  <div class="ticket-footer">
+                    <span>负责人：王芊</span>
+                    <span class="badge">中</span>
+                  </div>
+                </div>
+              </div>
+              <div class="kanban-lane">
+                <div class="lane-title">已解决</div>
+                <div class="ticket">
+                  <strong>前端缺陷 #3421</strong>
+                  <p>补丁已合入主干。</p>
+                  <div class="ticket-footer">
+                    <span>2023-08-05</span>
+                    <span class="badge">关闭</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示迭代燃尽与阻塞情况，支撑敏捷仪式汇报。</li>
+            <li>阻塞卡片可跳转到协同工作台，展示跨团队协作。</li>
+            <li>帮助项目经理快速定位风险并分派解决责任。</li>
+          </ul>
+        `
+      };
+      views['critical-path'] = {
+        title: '关键路径分析',
+        subtitle: '识别影响上线日期的关键任务与依赖链路',
+        shortTitle: '关键路径',
+        tags: ['计划分析'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">关键路径链路</h3>
+              <div class="section-tools">
+                <button class="chip">目标上线：8/18</button>
+                <button class="chip">允许偏差：2 天</button>
+              </div>
+            </div>
+            <div class="approval-flow">
+              <div class="flow-node">
+                <strong>环境搭建</strong>
+                <span>完成度 70%</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>安全扫描</strong>
+                <span>风险：漏洞复测</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>UAT 验收</strong>
+                <span>需要客户参与</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>上线评审</strong>
+                <span>排期 8/16</span>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">风险缓解动作</h3>
+              <button class="link-button" data-view="risk-register">转到风险库</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>安全扫描</strong>
+                <p>建议增加白名单扫描并由安全团队在 8/10 前给出结论。</p>
+              </div>
+              <div class="insight-card">
+                <strong>客户 UAT</strong>
+                <p>自动向客户发送更新请求，确保 8/12 提前完成验收。</p>
+              </div>
+              <div class="insight-card">
+                <strong>上线评审</strong>
+                <p>建议提前提交上线资料包，并在审批中心查看排期。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>直观呈现关键路径节点及依赖关系。</li>
+            <li>强调风险缓解措施，帮助在会上讨论资源和支持。</li>
+            <li>通过链接跳转到风险库和审批中心，展示业务闭环。</li>
+          </ul>
+        `
+      };
+      views['collaboration-hub'] = {
+        title: '任务协同工作台',
+        subtitle: '跨团队协作、讨论与行动一体化的执行中心',
+        shortTitle: '协同工作台',
+        tags: ['协作', '工作流'],
+        headerActions: `
+          <button class="primary-button" data-view="conversation-thread">查看讨论记录</button>
+          <button class="ghost-button" data-view="task-hand-off">创建交接任务</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">跨团队看板</h3>
+              <div class="section-tools">
+                <button class="chip">视图：卡片</button>
+                <button class="chip">过滤：上线准备</button>
+              </div>
+            </div>
+            <div class="kanban">
+              <div class="kanban-lane">
+                <div class="lane-title">待认领</div>
+                <div class="ticket">
+                  <strong>上线脚本回顾</strong>
+                  <p>需要 SRE 团队确认回滚方案。</p>
+                  <div class="ticket-footer">
+                    <span>创建 2 小时前</span>
+                    <button class="link-button" data-view="task-hand-off">认领</button>
+                  </div>
+                </div>
+              </div>
+              <div class="kanban-lane">
+                <div class="lane-title">进行中</div>
+                <div class="ticket">
+                  <strong>安全豁免说明</strong>
+                  <p>等待安全团队反馈审批意见。</p>
+                  <div class="ticket-footer">
+                    <span>负责人：王芊</span>
+                    <span class="badge">等待审批</span>
+                  </div>
+                </div>
+                <div class="ticket">
+                  <strong>客户验收计划</strong>
+                  <p>同步客户会议纪要，准备 UAT 资料。</p>
+                  <div class="ticket-footer">
+                    <span>协作：市场</span>
+                    <button class="link-button" data-view="conversation-thread">查看讨论</button>
+                  </div>
+                </div>
+              </div>
+              <div class="kanban-lane">
+                <div class="lane-title">已完成</div>
+                <div class="ticket">
+                  <strong>上线评审预约</strong>
+                  <p>审批通过，会议时间 8/16 10:00。</p>
+                  <div class="ticket-footer">
+                    <span>更新 3 小时前</span>
+                    <span class="badge">完成</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">实时讨论</h3>
+              <button class="link-button" data-view="conversation-thread">打开完整记录</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>最新 @ 提醒</strong>
+                <p>"@测试团队" 请在 8/9 前提供回归结果，更新后自动同步到甘特表。</p>
+              </div>
+              <div class="insight-card">
+                <strong>决策记录</strong>
+                <p>上线窗口确认 8/18，若安全扫描未通过将自动推迟至 8/23。</p>
+              </div>
+              <div class="insight-card">
+                <strong>附件库</strong>
+                <p>包含上线脚本、客户通知模板、风险应急方案等关键文档。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示跨团队看板与讨论区，强调 Smartsheet 协同优势。</li>
+            <li>所有操作可触发任务、审批等流程，实现闭环管理。</li>
+            <li>通过创建交接任务与查看讨论，演示现场协作场景。</li>
+          </ul>
+        `
+      };
+      views['conversation-thread'] = {
+        title: '协同讨论记录',
+        subtitle: '沉淀关键讨论，追踪决策与行动项',
+        shortTitle: '讨论记录',
+        tags: ['沟通', '记录'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">按话题聚合</h3>
+              <div class="section-tools">
+                <button class="chip">话题：上线风险</button>
+                <button class="chip">参与者：8 人</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>决策</strong>
+                <p>确认 8/9 进行安全加测，若失败立即触发延期流程。</p>
+              </div>
+              <div class="insight-card">
+                <strong>行动项</strong>
+                <p>生成 5 个任务，分派给测试、SRE、市场和法务。</p>
+              </div>
+              <div class="insight-card">
+                <strong>自动同步</strong>
+                <p>回放记录同步至会议纪要，并创建更新请求给相关干系人。</p>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">讨论时间线</h3>
+              <button class="link-button" data-view="collaboration-hub">返回工作台</button>
+            </div>
+            <div class="timeline-grid">
+              <div>08-07 09:12</div>
+              <div class="note">周凯：新增上线脚本，请 @SRE Review。</div>
+              <div>08-07 09:40</div>
+              <div class="note">王芊：安全团队要求补充渗透测试，自动生成审批。</div>
+              <div>08-07 10:02</div>
+              <div class="note">PMO：已触发风险升级，系统同步至风险库。</div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>沉淀跨部门讨论，确保决策透明可追溯。</li>
+            <li>时间线展示提醒项目经理按时跟进行动项。</li>
+            <li>支持回到协同工作台，实现沟通与执行的闭环。</li>
+          </ul>
+        `
+      };
+      views['task-hand-off'] = {
+        title: '交接任务创建',
+        subtitle: '定义责任、截止时间与自动提醒，保障任务交接顺畅',
+        shortTitle: '交接任务',
+        tags: ['任务管理'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">交接表单</h3>
+              <div class="section-tools">
+                <button class="chip">模板：上线准备交接</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>任务名称</td>
+                  <td>上线脚本回顾</td>
+                  <td>责任人</td>
+                  <td>SRE-刘畅</td>
+                </tr>
+                <tr>
+                  <td>截止日期</td>
+                  <td>2023-08-10 18:00</td>
+                  <td>优先级</td>
+                  <td>高</td>
+                </tr>
+                <tr>
+                  <td>依赖</td>
+                  <td>安全豁免审批完成</td>
+                  <td>提醒</td>
+                  <td>提前 2 小时提醒 + Slack 通知</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">交接确认流程</h3>
+              <button class="link-button" data-view="approval-center">查看审批</button>
+            </div>
+            <div class="approval-flow">
+              <div class="flow-node">
+                <strong>提交人</strong>
+                <span>项目经理</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>确认</strong>
+                <span>责任人签收</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>完成</strong>
+                <span>自动更新甘特进度</span>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示交接流程的标准化，确保责任明确。</li>
+            <li>交接表单与审批联动，避免遗漏关键步骤。</li>
+            <li>支持继续进入审批中心或甘特视图，串联业务流程。</li>
+          </ul>
+        `
+      };
+      views['risk-register'] = {
+        title: '风险问题库',
+        subtitle: '统一管理项目风险、问题与缓解动作',
+        shortTitle: '风险库',
+        tags: ['风险管理'],
+        headerActions: `
+          <button class="primary-button" data-view="risk-detail">登记新风险</button>
+          <button class="ghost-button" data-view="mitigation-plan">查看缓解计划</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">风险雷达</h3>
+              <div class="section-tools">
+                <button class="chip">视图：红黄绿</button>
+                <button class="chip">过滤：上线准备</button>
+              </div>
+            </div>
+            <div class="heatmap">
+              <div class="danger">安全合规<br />红色</div>
+              <div class="warn">性能风险<br />黄色</div>
+              <div>供应商交付<br />绿色</div>
+              <div class="warn">客户验收<br />黄色</div>
+              <div>预算偏差<br />绿色</div>
+              <div class="danger">资源瓶颈<br />红色</div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">风险清单</h3>
+              <button class="link-button" data-view="mitigation-plan">查看缓解计划</button>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>风险</th>
+                  <th>等级</th>
+                  <th>负责人</th>
+                  <th>触发条件</th>
+                  <th>当前状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>安全扫描未通过</td>
+                  <td><span class="badge">高</span></td>
+                  <td>王芊</td>
+                  <td>漏洞数量 &gt; 3</td>
+                  <td><button class="link-button" data-view="risk-detail">查看详情</button></td>
+                </tr>
+                <tr>
+                  <td>客户 UAT 延期</td>
+                  <td><span class="badge">中</span></td>
+                  <td>李然</td>
+                  <td>客户反馈延迟 &gt; 2 天</td>
+                  <td>缓解中</td>
+                </tr>
+                <tr>
+                  <td>测试资源不足</td>
+                  <td><span class="badge">高</span></td>
+                  <td>周凯</td>
+                  <td>利用率 &gt; 120%</td>
+                  <td><button class="link-button" data-view="resource-forecast">转到资源</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>集中展示风险雷达与清单，支持例会快速回顾。</li>
+            <li>通过链接进入缓解计划或资源页面，形成处置闭环。</li>
+            <li>强调风险等级与触发条件，方便跟踪治理过程。</li>
+          </ul>
+        `
+      };
+      views['risk-detail'] = {
+        title: '风险详情：安全扫描未通过',
+        subtitle: '查看风险来源、影响评估与缓解动作执行情况',
+        shortTitle: '风险详情',
+        tags: ['风险记录'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">风险概况</h3>
+              <button class="link-button" data-view="mitigation-plan">查看缓解动作</button>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>风险等级</td>
+                  <td><span class="badge">红色</span></td>
+                  <td>影响范围</td>
+                  <td>生产环境上线</td>
+                </tr>
+                <tr>
+                  <td>触发条件</td>
+                  <td>漏洞数 &gt; 3，P1 漏洞未关闭</td>
+                  <td>发现日期</td>
+                  <td>2023-08-06</td>
+                </tr>
+                <tr>
+                  <td>报告人</td>
+                  <td>安全团队-王芊</td>
+                  <td>当前状态</td>
+                  <td>缓解中</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">讨论与行动</h3>
+              <button class="link-button" data-view="conversation-thread">查看讨论</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>影响评估</strong>
+                <p>上线窗口需预留 5 天缓冲，建议提前通知客户。</p>
+              </div>
+              <div class="insight-card">
+                <strong>已执行</strong>
+                <p>已加开漏洞修复会议，外包团队需 48 小时内提交补丁。</p>
+              </div>
+              <div class="insight-card">
+                <strong>待执行</strong>
+                <p>若 8/9 仍未解决，将触发上线延期审批。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>快速了解风险详情与影响范围，支持会议演示。</li>
+            <li>展示行动项执行情况，确保风险闭环。</li>
+            <li>可继续跳转讨论记录或缓解计划，串联协同路径。</li>
+          </ul>
+        `
+      };
+      views['mitigation-plan'] = {
+        title: '风险缓解计划',
+        subtitle: '跟踪缓解任务、责任人与完成情况',
+        shortTitle: '缓解计划',
+        tags: ['任务跟踪'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">缓解动作看板</h3>
+              <button class="link-button" data-view="task-hand-off">分派责任</button>
+            </div>
+            <div class="kanban">
+              <div class="kanban-lane">
+                <div class="lane-title">未开始</div>
+                <div class="ticket">
+                  <strong>外包安全复测</strong>
+                  <p>等待供应商确认时间。</p>
+                  <div class="ticket-footer">
+                    <span>负责人：供应商-Allen</span>
+                    <span class="badge">高</span>
+                  </div>
+                </div>
+              </div>
+              <div class="kanban-lane">
+                <div class="lane-title">进行中</div>
+                <div class="ticket">
+                  <strong>补充渗透测试</strong>
+                  <p>预计 8/09 完成。</p>
+                  <div class="ticket-footer">
+                    <span>状态：跟进</span>
+                    <button class="link-button" data-view="conversation-thread">查看记录</button>
+                  </div>
+                </div>
+              </div>
+              <div class="kanban-lane">
+                <div class="lane-title">已完成</div>
+                <div class="ticket">
+                  <strong>客户风险告知</strong>
+                  <p>市场团队已发送邮件并记录回执。</p>
+                  <div class="ticket-footer">
+                    <span>完成：08-07</span>
+                    <span class="badge">完成</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">关键里程碑</h3>
+              <button class="link-button" data-view="gantt-progress">同步甘特</button>
+            </div>
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>动作</th>
+                  <th>截止日期</th>
+                  <th>负责人</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>漏洞修复提交</td>
+                  <td>08-08</td>
+                  <td>研发-陈曦</td>
+                  <td>处理中</td>
+                </tr>
+                <tr>
+                  <td>复测确认</td>
+                  <td>08-09</td>
+                  <td>安全-王芊</td>
+                  <td>待开始</td>
+                </tr>
+                <tr>
+                  <td>上线评审材料</td>
+                  <td>08-11</td>
+                  <td>PM-周凯</td>
+                  <td>进行中</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>把风险缓解动作以看板方式呈现，追踪责任落实。</li>
+            <li>与甘特、协同工作台联动，保障信息同步。</li>
+            <li>适合风险周会场景，演示如何跟进治理进展。</li>
+          </ul>
+        `
+      };
+      views['resource-forecast'] = {
+        title: '资源负载预测',
+        subtitle: '监控跨项目资源利用率，预估瓶颈并调配',
+        shortTitle: '资源预测',
+        tags: ['资源管理'],
+        headerActions: `
+          <button class="primary-button" data-view="resource-adjust">发起调配</button>
+          <button class="ghost-button" data-view="resource-scenario">比较场景</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">团队利用率</h3>
+              <div class="section-tools">
+                <button class="chip">范围：测试团队</button>
+                <button class="chip">时间：未来 4 周</button>
+              </div>
+            </div>
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>周次</th>
+                  <th>利用率</th>
+                  <th>风险提示</th>
+                  <th>建议动作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>8/5 - 8/11</td>
+                  <td>126%</td>
+                  <td><span class="badge">超载</span></td>
+                  <td><button class="link-button" data-view="resource-adjust">调配外部资源</button></td>
+                </tr>
+                <tr>
+                  <td>8/12 - 8/18</td>
+                  <td>118%</td>
+                  <td><span class="badge">预警</span></td>
+                  <td>调整任务优先级</td>
+                </tr>
+                <tr>
+                  <td>8/19 - 8/25</td>
+                  <td>92%</td>
+                  <td>正常</td>
+                  <td>可释放 0.5 人力</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">技能地图</h3>
+              <button class="link-button" data-view="resource-scenario">查看调配方案</button>
+            </div>
+            <div class="heatmap">
+              <div>测试-自动化<br />4 人</div>
+              <div class="warn">安全测试<br />2 人</div>
+              <div>性能测试<br />3 人</div>
+              <div class="danger">渗透测试<br />1 人</div>
+              <div>UAT 支持<br />2 人</div>
+              <div>外包 QA<br />5 人</div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>帮助识别资源超载并提供调配建议。</li>
+            <li>结合技能地图评估外包或跨项目支援需求。</li>
+            <li>发起调配流程后，可继续跟踪审批与执行情况。</li>
+          </ul>
+        `
+      };
+      views['resource-adjust'] = {
+        title: '资源调配流程',
+        subtitle: '提出调配需求、审批链与执行跟踪',
+        shortTitle: '调配流程',
+        tags: ['资源审批'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">调配需求单</h3>
+              <div class="section-tools">
+                <button class="chip">模板：测试资源调配</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>需求方</td>
+                  <td>Project Omega</td>
+                  <td>申请人</td>
+                  <td>周凯</td>
+                </tr>
+                <tr>
+                  <td>需求技能</td>
+                  <td>渗透测试</td>
+                  <td>时长</td>
+                  <td>80 小时</td>
+                </tr>
+                <tr>
+                  <td>期望时间</td>
+                  <td>8/8 - 8/15</td>
+                  <td>优先级</td>
+                  <td>高</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">审批链路</h3>
+              <button class="link-button" data-view="approval-center">跳转审批中心</button>
+            </div>
+            <div class="approval-flow">
+              <div class="flow-node">
+                <strong>提交</strong>
+                <span>项目经理</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>初审</strong>
+                <span>资源经理</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>复审</strong>
+                <span>部门负责人</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>执行</strong>
+                <span>调配协调员</span>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>演示资源调配申请与审批链路，体现治理流程。</li>
+            <li>支持跳转至审批中心继续演示审批操作。</li>
+            <li>确保调配需求与执行情况可追踪，避免资源冲突。</li>
+          </ul>
+        `
+      };
+      views['resource-scenario'] = {
+        title: '资源场景对比',
+        subtitle: '模拟不同调配方案的影响，辅助决策',
+        shortTitle: '场景对比',
+        tags: ['决策分析'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">方案对比</h3>
+              <div class="section-tools">
+                <button class="chip">方案 A：外包支援</button>
+                <button class="chip">方案 B：调整优先级</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>方案 A</strong>
+                <p>成本增加 12%，上线日期保持不变。</p>
+              </div>
+              <div class="insight-card">
+                <strong>方案 B</strong>
+                <p>成本持平，但上线推迟 5 天。</p>
+              </div>
+              <div class="insight-card">
+                <strong>推荐</strong>
+                <p>优先选择方案 A，并同步预算审批。</p>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">影响指标</h3>
+              <button class="link-button" data-view="budget-change">同步预算变更</button>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>指标</th>
+                  <th>当前</th>
+                  <th>方案 A</th>
+                  <th>方案 B</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>上线时间</td>
+                  <td>8/18</td>
+                  <td>8/18</td>
+                  <td>8/23</td>
+                </tr>
+                <tr>
+                  <td>总成本</td>
+                  <td>100%</td>
+                  <td>112%</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>风险评分</td>
+                  <td>62</td>
+                  <td>78</td>
+                  <td>55</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>提供数据化的场景对比，帮助项目经理与领导快速决策。</li>
+            <li>可继续进入预算变更页面，展示跨模块协作。</li>
+            <li>与组合健康评分联动，说明调配对整体评分的影响。</li>
+          </ul>
+        `
+      };
+      views['approval-center'] = {
+        title: '待办审批中心',
+        subtitle: '统一处理预算、资源、上线等审批事项',
+        shortTitle: '审批中心',
+        tags: ['审批', '待办'],
+        headerActions: `
+          <button class="primary-button" data-view="approval-detail">批量处理</button>
+          <button class="ghost-button" data-view="audit-trail">查看审计轨迹</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">我的待办</h3>
+              <div class="section-tools">
+                <button class="chip">过滤：高优先级</button>
+                <button class="chip">来源：项目</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>事项</th>
+                  <th>类型</th>
+                  <th>项目</th>
+                  <th>截止时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>预算追加 20%</td>
+                  <td>预算变更</td>
+                  <td>Project Omega</td>
+                  <td>今天 18:00</td>
+                  <td><button class="link-button" data-view="approval-detail">进入审批</button></td>
+                </tr>
+                <tr>
+                  <td>资源调配申请</td>
+                  <td>资源</td>
+                  <td>Project Omega</td>
+                  <td>8/08</td>
+                  <td><button class="link-button" data-view="resource-adjust">查看需求</button></td>
+                </tr>
+                <tr>
+                  <td>上线延期申请</td>
+                  <td>上线</td>
+                  <td>Project Nova</td>
+                  <td>8/09</td>
+                  <td><button class="link-button" data-view="milestone-history">回顾记录</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">审批统计</h3>
+              <button class="link-button" data-view="approval-history">查看历史</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>平均处理时长</strong>
+                <p>1.6 天，较上月优化 20%。</p>
+              </div>
+              <div class="insight-card">
+                <strong>逾期待办</strong>
+                <p>2 个，系统已发送提醒。</p>
+              </div>
+              <div class="insight-card">
+                <strong>自动审批占比</strong>
+                <p>15%，可通过模板进一步提高。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>汇总审批待办，帮助审批人快速处理关键事项。</li>
+            <li>可跳转到审批详情或资源/预算页面，串联决策链路。</li>
+            <li>展示审批效率指标，体现流程优化成效。</li>
+          </ul>
+        `
+      };
+      views['approval-detail'] = {
+        title: '审批详情：预算追加 20%',
+        subtitle: '核对申请信息、判断风险并给出批注',
+        shortTitle: '审批详情',
+        tags: ['预算审批'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">申请信息</h3>
+              <button class="link-button" data-view="budget-change">查看预算总览</button>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>申请人</td>
+                  <td>周凯</td>
+                  <td>所属项目</td>
+                  <td>Project Omega</td>
+                </tr>
+                <tr>
+                  <td>追加金额</td>
+                  <td>¥180,000</td>
+                  <td>用途</td>
+                  <td>引入安全测试供应商</td>
+                </tr>
+                <tr>
+                  <td>风险提示</td>
+                  <td>组合健康分低于 65</td>
+                  <td>建议</td>
+                  <td>同步资源调配流程</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">批注与决策</h3>
+              <button class="link-button" data-view="audit-trail">查看历史批注</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>审批意见</strong>
+                <p>同意追加，条件是供应商提供安全测试报告。</p>
+              </div>
+              <div class="insight-card">
+                <strong>自动动作</strong>
+                <p>审批通过后，系统自动更新预算表并通知财务。</p>
+              </div>
+              <div class="insight-card">
+                <strong>后续任务</strong>
+                <p>创建 "供应商对接" 任务交给 PM 跟进。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>在审批详情页展示申请信息与风险提示。</li>
+            <li>审批意见与自动动作帮助演示流程自动化。</li>
+            <li>可继续访问预算总览或审计轨迹，体现透明可追溯。</li>
+          </ul>
+        `
+      };
+      views['budget-change'] = {
+        title: '预算变更管理',
+        subtitle: '掌握预算执行、变更申请与控制措施',
+        shortTitle: '预算管理',
+        tags: ['预算控制'],
+        headerActions: `
+          <button class="primary-button" data-view="budget-simulation">模拟方案</button>
+          <button class="ghost-button" data-view="approval-center">查看待办</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">预算执行情况</h3>
+              <div class="section-tools">
+                <button class="chip">范围：项目组合</button>
+                <button class="chip">显示差异</button>
+              </div>
+            </div>
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>项目</th>
+                  <th>预算</th>
+                  <th>已用</th>
+                  <th>差异</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Atlas</td>
+                  <td>¥1,200,000</td>
+                  <td>¥960,000</td>
+                  <td>-20%</td>
+                  <td>正常</td>
+                </tr>
+                <tr>
+                  <td>Omega</td>
+                  <td>¥900,000</td>
+                  <td>¥980,000</td>
+                  <td class="status-risk">+9%</td>
+                  <td><button class="link-button" data-view="approval-detail">审批中</button></td>
+                </tr>
+                <tr>
+                  <td>Nova</td>
+                  <td>¥600,000</td>
+                  <td>¥410,000</td>
+                  <td>-32%</td>
+                  <td>正常</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">变更流水</h3>
+              <button class="link-button" data-view="budget-simulation">查看模拟结果</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>追加 - Omega</strong>
+                <p>用于引入安全测试供应商，审批人：李明。</p>
+              </div>
+              <div class="insight-card">
+                <strong>调减 - Nova</strong>
+                <p>因范围收缩，释放预算 80,000。</p>
+              </div>
+              <div class="insight-card">
+                <strong>转移 - Pulse</strong>
+                <p>转移到市场推广费用，需要审批确认。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>监控预算执行差异，快速定位超支项目。</li>
+            <li>记录变更流水，方便审计与复盘。</li>
+            <li>可进一步进入模拟方案或审批中心，形成预算治理闭环。</li>
+          </ul>
+        `
+      };
+      views['budget-simulation'] = {
+        title: '预算模拟方案',
+        subtitle: '比较不同预算调整对现金流与 ROI 的影响',
+        shortTitle: '预算模拟',
+        tags: ['财务分析'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">方案比较</h3>
+              <div class="section-tools">
+                <button class="chip">方案一：维持上线节奏</button>
+                <button class="chip">方案二：延期 2 周</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>方案一</strong>
+                <p>追加预算 180,000，ROI 预计 135%。</p>
+              </div>
+              <div class="insight-card">
+                <strong>方案二</strong>
+                <p>无追加预算，但 ROI 降至 118%。</p>
+              </div>
+              <div class="insight-card">
+                <strong>建议</strong>
+                <p>优先方案一，并同步审批与资源调配。</p>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">现金流影响</h3>
+              <button class="link-button" data-view="approval-detail">提交审批</button>
+            </div>
+            <table class="timeline-table">
+              <thead>
+                <tr>
+                  <th>月份</th>
+                  <th>当前预测</th>
+                  <th>方案一</th>
+                  <th>方案二</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>8 月</td>
+                  <td>¥420,000</td>
+                  <td>¥520,000</td>
+                  <td>¥380,000</td>
+                </tr>
+                <tr>
+                  <td>9 月</td>
+                  <td>¥360,000</td>
+                  <td>¥340,000</td>
+                  <td>¥320,000</td>
+                </tr>
+                <tr>
+                  <td>10 月</td>
+                  <td>¥310,000</td>
+                  <td>¥280,000</td>
+                  <td>¥330,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示预算调整的财务影响，辅助审批决策。</li>
+            <li>链接审批详情，形成预算模拟 ➜ 审批的流程。</li>
+            <li>支持财务在会上解释不同方案的价值。</li>
+          </ul>
+        `
+      };
+      views['milestone-signoff'] = {
+        title: '里程碑确认',
+        subtitle: '审批关键里程碑并同步到甘特与报告',
+        shortTitle: '里程碑确认',
+        tags: ['里程碑', '审批'],
+        headerActions: `
+          <button class="primary-button" data-view="milestone-history">查看历史</button>
+          <button class="ghost-button" data-view="gantt-progress">跳转甘特</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">待确认里程碑</h3>
+              <div class="section-tools">
+                <button class="chip">范围：本周</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>项目</th>
+                  <th>里程碑</th>
+                  <th>计划</th>
+                  <th>实际</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Omega</td>
+                  <td>上线准备完成</td>
+                  <td>8/12</td>
+                  <td>待确认</td>
+                  <td><button class="link-button" data-view="milestone-history">查看详情</button></td>
+                </tr>
+                <tr>
+                  <td>Atlas</td>
+                  <td>客户验收</td>
+                  <td>8/18</td>
+                  <td>待确认</td>
+                  <td><button class="link-button" data-view="project-omega">跳转项目</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">确认清单</h3>
+              <button class="link-button" data-view="approval-history">查看历史批注</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>交付物</strong>
+                <p>上线脚本、风险清单、客户通知模板。</p>
+              </div>
+              <div class="insight-card">
+                <strong>检查项</strong>
+                <p>安全扫描、性能测试、回滚预案。</p>
+              </div>
+              <div class="insight-card">
+                <strong>责任人</strong>
+                <p>项目经理确认后自动同步给 PMO。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>列出待确认里程碑，支持审批人快速核对。</li>
+            <li>确认清单确保交付物齐全，可追踪责任。</li>
+            <li>链接历史批注与甘特表，强化跨模块协同。</li>
+          </ul>
+        `
+      };
+      views['milestone-history'] = {
+        title: '里程碑确认记录',
+        subtitle: '查看历史批注、确认流程与附件',
+        shortTitle: '确认记录',
+        tags: ['审计'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">历史批注</h3>
+              <button class="link-button" data-view="approval-history">查看完整审计</button>
+            </div>
+            <div class="timeline-grid">
+              <div>08-01</div>
+              <div class="note">PMO：确认客户 UAT 已完成，附件包含验收单。</div>
+              <div>08-03</div>
+              <div class="note">安全负责人：确认漏洞修复，建议保留回滚方案。</div>
+              <div>08-05</div>
+              <div class="note">项目经理：提交上线准备完成报告。</div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">附件与交付物</h3>
+              <button class="link-button" data-view="knowledge-base">打开知识库</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>上线脚本</strong>
+                <p>版本 1.2，更新于 08-05。</p>
+              </div>
+              <div class="insight-card">
+                <strong>客户通知</strong>
+                <p>已签字确认，存档于知识库。</p>
+              </div>
+              <div class="insight-card">
+                <strong>审批表单</strong>
+                <p>自动生成 PDF，便于审计备查。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>回溯里程碑确认过程，确保信息完整透明。</li>
+            <li>强调附件与交付物，方便审计与知识沉淀。</li>
+            <li>支持跳转知识库继续演示内容管理。</li>
+          </ul>
+        `
+      };
+      views['approval-history'] = {
+        title: '审批历史与审计',
+        subtitle: '追踪审批流程、批注与合规检查',
+        shortTitle: '审批历史',
+        tags: ['审计', '合规'],
+        headerActions: `
+          <button class="primary-button" data-view="audit-trail">导出审计报告</button>
+          <button class="ghost-button" data-view="approval-center">返回待办</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">审批记录表</h3>
+              <div class="section-tools">
+                <button class="chip">时间：过去 30 天</button>
+                <button class="chip">状态：全部</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>日期</th>
+                  <th>事项</th>
+                  <th>结果</th>
+                  <th>审批人</th>
+                  <th>批注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>08-05</td>
+                  <td>预算追加 20%</td>
+                  <td>通过</td>
+                  <td>李明</td>
+                  <td>附条件通过</td>
+                </tr>
+                <tr>
+                  <td>08-03</td>
+                  <td>上线延期申请</td>
+                  <td>驳回</td>
+                  <td>王嘉</td>
+                  <td>需补充客户确认</td>
+                </tr>
+                <tr>
+                  <td>08-01</td>
+                  <td>资源调配</td>
+                  <td>通过</td>
+                  <td>赵蕾</td>
+                  <td>限期一周</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">合规检查清单</h3>
+              <button class="link-button" data-view="audit-trail">查看详细轨迹</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>SOC2 对应控制</strong>
+                <p>审批操作均记录，满足访问控制要求。</p>
+              </div>
+              <div class="insight-card">
+                <strong>电子签名</strong>
+                <p>关键审批使用双重验证，符合审计标准。</p>
+              </div>
+              <div class="insight-card">
+                <strong>保存策略</strong>
+                <p>批注与附件保留 3 年，自动入库。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示审批历史记录，便于合规审计查阅。</li>
+            <li>强调控制点与保存策略，体现企业级能力。</li>
+            <li>可导出审计报告或返回待办，实现审批闭环。</li>
+          </ul>
+        `
+      };
+      views['audit-trail'] = {
+        title: '审计轨迹',
+        subtitle: '详细记录审批过程、系统动作与操作人',
+        shortTitle: '审计轨迹',
+        tags: ['安全', '合规'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">事件时间线</h3>
+              <button class="link-button" data-view="security-audit">查看安全中心</button>
+            </div>
+            <div class="timeline-grid">
+              <div>08-05 09:12</div>
+              <div class="note">周凯 提交预算追加申请，自动通知审批人。</div>
+              <div>08-05 10:30</div>
+              <div class="note">系统校验预算消耗达 109%，触发高亮提醒。</div>
+              <div>08-05 14:05</div>
+              <div class="note">李明 审批通过，系统生成批注并同步财务。</div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">系统动作</h3>
+              <button class="link-button" data-view="integration-center">查看集成</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>自动提醒</strong>
+                <p>发送 Slack & 邮件通知，记录在审计日志。</p>
+              </div>
+              <div class="insight-card">
+                <strong>数据写回</strong>
+                <p>审批通过后更新 ERP 预算科目。</p>
+              </div>
+              <div class="insight-card">
+                <strong>安全校验</strong>
+                <p>验证审批人权限，并记录双因素验证信息。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>提供审批过程的完整追踪，满足审计要求。</li>
+            <li>展示系统自动动作，体现平台集成能力。</li>
+            <li>可继续访问安全中心或集成页面延伸演示。</li>
+          </ul>
+        `
+      };
+      views['my-tasks'] = {
+        title: '我的任务',
+        subtitle: '团队成员查看个人任务、优先级与阻塞',
+        shortTitle: '我的任务',
+        tags: ['执行'],
+        headerActions: `
+          <button class="primary-button" data-view="task-detail">批量更新</button>
+          <button class="ghost-button" data-view="update-form">提交更新</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">任务清单</h3>
+              <div class="section-tools">
+                <button class="chip">视图：列表</button>
+                <button class="chip">排序：截止时间</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>任务</th>
+                  <th>项目</th>
+                  <th>截止时间</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>补充渗透测试结果</td>
+                  <td>Omega</td>
+                  <td>8/09</td>
+                  <td><span class="badge">进行中</span></td>
+                  <td><button class="link-button" data-view="task-detail">查看详情</button></td>
+                </tr>
+                <tr>
+                  <td>更新上线清单</td>
+                  <td>Omega</td>
+                  <td>8/08</td>
+                  <td>待开始</td>
+                  <td><button class="link-button" data-view="update-form">提交进度</button></td>
+                </tr>
+                <tr>
+                  <td>客户培训准备</td>
+                  <td>Atlas</td>
+                  <td>8/12</td>
+                  <td>进行中</td>
+                  <td><button class="link-button" data-view="knowledge-base">查看资料</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">今日关注</h3>
+              <button class="link-button" data-view="conversation-thread">查看协同</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>阻塞</strong>
+                <p>测试环境不可用，等待 SRE 恢复。</p>
+              </div>
+              <div class="insight-card">
+                <strong>提醒</strong>
+                <p>填写周报并提交更新请求。</p>
+              </div>
+              <div class="insight-card">
+                <strong>关键会议</strong>
+                <p>8/09 下午上线评审彩排。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>为团队成员提供任务总览，明确优先级。</li>
+            <li>链接更新请求、协同讨论等页面，保障信息同步。</li>
+            <li>适合日常站会演示个人工作情况。</li>
+          </ul>
+        `
+      };
+      views['task-detail'] = {
+        title: '任务详情：补充渗透测试结果',
+        subtitle: '查看任务要求、依赖与协作记录',
+        shortTitle: '任务详情',
+        tags: ['执行跟踪'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">任务信息</h3>
+              <button class="link-button" data-view="update-form">提交进度</button>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>项目</td>
+                  <td>Omega</td>
+                  <td>优先级</td>
+                  <td>高</td>
+                </tr>
+                <tr>
+                  <td>依赖</td>
+                  <td>安全豁免审批</td>
+                  <td>截止</td>
+                  <td>8/09 18:00</td>
+                </tr>
+                <tr>
+                  <td>当前状态</td>
+                  <td>进行中</td>
+                  <td>预估剩余</td>
+                  <td>12 小时</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">协作与附件</h3>
+              <button class="link-button" data-view="conversation-thread">查看讨论</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>讨论纪要</strong>
+                <p>8/07 与安全团队确认测试范围。</p>
+              </div>
+              <div class="insight-card">
+                <strong>附件</strong>
+                <p>测试脚本、报告模板已上传。</p>
+              </div>
+              <div class="insight-card">
+                <strong>提醒</strong>
+                <p>若未更新，将自动发起提醒给负责人。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示任务的关键信息与依赖，帮助成员明确执行重点。</li>
+            <li>协作区体现跨团队信息沉淀与附件管理。</li>
+            <li>可继续提交更新或查看讨论，保障任务推进。</li>
+          </ul>
+        `
+      };
+      views['update-requests'] = {
+        title: '更新请求中心',
+        subtitle: '集中处理项目更新请求与反馈',
+        shortTitle: '更新请求',
+        tags: ['沟通'],
+        headerActions: `
+          <button class="primary-button" data-view="update-form">填写更新</button>
+          <button class="ghost-button" data-view="conversation-thread">查看讨论</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">收到的更新请求</h3>
+              <div class="section-tools">
+                <button class="chip">来源：PMO</button>
+                <button class="chip">状态：未完成</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>请求</th>
+                  <th>项目</th>
+                  <th>截止</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>更新风险缓解进展</td>
+                  <td>Omega</td>
+                  <td>8/08</td>
+                  <td>待响应</td>
+                  <td><button class="link-button" data-view="update-form">填写</button></td>
+                </tr>
+                <tr>
+                  <td>提交上线资料</td>
+                  <td>Omega</td>
+                  <td>8/09</td>
+                  <td>进行中</td>
+                  <td><button class="link-button" data-view="knowledge-base">查阅模板</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">历史记录</h3>
+              <button class="link-button" data-view="approval-history">查看审批关联</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>按时响应率</strong>
+                <p>本月 92%，系统自动提醒未按时响应的成员。</p>
+              </div>
+              <div class="insight-card">
+                <strong>升级记录</strong>
+                <p>2 个请求因超时升级至项目经理。</p>
+              </div>
+              <div class="insight-card">
+                <strong>知识库联动</strong>
+                <p>链接 12 篇文档，提升响应效率。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>统一管理更新请求，避免信息遗漏。</li>
+            <li>支持快速填写更新并关联知识库模板。</li>
+            <li>展示响应率与升级记录，凸显流程规范。</li>
+          </ul>
+        `
+      };
+      views['update-form'] = {
+        title: '更新填写表单',
+        subtitle: '快速提交进度、问题与下一步计划',
+        shortTitle: '更新表单',
+        tags: ['数据采集'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">表单预览</h3>
+              <div class="section-tools">
+                <button class="chip">模板：周进度更新</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>进度总结</td>
+                  <td>本周完成安全测试准备，待提交报告。</td>
+                </tr>
+                <tr>
+                  <td>问题与风险</td>
+                  <td>测试环境不可用，预计 8/08 恢复。</td>
+                </tr>
+                <tr>
+                  <td>需要协助</td>
+                  <td>需要 SRE 团队提供环境备份。</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">提交动作</h3>
+              <button class="link-button" data-view="collaboration-hub">通知团队</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>通知对象</strong>
+                <p>自动通知项目经理、PMO 与相关审批人。</p>
+              </div>
+              <div class="insight-card">
+                <strong>写回</strong>
+                <p>更新甘特进度与风险库状态。</p>
+              </div>
+              <div class="insight-card">
+                <strong>跟踪</strong>
+                <p>记录响应时间，纳入团队 KPI 统计。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示更新表单的关键字段与提交流程。</li>
+            <li>强调通知与写回动作，体现自动化。</li>
+            <li>可返回协同工作台，继续展示执行过程。</li>
+          </ul>
+        `
+      };
+      views['time-entry'] = {
+        title: '工时填报',
+        subtitle: '记录项目工时，关联任务与审批',
+        shortTitle: '工时填报',
+        tags: ['工时管理'],
+        headerActions: `
+          <button class="primary-button" data-view="time-week">查看周报</button>
+          <button class="ghost-button" data-view="update-form">同步进度</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">今日工时</h3>
+              <div class="section-tools">
+                <button class="chip">日期：8/07</button>
+                <button class="chip">项目：Omega</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>任务</th>
+                  <th>类型</th>
+                  <th>耗时</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>渗透测试</td>
+                  <td>质量保障</td>
+                  <td>6h</td>
+                  <td>待提交报告</td>
+                </tr>
+                <tr>
+                  <td>风险缓解会议</td>
+                  <td>沟通</td>
+                  <td>2h</td>
+                  <td>与安全团队讨论</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">填报提醒</h3>
+              <button class="link-button" data-view="approval-center">关联审批</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>提交状态</strong>
+                <p>本周 5/5 已提交，自动提醒保持高响应率。</p>
+              </div>
+              <div class="insight-card">
+                <strong>异常</strong>
+                <p>若工时与预算偏差超 15%，自动触发审批。</p>
+              </div>
+              <div class="insight-card">
+                <strong>导出</strong>
+                <p>支持导出到工资系统与项目成本报表。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示工时填报界面，帮助团队成员快速录入。</li>
+            <li>结合提醒与审批，保证工时数据及时准确。</li>
+            <li>可访问周报与审批中心，体现数据联动。</li>
+          </ul>
+        `
+      };
+      views['time-week'] = {
+        title: '周工时报表',
+        subtitle: '按周查看工时分布与项目投入情况',
+        shortTitle: '周报',
+        tags: ['报表'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">工时分布</h3>
+              <div class="section-tools">
+                <button class="chip">周次：W32</button>
+                <button class="chip">成员：我</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>项目投入</strong>
+                <p>Omega 70%，Atlas 30%。</p>
+              </div>
+              <div class="insight-card">
+                <strong>加班提醒</strong>
+                <p>本周加班 4 小时，已通知项目经理。</p>
+              </div>
+              <div class="insight-card">
+                <strong>产出</strong>
+                <p>提交 2 份测试报告，完成 1 次风险缓解会议。</p>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">趋势图</h3>
+              <button class="link-button" data-view="time-entry">返回填报</button>
+            </div>
+            <div class="note">工时趋势保持稳定，本周略高于平均水平 6%，建议关注团队负荷。</div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>周报形式展示工时分布，支持例会分享。</li>
+            <li>提醒加班与产出情况，便于管理者关怀团队。</li>
+            <li>可返回工时填报继续操作。</li>
+          </ul>
+        `
+      };
+      views['knowledge-base'] = {
+        title: '项目知识库',
+        subtitle: '沉淀模板、经验与复盘内容',
+        shortTitle: '知识库',
+        tags: ['知识管理'],
+        headerActions: `
+          <button class="primary-button" data-view="playbook-detail">查看上线手册</button>
+          <button class="ghost-button" data-view="update-requests">关联更新请求</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">知识分类</h3>
+              <div class="section-tools">
+                <button class="chip">模板</button>
+                <button class="chip">复盘</button>
+                <button class="chip">经验帖</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>上线准备手册</strong>
+                <p>涵盖脚本、清单、通知模板等。</p>
+              </div>
+              <div class="insight-card">
+                <strong>风险复盘</strong>
+                <p>记录过往风险案例与应对策略。</p>
+              </div>
+              <div class="insight-card">
+                <strong>最佳实践</strong>
+                <p>团队分享的效率提升技巧。</p>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">最新更新</h3>
+              <button class="link-button" data-view="playbook-detail">打开文档</button>
+            </div>
+            <div class="timeline-grid">
+              <div>08-07</div>
+              <div class="note">新增 "上线变更通知" 模板，供市场团队使用。</div>
+              <div>08-06</div>
+              <div class="note">更新风险复盘，加入安全漏洞案例。</div>
+              <div>08-05</div>
+              <div class="note">上传客户培训资料，关联更新请求。</div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示知识分类与最新更新，帮助团队快速找到资料。</li>
+            <li>链接上线手册与更新请求，体现知识复用。</li>
+            <li>支持跨团队共享，提升协作效率。</li>
+          </ul>
+        `
+      };
+      views['playbook-detail'] = {
+        title: '上线手册 · 标准流程',
+        subtitle: '指导不同角色完成上线准备工作',
+        shortTitle: '上线手册',
+        tags: ['流程'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">流程概览</h3>
+              <div class="section-tools">
+                <button class="chip">版本：1.2</button>
+                <button class="chip">适用：全产品线</button>
+              </div>
+            </div>
+            <div class="approval-flow">
+              <div class="flow-node">
+                <strong>T-5 天</strong>
+                <span>完成测试报告</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>T-3 天</strong>
+                <span>客户通知</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>T-1 天</strong>
+                <span>上线彩排</span>
+              </div>
+              <div class="flow-connector">➜</div>
+              <div class="flow-node">
+                <strong>上线日</strong>
+                <span>执行脚本并回滚演练</span>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">角色职责</h3>
+              <button class="link-button" data-view="update-requests">发起更新请求</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>项目经理</strong>
+                <p>统筹上线计划，协调资源。</p>
+              </div>
+              <div class="insight-card">
+                <strong>安全负责人</strong>
+                <p>确认所有安全测试完成。</p>
+              </div>
+              <div class="insight-card">
+                <strong>市场团队</strong>
+                <p>准备客户通知与培训资料。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>沉淀上线流程标准，辅助培训与执行。</li>
+            <li>明确角色职责，方便跨团队协作。</li>
+            <li>可发起更新请求或返回知识库继续浏览。</li>
+          </ul>
+        `
+      };
+      views['user-role'] = {
+        title: '用户与角色管理',
+        subtitle: '配置访问权限、角色职责与 WorkApps',
+        shortTitle: '角色管理',
+        tags: ['权限'],
+        headerActions: `
+          <button class="primary-button" data-view="role-policy">编辑角色策略</button>
+          <button class="ghost-button" data-view="security-audit">查看安全日志</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">角色分布</h3>
+              <div class="section-tools">
+                <button class="chip">项目经理 12</button>
+                <button class="chip">审批人 8</button>
+                <button class="chip">成员 46</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>用户</th>
+                  <th>角色</th>
+                  <th>项目权限</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>周凯</td>
+                  <td>项目经理</td>
+                  <td>组合 + 项目</td>
+                  <td>启用</td>
+                  <td><button class="link-button" data-view="role-policy">调整权限</button></td>
+                </tr>
+                <tr>
+                  <td>李明</td>
+                  <td>审批人</td>
+                  <td>审批中心</td>
+                  <td>启用</td>
+                  <td><button class="link-button" data-view="approval-history">查看审批</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">快速动作</h3>
+              <button class="link-button" data-view="integration-center">同步到 AD</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>邀请新用户</strong>
+                <p>发送 WorkApps 访问链接，一键入职。</p>
+              </div>
+              <div class="insight-card">
+                <strong>审计报告</strong>
+                <p>导出用户权限变更记录，满足合规。</p>
+              </div>
+              <div class="insight-card">
+                <strong>自动同步</strong>
+                <p>与企业 AD 同步角色，减少手动维护。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>管理员可以查看角色分布并快速调整权限。</li>
+            <li>与审批、集成等模块联动，保障权限治理。</li>
+            <li>支持导出审计报告，为合规检查做准备。</li>
+          </ul>
+        `
+      };
+      views['role-policy'] = {
+        title: '角色策略配置',
+        subtitle: '定义角色权限范围与安全策略',
+        shortTitle: '角色策略',
+        tags: ['权限策略'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">权限矩阵</h3>
+              <div class="section-tools">
+                <button class="chip">角色：项目经理</button>
+                <button class="chip">环境：生产</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>模块</th>
+                  <th>权限</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>组合仪表盘</td>
+                  <td>读写</td>
+                  <td>可配置指标与自动化规则。</td>
+                </tr>
+                <tr>
+                  <td>审批中心</td>
+                  <td>查看</td>
+                  <td>仅查看审批状态，无法审批。</td>
+                </tr>
+                <tr>
+                  <td>安全审计</td>
+                  <td>无</td>
+                  <td>需通过安全管理员授权。</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">安全策略</h3>
+              <button class="link-button" data-view="security-audit">查看日志</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>多因素认证</strong>
+                <p>关键操作需 MFA，记录在审计日志。</p>
+              </div>
+              <div class="insight-card">
+                <strong>数据脱敏</strong>
+                <p>限制导出敏感字段，符合隐私政策。</p>
+              </div>
+              <div class="insight-card">
+                <strong>会话策略</strong>
+                <p>30 分钟无操作自动登出。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>管理员可视化角色权限矩阵，确保合规。</li>
+            <li>展示安全策略，强调企业级控制。</li>
+            <li>可跳转安全审计查看日志详情。</li>
+          </ul>
+        `
+      };
+      views['template-library'] = {
+        title: '模板与解决方案库',
+        subtitle: '管理企业级模板、流程与自动化组件',
+        shortTitle: '模板库',
+        tags: ['模板', '自动化'],
+        headerActions: `
+          <button class="primary-button" data-view="template-detail">发布新模板</button>
+          <button class="ghost-button" data-view="integration-center">同步至 WorkApps</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">模板概览</h3>
+              <div class="section-tools">
+                <button class="chip">分类：上线管理</button>
+                <button class="chip">状态：已发布</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>模板</th>
+                  <th>用途</th>
+                  <th>负责人</th>
+                  <th>更新日期</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>上线准备工作台</td>
+                  <td>跨团队协作</td>
+                  <td>李倩</td>
+                  <td>08-06</td>
+                  <td><button class="link-button" data-view="template-detail">编辑</button></td>
+                </tr>
+                <tr>
+                  <td>风险治理仪表盘</td>
+                  <td>风险管理</td>
+                  <td>王磊</td>
+                  <td>07-28</td>
+                  <td><button class="link-button" data-view="risk-register">查看</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">自动化组件</h3>
+              <button class="link-button" data-view="integration-center">配置连接</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>审批流程模板</strong>
+                <p>适用于预算与资源审批，含 3 级审批链。</p>
+              </div>
+              <div class="insight-card">
+                <strong>提醒与通知</strong>
+                <p>支持 Slack / Teams / 邮件三种渠道。</p>
+              </div>
+              <div class="insight-card">
+                <strong>数据同步</strong>
+                <p>与 ERP、CRM 自动同步关键字段。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>集中管理模板与自动化组件，方便复用。</li>
+            <li>支持快速编辑与发布，保持模板最新。</li>
+            <li>可同步到集成中心，展示跨系统能力。</li>
+          </ul>
+        `
+      };
+      views['template-detail'] = {
+        title: '模板详情：上线准备工作台',
+        subtitle: '配置模板结构、权限与发布范围',
+        shortTitle: '模板详情',
+        tags: ['模板配置'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">模板结构</h3>
+              <div class="section-tools">
+                <button class="chip">包含：看板 + 表单 + 报表</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>看板</strong>
+                <p>同步任务协同工作台的列与字段。</p>
+              </div>
+              <div class="insight-card">
+                <strong>表单</strong>
+                <p>包含上线申请与风险登记表单。</p>
+              </div>
+              <div class="insight-card">
+                <strong>报告</strong>
+                <p>内置里程碑与风险摘要。</p>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">发布设置</h3>
+              <button class="link-button" data-view="integration-center">关联 WorkApps</button>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>发布范围</td>
+                  <td>PMO、项目经理</td>
+                  <td>版本</td>
+                  <td>v2.1</td>
+                </tr>
+                <tr>
+                  <td>权限</td>
+                  <td>仅管理员可编辑</td>
+                  <td>审计</td>
+                  <td>自动记录发布日志</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示模板组成及发布设置，体现治理能力。</li>
+            <li>支持关联 WorkApps，方便发布给不同角色。</li>
+            <li>确保模板更新过程可追踪，满足审计要求。</li>
+          </ul>
+        `
+      };
+      views['integration-center'] = {
+        title: '集成与 API 中心',
+        subtitle: '管理数据连接器、Webhook 与自定义 API',
+        shortTitle: '集成中心',
+        tags: ['集成'],
+        headerActions: `
+          <button class="primary-button" data-view="webhook-config">创建 Webhook</button>
+          <button class="ghost-button" data-view="audit-trail">查看调用日志</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">已启用集成</h3>
+              <div class="section-tools">
+                <button class="chip">ERP</button>
+                <button class="chip">Jira</button>
+                <button class="chip">Slack</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>系统</th>
+                  <th>用途</th>
+                  <th>状态</th>
+                  <th>最后同步</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ERP</td>
+                  <td>预算回写</td>
+                  <td>正常</td>
+                  <td>08-07 21:15</td>
+                  <td><button class="link-button" data-view="audit-trail">查看日志</button></td>
+                </tr>
+                <tr>
+                  <td>Jira</td>
+                  <td>任务同步</td>
+                  <td>正常</td>
+                  <td>08-07 20:40</td>
+                  <td><button class="link-button" data-view="collaboration-hub">查看任务</button></td>
+                </tr>
+                <tr>
+                  <td>Slack</td>
+                  <td>通知</td>
+                  <td>正常</td>
+                  <td>08-07 21:20</td>
+                  <td><button class="link-button" data-view="update-form">发送更新</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">API 使用</h3>
+              <button class="link-button" data-view="webhook-config">配置回调</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>调用量</strong>
+                <p>本周 12,430 次，95% 在 200ms 内响应。</p>
+              </div>
+              <div class="insight-card">
+                <strong>失败率</strong>
+                <p>0.6%，主要为权限不足引起。</p>
+              </div>
+              <div class="insight-card">
+                <strong>安全策略</strong>
+                <p>所有调用均需 Token + IP 白名单。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>集中展示已启用集成与运行状态。</li>
+            <li>提供 API 使用指标，支持运维与优化。</li>
+            <li>可进一步配置 Webhook 或查看审计日志。</li>
+          </ul>
+        `
+      };
+      views['webhook-config'] = {
+        title: 'Webhook 配置',
+        subtitle: '设置触发事件、回调地址与安全校验',
+        shortTitle: 'Webhook',
+        tags: ['自动化'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">基础配置</h3>
+              <div class="section-tools">
+                <button class="chip">事件：审批通过</button>
+                <button class="chip">环境：生产</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>回调地址</td>
+                  <td>https://api.company.com/smartsheet</td>
+                </tr>
+                <tr>
+                  <td>认证方式</td>
+                  <td>HMAC + API Key</td>
+                </tr>
+                <tr>
+                  <td>重试策略</td>
+                  <td>3 次指数退避</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">测试结果</h3>
+              <button class="link-button" data-view="integration-center">返回集成</button>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>最近一次测试</strong>
+                <p>成功，耗时 180ms。</p>
+              </div>
+              <div class="insight-card">
+                <strong>签名校验</strong>
+                <p>通过，记录在安全日志。</p>
+              </div>
+              <div class="insight-card">
+                <strong>重试日志</strong>
+                <p>无失败记录。</p>
+              </div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示 Webhook 配置关键字段，说明对接流程。</li>
+            <li>测试结果证明回调可用，增强可信度。</li>
+            <li>可返回集成中心查看整体连接情况。</li>
+          </ul>
+        `
+      };
+      views['security-audit'] = {
+        title: '安全审计中心',
+        subtitle: '监控登录、权限变更与关键操作',
+        shortTitle: '安全审计',
+        tags: ['安全'],
+        headerActions: `
+          <button class="primary-button" data-view="audit-export">导出日志</button>
+          <button class="ghost-button" data-view="user-role">查看角色</button>
+        `,
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">安全事件看板</h3>
+              <div class="section-tools">
+                <button class="chip">时间：过去 7 天</button>
+                <button class="chip">来源：全系统</button>
+              </div>
+            </div>
+            <div class="detail-columns">
+              <div class="insight-card">
+                <strong>登录异常</strong>
+                <p>检测到 2 次异常登录，已自动锁定账号。</p>
+              </div>
+              <div class="insight-card">
+                <strong>权限变更</strong>
+                <p>3 个角色调整，等待管理员确认。</p>
+              </div>
+              <div class="insight-card">
+                <strong>数据导出</strong>
+                <p>本周导出 5 次，全部记录审计轨迹。</p>
+              </div>
+            </div>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">事件明细</h3>
+              <button class="link-button" data-view="audit-trail">查看事件轨迹</button>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>事件</th>
+                  <th>用户</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>08-07 21:05</td>
+                  <td>连续失败登录</td>
+                  <td>赵蕾</td>
+                  <td>已锁定</td>
+                </tr>
+                <tr>
+                  <td>08-06 10:20</td>
+                  <td>权限提升申请</td>
+                  <td>李倩</td>
+                  <td>审批中</td>
+                </tr>
+                <tr>
+                  <td>08-05 18:50</td>
+                  <td>预算导出</td>
+                  <td>财务-王涛</td>
+                  <td>已记录</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>监控安全事件并提供快速处理通道。</li>
+            <li>支持导出日志与查看事件轨迹，满足合规。</li>
+            <li>可回到角色管理确认权限变更。</li>
+          </ul>
+        `
+      };
+
+      views['audit-export'] = {
+        title: '安全日志导出',
+        subtitle: '定义导出范围与格式，支持审计提交',
+        shortTitle: '日志导出',
+        tags: ['安全', '合规'],
+        core: `
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">导出配置</h3>
+              <div class="section-tools">
+                <button class="chip">范围：过去 30 天</button>
+                <button class="chip">类型：登录 + 权限</button>
+              </div>
+            </div>
+            <table class="data-table">
+              <tbody>
+                <tr>
+                  <td>格式</td>
+                  <td>CSV + PDF</td>
+                  <td>加密</td>
+                  <td>AES-256</td>
+                </tr>
+                <tr>
+                  <td>接收方</td>
+                  <td>安全团队邮箱</td>
+                  <td>计划</td>
+                  <td>每周一自动发送</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="core-section">
+            <div class="section-header">
+              <h3 class="section-title">最近导出</h3>
+              <button class="link-button" data-view="security-audit">返回审计中心</button>
+            </div>
+            <div class="timeline-grid">
+              <div>08-07</div>
+              <div class="note">导出成功，提交至 SOC 合规审计。</div>
+              <div>07-31</div>
+              <div class="note">导出成功，未发现异常。</div>
+              <div>07-24</div>
+              <div class="note">导出成功，同时归档到文档中心。</div>
+            </div>
+          </section>
+        `,
+        summary: `
+          <ul>
+            <li>展示安全日志导出的配置流程，便于审计。</li>
+            <li>记录历史导出，确保可追踪。</li>
+            <li>可返回安全审计中心继续演示安全治理。</li>
+          </ul>
+        `
+      };
+      const state = {
+        role: 'projectManager',
+        activeMenu: null,
+        viewStack: []
+      };
+
+      const menuContainer = document.getElementById('systemMenu');
+      const roleSwitcher = document.getElementById('roleSwitcher');
+      const viewContainer = document.getElementById('viewContainer');
+
+      roleSwitcher.value = state.role;
+
+      function updateActiveMenu() {
+        const buttons = menuContainer.querySelectorAll('.nav-button');
+        buttons.forEach((button) => {
+          if (button.dataset.menuId === state.activeMenu) {
+            button.classList.add('is-active');
+          } else {
+            button.classList.remove('is-active');
+          }
+        });
+      }
+
+      function renderView(viewId, options = {}) {
+        const { historyAction = 'push', anchor } = options;
+        const view = views[viewId];
+        if (!view) {
+          viewContainer.innerHTML = '<div class="empty-state">未找到该页面</div>';
+          return;
+        }
+
+        if (historyAction === 'reset') {
+          state.viewStack = [viewId];
+        } else if (historyAction === 'push') {
+          state.viewStack.push(viewId);
+        } else if (historyAction === 'replace') {
+          if (state.viewStack.length === 0) {
+            state.viewStack.push(viewId);
+          } else {
+            state.viewStack[state.viewStack.length - 1] = viewId;
+          }
+        } else if (historyAction === 'none') {
+          // no-op
+        }
+
+        if (anchor) {
+          state.activeMenu = anchor;
+        }
+
+        updateActiveMenu();
+
+        const hasBack = state.viewStack.length > 1;
+        const previousView = hasBack ? views[state.viewStack[state.viewStack.length - 2]] : null;
+
+        viewContainer.innerHTML = `
+          <div class="view-header">
+            <div>
+              ${hasBack ? `<button class="back-button" data-action="back">← 返回 ${previousView.shortTitle || previousView.title}</button>` : ''}
+              <h2 class="view-title">${view.title}</h2>
+              ${view.subtitle ? `<p class="view-subtitle">${view.subtitle}</p>` : ''}
+              ${view.tags ? `<div class="tag-row">${view.tags.map((tag) => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
+            </div>
+            ${view.headerActions ? `<div class="view-actions">${view.headerActions}</div>` : ''}
+          </div>
+          <div class="view-body">
+            ${view.core}
+          </div>
+          <section class="page-summary">
+            <h3>业务说明</h3>
+            ${view.summary || '<p>该页面展示了核心功能的业务背景。</p>'}
+          </section>
+        `;
+
+        attachViewEvents();
+      }
+
+      function attachViewEvents() {
+        const linkButtons = viewContainer.querySelectorAll('[data-view]');
+        linkButtons.forEach((element) => {
+          element.addEventListener('click', (event) => {
+            const targetView = event.currentTarget.getAttribute('data-view');
+            if (targetView && views[targetView]) {
+              renderView(targetView, { historyAction: 'push', anchor: state.activeMenu });
+            }
+          });
+        });
+
+        const backButton = viewContainer.querySelector('[data-action="back"]');
+        if (backButton) {
+          backButton.addEventListener('click', () => {
+            state.viewStack.pop();
+            const previous = state.viewStack[state.viewStack.length - 1];
+            if (previous) {
+              renderView(previous, { historyAction: 'none', anchor: state.activeMenu });
+            } else if (state.activeMenu) {
+              renderView(state.activeMenu, { historyAction: 'reset', anchor: state.activeMenu });
+            }
+          });
+        }
+      }
+
+      function openMenuView(viewId) {
+        state.activeMenu = viewId;
+        renderView(viewId, { historyAction: 'reset', anchor: viewId });
+      }
+
+      function renderMenu() {
+        const role = roles[state.role];
+        menuContainer.innerHTML = '';
+        role.menus.forEach((item, index) => {
+          const button = document.createElement('button');
+          button.className = 'nav-button';
+          button.dataset.menuId = item.id;
+          button.innerHTML = `<span class="icon">${item.icon}</span><span>${item.name}</span>`;
+          button.addEventListener('click', () => {
+            openMenuView(item.id);
+          });
+          menuContainer.appendChild(button);
+          if (index === 0) {
+            state.activeMenu = item.id;
+          }
+        });
+        openMenuView(state.activeMenu);
+      }
+
+      roleSwitcher.addEventListener('change', (event) => {
+        state.role = event.target.value;
+        renderMenu();
+      });
+
+      renderMenu();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
