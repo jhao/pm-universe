@@ -2,83 +2,1961 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>eBay 国际交易平台 原型概览</title>
+    <title>eBay 国际交易平台 多角色原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root { color-scheme: light; }
+      * { box-sizing: border-box; }
+      body {
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        margin: 0;
+        background: #eef2f8;
+        color: #0f172a;
+      }
+      .app {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 40px 32px 72px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 700;
+      }
+      .tagline {
+        margin: 8px 0 0;
+        color: #52606d;
+        font-size: 18px;
+      }
+      .status-pill {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+      }
+      .role-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .role-button {
+        border: 1px solid #cbd5f5;
+        border-radius: 999px;
+        background: #f8fafc;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e293b;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .role-button:hover { border-color: #94a3b8; }
+      .role-button.active {
+        background: #2563eb;
+        color: #fff;
+        border-color: #1d4ed8;
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.22);
+      }
+      .role-overview {
+        background: #fff;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: stretch;
+        margin-bottom: 28px;
+      }
+      .role-overview-main {
+        flex: 1 1 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .role-overview-main h2 { margin: 0; font-size: 24px; }
+      .role-overview-main p {
+        margin: 0;
+        color: #475569;
+        line-height: 1.6;
+      }
+      .role-highlights {
+        flex: 1 1 320px;
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      }
+      .highlight-card {
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 16px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .highlight-card span {
+        font-size: 12px;
+        color: #64748b;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+      .highlight-card strong { font-size: 16px; color: #0f172a; }
+      .workspace {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        gap: 24px;
+        align-items: flex-start;
+      }
+      .sidebar {
+        background: #fff;
+        border-radius: 20px;
+        padding: 22px;
+        box-shadow: 0 16px 45px rgba(15, 23, 42, 0.08);
+        position: sticky;
+        top: 24px;
+      }
+      .sidebar h3 { margin: 0 0 16px; font-size: 18px; color: #1e293b; }
+      .sidebar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .menu-button {
+        width: 100%;
+        text-align: left;
+        border: 1px solid transparent;
+        background: #f8fafc;
+        border-radius: 14px;
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .menu-button .menu-label { font-size: 15px; font-weight: 600; color: #0f172a; }
+      .menu-button .menu-sub { font-size: 12px; color: #64748b; }
+      .menu-button:hover { border-color: #94a3b8; }
+      .menu-button.active {
+        border-color: #2563eb;
+        background: #eff6ff;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14);
+      }
+      .canvas {
+        background: #fff;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 32px 75px rgba(15, 23, 42, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .page-header h3 { margin: 0; font-size: 24px; }
+      .page-header p {
+        margin: 6px 0 0;
+        color: #475569;
+        max-width: 560px;
+        line-height: 1.6;
+      }
+      .page-body {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .page-grid { display: grid; gap: 20px; }
+      .page-grid.two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+      .page-grid.three { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+      .panel {
+        background: #f8fafc;
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .panel.highlight {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(165, 180, 252, 0.12));
+        border-color: rgba(37, 99, 235, 0.3);
+      }
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .panel-header h4 { margin: 0; font-size: 18px; }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #e2e8f0;
+        color: #475569;
+        letter-spacing: 0.4px;
+      }
+      .badge.accent { background: #dbeafe; color: #1d4ed8; }
+      .badge.danger { background: #fee2e2; color: #b91c1c; }
+      .kpi-grid { display: grid; gap: 16px; }
+      .kpi-grid.two { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+      .kpi-grid.three { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+      .kpi {
+        background: #fff;
+        border-radius: 14px;
+        padding: 16px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .kpi strong { font-size: 20px; }
+      .kpi span { font-size: 12px; color: #64748b; }
+      .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 12px 16px;
+        border: 1px solid #e2e8f0;
+      }
+      .list li strong { font-size: 14px; color: #0f172a; }
+      .list li small { font-size: 12px; color: #64748b; }
+      .split {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .action {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: none;
+        background: #1d4ed8;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .action.secondary {
+        background: #fff;
+        color: #1d4ed8;
+        border: 1px solid #1d4ed8;
+      }
+      .tag-cloud { display: flex; gap: 8px; flex-wrap: wrap; }
+      .tag {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+      }
+      .data-table thead { background: #e2e8f0; color: #1e293b; }
+      .data-table th, .data-table td {
+        padding: 12px 16px;
+        font-size: 13px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .data-table tbody tr:last-child td { border-bottom: none; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #e0f2fe;
+        color: #0369a1;
+      }
+      .pill.warning { background: #fef3c7; color: #b45309; }
+      .pill.success { background: #dcfce7; color: #15803d; }
+      .timeline { display: flex; flex-direction: column; gap: 16px; }
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 16px;
+        align-items: center;
+      }
+      .timeline-time { font-size: 12px; color: #64748b; }
+      .timeline-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 12px 16px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .progress-bar {
+        height: 8px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        overflow: hidden;
+      }
+      .progress-bar span { display: block; height: 100%; background: #2563eb; }
+      .card-list {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .card h5 { margin: 0; font-size: 16px; }
+      .card p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.5; }
+      .card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+      .card .actions button {
+        border: 1px solid #cbd5f5;
+        background: #fff;
+        padding: 6px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        color: #334155;
+      }
+      .status-list { display: flex; flex-direction: column; gap: 12px; }
+      .status-row {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+      .status-row strong { font-size: 14px; color: #0f172a; }
+      .status-row span { font-size: 12px; color: #64748b; }
+      .chat-window { display: grid; gap: 18px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); }
+      .chat-area {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .chat-bubble {
+        max-width: 90%;
+        align-self: flex-start;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: #f1f5f9;
+        color: #334155;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .chat-bubble.me { align-self: flex-end; background: #2563eb; color: #fff; }
+      .chat-quick {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .chat-quick button {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #cbd5f5;
+        background: #f8fafc;
+        cursor: pointer;
+        font-size: 13px;
+        text-align: left;
+        color: #1e293b;
+      }
+      .toggle-list { display: flex; flex-direction: column; gap: 12px; }
+      .toggle {
+        background: #f8fafc;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: center;
+      }
+      .toggle .info { display: flex; flex-direction: column; gap: 6px; }
+      .toggle .info span { font-size: 14px; font-weight: 600; color: #0f172a; }
+      .toggle .info small { font-size: 12px; color: #64748b; }
+      .toggle .switch {
+        width: 44px;
+        height: 22px;
+        border-radius: 999px;
+        background: #cbd5f5;
+        position: relative;
+      }
+      .toggle .switch::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #fff;
+        top: 2px;
+        left: 2px;
+        box-shadow: 0 4px 8px rgba(15, 23, 42, 0.18);
+        transition: transform 0.2s ease;
+      }
+      .toggle.on .switch { background: #2563eb; }
+      .toggle.on .switch::after { transform: translateX(22px); }
+      .board { display: grid; gap: 14px; }
+      .board-item {
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px 16px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .board-item strong { font-size: 14px; color: #0f172a; }
+      .board-item span { font-size: 12px; color: #64748b; }
+      .chart {
+        position: relative;
+        border-radius: 16px;
+        height: 180px;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(30, 64, 175, 0.06));
+        overflow: hidden;
+      }
+      .chart::before,
+      .chart::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 24px 24px;
+      }
+      .chart::after {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+        opacity: 0.35;
+      }
+      @media (max-width: 960px) {
+        .workspace { grid-template-columns: 1fr; }
+        .sidebar { position: static; order: -1; }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>eBay 国际交易平台 原型</h1>
-      <p class="tagline">连接全球买家卖家的线上拍卖与零售市场。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>个人卖家、小型商户、跨境买家</p>
-        <p><strong>核心痛点：</strong>二手与独特商品交易缺少可信平台，跨境物流复杂</p>
-        <p><strong>价值主张：</strong>通过竞拍与一口价模式结合的市场，提供支付、物流与信任保障</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>卖家发布拍卖或一口价商品</li><li>买家出价竞拍或直接购买并付款</li><li>平台协调国际物流与售后纠纷</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>商品刊登</h3>
-              <p class="goal">功能目标：支持多类型商品的上架流程</p>
-              <ul>
-                <li>批量刊登工具与模板</li><li>智能定价、竞拍时长与保留价设置</li><li>商品分类、属性与合规校验</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>交易支付</h3>
-              <p class="goal">功能目标：保障跨境交易安全与便利</p>
-              <ul>
-                <li>eBay Payments 多币种支持</li><li>竞拍流程控制与自动出价</li><li>买家保护与退款争议处理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>物流履约</h3>
-              <p class="goal">功能目标：解决跨境配送与费用透明问题</p>
-              <ul>
-                <li>全球运输计划与物流标签打印</li><li>运费估算、税费预缴与追踪</li><li>仓储合作与退货管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>信任与社区</h3>
-              <p class="goal">功能目标：构建买卖双方的信任机制</p>
-              <ul>
-                <li>评价体系与卖家绩效评分</li><li>买家保障政策与客服体系</li><li>社区论坛与运营公告</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>成交 GMV 与竞拍成功率</li><li>跨境订单履约时效与纠纷解决时长</li><li>卖家绩效分布与活跃度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="app">
+      <header>
+        <div>
+          <h1>eBay 国际交易平台 · 多角色功能原型</h1>
+          <p class="tagline">演示买家、卖家、运营与平台管理员在统一系统下的工作流。</p>
+        </div>
+        <div class="status-pill">Prototype Preview</div>
+      </header>
+
+      <div class="role-switcher" id="roleSwitcher"></div>
+
+      <section class="role-overview">
+        <div class="role-overview-main">
+          <h2 id="roleTitle">角色视角</h2>
+          <p id="roleDescription">选择上方角色以查看对应的工作台布局与关键流程。</p>
+        </div>
+        <div class="role-highlights" id="roleHighlights"></div>
+      </section>
+
+      <main class="workspace">
+        <aside class="sidebar">
+          <h3>功能导航</h3>
+          <ul id="menuList"></ul>
+        </aside>
+        <section class="canvas">
+          <div class="page-header">
+            <div>
+              <h3 id="pageTitle">功能页面</h3>
+              <p id="pageSummary">切换侧边菜单以查看具体的页面原型布局。</p>
+            </div>
+          </div>
+          <div class="page-body" id="pageBody"></div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const roleConfigs = {
+        buyer: {
+          name: "买家用户端",
+          description: "聚焦跨境买家在 eBay 平台的浏览、竞拍、下单与售后体验，强调个性化推荐与物流可视化。",
+          highlights: [
+            { label: "核心任务", value: "发现心仪商品、参与竞拍与安全支付" },
+            { label: "体验指标", value: "竞拍转化率 · 履约满意度" },
+            { label: "特色能力", value: "多币种支付 · 买家保障" }
+          ],
+          menus: [
+            {
+              id: "discovery",
+              label: "发现首页",
+              summary: "个性化推荐、实时竞拍与主题市场入口。",
+              content: `
+                <div class="page-grid two">
+                  <section class="panel highlight">
+                    <div class="panel-header">
+                      <h4>实时热拍</h4>
+                      <span class="badge accent">实时更新</span>
+                    </div>
+                    <div class="split">
+                      <div>
+                        <strong style="font-size: 18px;">Vintage Rolex Submariner</strong>
+                        <p style="margin: 6px 0 0; color: #1d4ed8; font-weight: 600;">当前价 $265 · 剩余 18:23</p>
+                        <p style="margin: 4px 0 0; color: #475569; font-size: 13px;">56 人出价 · 自动代理出价开启</p>
+                      </div>
+                      <button class="action">立即出价</button>
+                    </div>
+                    <ul class="list">
+                      <li>
+                        <div>
+                          <strong>Supreme Box Logo Hoodie</strong>
+                          <small>5 人关注 · 剩余 01:12:45</small>
+                        </div>
+                        <span class="pill">当前价 $186</span>
+                      </li>
+                      <li>
+                        <div>
+                          <strong>Apple Watch Series 9 全新</strong>
+                          <small>Buy It Now · 极速发货</small>
+                        </div>
+                        <span class="pill success">一口价 $399</span>
+                      </li>
+                      <li>
+                        <div>
+                          <strong>Rare Pokémon Trading Card</strong>
+                          <small>收藏级 · 专业鉴定证书</small>
+                        </div>
+                        <span class="pill warning">保留价待揭晓</span>
+                      </li>
+                    </ul>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-header">
+                      <h4>灵感主题集合</h4>
+                      <span class="badge">今日策划</span>
+                    </div>
+                    <div class="tag-cloud">
+                      <span class="tag">限时竞拍</span>
+                      <span class="tag">翻新品质家电</span>
+                      <span class="tag">复古奢侈品</span>
+                      <span class="tag">电竞配件</span>
+                      <span class="tag">艺术藏品</span>
+                      <span class="tag">海外直邮</span>
+                    </div>
+                    <div class="kpi-grid two">
+                      <div class="kpi">
+                        <strong>+128%</strong>
+                        <span>近 7 日奢侈品浏览增长</span>
+                      </div>
+                      <div class="kpi">
+                        <strong>36</strong>
+                        <span>正在进行的限时秒杀场次</span>
+                      </div>
+                      <div class="kpi">
+                        <strong>12,830</strong>
+                        <span>推荐列表的实时在线买家</span>
+                      </div>
+                      <div class="kpi">
+                        <strong>4.8 ★</strong>
+                        <span>算法推荐满意度评分</span>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>跨境购物助手</h4>
+                    <span class="badge">智能提示</span>
+                  </div>
+                  <div class="status-list">
+                    <div class="status-row">
+                      <div>
+                        <strong>已自动识别目的地税费</strong>
+                        <span>建议启用预缴税服务，减少清关时长</span>
+                      </div>
+                      <button class="action secondary">设置预缴税</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>推荐物流：eBay 国际标准</strong>
+                        <span>预计 7~10 个工作日送达 · 含全程跟踪</span>
+                      </div>
+                      <button class="action secondary">查看费用</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>守护计划提醒</strong>
+                        <span>您有 3 个订单满足延迟赔付条件</span>
+                      </div>
+                      <button class="action secondary">查看详情</button>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "orders",
+              label: "订单与物流",
+              summary: "全链路订单进度、退款与物流追踪。",
+              content: `
+                <div class="kpi-grid three">
+                  <div class="kpi">
+                    <strong>5</strong>
+                    <span>待发货订单</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>3</strong>
+                    <span>在途包裹</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>$1,286</strong>
+                    <span>近 30 日消费总额</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>2</strong>
+                    <span>退款/争议处理中</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>96%</strong>
+                    <span>准时送达率</span>
+                  </div>
+                </div>
+                <div class="page-grid two">
+                  <section class="panel">
+                    <div class="panel-header">
+                      <h4>订单进度时间线</h4>
+                      <span class="badge">按最近更新排序</span>
+                    </div>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <div class="timeline-time">今天 14:30</div>
+                        <div class="timeline-card">
+                          <strong>订单 #EB1203981</strong>
+                          <span>包裹已抵达深圳海关，清关中</span>
+                          <div class="progress-bar"><span style="width: 70%;"></span></div>
+                        </div>
+                      </div>
+                      <div class="timeline-item">
+                        <div class="timeline-time">今天 09:05</div>
+                        <div class="timeline-card">
+                          <strong>订单 #EB1187320</strong>
+                          <span>卖家已发货，预计 7 日送达</span>
+                          <div class="progress-bar"><span style="width: 35%;"></span></div>
+                        </div>
+                      </div>
+                      <div class="timeline-item">
+                        <div class="timeline-time">昨天 21:18</div>
+                        <div class="timeline-card">
+                          <strong>订单 #EB1174456</strong>
+                          <span>买家保障已开启，等待卖家回应</span>
+                          <div class="progress-bar"><span style="width: 55%;"></span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-header">
+                      <h4>物流追踪视图</h4>
+                      <span class="badge">国际段</span>
+                    </div>
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>包裹</th>
+                          <th>当前节点</th>
+                          <th>物流渠道</th>
+                          <th>预估到达</th>
+                          <th>服务</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>#EB1203981</td>
+                          <td>清关完成，待派送</td>
+                          <td>eBay 国际标准</td>
+                          <td>8 月 24 日</td>
+                          <td><span class="pill">买家保障</span></td>
+                        </tr>
+                        <tr>
+                          <td>#EB1187320</td>
+                          <td>装载离港，飞往香港</td>
+                          <td>FedEx Priority</td>
+                          <td>8 月 27 日</td>
+                          <td><span class="pill warning">关税待确认</span></td>
+                        </tr>
+                        <tr>
+                          <td>#EB1174456</td>
+                          <td>争议处理中</td>
+                          <td>eBay 保障介入</td>
+                          <td>—</td>
+                          <td><span class="pill success">退款保障</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>售后与保障</h4>
+                    <span class="badge">服务升级</span>
+                  </div>
+                  <ul class="list">
+                    <li>
+                      <div>
+                        <strong>延迟送达赔付申请</strong>
+                        <small>订单 #EB1172234 · 待补充收货证明</small>
+                      </div>
+                      <button class="action secondary">上传凭证</button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>一键重购</strong>
+                        <small>常购商品 6 件可直接加入购物车</small>
+                      </div>
+                      <button class="action secondary">查看清单</button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>客服跟进</strong>
+                        <small>退款单 #RF90321 预计 24 小时内回复</small>
+                      </div>
+                      <span class="pill">处理中</span>
+                    </li>
+                  </ul>
+                </section>
+              `
+            },
+            {
+              id: "saved",
+              label: "关注与收藏",
+              summary: "关注的卖家、清单与价格提醒一站查看。",
+              content: `
+                <section class="panel highlight">
+                  <div class="panel-header">
+                    <h4>智能关注清单</h4>
+                    <span class="badge">个性化</span>
+                  </div>
+                  <div class="card-list">
+                    <div class="card">
+                      <h5>收藏夹 · 高端相机</h5>
+                      <p>12 件正在关注 · 3 件降价 · 2 件库存紧张</p>
+                      <div class="actions">
+                        <button>一键比价</button>
+                        <button>订阅降价</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>卖家 · RetroFinds</h5>
+                      <p>评级 4.9 ★ · 98% 好评率 · 每周上新 24 件</p>
+                      <div class="actions">
+                        <button>进入店铺</button>
+                        <button>开启上新提醒</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>心愿单 · 复古珠宝</h5>
+                      <p>预计预算 $600 · 推荐 5 个可信卖家</p>
+                      <div class="actions">
+                        <button>匹配卖家</button>
+                        <button>查看报告</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>搜索 · LEGO Star Wars</h5>
+                      <p>自动跟踪关键词 · 今日新增 16 个结果</p>
+                      <div class="actions">
+                        <button>查看结果</button>
+                        <button>设置过滤</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>价格与库存提醒</h4>
+                    <span class="badge">实时</span>
+                  </div>
+                  <div class="status-list">
+                    <div class="status-row">
+                      <div>
+                        <strong>Apple MacBook Pro 14</strong>
+                        <span>降价 8% · 剩余库存 4 件</span>
+                      </div>
+                      <button class="action secondary">加入购物车</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>Jordan 1 Retro High</strong>
+                        <span>新卖家上架 · 支持 48 小时内发货</span>
+                      </div>
+                      <button class="action secondary">查看详情</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>BOSE QuietComfort 耳机</strong>
+                        <span>关注商品补货，预计 2 天内到仓</span>
+                      </div>
+                      <button class="action secondary">锁定库存</button>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "support",
+              label: "客服与服务",
+              summary: "聊天、工单和自助工具提升售后体验。",
+              content: `
+                <div class="chat-window">
+                  <div class="chat-area">
+                    <div class="panel-header" style="padding: 0;">
+                      <h4>智能客服 · Zoe</h4>
+                      <span class="badge">在线</span>
+                    </div>
+                    <div class="chat-bubble">您好，已为您定位订单 #EB1174456，目前处于“等待卖家回复”阶段。</div>
+                    <div class="chat-bubble me">我想了解若卖家不回复，多久可以自动退款？</div>
+                    <div class="chat-bubble">72 小时内未响应将自动转入平台介入，预计 2 个工作日完成退款。</div>
+                    <div class="chat-bubble me">好的，麻烦同步邮件通知。</div>
+                    <div class="chat-bubble">已设置邮件与 App 推送提醒，感谢您的耐心等待。</div>
+                  </div>
+                  <div class="chat-quick">
+                    <strong style="font-size: 15px;">快捷操作</strong>
+                    <button>发起退货 / 换货</button>
+                    <button>上传物流凭证</button>
+                    <button>申请延迟赔付</button>
+                    <button>转接人工客服</button>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>自助服务中心</h4>
+                    <span class="badge">常见问题</span>
+                  </div>
+                  <div class="board">
+                    <div class="board-item">
+                      <strong>退货政策智能匹配</strong>
+                      <span>根据卖家政策和国家法规生成流程说明</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>支付与账单</strong>
+                      <span>查看分期账单、下载电子发票、管理支付方式</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>争议升级进度</strong>
+                      <span>展示平台介入各阶段 SLA 与处理节点</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>社区互助</strong>
+                      <span>加入话题讨论，获取资深买家经验</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            }
+          ]
+        },
+        seller: {
+          name: "卖家工作台",
+          description: "面向跨境卖家的一站式刊登、订单处理与营销运营中心，支持多店铺协同。",
+          highlights: [
+            { label: "业务焦点", value: "高效刊登 · 订单履约 · 售后协同" },
+            { label: "运营指标", value: "转化率 · 缺陷率 · 客单价" },
+            { label: "工具支持", value: "批量刊登 · 广告投放 · 财务对账" }
+          ],
+          menus: [
+            {
+              id: "seller-dashboard",
+              label: "概览仪表盘",
+              summary: "当天业绩、任务提醒与绩效趋势。",
+              content: `
+                <div class="kpi-grid three">
+                  <div class="kpi">
+                    <strong>$8,420</strong>
+                    <span>今日 GMV</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>86</strong>
+                    <span>待处理订单</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>2.3%</strong>
+                    <span>退款率 (7 日)</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>98.6%</strong>
+                    <span>准时发货率</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>4.92 ★</strong>
+                    <span>卖家绩效评分</span>
+                  </div>
+                </div>
+                <div class="page-grid two">
+                  <section class="panel highlight">
+                    <div class="panel-header">
+                      <h4>订单处理任务</h4>
+                      <span class="badge">实时同步</span>
+                    </div>
+                    <div class="status-list">
+                      <div class="status-row">
+                        <div>
+                          <strong>48 小时内需发货：23 单</strong>
+                          <span>已自动批量打印面单</span>
+                        </div>
+                        <button class="action secondary">进入拣货</button>
+                      </div>
+                      <div class="status-row">
+                        <div>
+                          <strong>等待买家付款：11 单</strong>
+                          <span>系统将发送第二次提醒</span>
+                        </div>
+                        <button class="action secondary">发送消息</button>
+                      </div>
+                      <div class="status-row">
+                        <div>
+                          <strong>售后升级：4 单</strong>
+                          <span>客服已接管，需补充说明</span>
+                        </div>
+                        <button class="action secondary">查看详情</button>
+                      </div>
+                    </div>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-header">
+                      <h4>绩效趋势</h4>
+                      <span class="badge">近 30 日</span>
+                    </div>
+                    <div class="board">
+                      <div class="board-item">
+                        <strong>流量来源</strong>
+                        <span>站内搜索 48% · 推广 32% · 站外引流 20%</span>
+                      </div>
+                      <div class="board-item">
+                        <strong>热销类目</strong>
+                        <span>数码 42% · 潮流鞋服 31% · 收藏品 15%</span>
+                      </div>
+                      <div class="board-item">
+                        <strong>客服满意度</strong>
+                        <span>满意 96% · 中立 3% · 不满 1%</span>
+                      </div>
+                      <div class="board-item">
+                        <strong>物流时效</strong>
+                        <span>跨境平均 6.2 天 · 国内平均 1.8 天</span>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>公告与提醒</h4>
+                    <span class="badge">平台消息</span>
+                  </div>
+                  <ul class="list">
+                    <li>
+                      <div>
+                        <strong>秋季全球促销报名开始</strong>
+                        <small>提交报名资料即可获得首页曝光位</small>
+                      </div>
+                      <button class="action secondary">立即报名</button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>德国 VAT 税率更新</strong>
+                        <small>请在 8 月 30 日前完成税号信息校验</small>
+                      </div>
+                      <button class="action secondary">去校验</button>
+                    </li>
+                  </ul>
+                </section>
+              `
+            },
+            {
+              id: "inventory",
+              label: "商品与库存",
+              summary: "批量刊登、库存预警与品质监控。",
+              content: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>商品一览</h4>
+                    <span class="badge">批量操作</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>SKU</th>
+                        <th>标题</th>
+                        <th>库存</th>
+                        <th>价格</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>CAM-9832</td>
+                        <td>Sony A7C II Body</td>
+                        <td>42</td>
+                        <td>$1,799</td>
+                        <td><span class="pill success">在售</span></td>
+                      </tr>
+                      <tr>
+                        <td>SNE-5520</td>
+                        <td>Nike Dunk Low Panda</td>
+                        <td>12</td>
+                        <td>$189</td>
+                        <td><span class="pill warning">库存紧张</span></td>
+                      </tr>
+                      <tr>
+                        <td>COL-8120</td>
+                        <td>Vintage Comic Collection</td>
+                        <td>8</td>
+                        <td>$329</td>
+                        <td><span class="pill">待优化</span></td>
+                      </tr>
+                      <tr>
+                        <td>ELE-2203</td>
+                        <td>Dyson Supersonic HD15</td>
+                        <td>0</td>
+                        <td>$429</td>
+                        <td><span class="pill warning">缺货</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>库存与合规提醒</h4>
+                    <span class="badge">系统告警</span>
+                  </div>
+                  <div class="status-list">
+                    <div class="status-row">
+                      <div>
+                        <strong>补货建议</strong>
+                        <span>SKU SNE-5520 库存将于 3 天后售罄</span>
+                      </div>
+                      <button class="action secondary">生成采购单</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>合规校验</strong>
+                        <span>Dyson 系列需补充 CE 认证文件</span>
+                      </div>
+                      <button class="action secondary">上传文件</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>刊登质量评分</strong>
+                        <span>建议优化 12 个标题与图片</span>
+                      </div>
+                      <button class="action secondary">批量优化</button>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "marketing",
+              label: "营销与投放",
+              summary: "活动排期、优惠策略与广告成效。",
+              content: `
+                <section class="panel highlight">
+                  <div class="panel-header">
+                    <h4>全球活动排期</h4>
+                    <span class="badge">营销日历</span>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <div class="timeline-time">8 月 21 日</div>
+                      <div class="timeline-card">
+                        <strong>秋季时尚特卖</strong>
+                        <span>主推鞋服类目 · 预计曝光 120 万</span>
+                        <div class="progress-bar"><span style="width: 45%;"></span></div>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-time">8 月 28 日</div>
+                      <div class="timeline-card">
+                        <strong>电子品类闪购</strong>
+                        <span>需准备 30 套优惠券与直降组合</span>
+                        <div class="progress-bar"><span style="width: 20%;"></span></div>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-time">9 月 5 日</div>
+                      <div class="timeline-card">
+                        <strong>跨境超级品牌日</strong>
+                        <span>平台提供首页 banner 与直播带货位</span>
+                        <div class="progress-bar"><span style="width: 10%;"></span></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>广告与优惠组合</h4>
+                    <span class="badge">ROI 看板</span>
+                  </div>
+                  <div class="card-list">
+                    <div class="card">
+                      <h5>推广方案 · Brand Boost</h5>
+                      <p>预算 $2,000 · 预计曝光 95K · ROAS 3.2x</p>
+                      <div class="actions">
+                        <button>查看素材</button>
+                        <button>调整预算</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>优惠券 · 购物满减</h5>
+                      <p>满 $200 减 $20 · 预计提升转化 12%</p>
+                      <div class="actions">
+                        <button>复制活动</button>
+                        <button>下载报告</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>直播带货</h5>
+                      <p>主播：eBay 官方 · 预计观看 45K · 主推 8 个 SKU</p>
+                      <div class="actions">
+                        <button>上传脚本</button>
+                        <button>同步库存</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>站外投放</h5>
+                      <p>Google Shopping + Meta Ads · CPA 下降 18%</p>
+                      <div class="actions">
+                        <button>查看渠道</button>
+                        <button>补充创意</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "finance",
+              label: "财务与结算",
+              summary: "收款、结算、费用与税务一览。",
+              content: `
+                <section class="panel highlight">
+                  <div class="panel-header">
+                    <h4>资金概览</h4>
+                    <span class="badge">eBay Payments</span>
+                  </div>
+                  <div class="kpi-grid two">
+                    <div class="kpi">
+                      <strong>$32,680</strong>
+                      <span>可提现余额</span>
+                    </div>
+                    <div class="kpi">
+                      <strong>$8,920</strong>
+                      <span>在途款项</span>
+                    </div>
+                    <div class="kpi">
+                      <strong>72 小时</strong>
+                      <span>平均到账时效</span>
+                    </div>
+                    <div class="kpi">
+                      <strong>12</strong>
+                      <span>待对账交易</span>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>最近结算</h4>
+                    <span class="badge">按周</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>结算周期</th>
+                        <th>金额</th>
+                        <th>费用</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>8/07 - 8/13</td>
+                        <td>$18,230</td>
+                        <td>$1,280</td>
+                        <td><span class="pill success">已到账</span></td>
+                        <td><button class="action secondary">下载对账单</button></td>
+                      </tr>
+                      <tr>
+                        <td>8/14 - 8/20</td>
+                        <td>$21,540</td>
+                        <td>$1,540</td>
+                        <td><span class="pill">结算中</span></td>
+                        <td><button class="action secondary">查看明细</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>费用与税务提醒</h4>
+                    <span class="badge">自动校验</span>
+                  </div>
+                  <div class="status-list">
+                    <div class="status-row">
+                      <div>
+                        <strong>平台费用返还</strong>
+                        <span>订单 #EB1174456 退款后费用已退回</span>
+                      </div>
+                      <span class="pill success">完成</span>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>税务资料更新</strong>
+                        <span>法国 VAT 即将到期，请上传新证书</span>
+                      </div>
+                      <button class="action secondary">立即更新</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>汇率锁定提醒</strong>
+                        <span>USD → EUR 汇率波动 3%，建议锁汇</span>
+                      </div>
+                      <button class="action secondary">去锁汇</button>
+                    </div>
+                  </div>
+                </section>
+              `
+            }
+          ]
+        },
+        admin: {
+          name: "平台管理员",
+          description: "负责平台安全、规则治理与系统配置的后台管理视图，强调风险监控与权限管理。",
+          highlights: [
+            { label: "职责", value: "平台安全 · 规则治理 · 系统稳态" },
+            { label: "关键指标", value: "违约率 · 投诉率 · 系统 SLA" },
+            { label: "工具", value: "风控引擎 · 权限矩阵 · 配置中心" }
+          ],
+          menus: [
+            {
+              id: "admin-overview",
+              label: "平台概览",
+              summary: "平台健康、流量与工单总览。",
+              content: `
+                <div class="kpi-grid three">
+                  <div class="kpi">
+                    <strong>8.3M</strong>
+                    <span>过去 24h 全站访问</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>98.9%</strong>
+                    <span>核心服务可用率</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>1,280</strong>
+                    <span>待分配工单</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>0.21%</strong>
+                    <span>违规订单占比 (7 日)</span>
+                  </div>
+                  <div class="kpi">
+                    <strong>312</strong>
+                    <span>新增卖家入驻</span>
+                  </div>
+                </div>
+                <div class="page-grid two">
+                  <section class="panel highlight">
+                    <div class="panel-header">
+                      <h4>系统健康监控</h4>
+                      <span class="badge">实时指标</span>
+                    </div>
+                    <div class="status-list">
+                      <div class="status-row">
+                        <div>
+                          <strong>支付服务 API 延迟</strong>
+                          <span>当前 P95 为 380ms · 正常阈值</span>
+                        </div>
+                        <span class="pill success">健康</span>
+                      </div>
+                      <div class="status-row">
+                        <div>
+                          <strong>消息队列积压</strong>
+                          <span>跨境物流队列达到告警阈值</span>
+                        </div>
+                        <button class="action secondary">扩容处理</button>
+                      </div>
+                      <div class="status-row">
+                        <div>
+                          <strong>数据库复制延迟</strong>
+                          <span>EU-DB 复制延迟 2.8s</span>
+                        </div>
+                        <button class="action secondary">查看详情</button>
+                      </div>
+                    </div>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-header">
+                      <h4>工单流转</h4>
+                      <span class="badge">今日</span>
+                    </div>
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>工单类型</th>
+                          <th>待处理</th>
+                          <th>SLA</th>
+                          <th>负责人</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>买家投诉</td>
+                          <td>420</td>
+                          <td>12h</td>
+                          <td>客服团队</td>
+                        </tr>
+                        <tr>
+                          <td>卖家违规</td>
+                          <td>188</td>
+                          <td>24h</td>
+                          <td>合规运营</td>
+                        </tr>
+                        <tr>
+                          <td>技术故障</td>
+                          <td>36</td>
+                          <td>4h</td>
+                          <td>技术支持</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
+              `
+            },
+            {
+              id: "risk",
+              label: "风险监控",
+              summary: "风险告警、模型热度与黑名单管理。",
+              content: `
+                <div class="page-grid two">
+                  <section class="panel highlight">
+                    <div class="panel-header">
+                      <h4>告警队列</h4>
+                      <span class="badge danger">高优先级</span>
+                    </div>
+                    <ul class="list">
+                      <li>
+                        <div>
+                          <strong>刷单异常波动</strong>
+                          <small>Seller#48920 · 15 分钟内新增 230 条同类订单</small>
+                        </div>
+                        <button class="action secondary">立即冻结</button>
+                      </li>
+                      <li>
+                        <div>
+                          <strong>支付多次失败</strong>
+                          <small>User#99231 · 同卡片 5 次失败触发</small>
+                        </div>
+                        <button class="action secondary">触发验证</button>
+                      </li>
+                      <li>
+                        <div>
+                          <strong>物流地址异常</strong>
+                          <small>香港集运仓 → 高风险国家 · 订单 32 单</small>
+                        </div>
+                        <button class="action secondary">复核路线</button>
+                      </li>
+                    </ul>
+                  </section>
+                  <section class="panel">
+                    <div class="panel-header">
+                      <h4>模型热力图</h4>
+                      <span class="badge">近 24h</span>
+                    </div>
+                    <div class="chart"></div>
+                    <div class="board">
+                      <div class="board-item">
+                        <strong>新卖家准入模型</strong>
+                        <span>命中率 87% · 误杀率 0.8%</span>
+                      </div>
+                      <div class="board-item">
+                        <strong>支付风控模型</strong>
+                        <span>阻断 $1.2M 可疑交易</span>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>黑名单与白名单管理</h4>
+                    <span class="badge">操作记录</span>
+                  </div>
+                  <div class="status-list">
+                    <div class="status-row">
+                      <div>
+                        <strong>新增黑名单 · Buyer#109233</strong>
+                        <span>原因：盗卡行为 · 生效期 180 天</span>
+                      </div>
+                      <button class="action secondary">查看详情</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>白名单延长 · 物流商 DHL</strong>
+                        <span>跨境特惠通道延长至 12 月</span>
+                      </div>
+                      <button class="action secondary">更新协议</button>
+                    </div>
+                    <div class="status-row">
+                      <div>
+                        <strong>规则调整 · 保留价策略</strong>
+                        <span>实验组 B 开启风控灰度验证</span>
+                      </div>
+                      <button class="action secondary">查看实验</button>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "permissions",
+              label: "权限矩阵",
+              summary: "角色权限、审批流与日志审计。",
+              content: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>角色权限表</h4>
+                    <span class="badge">即时生效</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>角色</th>
+                        <th>关键能力</th>
+                        <th>审批级别</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>客服主管</td>
+                        <td>退款审批、账号封禁</td>
+                        <td>L2</td>
+                        <td><span class="pill success">启用</span></td>
+                      </tr>
+                      <tr>
+                        <td>合规运营</td>
+                        <td>商品下架、风控策略编辑</td>
+                        <td>L3</td>
+                        <td><span class="pill success">启用</span></td>
+                      </tr>
+                      <tr>
+                        <td>外包客服</td>
+                        <td>查看订单、回复消息</td>
+                        <td>L1</td>
+                        <td><span class="pill warning">临时授权</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>审批流配置</h4>
+                    <span class="badge">可视化流程</span>
+                  </div>
+                  <div class="board">
+                    <div class="board-item">
+                      <strong>高额退款申请</strong>
+                      <span>客服初审 → 风控复核 → 财务放款</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>商品批量下架</strong>
+                      <span>算法预警 → 运营确认 → 管理员发布</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>权限申请</strong>
+                      <span>直属主管 → 信息安全 → 系统生效</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "settings",
+              label: "系统配置",
+              summary: "系统开关、公告与实验管理。",
+              content: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>全局开关</h4>
+                    <span class="badge">即时生效</span>
+                  </div>
+                  <div class="toggle-list">
+                    <div class="toggle on">
+                      <div class="info">
+                        <span>买家保障自动赔付</span>
+                        <small>达到 SLA 后系统自动触发赔付</small>
+                      </div>
+                      <div class="switch"></div>
+                    </div>
+                    <div class="toggle on">
+                      <div class="info">
+                        <span>跨境物流延误提醒</span>
+                        <small>超出预计时效自动提醒买卖双方</small>
+                      </div>
+                      <div class="switch"></div>
+                    </div>
+                    <div class="toggle">
+                      <div class="info">
+                        <span>竞拍超时自动延长</span>
+                        <small>当前关闭 · 仅对官方活动生效</small>
+                      </div>
+                      <div class="switch"></div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>公告中心</h4>
+                    <span class="badge">多渠道推送</span>
+                  </div>
+                  <ul class="list">
+                    <li>
+                      <div>
+                        <strong>维护通知 · 8 月 25 日</strong>
+                        <small>物流追踪系统 02:00-04:00 升级</small>
+                      </div>
+                      <button class="action secondary">发布到卖家端</button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>政策更新 · 禁限售清单</strong>
+                        <small>新增医疗器械与特定药妆管理要求</small>
+                      </div>
+                      <button class="action secondary">更新文档</button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>实验 · 个性化推荐 V3</strong>
+                        <small>AB 实验覆盖 35% 买家，持续两周</small>
+                      </div>
+                      <button class="action secondary">查看实验面板</button>
+                    </li>
+                  </ul>
+                </section>
+              `
+            }
+          ]
+        },
+        ops: {
+          name: "运营工作台",
+          description: "聚焦平台日常运营、活动策划与内容审核的协作界面，强调跨部门协同。",
+          highlights: [
+            { label: "核心工作", value: "活动策划 · 内容审核 · 品类运营" },
+            { label: "目标", value: "提升转化 · 内容合规 · 供给增长" },
+            { label: "协同对象", value: "品牌卖家 · 营销 · 物流" }
+          ],
+          menus: [
+            {
+              id: "campaigns",
+              label: "活动策划",
+              summary: "活动日历、资源位与执行进度。",
+              content: `
+                <section class="panel highlight">
+                  <div class="panel-header">
+                    <h4>活动日历</h4>
+                    <span class="badge">八月</span>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <div class="timeline-time">周一</div>
+                      <div class="timeline-card">
+                        <strong>返校季主题页上线</strong>
+                        <span>品类：电子产品 / 文具 · 卖家 34 家</span>
+                        <div class="progress-bar"><span style="width: 65%;"></span></div>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-time">周三</div>
+                      <div class="timeline-card">
+                        <strong>限时抢购直播</strong>
+                        <span>主播招募完成 · 脚本待审核</span>
+                        <div class="progress-bar"><span style="width: 40%;"></span></div>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-time">周五</div>
+                      <div class="timeline-card">
+                        <strong>国际物流补贴活动</strong>
+                        <span>与物流团队联动，补贴包裹 5,000 单</span>
+                        <div class="progress-bar"><span style="width: 30%;"></span></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>资源位分配</h4>
+                    <span class="badge">首页 & App</span>
+                  </div>
+                  <div class="card-list">
+                    <div class="card">
+                      <h5>首页主 banner</h5>
+                      <p>曝光 320 万 · 支持 A/B 测试 · 待上传素材</p>
+                      <div class="actions">
+                        <button>上传设计稿</button>
+                        <button>设置链接</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>站内推送</h5>
+                      <p>目标用户 120 万 · 定时 8 月 22 日 10:00</p>
+                      <div class="actions">
+                        <button>编辑文案</button>
+                        <button>配置受众</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>运营位 · 热门榜单</h5>
+                      <p>展示 12 个商品 · 支持实时销量刷新</p>
+                      <div class="actions">
+                        <button>选择商品</button>
+                        <button>导入模版</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "content",
+              label: "内容审核",
+              summary: "审核队列、违规处理与策略库。",
+              content: `
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>审核队列</h4>
+                    <span class="badge danger">待处理 186 条</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>编号</th>
+                        <th>类型</th>
+                        <th>提交人</th>
+                        <th>违规标签</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#AR2391</td>
+                        <td>商品图片</td>
+                        <td>Seller#23301</td>
+                        <td>版权风险</td>
+                        <td><span class="pill warning">待审核</span></td>
+                      </tr>
+                      <tr>
+                        <td>#AR2392</td>
+                        <td>营销文案</td>
+                        <td>Seller#19220</td>
+                        <td>夸大宣传</td>
+                        <td><span class="pill warning">待审核</span></td>
+                      </tr>
+                      <tr>
+                        <td>#AR2393</td>
+                        <td>直播脚本</td>
+                        <td>运营团队</td>
+                        <td>敏感词</td>
+                        <td><span class="pill">复核中</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>策略库</h4>
+                    <span class="badge">最新更新</span>
+                  </div>
+                  <div class="board">
+                    <div class="board-item">
+                      <strong>AI 识别规则 · 版本 2.3</strong>
+                      <span>新增仿冒品牌图案识别模型</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>直播脚本标准</strong>
+                      <span>更新敏感词清单与互动要求</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>举报处理指引</strong>
+                      <span>违规等级与处罚策略调整</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "category",
+              label: "品类运营",
+              summary: "重点品类看板、供给状况与增长计划。",
+              content: `
+                <section class="panel highlight">
+                  <div class="panel-header">
+                    <h4>重点品类表现</h4>
+                    <span class="badge">本周</span>
+                  </div>
+                  <div class="card-list">
+                    <div class="card">
+                      <h5>电子产品</h5>
+                      <p>GMV $2.6M · 转化率 4.3% · 新增卖家 68</p>
+                      <div class="actions">
+                        <button>查看竞品</button>
+                        <button>调配资源位</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>奢侈品</h5>
+                      <p>GMV $1.4M · 鉴定通过率 98% · 投诉率 0.6%</p>
+                      <div class="actions">
+                        <button>联系鉴定方</button>
+                        <button>策划专题</button>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h5>潮流玩具</h5>
+                      <p>GMV $860K · 转化率 5.2% · 新增卖家 42</p>
+                      <div class="actions">
+                        <button>拓展供给</button>
+                        <button>上线直播</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>增长计划</h4>
+                    <span class="badge">季度目标</span>
+                  </div>
+                  <div class="board">
+                    <div class="board-item">
+                      <strong>北美潮鞋引入计划</strong>
+                      <span>签约 20 家顶级卖家 · 设立专属物流通道</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>跨境仓配合作</strong>
+                      <span>与 4 家海外仓达成深度合作</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>内容种草矩阵</strong>
+                      <span>与 KOL 共创 50 篇主题内容</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            },
+            {
+              id: "reports",
+              label: "数据报表",
+              summary: "实时监控、指标对比与洞察。",
+              content: `
+                <section class="panel highlight">
+                  <div class="panel-header">
+                    <h4>核心指标</h4>
+                    <span class="badge">实时刷新</span>
+                  </div>
+                  <div class="kpi-grid three">
+                    <div class="kpi">
+                      <strong>3.6%</strong>
+                      <span>整体转化率</span>
+                    </div>
+                    <div class="kpi">
+                      <strong>$4.2M</strong>
+                      <span>今日 GMV</span>
+                    </div>
+                    <div class="kpi">
+                      <strong>12,430</strong>
+                      <span>新增关注商品</span>
+                    </div>
+                    <div class="kpi">
+                      <strong>82%</strong>
+                      <span>活动页停留完成率</span>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <h4>趋势对比</h4>
+                    <span class="badge">同比 / 环比</span>
+                  </div>
+                  <div class="chart"></div>
+                  <div class="board">
+                    <div class="board-item">
+                      <strong>GMV 环比</strong>
+                      <span>+12.5% · 主因秋季促销</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>内容审核通过率</strong>
+                      <span>95.6% · 较上周提升 2.1%</span>
+                    </div>
+                    <div class="board-item">
+                      <strong>物流履约达标率</strong>
+                      <span>97.2% · 主要波动来自德法线路</span>
+                    </div>
+                  </div>
+                </section>
+              `
+            }
+          ]
+        }
+      };
+      const roleSwitcherEl = document.getElementById("roleSwitcher");
+      const roleTitleEl = document.getElementById("roleTitle");
+      const roleDescriptionEl = document.getElementById("roleDescription");
+      const roleHighlightsEl = document.getElementById("roleHighlights");
+      const menuListEl = document.getElementById("menuList");
+      const pageTitleEl = document.getElementById("pageTitle");
+      const pageSummaryEl = document.getElementById("pageSummary");
+      const pageBodyEl = document.getElementById("pageBody");
+
+      let currentRole = "buyer";
+      let currentMenu = roleConfigs[currentRole].menus[0].id;
+
+      function buildRoleSwitcher() {
+        roleSwitcherEl.innerHTML = "";
+        Object.entries(roleConfigs).forEach(([key, config]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "role-button";
+          button.dataset.role = key;
+          button.textContent = config.name;
+          button.addEventListener("click", () => {
+            if (currentRole !== key) {
+              currentRole = key;
+              currentMenu = roleConfigs[key].menus[0]?.id || "";
+              renderRole(key);
+            }
+          });
+          roleSwitcherEl.appendChild(button);
+        });
+      }
+
+      function renderRole(roleKey) {
+        const config = roleConfigs[roleKey];
+        if (!config) return;
+
+        roleTitleEl.textContent = config.name;
+        roleDescriptionEl.textContent = config.description;
+        roleHighlightsEl.innerHTML = config.highlights
+          .map((item) => `
+            <div class="highlight-card">
+              <span>${item.label}</span>
+              <strong>${item.value}</strong>
+            </div>
+          `)
+          .join("");
+
+        roleSwitcherEl
+          .querySelectorAll("button")
+          .forEach((btn) => btn.classList.toggle("active", btn.dataset.role === roleKey));
+
+        const menus = config.menus || [];
+        if (!menus.find((m) => m.id === currentMenu)) {
+          currentMenu = menus[0]?.id || "";
+        }
+
+        menuListEl.innerHTML = menus
+          .map(
+            (menu) => `
+              <li>
+                <button type="button" class="menu-button${menu.id === currentMenu ? " active" : ""}" data-menu="${menu.id}">
+                  <span class="menu-label">${menu.label}</span>
+                  <span class="menu-sub">${menu.summary}</span>
+                </button>
+              </li>
+            `
+          )
+          .join("");
+
+        menuListEl.querySelectorAll("button").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            renderMenu(roleKey, btn.dataset.menu);
+          });
+        });
+
+        renderMenu(roleKey, currentMenu);
+      }
+
+      function renderMenu(roleKey, menuId) {
+        const role = roleConfigs[roleKey];
+        const menu = role?.menus.find((item) => item.id === menuId);
+        if (!menu) return;
+
+        currentMenu = menuId;
+        pageTitleEl.textContent = menu.label;
+        pageSummaryEl.textContent = menu.summary;
+        pageBodyEl.innerHTML = menu.content;
+
+        menuListEl
+          .querySelectorAll("button")
+          .forEach((btn) => btn.classList.toggle("active", btn.dataset.menu === menuId));
+
+        pageBodyEl.scrollTop = 0;
+      }
+
+      buildRoleSwitcher();
+      renderRole(currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
