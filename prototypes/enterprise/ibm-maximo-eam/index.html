@@ -95,6 +95,12 @@
         transform: translateY(-1px);
       }
 
+      .system-nav button.active {
+        background: rgba(255, 255, 255, 0.32);
+        color: #fff;
+        box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.4);
+      }
+
       .role-switcher {
         display: flex;
         align-items: center;
@@ -1071,6 +1077,117 @@
                 </section>
               `,
             },
+            {
+              id: 'risk-command',
+              icon: '🚨',
+              label: '风险态势指挥',
+              caption: '风险热力、事件联动与协同',
+              title: '风险态势指挥中心',
+              subtitle: '综合监控资产风险、事件响应与协同进展',
+              summary:
+                '风险态势指挥中心集中呈现资产风险评分、重大事件与协同进展，支持资产经理快速联动维护、安全与供应团队落实应对措施。',
+              highlights: [
+                '风险热力矩阵突出高影响资产',
+                '事件时间线追踪现场处置进展',
+                '跨部门协同板块明确责任与状态',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-rose">
+                    <div class="metric-label">高风险资产</div>
+                    <div class="metric-value">7</div>
+                    <div class="metric-trend negative">需要 48 小时内处置</div>
+                  </div>
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">开放风险事件</div>
+                    <div class="metric-value">5</div>
+                    <div class="metric-trend">含 2 个跨部门事件</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">潜在影响成本</div>
+                    <div class="metric-value">¥5.4M</div>
+                    <div class="metric-trend positive">已减缓成本 0.8M</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>风险热力矩阵</h3>
+                      <p>按照发生概率与影响程度定位需优先处理的资产风险。</p>
+                    </div>
+                    <button class="ghost" data-view-target="risk-detail" data-return-view="risk-command">查看风险详情</button>
+                  </div>
+                  <div class="map-mock">
+                    <strong>风险分布</strong>
+                    <div class="map-legend">
+                      <span class="legend-item"><span class="status-pill danger">高概率 / 高影响</span> 3</span>
+                      <span class="legend-item"><span class="status-pill warning">高概率 / 中影响</span> 2</span>
+                      <span class="legend-item"><span class="status-pill info">中概率 / 高影响</span> 4</span>
+                    </div>
+                    <div>重点关注：压缩机 MX-204、输电线路 TX-118、蒸汽锅炉 SB-09。</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>风险事件时间线</h3>
+                      <p>串联告警、工单、安全与供应环节的处置进展。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="incident-brief" data-return-view="risk-command">查看现场通报</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>08:35</strong>
+                      <div>MX-204 轴承温度超标，生成风险事件 R-5823。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>08:50</strong>
+                      <div>维护主管派单 WO-5897，并通知库存准备密封垫片。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>09:10</strong>
+                      <div>安全部门确认动火许可待补资料。<button class="link" data-view-target="safety-compliance" data-return-view="risk-command">加速审批</button></div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>09:40</strong>
+                      <div>供应商 ABB 回复备件将于 2 小时内送达。</div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>跨部门协同看板</h3>
+                      <p>跟踪风险事件中各团队责任、完成度与下一步动作。</p>
+                    </div>
+                    <button class="ghost" data-view-target="workorder-dispatch" data-return-view="risk-command">协调资源</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>维护团队</h4>
+                      <div class="board-card">
+                        <span>负责人：维护主管 刘涵</span>
+                        <span>任务：轴承更换 · 进度 45%</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>安全团队</h4>
+                      <div class="board-card">
+                        <span>负责人：安全经理 王敏</span>
+                        <span>待办：动火许可复核、现场隔离确认</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>供应链团队</h4>
+                      <div class="board-card">
+                        <span>负责人：库存专员 李倩</span>
+                        <span>任务：备件到货确认、替代方案评估</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
           ],
         },
         maintenanceSupervisor: {
@@ -1394,6 +1511,138 @@
                     <div class="timeline-item">
                       <strong>复查通过</strong>
                       <div>2024-02-26 动火管理专项，复查结论：合规，纳入经验库。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'crew-performance',
+              icon: '📉',
+              label: '团队绩效看板',
+              caption: '班组效率、技能与改进行动',
+              title: '维护团队绩效看板',
+              subtitle: '对比班组效率、技能覆盖与改进进度',
+              summary:
+                '绩效看板帮助维护主管持续改进班组表现，识别瓶颈工序、技能缺口与改进措施完成情况。',
+              highlights: [
+                '班组效率趋势与对标分析',
+                '技能覆盖率与培训计划跟踪',
+                '改进行动闭环状态一览',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">工单准时率</div>
+                    <div class="metric-value">93%</div>
+                    <div class="metric-trend positive">环比 +4%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">一次修复率</div>
+                    <div class="metric-value">88%</div>
+                    <div class="metric-trend warning">旋机班 82%</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">技能覆盖率</div>
+                    <div class="metric-value">76%</div>
+                    <div class="metric-trend">需补齐 3 项认证</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>班组效率对比</h3>
+                      <p>对比主要班组的工单效率、加班与停工时长。</p>
+                    </div>
+                    <button class="ghost" data-view-target="crew-scorecard" data-return-view="crew-performance">查看班组评分</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>班组</th>
+                        <th>准时率</th>
+                        <th>一次修复率</th>
+                        <th>加班小时</th>
+                        <th>关注项</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>旋机班</td>
+                        <td>88%</td>
+                        <td>82%</td>
+                        <td>12</td>
+                        <td><button class="link" data-view-target="resource-calendar" data-return-view="crew-performance">调整排班</button></td>
+                      </tr>
+                      <tr>
+                        <td>电仪班</td>
+                        <td>95%</td>
+                        <td>90%</td>
+                        <td>6</td>
+                        <td><span class="status-pill success">表现稳定</span></td>
+                      </tr>
+                      <tr>
+                        <td>检修班</td>
+                        <td>91%</td>
+                        <td>86%</td>
+                        <td>9</td>
+                        <td><button class="link" data-view-target="incident-brief" data-return-view="crew-performance">复盘异常</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>技能与培训计划</h3>
+                      <p>识别技能缺口并规划培训与认证。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="crew-scorecard" data-return-view="crew-performance">生成培训计划</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>本周</strong>
+                      <div>旋机班安排振动诊断进阶培训，覆盖 5 名技师。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>下周</strong>
+                      <div>电仪班进行高压测试资质复训。<button class="link" data-view-target="resource-calendar" data-return-view="crew-performance">确认人员</button></div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>本月</strong>
+                      <div>外协团队需完成安全认证换证流程。</div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>改进行动闭环</h3>
+                      <p>跟踪持续改进措施的状态与负责人。</p>
+                    </div>
+                    <button class="ghost" data-view-target="incident-root-cause" data-return-view="crew-performance">查看根因分析</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>进行中</h4>
+                      <div class="board-card">
+                        <span>任务：工单验收清单优化</span>
+                        <span>负责人：张伟 · 完成度 60%</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>待启动</h4>
+                      <div class="board-card">
+                        <span>任务：班前会数字化签到</span>
+                        <span>负责人：李强 · 计划 4 月启动</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>已完成</h4>
+                      <div class="board-card">
+                        <span>任务：备件领用复核机制</span>
+                        <span>负责人：刘涵 · 效果：等待确认</span>
+                      </div>
                     </div>
                   </div>
                 </section>
@@ -1738,6 +1987,146 @@
                     <div class="timeline-item">
                       <strong>归还待检</strong>
                       <div>申请 #SR-2027 · 扭矩扳手 · 仓库检验中。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'knowledge-support',
+              icon: '🎓',
+              label: '知识与支援',
+              caption: '操作指引、经验与远程支援',
+              title: '知识与远程支援中心',
+              subtitle: '快速查找操作指引、案例与远程协助',
+              summary:
+                '知识与支援中心汇聚标准作业指引、历史案例与远程专家支援，帮助技师快速定位问题并获取协助。',
+              highlights: [
+                '按资产与症状智能推荐指引',
+                '实时发起远程专家视频支援',
+                '经验库支持收藏与评分',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">可用操作指引</div>
+                    <div class="metric-value">128</div>
+                    <div class="metric-trend positive">本周新增 6 篇</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">专家在线</div>
+                    <div class="metric-value">4</div>
+                    <div class="metric-trend">覆盖机械 / 电仪 / 安全</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">收藏案例</div>
+                    <div class="metric-value">23</div>
+                    <div class="metric-trend">近 7 天浏览 146 次</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>指引推荐</h3>
+                      <p>根据当前资产与症状自动推荐操作指引。</p>
+                    </div>
+                    <button class="ghost" data-view-target="knowledge-detail" data-return-view="knowledge-support">查看详细指引</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>指引名称</th>
+                        <th>适用资产</th>
+                        <th>最近更新</th>
+                        <th>评分</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>压缩机轴承快速诊断</td>
+                        <td>MX 系列</td>
+                        <td>2024-03-12</td>
+                        <td>4.8</td>
+                        <td><button class="link" data-view-target="knowledge-detail" data-return-view="knowledge-support">查看</button></td>
+                      </tr>
+                      <tr>
+                        <td>受限空间作业安全核对表</td>
+                        <td>罐区 / 管廊</td>
+                        <td>2024-03-03</td>
+                        <td>4.6</td>
+                        <td><button class="link" data-view-target="safety-compliance" data-return-view="knowledge-support">安全复核</button></td>
+                      </tr>
+                      <tr>
+                        <td>振动异常远程排查</td>
+                        <td>旋机资产</td>
+                        <td>2024-02-22</td>
+                        <td>4.7</td>
+                        <td><button class="link" data-view-target="failure-analysis" data-return-view="knowledge-support">案例</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>远程支援</h3>
+                      <p>发起视频支援或共享现场数据。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="incident-brief" data-return-view="knowledge-support">发起支援会话</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>在线专家</h4>
+                      <div class="board-card">
+                        <span>机械专家 · 陈刚</span>
+                        <span>状态：在线 · 正在待命</span>
+                      </div>
+                      <div class="board-card">
+                        <span>电仪专家 · 杨蕾</span>
+                        <span>状态：忙线 · 预计 10 分钟</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>共享数据</h4>
+                      <div class="board-card">
+                        <span>实时振动谱图</span>
+                        <span>来自便携传感器 VT-09</span>
+                      </div>
+                      <div class="board-card">
+                        <span>现场视频</span>
+                        <span>移动终端直播，信号良好</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>支援记录</h4>
+                      <div class="board-card">
+                        <span>2024-03-15 · 蒸汽阀门检修</span>
+                        <span>问题解决用时 18 分钟</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>经验复盘</h3>
+                      <p>整理案例要点并收集团队反馈。</p>
+                    </div>
+                    <button class="ghost" data-view-target="failure-analysis" data-return-view="knowledge-support">查看案例库</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>最新</strong>
+                      <div>上传《MX-204 轴承异常处理》复盘，包含 3 条改进建议。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>本周</strong>
+                      <div>新增 5 条现场笔记待审核。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>本月</strong>
+                      <div>经验库引用次数 42 · 满意度 4.7 / 5。</div>
                     </div>
                   </div>
                 </section>
@@ -2118,6 +2507,138 @@
                 </div>
               `,
             },
+            {
+              id: 'cost-analytics',
+              icon: '💹',
+              label: '成本与绩效分析',
+              caption: '库存成本、节省与呆滞分析',
+              title: '库存成本与绩效分析',
+              subtitle: '洞察库存成本构成、节省机会与呆滞风险',
+              summary:
+                '库存成本与绩效分析帮助库存专员掌握库存结构、节省机会与呆滞库存风险，为预算控制与供应商协同提供依据。',
+              highlights: [
+                '分解库存持有、采购与物流成本',
+                '识别节省机会与谈判策略',
+                '监控呆滞库存与处置方案',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">库存持有成本</div>
+                    <div class="metric-value">¥6.3M</div>
+                    <div class="metric-trend negative">环比 -6%</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">采购节省</div>
+                    <div class="metric-value">¥1.1M</div>
+                    <div class="metric-trend positive">与上季度相比 +18%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">呆滞库存</div>
+                    <div class="metric-value">¥0.42M</div>
+                    <div class="metric-trend warning">重点关注 5 类物料</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>成本结构分析</h3>
+                      <p>拆解库存持有、采购与物流成本构成。</p>
+                    </div>
+                    <button class="ghost" data-view-target="cost-breakdown" data-return-view="cost-analytics">查看成本明细</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>成本类别</th>
+                        <th>金额</th>
+                        <th>占比</th>
+                        <th>趋势</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>仓储持有</td>
+                        <td>¥2.8M</td>
+                        <td>44%</td>
+                        <td><span class="status-pill success">下降</span></td>
+                        <td><button class="link" data-view-target="inventory-detail" data-return-view="cost-analytics">优化仓储</button></td>
+                      </tr>
+                      <tr>
+                        <td>采购价格</td>
+                        <td>¥2.4M</td>
+                        <td>38%</td>
+                        <td><span class="status-pill warning">持平</span></td>
+                        <td><button class="link" data-view-target="supplier-management" data-return-view="cost-analytics">谈判策略</button></td>
+                      </tr>
+                      <tr>
+                        <td>运输与物流</td>
+                        <td>¥1.1M</td>
+                        <td>18%</td>
+                        <td><span class="status-pill danger">上涨</span></td>
+                        <td><button class="link" data-view-target="cost-breakdown" data-return-view="cost-analytics">查看路线</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>节省机会</h3>
+                      <p>结合供应商表现与需求预测识别节省空间。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="supplier-scorecard" data-return-view="cost-analytics">生成谈判要点</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>短期</h4>
+                      <div class="board-card">
+                        <span>批量采购密封垫片，可节省 6%</span>
+                        <span>责任人：李倩 · 截止：4 月 12 日</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>中期</h4>
+                      <div class="board-card">
+                        <span>与 ABB 协商框架协议，目标节省 8%</span>
+                        <span>责任人：周凯 · 截止：5 月 5 日</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>长期</h4>
+                      <div class="board-card">
+                        <span>推进共享库存计划，减少呆滞 15%</span>
+                        <span>责任人：王敏 · 截止：Q3</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>呆滞库存监控</h3>
+                      <p>按库龄与资金占用识别需处置的物料。</p>
+                    </div>
+                    <button class="ghost" data-view-target="inventory-detail" data-return-view="cost-analytics">查看库存批次</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>30+ 天</strong>
+                      <div>电机绕组 · 资金占用 ¥0.12M · 建议转入共享库存。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>60+ 天</strong>
+                      <div>阀门组件 · 资金占用 ¥0.18M · 正与供应商协商退货。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>90+ 天</strong>
+                      <div>旧型号传感器 · 资金占用 ¥0.12M · 建议报废。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
           ],
         },
 
@@ -2277,6 +2798,113 @@
             </section>
           `,
         },
+        'risk-detail': {
+          title: '风险详情 R-5823',
+          subtitle: '评估风险等级、影响范围与缓解措施',
+          summary:
+            '风险详情面板汇总风险评分、影响分析与缓解措施执行情况，便于资产经理跟踪重大风险的闭环。',
+          highlights: [
+            '量化风险评分与潜在影响成本',
+            '事件链路清晰展示跨部门协同状态',
+            '缓解措施分配责任人与完成度',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>风险评估</h3>
+                  <p>资产：MX-204 炼油压缩机 · 监控来源：IoT 震动 / 温度</p>
+                </div>
+                <button class="ghost" data-view-target="risk-command" data-from-menu="true">返回风险指挥</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>指标</th>
+                    <th>数值</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>风险等级</td>
+                    <td><span class="status-pill danger">高</span></td>
+                    <td>概率 0.62 · 影响等级 5</td>
+                  </tr>
+                  <tr>
+                    <td>潜在停机时长</td>
+                    <td>18 小时</td>
+                    <td>影响常压蒸馏产能 12%</td>
+                  </tr>
+                  <tr>
+                    <td>潜在成本</td>
+                    <td>¥1.4M</td>
+                    <td>包含生产损失与紧急采购</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>事件链路</h3>
+                  <p>串联告警、工单、安全许可与供应进展。</p>
+                </div>
+                <button class="pill-button" data-view-target="incident-brief" data-return-view="risk-detail">查看现场简报</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>告警</strong>
+                  <div>08:35 IoT 触发温度超限告警，生成风险事件 R-5823。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>维护</strong>
+                  <div>08:50 自动生成工单 WO-5897 并派至旋机班。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>安全</strong>
+                  <div>09:05 动火许可待补照片，预计 09:40 完成复核。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>供应</strong>
+                  <div>09:20 备件确认在途，预计 11:10 到货。</div>
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>缓解措施</h3>
+                  <p>分配责任人与完成状态，确保风险闭环。</p>
+                </div>
+                <button class="ghost" data-view-target="crew-performance" data-return-view="risk-detail">同步到团队绩效</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>维护行动</h4>
+                  <div class="board-card">
+                    <span>轴承更换 · 负责人：刘涵</span>
+                    <span>状态：进行中 · 完成度 45%</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>安全控制</h4>
+                  <div class="board-card">
+                    <span>现场隔离、动火监护人到位</span>
+                    <span>责任人：王敏 · 状态：待复核</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>供应保障</h4>
+                  <div class="board-card">
+                    <span>密封垫片调拨 + 备用采购</span>
+                    <span>责任人：李倩 · 状态：在途</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
         'plan-adjust': {
           title: '维护计划调整',
           subtitle: '对维护计划进行调整与审批',
@@ -2344,6 +2972,115 @@
                 <div class="timeline-item">
                   <strong>09:48</strong>
                   <div>安全专员确认动火许可，允许开工。</div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'crew-scorecard': {
+          title: '班组能力评分卡',
+          subtitle: '对比班组效率、技能覆盖与安全表现',
+          summary:
+            '班组能力评分卡提供班组效率、技能与安全表现的综合评分，帮助维护主管制定培训与改进行动。',
+          highlights: [
+            '综合评分模型支持自定义权重',
+            '快速识别绩效领先与薄弱班组',
+            '关联培训计划与安全事件记录',
+          ],
+          core: `
+            <div class="metrics-grid">
+              <div class="metric-card accent-blue">
+                <div class="metric-label">综合得分</div>
+                <div class="metric-value">87</div>
+                <div class="metric-trend positive">环比 +3</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">安全表现</div>
+                <div class="metric-value">95</div>
+                <div class="metric-trend">近 60 天零事故</div>
+              </div>
+              <div class="metric-card accent-amber">
+                <div class="metric-label">技能覆盖</div>
+                <div class="metric-value">76%</div>
+                <div class="metric-trend warning">需补齐 3 项</div>
+              </div>
+            </div>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>班组评分明细</h3>
+                  <p>评分维度：效率 40% · 技能 35% · 安全 25%</p>
+                </div>
+                <button class="ghost" data-view-target="crew-performance" data-from-menu="true">返回绩效看板</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>班组</th>
+                    <th>综合评分</th>
+                    <th>效率</th>
+                    <th>技能</th>
+                    <th>安全</th>
+                    <th>建议</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>旋机班</td>
+                    <td>84</td>
+                    <td>86</td>
+                    <td>72</td>
+                    <td>94</td>
+                    <td><button class="link" data-view-target="resource-calendar" data-return-view="crew-scorecard">安排培训</button></td>
+                  </tr>
+                  <tr>
+                    <td>电仪班</td>
+                    <td>91</td>
+                    <td>94</td>
+                    <td>88</td>
+                    <td>92</td>
+                    <td><span class="status-pill success">保持</span></td>
+                  </tr>
+                  <tr>
+                    <td>检修班</td>
+                    <td>85</td>
+                    <td>89</td>
+                    <td>78</td>
+                    <td>88</td>
+                    <td><button class="link" data-view-target="incident-root-cause" data-return-view="crew-scorecard">复盘案例</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>重点行动</h3>
+                  <p>聚焦排名靠后的维度与改进措施。</p>
+                </div>
+                <button class="pill-button" data-view-target="crew-performance" data-return-view="crew-scorecard">同步到改进计划</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>技能</h4>
+                  <div class="board-card">
+                    <span>旋机班：振动诊断高级认证 4 月启动</span>
+                    <span>负责人：陈飞</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>效率</h4>
+                  <div class="board-card">
+                    <span>检修班：建立工单复盘模板，目标提升 3%</span>
+                    <span>负责人：张伟</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>安全</h4>
+                  <div class="board-card">
+                    <span>全员参与动火许可模拟演练</span>
+                    <span>负责人：王敏</span>
+                  </div>
                 </div>
               </div>
             </section>
@@ -2607,6 +3344,123 @@
             </section>
           `,
         },
+        'knowledge-detail': {
+          title: '操作指引详解 - 压缩机轴承快速诊断',
+          subtitle: '分步指导、所需工具与注意事项',
+          summary:
+            '该指引提供压缩机轴承故障的快速诊断流程，涵盖检测步骤、判断标准与安全提示，便于技师现场执行。',
+          highlights: [
+            '图文并茂的检测步骤与判定标准',
+            '列出所需工具、备件与安全措施',
+            '支持记录现场反馈并更新经验库',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>指引概览</h3>
+                  <p>适用资产：MX 系列压缩机 · 最后更新：2024-03-12</p>
+                </div>
+                <button class="ghost" data-view-target="knowledge-support" data-from-menu="true">返回知识中心</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>步骤概览</h4>
+                  <div class="board-card">
+                    <span>1. 采集震动与温度数据</span>
+                    <span>2. 检查润滑状态</span>
+                    <span>3. 进行声学分析</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>所需资源</h4>
+                  <div class="board-card">
+                    <span>工具：振动分析仪、红外测温仪</span>
+                    <span>备件：密封垫片、润滑油</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>安全提示</h4>
+                  <div class="board-card">
+                    <span>动火许可确认、隔离电源</span>
+                    <span>佩戴听力与防护手套</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>详细步骤</h3>
+                  <p>按照标准步骤执行诊断并记录结果。</p>
+                </div>
+                <button class="pill-button" data-view-target="tech-task-detail" data-return-view="knowledge-detail">同步到任务</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>步骤</th>
+                    <th>操作</th>
+                    <th>判定标准</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>测量轴承外圈温度</td>
+                    <td>&lt; 75℃</td>
+                    <td>超过阈值需拍照上传</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>记录振动频谱</td>
+                    <td>峰值 RMS &lt; 3.5</td>
+                    <td>异常需提交到故障分析库</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>检查润滑油品质</td>
+                    <td>颗粒度 &lt; ISO 16/14</td>
+                    <td>必要时联系库存补充</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>附件与反馈</h3>
+                  <p>下载附件、查看评分并添加现场反馈。</p>
+                </div>
+                <button class="ghost" data-view-target="failure-analysis" data-return-view="knowledge-detail">查看相关案例</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>附件</h4>
+                  <div class="board-card">
+                    <span>振动频谱模板.xlsx</span>
+                    <span>红外检测示例图.pdf</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>评分</h4>
+                  <div class="board-card">
+                    <span>平均评分：4.8 / 5</span>
+                    <span>近期使用 38 次</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>反馈</h4>
+                  <div class="board-card">
+                    <span>王建：建议增加轴承型号差异说明</span>
+                    <span>李强：已上传现场视频供参考</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
         'spares-request': {
           title: '备件申请流程',
           subtitle: '提交、审批与领用备件',
@@ -2687,6 +3541,85 @@
                   </tr>
                 </tbody>
               </table>
+            </section>
+          `,
+        },
+        'cost-breakdown': {
+          title: '库存成本明细',
+          subtitle: '拆解仓储、采购与物流成本结构',
+          summary:
+            '库存成本明细展示不同仓库与物料类别的成本构成，帮助库存专员识别优化空间并制定行动。',
+          highlights: [
+            '支持按仓库与物料类别筛选',
+            '对比期初、期末与调拨影响',
+            '关联节省机会与执行情况',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>成本分布</h3>
+                  <p>时间范围：2024 Q1 · 单位：万元</p>
+                </div>
+                <button class="ghost" data-view-target="cost-analytics" data-from-menu="true">返回成本分析</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>仓库 / 类别</th>
+                    <th>仓储持有</th>
+                    <th>采购成本</th>
+                    <th>物流成本</th>
+                    <th>合计</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>主仓 A</td>
+                    <td>180</td>
+                    <td>220</td>
+                    <td>45</td>
+                    <td>445</td>
+                  </tr>
+                  <tr>
+                    <td>备仓 C</td>
+                    <td>96</td>
+                    <td>140</td>
+                    <td>32</td>
+                    <td>268</td>
+                  </tr>
+                  <tr>
+                    <td>外协仓</td>
+                    <td>48</td>
+                    <td>60</td>
+                    <td>18</td>
+                    <td>126</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>成本变化趋势</h3>
+                  <p>跟踪主要成本项目的季度变化与原因。</p>
+                </div>
+                <button class="pill-button" data-view-target="supplier-management" data-return-view="cost-breakdown">联系供应商</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>Q1</strong>
+                  <div>仓储持有成本下降 6%，得益于共享库存计划。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>Q1</strong>
+                  <div>物流成本上升 9%，原因：临时加急运输 3 次。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>计划</strong>
+                  <div>与物流供应商重谈合同，目标降低 5%。</div>
+                </div>
+              </div>
             </section>
           `,
         },
@@ -3246,6 +4179,9 @@
       const roleHighlights = document.getElementById('roleHighlights');
       const menuList = document.getElementById('menuList');
       const viewContainer = document.getElementById('viewContainer');
+      const systemNavButtons = Array.from(
+        document.querySelectorAll('.system-nav button')
+      );
 
       function renderRole(roleKey, initialViewId) {
         const role = roleConfigurations[roleKey];
@@ -3257,6 +4193,12 @@
         roleHighlights.innerHTML = role.highlights
           .map((item) => `<li>${item}</li>`)
           .join('');
+
+        systemNavButtons.forEach((button) => {
+          const isActive = button.dataset.roleTarget === roleKey;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
 
         menuList.innerHTML = '';
         role.menus.forEach((menu) => {
@@ -3389,7 +4331,7 @@
         renderRole(event.target.value);
       });
 
-      document.querySelectorAll('.system-nav button').forEach((button) => {
+      systemNavButtons.forEach((button) => {
         button.addEventListener('click', () => {
           const roleTarget = button.dataset.roleTarget;
           const viewTarget = button.dataset.viewTarget;
