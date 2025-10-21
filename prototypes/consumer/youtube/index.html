@@ -2,83 +2,1026 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>YouTube 视频平台 原型概览</title>
+    <title>YouTube 角色工作台原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: #f1f5f9;
+        color: #0f172a;
+        transition: background 0.3s ease;
+      }
+      body.role-user {
+        background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 40%, #f1f5f9 100%);
+      }
+      body.role-admin {
+        background: linear-gradient(180deg, #fefce8 0%, #fffbeb 45%, #f1f5f9 100%);
+      }
+      body.role-ops {
+        background: linear-gradient(180deg, #f5f3ff 0%, #fdf4ff 45%, #f1f5f9 100%);
+      }
+      .app-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background: rgba(15, 23, 42, 0.92);
+        color: #fff;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .brand-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.12);
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+      }
+      .role-switcher {
+        display: flex;
+        gap: 12px;
+      }
+      .role-button {
+        border: none;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #0f172a;
+        background: rgba(255, 255, 255, 0.92);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+      .role-button[aria-pressed="true"] {
+        background: #2563eb;
+        color: #fff;
+        box-shadow: 0 12px 20px rgba(37, 99, 235, 0.35);
+        transform: translateY(-2px);
+      }
+      .workspace {
+        flex: 1;
+        display: flex;
+        padding: 32px 40px 48px;
+        gap: 32px;
+      }
+      .sidebar {
+        width: 280px;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 24px;
+        box-shadow: 0 24px 40px rgba(15, 23, 42, 0.12);
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        backdrop-filter: blur(12px);
+      }
+      .sidebar-header {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .sidebar-role-label {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        color: #64748b;
+        text-transform: uppercase;
+      }
+      .sidebar-role-name {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .menu-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .menu-item {
+        border: none;
+        width: 100%;
+        text-align: left;
+        padding: 14px 16px;
+        border-radius: 16px;
+        font-size: 15px;
+        background: rgba(148, 163, 184, 0.08);
+        color: #0f172a;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.2s ease;
+      }
+      .menu-item .menu-icon {
+        margin-right: 12px;
+        font-size: 18px;
+      }
+      .menu-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .menu-item[aria-current="true"] {
+        background: #2563eb;
+        color: #fff;
+        box-shadow: 0 18px 28px rgba(37, 99, 235, 0.28);
+        transform: translateY(-2px);
+      }
+      .menu-item[aria-current="true"] .menu-badge {
+        background: rgba(255, 255, 255, 0.22);
+        color: #fff;
+      }
+      .menu-badge {
+        font-size: 12px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.15);
+        color: #1d4ed8;
+        font-weight: 600;
+      }
+      .content-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .view-header {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 24px 48px rgba(15, 23, 42, 0.15);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .view-header h1 {
+        margin: 0;
+        font-size: 28px;
+      }
+      .view-header .highlight {
+        font-size: 16px;
+        color: #475569;
+      }
+      .view-body {
+        display: grid;
+        gap: 24px;
+      }
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 20px 34px rgba(15, 23, 42, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+      }
+      .card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        pointer-events: none;
+      }
+      .card h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .card p {
+        margin: 0;
+        color: #475569;
+        line-height: 1.6;
+      }
+      .card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+      }
+      .list-title {
+        font-weight: 600;
+      }
+      .metric {
+        font-size: 26px;
+        font-weight: 700;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .pill.success { background: rgba(34, 197, 94, 0.18); color: #166534; }
+      .pill.warning { background: rgba(250, 204, 21, 0.24); color: #92400e; }
+      .pill.info { background: rgba(59, 130, 246, 0.2); color: #1d4ed8; }
+      .board {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 18px;
+      }
+      .board-column {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 18px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .board-column h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .board-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 14px;
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.12);
+      }
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .timeline-item strong {
+        font-size: 14px;
+        color: #334155;
+      }
+      @media (max-width: 1080px) {
+        .workspace {
+          flex-direction: column;
+          padding: 24px;
+        }
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .sidebar-header {
+          width: 100%;
+        }
+        .menu-list {
+          width: 100%;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .menu-item {
+          flex: 1 1 45%;
+        }
+      }
     </style>
   </head>
-  <body>
-    <header>
-      <h1>YouTube 视频平台 原型</h1>
-      <p class="tagline">全球最大的视频内容平台，连接创作者与观众。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>视频创作者、内容观看者、广告主</p>
-        <p><strong>核心痛点：</strong>创作者需要分发渠道、观众寻找高质量视频内容、广告主需要精准曝光</p>
-        <p><strong>价值主张：</strong>通过算法推荐和多样化的创作工具，提升内容分发效率并实现商业变现</p>
+  <body class="role-user">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon">▶️</div>
+          <span>YouTube 平台角色工作台</span>
+        </div>
+        <div class="role-switcher" role="tablist" aria-label="角色切换">
+          <button class="role-button" type="button" data-role="user" aria-pressed="true">用户端</button>
+          <button class="role-button" type="button" data-role="admin" aria-pressed="false">管理员端</button>
+          <button class="role-button" type="button" data-role="ops" aria-pressed="false">运营端</button>
+        </div>
+      </header>
+      <div class="workspace">
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <span class="sidebar-role-label">当前角色</span>
+            <span class="sidebar-role-name" id="sidebarRoleName">用户端</span>
+          </div>
+          <ul class="menu-list" id="menuList"></ul>
+        </aside>
+        <section class="content-panel">
+          <div class="view-header" id="viewHeader"></div>
+          <div class="view-body" id="viewBody"></div>
+        </section>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>个人用户搜索并观看感兴趣的视频内容</li><li>创作者上传视频并配置货币化策略</li><li>广告主投放广告并监控投放表现</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>内容浏览与发现</h3>
-              <p class="goal">功能目标：帮助用户在海量内容中快速找到感兴趣的视频</p>
-              <ul>
-                <li>首页信息流、趋势榜单与 Shorts 短视频入口</li><li>高级搜索过滤器（时长、发布时间、字幕语言等）</li><li>个性化订阅与通知提醒</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>创作者工作台</h3>
-              <p class="goal">功能目标：支持视频上传、管理与收益分析</p>
-              <ul>
-                <li>视频上传、剪辑、字幕与缩略图管理</li><li>版权检测与内容 ID 纠纷处理</li><li>收益面板与会员、赞赏管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>互动与社区</h3>
-              <p class="goal">功能目标：增强创作者与观众之间的互动粘性</p>
-              <ul>
-                <li>评论区、置顶与审核功能</li><li>直播、超级聊天与会员专属互动</li><li>播放列表与频道社区帖子</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商业变现与广告</h3>
-              <p class="goal">功能目标：为广告主提供高效投放工具并支持创作者变现</p>
-              <ul>
-                <li>广告投放管理与受众定向</li><li>品牌内容与电商带货整合</li><li>会员去广告、赞助与付费内容</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>日活跃用户（DAU）与平均观看时长</li><li>每千次展示成本（CPM）与广告转化率</li><li>创作者留存率与收益增长率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script>
+      const roleConfigs = {
+        user: {
+          displayName: '用户端',
+          highlight: '探索内容、参与互动、管理个人体验。',
+          accent: 'role-user',
+          menu: [
+            {
+              id: 'user-home',
+              icon: '🏠',
+              label: '首页推荐',
+              badge: '实时更新',
+              intro: '根据观看偏好动态排序的内容瀑布流。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>为你推荐</h3>
+                    <p>根据最近观看的科技与音乐视频，自动组合的沉浸播放队列。</p>
+                    <div class="card-list">
+                      <div class="list-item"><span class="list-title">AI 科技拆解</span><span class="pill info">预计播放 12:45</span></div>
+                      <div class="list-item"><span class="list-title">旅行 Vlog</span><span class="pill info">HDR · 4K</span></div>
+                      <div class="list-item"><span class="list-title">独立音乐现场</span><span class="pill info">直播回放</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>趋势榜单</h3>
+                    <p>实时抓取所在地区的热门话题，快速加入讨论。</p>
+                    <div class="card-list">
+                      <div class="list-item"><span class="list-title">#AI绘画挑战</span><span class="pill success">热度 +125%</span></div>
+                      <div class="list-item"><span class="list-title">#开箱新旗舰</span><span class="pill success">热度 +98%</span></div>
+                      <div class="list-item"><span class="list-title">#城市夜跑</span><span class="pill success">热度 +72%</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>观看进度同步</h3>
+                    <p>跨设备同步观看历史，自动续播到上次离开的位置。</p>
+                    <div class="metric">已同步 9 个设备</div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'user-shorts',
+              icon: '🎬',
+              label: 'Shorts 短视频',
+              badge: '极速',
+              intro: '60 秒内的创意内容，自动循环播放。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>竖屏播放墙</h3>
+                    <p>可左右滑动的竖屏视频矩阵，支持手势点赞与收藏。</p>
+                    <div class="pill info">正在连播：科普实验 15 条</div>
+                  </div>
+                  <div class="card">
+                    <h3>创作者快讯</h3>
+                    <p>实时推送订阅创作者发布的 Shorts，支持快捷打赏。</p>
+                    <div class="card-list">
+                      <div class="list-item"><span class="list-title">科技速递</span><span class="pill success">发布 2 分钟前</span></div>
+                      <div class="list-item"><span class="list-title">街头美食</span><span class="pill success">发布 5 分钟前</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>Shorts 挑战</h3>
+                    <p>参与官方挑战赛获取限定徽章与奖励。</p>
+                    <div class="pill warning">剩余时间 02:14:32</div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'user-subscriptions',
+              icon: '🔔',
+              label: '订阅动态',
+              badge: '9 条未读',
+              intro: '按频道聚合的订阅内容与互动消息。',
+              content: () => `
+                <div class="card">
+                  <h3>频道活动看板</h3>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>今日更新</h4>
+                      <div class="board-card">
+                        <strong>极客实验室</strong>
+                        <p>新上传：量子计算入门</p>
+                        <span class="pill info">首播提醒</span>
+                      </div>
+                      <div class="board-card">
+                        <strong>旅行日记</strong>
+                        <p>社区发起投票：下一站去哪？</p>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>直播排期</h4>
+                      <div class="board-card">
+                        <strong>音乐频道</strong>
+                        <p>周五 20:00 互动演唱会</p>
+                        <span class="pill success">预约人数 12.4k</span>
+                      </div>
+                      <div class="board-card">
+                        <strong>电竞竞技场</strong>
+                        <p>今晚季后赛分析直播</p>
+                        <span class="pill warning">距开始 45 分钟</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>互动提醒</h4>
+                      <div class="board-card">
+                        <strong>设计频道</strong>
+                        <p>提到了你：快去回复评论！</p>
+                      </div>
+                      <div class="board-card">
+                        <strong>理财学堂</strong>
+                        <p>限时会员直播回放开放</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'user-player',
+              icon: '📺',
+              label: '视频详情页',
+              badge: '沉浸体验',
+              intro: '专注播放体验与互动工具的组合。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>剧集式播放</h3>
+                    <p>章节导航、时间轴评论与多机位切换。</p>
+                    <div class="card-list">
+                      <div class="list-item"><span class="list-title">章节 01</span><span class="pill info">进度 40%</span></div>
+                      <div class="list-item"><span class="list-title">章节 02</span><span class="pill info">未开始</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>互动叠层</h3>
+                    <p>边看边投票、悬浮问答与表情雨特效。</p>
+                    <div class="pill success">新加入：实时字幕翻译</div>
+                  </div>
+                  <div class="card">
+                    <h3>内容延展</h3>
+                    <p>相关商品卡片、创作者会员福利与合作品牌展示。</p>
+                    <div class="pill warning">限时折扣 30%</div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'user-community',
+              icon: '💬',
+              label: '互动中心',
+              badge: '热度 x3',
+              intro: '集中管理评论、赞助与消息。',
+              content: () => `
+                <div class="card">
+                  <h3>互动收件箱</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>新私信</strong>
+                      <div>
+                        <p>创作者向你发送幕后花絮，附带会员专属链接。</p>
+                        <span class="pill success">来自：电影幕后</span>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>超级留言</strong>
+                      <div>
+                        <p>支持者赠送 50 元赞赏，并附带提问等待回复。</p>
+                        <span class="pill warning">等待回应</span>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>评论回复</strong>
+                      <div>
+                        <p>“下一期能聊聊 VR 吗？”</p>
+                        <span class="pill info">来自 2 小时前</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'user-settings',
+              icon: '⚙️',
+              label: '个人设置',
+              badge: '安全',
+              intro: '控制观看偏好、隐私与家长模式。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>体验偏好</h3>
+                    <p>夜间模式、自动连播、跳片头等快捷设置。</p>
+                    <div class="pill info">夜间模式已启用</div>
+                  </div>
+                  <div class="card">
+                    <h3>隐私保护</h3>
+                    <p>控制数据收集、广告个性化与历史记录。</p>
+                    <div class="pill success">隐私报告良好</div>
+                  </div>
+                  <div class="card">
+                    <h3>家庭空间</h3>
+                    <p>儿童账号管理、观看时间上限与内容过滤。</p>
+                    <div class="pill warning">周末启用限制</div>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+        admin: {
+          displayName: '管理员端',
+          highlight: '维护平台秩序，守护内容生态健康。',
+          accent: 'role-admin',
+          menu: [
+            {
+              id: 'admin-dashboard',
+              icon: '📊',
+              label: '全局仪表盘',
+              badge: '实时监测',
+              intro: '全平台关键指标与告警列表。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>内容安全指数</h3>
+                    <div class="metric">98.6%</div>
+                    <p>违规率连续 7 天下降。</p>
+                    <span class="pill success">风险低</span>
+                  </div>
+                  <div class="card">
+                    <h3>投诉处理 SLA</h3>
+                    <div class="metric">3.2 小时</div>
+                    <p>平均响应时长，相较上周提升 18%。</p>
+                  </div>
+                  <div class="card">
+                    <h3>系统告警</h3>
+                    <div class="card-list">
+                      <div class="list-item"><span class="list-title">转码集群</span><span class="pill warning">负载 82%</span></div>
+                      <div class="list-item"><span class="list-title">直播风控</span><span class="pill success">正常</span></div>
+                      <div class="list-item"><span class="list-title">支付回调</span><span class="pill warning">延迟</span></div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'admin-review',
+              icon: '🛡️',
+              label: '内容审核队列',
+              badge: '待处理 34',
+              intro: '多维度风控标签与仲裁流程。',
+              content: () => `
+                <div class="card">
+                  <h3>机器检测概览</h3>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>高风险</h4>
+                      <div class="board-card">
+                        <strong>违规类型：仇恨言论</strong>
+                        <p>自动下架，等待人工复核</p>
+                        <span class="pill warning">优先级 A</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>中风险</h4>
+                      <div class="board-card">
+                        <strong>违规类型：版权纠纷</strong>
+                        <p>版权方发起申诉，需 48 小时内处理</p>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>低风险</h4>
+                      <div class="board-card">
+                        <strong>违规类型：标题党</strong>
+                        <p>建议创作者优化封面与标题</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'admin-creators',
+              icon: '🧑‍💻',
+              label: '创作者管理',
+              badge: 'VIP 3',
+              intro: '分层运营与权限配置。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>分级策略</h3>
+                    <p>根据内容质量、活跃度自动划分等级。</p>
+                    <div class="pill success">白金创作者 124 位</div>
+                  </div>
+                  <div class="card">
+                    <h3>权益包配置</h3>
+                    <p>开通极速审核、定向扶持与广告分成加成。</p>
+                    <div class="pill warning">等待授权 6 位</div>
+                  </div>
+                  <div class="card">
+                    <h3>账号风险画像</h3>
+                    <p>异常登录、IP 浮动与收入波动监测。</p>
+                    <div class="pill info">4 个账号需人工复核</div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'admin-finance',
+              icon: '💰',
+              label: '广告与结算',
+              badge: '月结',
+              intro: '广告池收入与结算流程监控。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>本月总收入</h3>
+                    <div class="metric">¥ 48,920,000</div>
+                    <p>同比增长 32%。</p>
+                  </div>
+                  <div class="card">
+                    <h3>结算进度</h3>
+                    <div class="card-list">
+                      <div class="list-item"><span class="list-title">创作者结算</span><span class="pill success">完成 92%</span></div>
+                      <div class="list-item"><span class="list-title">品牌合作</span><span class="pill warning">对账中</span></div>
+                      <div class="list-item"><span class="list-title">会员收入</span><span class="pill success">自动发放</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>广告库存</h3>
+                    <p>预估填充率 87%，优先投放行业：游戏、消费电子。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'admin-permission',
+              icon: '🔑',
+              label: '权限控制',
+              badge: '多角色',
+              intro: '细粒度权限矩阵与审批流程。',
+              content: () => `
+                <div class="card">
+                  <h3>权限矩阵</h3>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>审核团队</h4>
+                      <div class="board-card">
+                        <p>可访问：内容审核、处罚管理、仲裁记录</p>
+                        <span class="pill success">2FA 已开启</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>技术支持</h4>
+                      <div class="board-card">
+                        <p>可访问：系统监控、API 配置、工单</p>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>客服团队</h4>
+                      <div class="board-card">
+                        <p>可访问：申诉处理、用户画像、服务记录</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'admin-log',
+              icon: '🗄️',
+              label: '系统日志',
+              badge: '追溯',
+              intro: '关键操作轨迹与审计日志。',
+              content: () => `
+                <div class="card">
+                  <h3>审计时间线</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>15:20</strong>
+                      <div>
+                        <p>审核员 Alice 下架视频《违规样本》</p>
+                        <span class="pill warning">触发自动复核</span>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>15:45</strong>
+                      <div>
+                        <p>系统更新风控策略 v2.4</p>
+                        <span class="pill success">变更通过</span>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>16:10</strong>
+                      <div>
+                        <p>工程师 Bob 调整 API 速率限制</p>
+                        <span class="pill info">审批待确认</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+        ops: {
+          displayName: '运营端',
+          highlight: '驱动增长、策划活动、连接品牌伙伴。',
+          accent: 'role-ops',
+          menu: [
+            {
+              id: 'ops-overview',
+              icon: '📈',
+              label: '运营概览',
+              badge: '周报',
+              intro: '关注核心增长指标与重点项目。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>新增用户</h3>
+                    <div class="metric">+1.2M</div>
+                    <p>拉新主力渠道：校园计划、搜索优化。</p>
+                  </div>
+                  <div class="card">
+                    <h3>留存漏斗</h3>
+                    <p>重点关注 Day7 留存，针对娱乐类内容下降 6%。</p>
+                    <div class="pill warning">待优化</div>
+                  </div>
+                  <div class="card">
+                    <h3>活动热度</h3>
+                    <p>青春季主活动曝光 3.1 亿，互动率 15%。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'ops-campaign',
+              icon: '🎯',
+              label: '活动策划',
+              badge: '3 项进行中',
+              intro: '跨频道联动与会员促销排期。',
+              content: () => `
+                <div class="card">
+                  <h3>活动看板</h3>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>准备中</h4>
+                      <div class="board-card">
+                        <strong>夏日音乐会</strong>
+                        <p>联合 12 位创作者制作串烧直播</p>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>执行中</h4>
+                      <div class="board-card">
+                        <strong>创作者成长营</strong>
+                        <p>第二期工作坊正在进行</p>
+                        <span class="pill success">满意度 4.8/5</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>复盘中</h4>
+                      <div class="board-card">
+                        <strong>会员日加速卡</strong>
+                        <p>复购率 21%，需优化兑换流程</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'ops-ads',
+              icon: '📢',
+              label: '广告投放',
+              badge: '新增客户',
+              intro: '自助投放与品牌定制方案进度。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>投放进度</h3>
+                    <div class="card-list">
+                      <div class="list-item"><span class="list-title">品牌曝光包</span><span class="pill success">完成 72%</span></div>
+                      <div class="list-item"><span class="list-title">短视频冲榜</span><span class="pill warning">预算即将耗尽</span></div>
+                      <div class="list-item"><span class="list-title">沉浸式直播</span><span class="pill info">待上线</span></div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>行业表现</h3>
+                    <p>游戏行业点击率 3.4%，美妆行业转化率 5.6%。</p>
+                  </div>
+                  <div class="card">
+                    <h3>合作线索</h3>
+                    <p>本周新增 18 个品牌线索，预计带来 ¥ 1200 万预算。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'ops-growth',
+              icon: '🧪',
+              label: '增长实验',
+              badge: 'A/B 测试',
+              intro: '实验排期、指标追踪与自动化迭代。',
+              content: () => `
+                <div class="card">
+                  <h3>实验列表</h3>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>即将上线</h4>
+                      <div class="board-card">
+                        <strong>推荐算法 v9.1</strong>
+                        <p>目标：提升日活观看时长 8%</p>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>实验中</h4>
+                      <div class="board-card">
+                        <strong>首页模块排序</strong>
+                        <p>Variant B CTR +6.2%</p>
+                        <span class="pill success">显著提升</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>已结束</h4>
+                      <div class="board-card">
+                        <strong>会员赠礼弹窗</strong>
+                        <p>转化提升 12%，已全量发布</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'ops-community',
+              icon: '🤝',
+              label: '社区运营',
+              badge: '互动升级',
+              intro: 'UGC 内容扶持与创作者福利。',
+              content: () => `
+                <div class="module-grid">
+                  <div class="card">
+                    <h3>激励计划</h3>
+                    <p>优质评论榜、粉丝勋章与社区挑战赛。</p>
+                    <div class="pill success">新增参与 34%</div>
+                  </div>
+                  <div class="card">
+                    <h3>风向监控</h3>
+                    <p>聚合正负向情绪，主动干预风险话题。</p>
+                    <div class="pill warning">需关注：版权投诉</div>
+                  </div>
+                  <div class="card">
+                    <h3>创作者社群</h3>
+                    <p>线下沙龙、线上 AMA，促进跨圈合作。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: 'ops-feedback',
+              icon: '📮',
+              label: '反馈处理',
+              badge: '工单 18',
+              intro: '用户反馈分拣、追踪与闭环。',
+              content: () => `
+                <div class="card">
+                  <h3>反馈时间线</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>10:05</strong>
+                      <div>
+                        <p>“播放卡顿”问题已转交技术排查</p>
+                        <span class="pill info">处理中</span>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>11:40</strong>
+                      <div>
+                        <p>品牌方请求数据复盘</p>
+                        <span class="pill success">已完成</span>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>14:20</strong>
+                      <div>
+                        <p>创作者申请直播白名单</p>
+                        <span class="pill warning">等待审批</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+      };
+
+      const body = document.body;
+      const roleButtons = document.querySelectorAll('.role-button');
+      const menuList = document.getElementById('menuList');
+      const viewHeader = document.getElementById('viewHeader');
+      const viewBody = document.getElementById('viewBody');
+      const sidebarRoleName = document.getElementById('sidebarRoleName');
+
+      let currentRole = 'user';
+      let currentMenuId = roleConfigs.user.menu[0].id;
+
+      const renderMenu = () => {
+        const { menu, displayName } = roleConfigs[currentRole];
+        sidebarRoleName.textContent = displayName;
+        menuList.innerHTML = '';
+        menu.forEach((item, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'menu-item';
+          button.dataset.menuId = item.id;
+          button.innerHTML = `
+            <span class="menu-label"><span class="menu-icon">${item.icon}</span>${item.label}</span>
+            <span class="menu-badge">${item.badge}</span>
+          `;
+          const isActive = item.id === currentMenuId || (!currentMenuId && index === 0);
+          if (isActive) {
+            currentMenuId = item.id;
+            button.setAttribute('aria-current', 'true');
+          }
+          button.addEventListener('click', () => {
+            currentMenuId = item.id;
+            updateActiveMenu();
+            renderContent();
+          });
+          menuList.appendChild(button);
+        });
+      };
+
+      const updateActiveMenu = () => {
+        const buttons = menuList.querySelectorAll('.menu-item');
+        buttons.forEach((btn) => {
+          if (btn.dataset.menuId === currentMenuId) {
+            btn.setAttribute('aria-current', 'true');
+          } else {
+            btn.removeAttribute('aria-current');
+          }
+        });
+      };
+
+      const renderContent = () => {
+        const { displayName, highlight, menu } = roleConfigs[currentRole];
+        const currentItem = menu.find((item) => item.id === currentMenuId) || menu[0];
+        if (!currentItem) return;
+        viewHeader.innerHTML = `
+          <h1>${displayName} · ${currentItem.label}</h1>
+          <p class="highlight">${currentItem.intro}</p>
+          <div class="pill info">${highlight}</div>
+        `;
+        viewBody.innerHTML = currentItem.content();
+      };
+
+      const switchRole = (roleKey) => {
+        if (!roleConfigs[roleKey]) return;
+        currentRole = roleKey;
+        currentMenuId = roleConfigs[roleKey].menu[0]?.id;
+        body.classList.remove('role-user', 'role-admin', 'role-ops');
+        body.classList.add(roleConfigs[roleKey].accent);
+        roleButtons.forEach((button) => {
+          const isActive = button.dataset.role === roleKey;
+          button.setAttribute('aria-pressed', String(isActive));
+        });
+        renderMenu();
+        renderContent();
+      };
+
+      roleButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          switchRole(button.dataset.role);
+        });
+      });
+
+      renderMenu();
+      renderContent();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
