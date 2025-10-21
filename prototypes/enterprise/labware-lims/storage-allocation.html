@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 存储与流转</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="storage-allocation">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>样品管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">库存分配需遵循危化品隔离、温控分区及留样策略。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导入仓位</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">存储与流转</h1>
+              <p class="hero-subtitle">管理样品在冷链、常温、危化区域的存储状态，并支持调拨、留样与销毁的全流程。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="sample-intake.html?role=sample">返回工作台</a>
+              <a class="secondary-btn" href="sample-archive.html?role=sample">查看留样</a>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">存储位占用概览</span>
+                <a class="link-btn" href="sample-archive.html?role=sample">查看留样</a>
+              </div>
+              <div class="panel-body">
+                <div class="chart-placeholder">冷藏/冷冻/常温 仓位热力图</div>
+                <div class="metric-highlight">
+                  <strong>68%</strong>
+                  <span>当前总占用率</span>
+                </div>
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>冷冻 (-20℃)</strong>
+                    <span>占用 72 / 90</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>冷藏 (2-8℃)</strong>
+                    <span>占用 54 / 80</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>危化隔离区</strong>
+                    <span>占用 12 / 30</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">调拨任务</span>
+                <a class="link-btn" href="sample-detail.html?role=sample">查看标签</a>
+              </div>
+              <div class="panel-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>任务编号</th>
+                      <th>样品</th>
+                      <th>来源</th>
+                      <th>目标</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>TR-20230518-01</td>
+                      <td>BT-230518-01</td>
+                      <td>冷藏区 R02</td>
+                      <td>分析室 A1</td>
+                      <td><span class="badge info">运输中</span></td>
+                      <td class="table-actions">
+                        <a href="batch-tracking.html?role=sample">追踪</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>TR-20230518-03</td>
+                      <td>BT-230512-07</td>
+                      <td>冷冻区 F05</td>
+                      <td>留样库 L03</td>
+                      <td><span class="badge success">已完成</span></td>
+                      <td class="table-actions">
+                        <a href="sample-archive.html?role=sample">查看留样</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>TR-20230518-04</td>
+                      <td>BT-230520-02</td>
+                      <td>危化区 H01</td>
+                      <td>销毁区 D01</td>
+                      <td><span class="badge warning">审批中</span></td>
+                      <td class="table-actions">
+                        <a href="qa-release.html?role=qa">QA 审批</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">调拨申请</span>
+              <a class="link-btn" href="integration-log.html?role=admin">查看接口日志</a>
+            </div>
+            <div class="panel-body">
+              <div class="form-grid">
+                <div class="form-control">
+                  <label>批次编号</label>
+                  <input type="text" placeholder="如 BT-230518-01" />
+                </div>
+                <div class="form-control">
+                  <label>当前存储区</label>
+                  <select>
+                    <option>冷藏区</option>
+                    <option>冷冻区</option>
+                    <option>常温区</option>
+                    <option>危化区</option>
+                  </select>
+                </div>
+                <div class="form-control">
+                  <label>目标位置</label>
+                  <input type="text" placeholder="如 A1-柜位-03" />
+                </div>
+                <div class="form-control">
+                  <label>需求时间</label>
+                  <input type="datetime-local" />
+                </div>
+                <div class="form-control" style="grid-column: 1 / -1;">
+                  <label>备注</label>
+                  <textarea placeholder="说明调拨原因与温控要求"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" type="button">提交审批</button>
+                <a class="link-btn" href="batch-tracking.html?role=sample">查看进度</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>存储与流转模块聚焦仓位占用、调拨审批、留样管理等场景，确保样品在不同阶段满足合规要求。</p>
+            <ul class="clean">
+              <li>仓位热力图展示实时占用与预警。</li>
+              <li>调拨流程与 QA 审批联动，记录温控要求。</li>
+              <li>调拨日志同步至外部仓储或 ERP 系统。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

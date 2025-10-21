@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 用户与角色</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="user-admin">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>系统管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">确保用户权限符合岗位要求并记录审计。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">批量导入</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">用户与角色管理</h1>
+              <p class="hero-subtitle">维护用户账户、角色模板与审批流程，确保访问控制符合合规要求。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="user-detail.html?role=admin">创建用户</a>
+              <a class="secondary-btn" href="config-workbench.html?role=admin">配置角色模板</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">待审批用户</span>
+              <a class="link-btn" href="config-workbench.html?role=admin">角色配置</a>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>姓名</th>
+                    <th>部门</th>
+                    <th>申请角色</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>王颖</td>
+                    <td>质量管理</td>
+                    <td>QA 主管</td>
+                    <td><span class="badge warning">待审批</span></td>
+                    <td class="table-actions">
+                      <a href="user-detail.html?role=admin">查看</a>
+                      <a href="user-detail.html?role=admin">审批</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>陈宇</td>
+                    <td>分析实验室</td>
+                    <td>分析人员</td>
+                    <td><span class="badge info">复核中</span></td>
+                    <td class="table-actions">
+                      <a href="user-detail.html?role=admin">查看</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">角色模板</span>
+                <a class="link-btn" href="config-workbench.html?role=admin">编辑模板</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>样品管理员</span>
+                    <span>权限 18 项</span>
+                  </div>
+                  <div class="list-item">
+                    <span>分析人员</span>
+                    <span>权限 22 项</span>
+                  </div>
+                  <div class="list-item">
+                    <span>质量主管</span>
+                    <span>权限 25 项</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">安全日志</span>
+                <a class="link-btn" href="integration-log.html?role=admin">接口日志</a>
+              </div>
+              <div class="panel-body">
+                <div class="history">
+                  <div class="history-item">
+                    <span>2023-05-18 09:20</span>
+                    <span>王颖 角色变更审批</span>
+                  </div>
+                  <div class="history-item">
+                    <span>2023-05-17 18:10</span>
+                    <span>陈宇 新增仪器资质</span>
+                  </div>
+                  <div class="history-item">
+                    <span>2023-05-17 14:02</span>
+                    <span>外协账号权限更新</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>用户与角色管理页面用于审批新用户、维护角色模板并追踪安全日志。</p>
+            <ul class="clean">
+              <li>审批流程需记录电子签名。</li>
+              <li>角色模板可与权限矩阵联动。</li>
+              <li>安全日志支持导出并备份。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

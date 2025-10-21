@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 样品预约登记</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="sample-registration">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>样品管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">预约信息与样品入场关联，确保数据完整。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">模板管理</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">样品预约登记</h1>
+              <p class="hero-subtitle">提前录入客户信息、检测计划与温控要求，生成入场预约单并同步至批次管理。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="secondary-btn" href="sample-intake.html?role=sample">返回工作台</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">预约信息</span>
+              <div class="segmented">
+                <button class="active">基础信息</button>
+                <button>检测计划</button>
+                <button>附加资料</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="form-grid">
+                <div class="form-control">
+                  <label>客户名称</label>
+                  <input type="text" placeholder="如 医药集团 A" />
+                </div>
+                <div class="form-control">
+                  <label>预约到达时间</label>
+                  <input type="datetime-local" />
+                </div>
+                <div class="form-control">
+                  <label>样品类型</label>
+                  <select>
+                    <option>原料</option>
+                    <option>中间体</option>
+                    <option>成品</option>
+                    <option>环境样</option>
+                  </select>
+                </div>
+                <div class="form-control">
+                  <label>温控要求</label>
+                  <select>
+                    <option>常温</option>
+                    <option>2-8℃</option>
+                    <option>-20℃</option>
+                    <option>-80℃</option>
+                  </select>
+                </div>
+                <div class="form-control">
+                  <label>预计数量</label>
+                  <input type="number" min="1" placeholder="如 12" />
+                </div>
+                <div class="form-control">
+                  <label>危化品标记</label>
+                  <select>
+                    <option>否</option>
+                    <option>是</option>
+                  </select>
+                </div>
+                <div class="form-control" style="grid-column: 1 / -1;">
+                  <label>检测项目</label>
+                  <div class="inline-tags">
+                    <span>微生物限度</span>
+                    <span>含量测定</span>
+                    <span>杂质检查</span>
+                    <span>外观</span>
+                  </div>
+                </div>
+                <div class="form-control" style="grid-column: 1 / -1;">
+                  <label>备注</label>
+                  <textarea placeholder="填写特殊要求、资料附件等"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" type="button">生成预约单</button>
+                <a class="link-btn" href="sample-intake.html?role=sample">回到接收工作台</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>预约登记帮助样品管理员提前准备标签、检测计划及合规文件，提升入场效率。</p>
+            <ul class="clean">
+              <li>支持模板化填写与客户信息自动补全。</li>
+              <li>可设置危化品提示和温控要求。</li>
+              <li>预约单生成后自动同步批次与任务。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

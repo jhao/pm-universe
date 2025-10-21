@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 放行记录示例</title>
+    <link rel="stylesheet" href="labware.css" />
+  </head>
+  <body data-page="release-detail">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>质量主管</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">放行记录包含完整的审核步骤、附件与签名。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导出 PDF</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">放行记录 · BT-230401-11</h1>
+              <p class="hero-subtitle">展示批次放行所需的核心信息、审核步骤及签名记录。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="qa-release.html?role=qa">返回放行列表</a>
+              <a class="secondary-btn" href="report-center.html?role=qa">生成报告</a>
+            </div>
+          </section>
+
+          <section class="two-column">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">批次信息</span>
+                <a class="link-btn" href="sample-detail.html?role=sample">查看样品</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>产品</strong>
+                    <span>注射剂 5ml</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>生产批号</strong>
+                    <span>PRD-230401-09</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>检测完成</strong>
+                    <span>2023-05-18</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>留样计划</strong>
+                    <span>保留至 2024-04-20</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">审核状态</span>
+                <a class="link-btn" href="capa-tracking.html?role=qa">查看 CAPA</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>分析结果</strong>
+                    <span class="badge success">已复核</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>偏差 DV-20230518-01</strong>
+                    <span class="badge warning">待关闭</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>报告状态</strong>
+                    <span class="badge info">待签名</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">审核步骤</span>
+              <div class="segmented">
+                <button class="active">审核</button>
+                <button>附件</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <ul class="timeline">
+                <li class="timeline-item">
+                  <div class="timeline-content">
+                    <strong>05-18 08:30</strong>
+                    <span class="meta">分析人员提交结果</span>
+                  </div>
+                </li>
+                <li class="timeline-item">
+                  <div class="timeline-content">
+                    <strong>05-18 10:15</strong>
+                    <span class="meta">QA 初审完成</span>
+                  </div>
+                </li>
+                <li class="timeline-item">
+                  <div class="timeline-content">
+                    <strong>05-18 14:40</strong>
+                    <span class="meta">偏差 CAPA 状态更新</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">签名记录</span>
+              <a class="link-btn" href="qa-release.html?role=qa">继续放行</a>
+            </div>
+            <div class="panel-body">
+              <div class="flex-table">
+                <div class="flex-row">
+                  <strong>分析复核</strong>
+                  <span>王颖 · 电子签名 · 05-18 09:50</span>
+                </div>
+                <div class="flex-row">
+                  <strong>QA 审核</strong>
+                  <span>陈晓 · 电子签名 · 05-18 10:20</span>
+                </div>
+                <div class="flex-row">
+                  <strong>QA 主管放行</strong>
+                  <span>李明 · 待签名</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>放行记录页面整合批次信息、审核步骤和签名记录，为外部审计提供完整证据。</p>
+            <ul class="clean">
+              <li>支持下载 PDF 或导出至客户门户。</li>
+              <li>可查看偏差、CAPA、报告状态。</li>
+              <li>签名记录满足法规对电子签名的要求。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
