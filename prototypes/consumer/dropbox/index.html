@@ -2,83 +2,1312 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Dropbox 云协作 原型概览</title>
+    <title>Dropbox 多角色体验原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #f2f5ff 0%, #eef2f9 100%);
+        color: #0f172a;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 24px 56px;
+        background: rgba(255, 255, 255, 0.9);
+        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .brand-logo {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #1e40af, #6366f1);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #1d2a65;
+      }
+      .role-switcher {
+        display: flex;
+        gap: 12px;
+      }
+      .role-switcher button {
+        padding: 10px 20px;
+        border-radius: 999px;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        background: rgba(255, 255, 255, 0.8);
+        color: #4338ca;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .role-switcher button.active {
+        background: linear-gradient(135deg, #4338ca, #6366f1);
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 12px 26px rgba(99, 102, 241, 0.28);
+      }
+      main {
+        padding: 40px 56px 72px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .persona-tags {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .persona-chip {
+        background: rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.28);
+        color: #3730a3;
+        border-radius: 18px;
+        padding: 14px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .persona-chip strong { font-size: 16px; }
+      .persona-chip span {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(55, 48, 163, 0.72);
+      }
+      .role-view {
+        display: none;
+        border-radius: 28px;
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.24);
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+      }
+      .role-view.active { display: block; }
+      .app-shell {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 720px;
+        background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 100%);
+      }
+      aside {
+        padding: 32px 26px;
+        background: linear-gradient(180deg, #f2f4ff 0%, #e4e8fb 100%);
+        border-right: 1px solid rgba(99, 102, 241, 0.16);
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .menu-header {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .menu-header h2 {
+        margin: 0;
+        font-size: 16px;
+        color: #312e81;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .menu-header p {
+        margin: 0;
+        color: rgba(49, 46, 129, 0.6);
+        font-size: 13px;
+      }
+      .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .menu-item {
+        border: none;
+        border-radius: 16px;
+        padding: 12px 16px;
+        text-align: left;
+        font-weight: 600;
+        background: transparent;
+        color: #334155;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+      .menu-item:hover { background: rgba(99, 102, 241, 0.12); }
+      .menu-item.active {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(129, 140, 248, 0.28));
+        color: #1f2667;
+        box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.28);
+      }
+      .workspace {
+        padding: 36px 40px 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      .workspace-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        color: #475569;
+      }
+      .breadcrumbs span {
+        padding: 8px 14px;
+        border-radius: 12px;
+        background: rgba(129, 140, 248, 0.18);
+        color: #312e81;
+      }
+      .workspace-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .workspace-actions button {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        background: #fff;
+        color: #1e293b;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .workspace-actions button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 18px rgba(79, 70, 229, 0.12);
+      }
+      .content-panel { display: none; }
+      .content-panel.active { display: block; }
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+      .stat-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      }
+      .stat-card h3 {
+        margin: 0;
+        font-size: 15px;
+        color: #1f2937;
+      }
+      .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #312e81;
+      }
+      .trend {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #16a34a;
+      }
+      .board {
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 22px;
+        padding: 24px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        box-shadow: 0 20px 44px rgba(15, 23, 42, 0.08);
+      }
+      .board h3 {
+        margin-top: 0;
+        margin-bottom: 18px;
+        font-size: 18px;
+        color: #1e1b4b;
+      }
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+      .kanban-column {
+        background: linear-gradient(180deg, rgba(238, 242, 255, 0.8) 0%, rgba(224, 231, 255, 0.8) 100%);
+        border-radius: 18px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #312e81;
+      }
+      .task-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        box-shadow: 0 8px 18px rgba(79, 70, 229, 0.1);
+      }
+      .task-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: rgba(30, 41, 59, 0.6);
+      }
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 16px;
+        align-items: start;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 18px;
+        padding: 16px 18px;
+        border: 1px solid rgba(203, 213, 225, 0.8);
+      }
+      .timeline-item strong { color: #312e81; }
+      .card-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .list-card {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 18px;
+        padding: 18px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      }
+      th, td {
+        padding: 14px 18px;
+        text-align: left;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      }
+      th {
+        background: rgba(79, 70, 229, 0.08);
+        color: #312e81;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      tr:last-child td { border-bottom: none; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .pill-green { background: rgba(34, 197, 94, 0.12); color: #166534; }
+      .pill-red { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
+      .pill-blue { background: rgba(59, 130, 246, 0.12); color: #1d4ed8; }
+      .flow-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+      .flow-step {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px solid rgba(129, 140, 248, 0.3);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .flow-step::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -12px;
+        width: 24px;
+        height: 2px;
+        background: rgba(99, 102, 241, 0.3);
+      }
+      .flow-step:last-child::after { display: none; }
+      @media (max-width: 1024px) {
+        header { padding: 20px 24px; }
+        main { padding: 28px 24px 60px; }
+        .app-shell { grid-template-columns: 1fr; }
+        aside { border-right: none; border-bottom: 1px solid rgba(99, 102, 241, 0.16); }
+      }
     </style>
   </head>
   <body>
     <header>
-      <h1>Dropbox 云协作 原型</h1>
-      <p class="tagline">面向创意团队的文件协作与工作流平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>创意机构、自由职业者、中小企业</p>
-        <p><strong>核心痛点：</strong>跨团队文件共享与审批流程复杂</p>
-        <p><strong>价值主张：</strong>通过智能同步、共享空间与集成工具，简化跨团队协作</p>
+      <div class="brand">
+        <div class="brand-logo">Db</div>
+        <div>
+          <h1>Dropbox 云协作原型空间</h1>
+          <p style="margin: 4px 0 0; color: rgba(30, 41, 59, 0.66);">演示不同角色的关键体验流与功能菜单</p>
+        </div>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>团队共享项目文件夹并控制权限</li><li>成员在 Paper 中协同编辑文档</li><li>管理员监控安全事件与版本</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>智能同步</h3>
-              <p class="goal">功能目标：提供高可靠文件同步体验</p>
-              <ul>
-                <li>Selective Sync 与空间节省</li><li>增量同步与冲突处理</li><li>离线访问与跨平台支持</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>共享空间</h3>
-              <p class="goal">功能目标：让团队在统一空间协同</p>
-              <ul>
-                <li>Team Space 结构与权限</li><li>共享链接、密码与到期控制</li><li>评论、任务与活动记录</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>Paper 协作</h3>
-              <p class="goal">功能目标：支持项目计划与文档协作</p>
-              <ul>
-                <li>多媒体嵌入与议程模板</li><li>任务分配、时间线与提醒</li><li>会议记录与同步编辑</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>扩展与自动化</h3>
-              <p class="goal">功能目标：提升团队效率</p>
-              <ul>
-                <li>Sign 电子签名集成</li><li>HelloSign、Slack、Zoom 等生态集成</li><li>自动化工作流与审批</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>同步成功率与文件冲突率</li><li>共享链接使用量与协作活跃度</li><li>自动化流程使用率与节省时间</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+      <div class="role-switcher">
+        <button class="active" data-role-button="member">创意成员视角</button>
+        <button data-role-button="admin">团队管理员视角</button>
+        <button data-role-button="operator">运营控制台视角</button>
+      </div>
+    </header>
+    <main>
+      <section class="persona-tags">
+        <div class="persona-chip">
+          <span>Member</span>
+          <strong>创意成员</strong>
+          <p style="margin: 0; color: rgba(30, 41, 59, 0.6);">聚焦日常文件协作、同步状态与项目交付。</p>
+        </div>
+        <div class="persona-chip">
+          <span>Admin</span>
+          <strong>团队管理员</strong>
+          <p style="margin: 0; color: rgba(30, 41, 59, 0.6);">维护组织架构、安全策略与合规流程。</p>
+        </div>
+        <div class="persona-chip">
+          <span>Ops</span>
+          <strong>运营控制台</strong>
+          <p style="margin: 0; color: rgba(30, 41, 59, 0.6);">监控活跃度、自动化活动与支持队列。</p>
+        </div>
+      </section>
+
+      <section class="role-view active" data-role-view="member">
+        <div class="app-shell">
+          <aside>
+            <div class="menu-header">
+              <h2>创意工作台</h2>
+              <p>文件协作 · 项目推进</p>
+            </div>
+            <div class="menu-list">
+              <button class="menu-item active" data-target="member-dashboard">📁 团队概览</button>
+              <button class="menu-item" data-target="member-projects">🗂️ 项目空间</button>
+              <button class="menu-item" data-target="member-sync">🔄 同步中心</button>
+              <button class="menu-item" data-target="member-paper">📝 Paper 协作</button>
+              <button class="menu-item" data-target="member-integrations">🔌 集成面板</button>
+            </div>
+          </aside>
+          <div class="workspace">
+            <div class="workspace-header">
+              <div class="breadcrumbs">
+                <span>创意成员</span>
+                <div>当前视图 · 团队协作总览</div>
+              </div>
+              <div class="workspace-actions">
+                <button>新建共享文件夹</button>
+                <button>上传版本</button>
+                <button>快速共享</button>
+              </div>
+            </div>
+            <div class="content-panel active" id="member-dashboard">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>活跃项目</h3>
+                  <div class="stat-number">12</div>
+                  <div class="trend">▲ 较上周 +3</div>
+                </div>
+                <div class="stat-card">
+                  <h3>最新同步</h3>
+                  <div class="stat-number">68%</div>
+                  <div style="font-size: 13px; color: rgba(30, 41, 59, 0.6);">剩余 4 个文件待上传</div>
+                </div>
+                <div class="stat-card">
+                  <h3>协作任务</h3>
+                  <div class="stat-number">28</div>
+                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <span class="pill pill-blue">评论 12</span>
+                    <span class="pill pill-green">已完成 7</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <h3>共享链接</h3>
+                  <div class="stat-number">34</div>
+                  <div class="trend" style="color:#2563eb;">⟳ 自动过期保护开启</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>待处理交付</h3>
+                <div class="kanban">
+                  <div class="kanban-column">
+                    <h4>待准备</h4>
+                    <div class="task-card">
+                      <strong>品牌视觉素材包</strong>
+                      <div class="task-meta"><span>负责人：Lia</span><span>截止 5月23日</span></div>
+                    </div>
+                    <div class="task-card">
+                      <strong>客户反馈整理</strong>
+                      <div class="task-meta"><span>负责人：Akira</span><span>截止 5月22日</span></div>
+                    </div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>进行中</h4>
+                    <div class="task-card">
+                      <strong>产品介绍视频</strong>
+                      <div class="task-meta"><span>编辑中</span><span>评论 4</span></div>
+                    </div>
+                    <div class="task-card">
+                      <strong>官网文案 v3</strong>
+                      <div class="task-meta"><span>Paper 文档</span><span>审批 1</span></div>
+                    </div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>待交付</h4>
+                    <div class="task-card">
+                      <strong>投放素材套件</strong>
+                      <div class="task-meta"><span>链接分享</span><span>待审核</span></div>
+                    </div>
+                    <div class="task-card">
+                      <strong>品牌指南更新</strong>
+                      <div class="task-meta"><span>签名流程</span><span>审批中</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="member-projects">
+              <div class="board">
+                <h3>项目空间结构</h3>
+                <div class="card-list">
+                  <div class="list-card">
+                    <strong>🎬 Campaign-2024-Summer</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">含 8 个子文件夹 · 权限：团队可编辑</p>
+                    <div class="pill pill-blue">最新同步 · 3 分钟前</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>🧩 Brand-Assets-Master</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">对外共享 5 个文件 · 启用下载限制</p>
+                    <div class="pill pill-green">版本锁定</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>📄 Contracts & Sign</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">HelloSign 模板联动 · 自动归档</p>
+                    <div class="pill pill-blue">自动同步至法务</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>💡 Inspiration Hub</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">收集 42 份 Paper 文档 · 图钉标签</p>
+                    <div class="pill pill-red">权限待清理</div>
+                  </div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>空间可视化时间线</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>09:45</strong>
+                    <div>
+                      <p style="margin:0 0 6px; font-weight:600;">上传「Campaign-StoryBoard-v2.mov」</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">自动创建预览 & 通知视频团队</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>11:10</strong>
+                    <div>
+                      <p style="margin:0 0 6px; font-weight:600;">Paper 协作文档新增批注 6 条</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">AI 摘要推送主要冲突点</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>14:25</strong>
+                    <div>
+                      <p style="margin:0 0 6px; font-weight:600;">「品牌资产库」完成自动备份</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">生成对外分享链接并设置密码</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="member-sync">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>桌面客户端</h3>
+                  <div class="stat-number">在线</div>
+                  <div style="color: rgba(30,41,59,0.65);">最近同步：2 分钟前</div>
+                </div>
+                <div class="stat-card">
+                  <h3>空间占用</h3>
+                  <div class="stat-number">68%</div>
+                  <div class="trend" style="color:#d97706;">▲ 增长 12GB</div>
+                </div>
+                <div class="stat-card">
+                  <h3>冲突文件</h3>
+                  <div class="stat-number">3</div>
+                  <div class="trend" style="color:#b91c1c;">需人工处理</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>同步队列</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>文件 / 文件夹</th>
+                      <th>状态</th>
+                      <th>优先级</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Product-Demo-v5.mp4</td>
+                      <td><span class="pill pill-green">上传中 78%</span></td>
+                      <td>高</td>
+                      <td><button class="menu-item" style="padding:6px 12px; border-radius:10px;">暂停</button></td>
+                    </tr>
+                    <tr>
+                      <td>Brand-Guideline.ai</td>
+                      <td><span class="pill pill-red">冲突</span></td>
+                      <td>中</td>
+                      <td><button class="menu-item" style="padding:6px 12px; border-radius:10px;">解决冲突</button></td>
+                    </tr>
+                    <tr>
+                      <td>Campaign-Assets/</td>
+                      <td><span class="pill pill-blue">同步完成</span></td>
+                      <td>常规</td>
+                      <td><button class="menu-item" style="padding:6px 12px; border-radius:10px;">查看历史</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="content-panel" id="member-paper">
+              <div class="board">
+                <h3>Paper 协作空间</h3>
+                <div class="card-list">
+                  <div class="list-card">
+                    <strong>Kickoff 会议纪要</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">摘要：AI 自动整理讨论重点</p>
+                    <div class="pill pill-blue">实时协作中</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>设计走查 checklist</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">包含 12 个检查项 · 完成率 75%</p>
+                    <div class="pill pill-green">@你 2 条任务</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>投放策略脑暴</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">白板模式 · 贴纸 34 个 · 评论 18</p>
+                    <div class="pill pill-blue">关联到 Campaign 空间</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>周报自动生成</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">来自 Slack 摘要 · 每周一自动创建</p>
+                    <div class="pill pill-green">自动提醒已开启</div>
+                  </div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>实时协作轨迹</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>10:30</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">Lia 完成视觉稿批注</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">AI 建议 3 个设计统一方案</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>12:05</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">Paper 生成执行 checklist</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">自动分配至相关负责人</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>15:40</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">会议记录推送至 Slack</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">实时同步到共享空间</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="member-integrations">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>启用的集成</h3>
+                  <div class="stat-number">9</div>
+                  <div class="trend" style="color:#2563eb;">Slack · Figma · Zoom</div>
+                </div>
+                <div class="stat-card">
+                  <h3>自动流程</h3>
+                  <div class="stat-number">14</div>
+                  <div style="color: rgba(30,41,59,0.65);">审批、归档、通知</div>
+                </div>
+                <div class="stat-card">
+                  <h3>AI 助手回应</h3>
+                  <div class="stat-number">42</div>
+                  <div class="trend">▲ 响应满意度 96%</div>
+                </div>
+              </div>
+              <div class="flow-grid">
+                <div class="flow-step">
+                  <h3 style="margin:0; font-size:16px; color:#1e1b4b;">01 · Brief 收集</h3>
+                  <p style="margin:0; color: rgba(30,41,59,0.65);">Slack 表单 → 自动生成项目文件夹 & 模板。</p>
+                </div>
+                <div class="flow-step">
+                  <h3 style="margin:0; font-size:16px; color:#1e1b4b;">02 · 协同制作</h3>
+                  <p style="margin:0; color: rgba(30,41,59,0.65);">Figma 更新 → 自动推送预览 → Paper 摘要。</p>
+                </div>
+                <div class="flow-step">
+                  <h3 style="margin:0; font-size:16px; color:#1e1b4b;">03 · 审批归档</h3>
+                  <p style="margin:0; color: rgba(30,41,59,0.65);">HelloSign 完成 → 同步到「合同空间」并通知。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="role-view" data-role-view="admin">
+        <div class="app-shell">
+          <aside>
+            <div class="menu-header">
+              <h2>组织控制塔</h2>
+              <p>安全 · 合规 · 架构</p>
+            </div>
+            <div class="menu-list">
+              <button class="menu-item active" data-target="admin-overview">🏢 组织概览</button>
+              <button class="menu-item" data-target="admin-teams">👥 团队管理</button>
+              <button class="menu-item" data-target="admin-security">🛡️ 安全策略</button>
+              <button class="menu-item" data-target="admin-compliance">📋 合规中心</button>
+              <button class="menu-item" data-target="admin-billing">💳 计费与配额</button>
+            </div>
+          </aside>
+          <div class="workspace">
+            <div class="workspace-header">
+              <div class="breadcrumbs">
+                <span>团队管理员</span>
+                <div>当前视图 · 组织控制面板</div>
+              </div>
+              <div class="workspace-actions">
+                <button>创建群组</button>
+                <button>导出报表</button>
+                <button>安全巡检</button>
+              </div>
+            </div>
+            <div class="content-panel active" id="admin-overview">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>成员数量</h3>
+                  <div class="stat-number">264</div>
+                  <div class="trend">▲ 新增 12 人</div>
+                </div>
+                <div class="stat-card">
+                  <h3>活跃率</h3>
+                  <div class="stat-number">82%</div>
+                  <div style="color: rgba(30,41,59,0.65);">日活成员 217</div>
+                </div>
+                <div class="stat-card">
+                  <h3>敏感操作</h3>
+                  <div class="stat-number">5</div>
+                  <div class="trend" style="color:#ca8a04;">重点关注</div>
+                </div>
+                <div class="stat-card">
+                  <h3>外部协作域</h3>
+                  <div class="stat-number">17</div>
+                  <div class="trend" style="color:#2563eb;">全部启用审核</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>组织健康态势</h3>
+                <div class="kanban">
+                  <div class="kanban-column">
+                    <h4>风险提示</h4>
+                    <div class="task-card">
+                      <strong>共享链接超出有效期</strong>
+                      <div class="task-meta"><span>营销团队</span><span>需更新策略</span></div>
+                    </div>
+                    <div class="task-card">
+                      <strong>检测到敏感关键词</strong>
+                      <div class="task-meta"><span>研发群组</span><span>已锁定</span></div>
+                    </div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>进行中的措施</h4>
+                    <div class="task-card">
+                      <strong>零信任策略推广</strong>
+                      <div class="task-meta"><span>状态：试点</span><span>覆盖 3 团队</span></div>
+                    </div>
+                    <div class="task-card">
+                      <strong>设备合规审计</strong>
+                      <div class="task-meta"><span>状态：收集中</span><span>完成 68%</span></div>
+                    </div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>已完成</h4>
+                    <div class="task-card">
+                      <strong>外部协作白名单更新</strong>
+                      <div class="task-meta"><span>覆盖 12 域</span><span>5月18日</span></div>
+                    </div>
+                    <div class="task-card">
+                      <strong>审计日志归档</strong>
+                      <div class="task-meta"><span>保留 365 天</span><span>自动同步</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="admin-teams">
+              <div class="board">
+                <h3>团队与群组结构</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>群组名称</th>
+                      <th>成员</th>
+                      <th>空间</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Marketing-Central</td>
+                      <td>54</td>
+                      <td>Campaign Hub</td>
+                      <td><span class="pill pill-green">健康</span></td>
+                    </tr>
+                    <tr>
+                      <td>Product-Design</td>
+                      <td>36</td>
+                      <td>Design System</td>
+                      <td><span class="pill pill-blue">审批中权限</span></td>
+                    </tr>
+                    <tr>
+                      <td>Freelancer-Review</td>
+                      <td>18</td>
+                      <td>临时协作区</td>
+                      <td><span class="pill pill-red">待续约</span></td>
+                    </tr>
+                    <tr>
+                      <td>Leadership</td>
+                      <td>12</td>
+                      <td>战略资料室</td>
+                      <td><span class="pill pill-green">安全审计通过</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="board">
+                <h3>入离职自动化</h3>
+                <div class="flow-grid">
+                  <div class="flow-step">
+                    <h3 style="margin:0; font-size:16px; color:#1e1b4b;">入职流程</h3>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">Okta 同步 → 自动分配模板文件夹 → 通知导师。</p>
+                  </div>
+                  <div class="flow-step">
+                    <h3 style="margin:0; font-size:16px; color:#1e1b4b;">权限审核</h3>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">每周自动生成偏离报告 · 一键收回异常访问。</p>
+                  </div>
+                  <div class="flow-step">
+                    <h3 style="margin:0; font-size:16px; color:#1e1b4b;">离职归档</h3>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">锁定账号 → 导出日志 → 移交负责人。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="admin-security">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>安全分数</h3>
+                  <div class="stat-number">92</div>
+                  <div class="trend">▲ 本月 +4</div>
+                </div>
+                <div class="stat-card">
+                  <h3>设备合规</h3>
+                  <div class="stat-number">87%</div>
+                  <div style="color: rgba(30,41,59,0.65);">未注册设备 6 台</div>
+                </div>
+                <div class="stat-card">
+                  <h3>审计事件</h3>
+                  <div class="stat-number">14</div>
+                  <div class="trend" style="color:#b91c1c;">需分析 2 条</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>实时安全事件</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>09:20</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">异常登录 · 东京 → 触发 MFA</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">状态：用户验证成功</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>12:15</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">敏感文件外部分享</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">自动失效并通知管理员</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>16:40</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">发现未知应用接入</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">执行零信任流程 · 审核中</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="admin-compliance">
+              <div class="board">
+                <h3>合规里程碑</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>Q2</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">GDPR 数据映射完成</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">自动生成监管报告</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>Q3</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">ISO27001 内部审核</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">与第三方审计共享空间</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>Q4</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">数据保留策略升级</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">自动清理历史版本</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>合规模板</h3>
+                  <div class="stat-number">8</div>
+                  <div class="trend" style="color:#2563eb;">最新：处理数据请求</div>
+                </div>
+                <div class="stat-card">
+                  <h3>保留策略</h3>
+                  <div class="stat-number">24 个月</div>
+                  <div style="color: rgba(30,41,59,0.65);">自动对接 Snowflake 归档</div>
+                </div>
+                <div class="stat-card">
+                  <h3>风险级别</h3>
+                  <div class="stat-number">低</div>
+                  <div class="trend" style="color:#16a34a;">无超时任务</div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="admin-billing">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>总存储使用</h3>
+                  <div class="stat-number">68 TB</div>
+                  <div class="trend">▲ 本月 +4 TB</div>
+                </div>
+                <div class="stat-card">
+                  <h3>授权席位</h3>
+                  <div class="stat-number">300</div>
+                  <div style="color: rgba(30,41,59,0.65);">剩余 36 个空闲席位</div>
+                </div>
+                <div class="stat-card">
+                  <h3>预算使用</h3>
+                  <div class="stat-number">72%</div>
+                  <div class="trend" style="color:#2563eb;">预测达标</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>成本构成快照</h3>
+                <div class="card-list">
+                  <div class="list-card">
+                    <strong>核心团队席位</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">¥ 32,400 / 月 · 自动续费</p>
+                    <div class="pill pill-green">折扣生效</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>外部协作包</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">¥ 6,800 / 月 · 实时扩容</p>
+                    <div class="pill pill-blue">使用率 54%</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>合规增值模块</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">¥ 4,200 / 月 · 包含审计日志</p>
+                    <div class="pill pill-blue">自动续签提醒</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>自动化执行费用</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">¥ 1,900 / 月 · 触发 140 次</p>
+                    <div class="pill pill-green">效率节省 28%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="role-view" data-role-view="operator">
+        <div class="app-shell">
+          <aside>
+            <div class="menu-header">
+              <h2>运营指挥部</h2>
+              <p>活跃度 · 自动化 · 支持</p>
+            </div>
+            <div class="menu-list">
+              <button class="menu-item active" data-target="ops-activity">📊 活动仪表盘</button>
+              <button class="menu-item" data-target="ops-campaigns">📅 活动排期</button>
+              <button class="menu-item" data-target="ops-automation">⚙️ 自动化编排</button>
+              <button class="menu-item" data-target="ops-insights">📈 增长洞察</button>
+              <button class="menu-item" data-target="ops-support">🎧 支持队列</button>
+            </div>
+          </aside>
+          <div class="workspace">
+            <div class="workspace-header">
+              <div class="breadcrumbs">
+                <span>运营控制台</span>
+                <div>当前视图 · 活跃度洞察</div>
+              </div>
+              <div class="workspace-actions">
+                <button>创建活动</button>
+                <button>导出周报</button>
+                <button>发布公告</button>
+              </div>
+            </div>
+            <div class="content-panel active" id="ops-activity">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>日活成员</h3>
+                  <div class="stat-number">218</div>
+                  <div class="trend">▲ 较昨日 +12</div>
+                </div>
+                <div class="stat-card">
+                  <h3>协作空间</h3>
+                  <div class="stat-number">46</div>
+                  <div style="color: rgba(30,41,59,0.65);">重点关注 5 个空间</div>
+                </div>
+                <div class="stat-card">
+                  <h3>自动提醒</h3>
+                  <div class="stat-number">128</div>
+                  <div class="trend" style="color:#2563eb;">覆盖率 92%</div>
+                </div>
+                <div class="stat-card">
+                  <h3>满意度</h3>
+                  <div class="stat-number">4.7</div>
+                  <div class="trend" style="color:#16a34a;">AI 助手评价</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>活跃分布雷达</h3>
+                <div class="card-list">
+                  <div class="list-card">
+                    <strong>项目协作</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">互动 320 次 · 评论 84 次</p>
+                    <div class="pill pill-blue">高粘性</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>内容分发</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">共享链接 142 个 · 下载 2.6k</p>
+                    <div class="pill pill-green">增长 18%</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>自动化触发</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">本周执行 86 次 · 节省 42 小时</p>
+                    <div class="pill pill-blue">覆盖 9 个团队</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>外部协作</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">访客 68 人 · 待审批 4</p>
+                    <div class="pill pill-red">需沟通</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="ops-campaigns">
+              <div class="board">
+                <h3>内容活动排期</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>时间</th>
+                      <th>活动名称</th>
+                      <th>责任团队</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>5月20日</td>
+                      <td>新品发布全员直播</td>
+                      <td>营销中心</td>
+                      <td><span class="pill pill-blue">排练中</span></td>
+                    </tr>
+                    <tr>
+                      <td>5月28日</td>
+                      <td>客户成功案例库更新</td>
+                      <td>运营团队</td>
+                      <td><span class="pill pill-green">进度正常</span></td>
+                    </tr>
+                    <tr>
+                      <td>6月02日</td>
+                      <td>社区共创投票</td>
+                      <td>品牌公关</td>
+                      <td><span class="pill pill-red">需要内容</span></td>
+                    </tr>
+                    <tr>
+                      <td>6月10日</td>
+                      <td>外部合作伙伴培训</td>
+                      <td>渠道运营</td>
+                      <td><span class="pill pill-blue">待确认</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="board">
+                <h3>排期视图</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>周一</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">直播脚本确认</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">同步主持人素材清单</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>周三</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">案例库视频上传</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">自动生成封面 & 描述</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>周五</strong>
+                    <div>
+                      <p style="margin:0; font-weight:600;">共创投票上线</p>
+                      <p style="margin:0; color: rgba(30,41,59,0.65);">发送站内信 & 邮件提醒</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="ops-automation">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>运行流程</h3>
+                  <div class="stat-number">24</div>
+                  <div class="trend">▲ 本周新增 3</div>
+                </div>
+                <div class="stat-card">
+                  <h3>执行成功率</h3>
+                  <div class="stat-number">98%</div>
+                  <div style="color: rgba(30,41,59,0.65);">失败流程自动重试</div>
+                </div>
+                <div class="stat-card">
+                  <h3>节省时间</h3>
+                  <div class="stat-number">126 h</div>
+                  <div class="trend" style="color:#16a34a;">同比提升 22%</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>流程编排</h3>
+                <div class="flow-grid">
+                  <div class="flow-step">
+                    <h3 style="margin:0; font-size:16px; color:#1e1b4b;">内容上线审批</h3>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">内容提交 → 自动通知审核人 → 通过后推送至官网。</p>
+                  </div>
+                  <div class="flow-step">
+                    <h3 style="margin:0; font-size:16px; color:#1e1b4b;">素材生命周期</h3>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">访问高峰 → 触发 CDN 加速 → 30 天后归档。</p>
+                  </div>
+                  <div class="flow-step">
+                    <h3 style="margin:0; font-size:16px; color:#1e1b4b;">活动复盘同步</h3>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">直播结束 → 自动生成报告 → Paper 模板生成纪要。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="ops-insights">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>内容下载热度</h3>
+                  <div class="stat-number">2.6k</div>
+                  <div class="trend" style="color:#2563eb;">上升 14%</div>
+                </div>
+                <div class="stat-card">
+                  <h3>纸质协作互动</h3>
+                  <div class="stat-number">780</div>
+                  <div class="trend">▲ 评论 +126</div>
+                </div>
+                <div class="stat-card">
+                  <h3>外部访客留存</h3>
+                  <div class="stat-number">63%</div>
+                  <div style="color: rgba(30,41,59,0.65);">重点域 4 个</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>增长信号</h3>
+                <div class="card-list">
+                  <div class="list-card">
+                    <strong>热门内容：产品演示套件</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">下载飙升 68% · 建议置顶</p>
+                    <div class="pill pill-blue">建议动作</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>低活跃空间：旧版培训</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">近 14 天无访问 · 建议归档</p>
+                    <div class="pill pill-red">清理提醒</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>AI 助手问题主题</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">「如何开始协作」搜索最多</p>
+                    <div class="pill pill-green">新增引导流程</div>
+                  </div>
+                  <div class="list-card">
+                    <strong>团队对比：设计 vs 运营</strong>
+                    <p style="margin:0; color: rgba(30,41,59,0.65);">设计评论率高 32%，运营下载率高 28%</p>
+                    <div class="pill pill-blue">洞察对比</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-panel" id="ops-support">
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <h3>打开工单</h3>
+                  <div class="stat-number">42</div>
+                  <div class="trend" style="color:#ca8a04;">SLA 预警 3</div>
+                </div>
+                <div class="stat-card">
+                  <h3>响应时间</h3>
+                  <div class="stat-number">12m</div>
+                  <div class="trend" style="color:#16a34a;">目标 15m</div>
+                </div>
+                <div class="stat-card">
+                  <h3>知识库命中</h3>
+                  <div class="stat-number">68%</div>
+                  <div style="color: rgba(30,41,59,0.65);">AI 预解答 88 次</div>
+                </div>
+              </div>
+              <div class="board">
+                <h3>支持队列</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>工单 ID</th>
+                      <th>主题</th>
+                      <th>优先级</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#1426</td>
+                      <td>共享链接访问被阻止</td>
+                      <td><span class="pill pill-red">高</span></td>
+                      <td><span class="pill pill-blue">处理中</span></td>
+                    </tr>
+                    <tr>
+                      <td>#1427</td>
+                      <td>同步客户端安装失败</td>
+                      <td><span class="pill pill-blue">中</span></td>
+                      <td><span class="pill pill-green">AI 已回复</span></td>
+                    </tr>
+                    <tr>
+                      <td>#1428</td>
+                      <td>外部协作权限申请</td>
+                      <td><span class="pill pill-blue">中</span></td>
+                      <td><span class="pill pill-blue">待分配</span></td>
+                    </tr>
+                    <tr>
+                      <td>#1429</td>
+                      <td>历史版本恢复</td>
+                      <td><span class="pill pill-green">低</span></td>
+                      <td><span class="pill pill-green">已关闭</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const roleButtons = document.querySelectorAll('[data-role-button]');
+      const roleViews = document.querySelectorAll('[data-role-view]');
+
+      roleButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const role = button.getAttribute('data-role-button');
+          roleButtons.forEach((b) => b.classList.toggle('active', b === button));
+          roleViews.forEach((view) => {
+            const isActive = view.getAttribute('data-role-view') === role;
+            view.classList.toggle('active', isActive);
+            if (isActive) {
+              const firstMenu = view.querySelector('.menu-item');
+              if (firstMenu) firstMenu.click();
+            }
+          });
+        });
+      });
+
+      roleViews.forEach((view) => {
+        const menuItems = view.querySelectorAll('.menu-item[data-target]');
+        const panels = view.querySelectorAll('.content-panel');
+        menuItems.forEach((item) => {
+          item.addEventListener('click', () => {
+            const targetId = item.getAttribute('data-target');
+            menuItems.forEach((menu) => menu.classList.toggle('active', menu === item));
+            panels.forEach((panel) => panel.classList.toggle('active', panel.id === targetId));
+          });
+        });
+      });
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
