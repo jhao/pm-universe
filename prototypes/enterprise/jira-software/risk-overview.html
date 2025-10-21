@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 风险概览</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="risks">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>风险面板</strong><br />
+          高风险：3 · 中风险：5<br />
+          下次评审：7 月 22 日
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">风险管理 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">风险库</a>
+              <a class="system-link" href="#">缓解</a>
+              <a class="system-link" href="#">阻塞</a>
+              <a class="system-link" href="#">升级</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索风险或负责人" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">风险监控 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">关键风险与缓解动作</h1>
+              <p class="page-hero__subtitle">识别风险源头、跟踪缓解措施并联动阻塞事项，降低上线不确定性。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">高风险</span>
+                  <span class="hero-stat__value">3</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">未指派</span>
+                  <span class="hero-stat__value">1</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">缓解完成</span>
+                  <span class="hero-stat__value">62%</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="report-detail.html" data-keep-role>
+                📄 导出风险清单
+              </a>
+              <a class="hero-actions__secondary" href="release-plan.html" data-keep-role>
+                🚀 对齐发布风险
+              </a>
+            </div>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">风险地图</h2>
+                <p class="surface-card__subtitle">按影响与概率分布</p>
+              </div>
+              <div class="segmented-control">
+                <button class="is-active">全部风险</button>
+                <button>发布风险</button>
+                <button>运营风险</button>
+              </div>
+            </div>
+            <div class="chart-placeholder"></div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">风险列表</h2>
+                  <p class="surface-card__subtitle">分类查看与分配责任人</p>
+                </div>
+                <a class="action-link" href="sprint-board.html" data-keep-role>同步阻塞</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>风险</th>
+                    <th>影响</th>
+                    <th>概率</th>
+                    <th>负责人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>数据同步延迟</td>
+                    <td>高</td>
+                    <td>高</td>
+                    <td>数据平台</td>
+                  </tr>
+                  <tr>
+                    <td>审计合规审批</td>
+                    <td>高</td>
+                    <td>中</td>
+                    <td>安全合规</td>
+                  </tr>
+                  <tr>
+                    <td>移动端性能波动</td>
+                    <td>中</td>
+                    <td>高</td>
+                    <td>移动团队</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">缓解计划</h2>
+                  <p class="surface-card__subtitle">追踪缓解措施执行情况</p>
+                </div>
+                <a class="action-link" href="automation-rules.html" data-keep-role>配置提醒</a>
+              </div>
+              <div class="checklist">
+                <label class="checklist-item">
+                  <input type="checkbox" checked /> 缓存扩容方案上线
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" /> 审计审批预演完成
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" checked /> 移动端性能压测
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" /> 增设发布检查点
+                </label>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">阻塞关联</h2>
+                <p class="surface-card__subtitle">与 Jira 阻塞事项自动同步</p>
+              </div>
+              <a class="action-link" href="sprint-board.html" data-keep-role>查看看板</a>
+            </div>
+            <div class="board-columns">
+              <div class="board-column">
+                <div class="board-column__title">阻塞</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-224 等待数据补丁</h3>
+                  <p class="list-item__desc">影响自动化 Epic</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">缓解</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">临时缓存方案</h3>
+                  <p class="list-item__desc">7/20 上线</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">状态</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">风险降低</h3>
+                  <p class="list-item__desc">预计延迟 1.5 天</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">风险概览帮助 <span data-role-name></span> 聚焦关键风险、跟踪缓解行动并与发布计划、Sprint 阻塞等视图打通，保证上线安全。</p>
+            <div class="page-info__actions">
+              <a href="release-plan.html" data-keep-role>→ 查看发布风险</a>
+              <a href="sprint-board.html" data-keep-role>→ 关联阻塞</a>
+              <a href="automation-rules.html" data-keep-role>→ 设置缓解提醒</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

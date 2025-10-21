@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 技术文档</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="docs">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>知识库</strong><br />
+          文档总数：164 · 最近更新：7 月 17 日<br />
+          维护人：架构组
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">知识中心 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">API</a>
+              <a class="system-link" href="#">架构</a>
+              <a class="system-link" href="#">流程</a>
+              <a class="system-link" href="#">学习路径</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索文档或关键字" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">知识库 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">统一的工程知识与实践库</h1>
+              <p class="page-hero__subtitle">沉淀架构规范、流程指引与案例模板，支持团队快速查阅与复用。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">新增文档</span>
+                  <span class="hero-stat__value">12</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">热度最高</span>
+                  <span class="hero-stat__value">回滚手册</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">贡献者</span>
+                  <span class="hero-stat__value">38</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="issue-detail.html" data-keep-role>
+                📝 创建文档任务
+              </a>
+              <a class="hero-actions__secondary" href="my-work.html" data-keep-role>
+                ✅ 添加到我的清单
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">分类浏览</h2>
+                  <p class="surface-card__subtitle">快速定位常用文档</p>
+                </div>
+                <div class="segmented-control">
+                  <button class="is-active">全部</button>
+                  <button>后端</button>
+                  <button>前端</button>
+                  <button>运维</button>
+                </div>
+              </div>
+              <div class="grid-auto">
+                <div class="surface-card" style="box-shadow:none; padding:18px;">
+                  <h3 class="surface-card__title">架构规范</h3>
+                  <p class="surface-card__subtitle">包含领域划分、服务边界、扩展策略</p>
+                  <a class="action-link" href="issue-detail.html" data-keep-role>查看详情</a>
+                </div>
+                <div class="surface-card" style="box-shadow:none; padding:18px;">
+                  <h3 class="surface-card__title">CI/CD 指南</h3>
+                  <p class="surface-card__subtitle">包含流水线配置、回滚策略、监控指标</p>
+                  <a class="action-link" href="code-integration.html" data-keep-role>关联流水线</a>
+                </div>
+                <div class="surface-card" style="box-shadow:none; padding:18px;">
+                  <h3 class="surface-card__title">事件响应</h3>
+                  <p class="surface-card__subtitle">包含告警流程、沟通模板、复盘案例</p>
+                  <a class="action-link" href="retrospective.html" data-keep-role>复盘学习</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">我的收藏</h2>
+                  <p class="surface-card__subtitle">快速访问常用文档</p>
+                </div>
+                <a class="action-link" href="my-work.html" data-keep-role>同步到任务</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">回滚操作手册</p>
+                    <p class="list-item__desc">更新：7/15 · Owner：SRE</p>
+                  </div>
+                  <span class="tag">置顶</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">数据同步策略</p>
+                    <p class="list-item__desc">更新：7/14 · Owner：数据平台</p>
+                  </div>
+                  <span class="tag">重点</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">安全审计指南</p>
+                    <p class="list-item__desc">更新：7/12 · Owner：安全</p>
+                  </div>
+                  <span class="tag">合规</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">学习路径</h2>
+                <p class="surface-card__subtitle">为新成员定制 onboarding 课程</p>
+              </div>
+              <a class="action-link" href="my-work.html" data-keep-role>加入计划</a>
+            </div>
+            <div class="flow-columns">
+              <div class="flow-column">
+                <div class="flow-column__title">Week 1</div>
+                <div class="flow-task">
+                  <strong>产品与业务了解</strong>
+                  <span>阅读产品白皮书、业务案例</span>
+                </div>
+                <div class="flow-task">
+                  <strong>环境搭建</strong>
+                  <span>完成本地开发环境配置</span>
+                </div>
+              </div>
+              <div class="flow-column">
+                <div class="flow-column__title">Week 2</div>
+                <div class="flow-task">
+                  <strong>框架入门</strong>
+                  <span>学习核心服务代码结构</span>
+                </div>
+                <div class="flow-task">
+                  <strong>CI/CD 实操</strong>
+                  <span>完成一次模拟部署</span>
+                </div>
+              </div>
+              <div class="flow-column">
+                <div class="flow-column__title">Week 3</div>
+                <div class="flow-task">
+                  <strong>性能与安全</strong>
+                  <span>掌握监控指标、性能优化手段</span>
+                </div>
+                <div class="flow-task">
+                  <strong>复盘分享</strong>
+                  <span>参与一次回顾并提交总结</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">技术文档中心帮助 <span data-role-name></span> 快速查阅架构规范、流程指南与学习路径，可直接跳转到需求、任务或回顾页面形成闭环。</p>
+            <div class="page-info__actions">
+              <a href="issue-detail.html" data-keep-role>→ 创建文档需求</a>
+              <a href="my-work.html" data-keep-role>→ 加入个人任务</a>
+              <a href="retrospective.html" data-keep-role>→ 回顾沉淀</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

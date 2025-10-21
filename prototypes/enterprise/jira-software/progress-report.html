@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 进度报告</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="reports">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>管理驾驶舱</strong><br />
+          周报周期：第 29 周<br />
+          更新人：项目管理办公室
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">执行概览 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">进度</a>
+              <a class="system-link" href="#">风险</a>
+              <a class="system-link" href="#">资源</a>
+              <a class="system-link" href="#">决策</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索项目或指标" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">执行报告 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">Quantum Launch 周度进度</h1>
+              <p class="page-hero__subtitle">聚焦范围、进度、质量、风险与下一步行动，支持决策层快速掌握。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">整体进度</span>
+                  <span class="hero-stat__value">74%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">当前风险</span>
+                  <span class="hero-stat__value">中</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">下阶段重点</span>
+                  <span class="hero-stat__value">性能稳定</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="report-detail.html" data-keep-role>
+                📄 导出完整周报
+              </a>
+              <a class="hero-actions__secondary" href="portfolio-dashboard.html" data-keep-role>
+                📊 切换组合视图
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">关键指标</h2>
+                  <p class="surface-card__subtitle">围绕交付、质量与价值</p>
+                </div>
+                <div class="segmented-control">
+                  <button class="is-active">本周</button>
+                  <button>月度</button>
+                  <button>季度</button>
+                </div>
+              </div>
+              <div class="metric-group">
+                <div class="metric-card">
+                  <span class="metric-card__label">范围完成</span>
+                  <span class="metric-card__value">74%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">速度</span>
+                  <span class="metric-card__value">78 pt</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">缺陷漏斗</span>
+                  <span class="metric-card__value">18 → 9</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">NPS</span>
+                  <span class="metric-card__value">38</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">范围健康</h2>
+                  <p class="surface-card__subtitle">按 Epic 汇总进度与风险</p>
+                </div>
+                <a class="action-link" href="roadmap.html" data-keep-role>进入路线图</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Epic</th>
+                    <th>进度</th>
+                    <th>状态</th>
+                    <th>风险</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>全渠道体验</td>
+                    <td>68%</td>
+                    <td><span class="tag">按计划</span></td>
+                    <td>环境准备</td>
+                  </tr>
+                  <tr>
+                    <td>智能自动化</td>
+                    <td>54%</td>
+                    <td><span class="tag">关注</span></td>
+                    <td>数据依赖</td>
+                  </tr>
+                  <tr>
+                    <td>企业治理</td>
+                    <td>32%</td>
+                    <td><span class="tag">风险</span></td>
+                    <td>审计进度</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">风险速览</h2>
+                  <p class="surface-card__subtitle">高风险项与缓解计划</p>
+                </div>
+                <a class="action-link" href="risk-overview.html" data-keep-role>查看详情</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">数据同步延迟</p>
+                    <p class="list-item__desc">影响自动化 Epic · 缓解：临时缓存方案</p>
+                  </div>
+                  <span class="tag">高</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">审计合规窗口</p>
+                    <p class="list-item__desc">影响上线时间 · 缓解：提前一周评审</p>
+                  </div>
+                  <span class="tag">中</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">决策与支持</h2>
+                  <p class="surface-card__subtitle">管理层需知与待决策事项</p>
+                </div>
+                <a class="action-link" href="release-plan.html" data-keep-role>查看发布节奏</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">请求 2 名后端支援</p>
+                    <p class="list-item__desc">用于自动化 Epic 数据链路补强</p>
+                  </div>
+                  <span class="tag">需决策</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">确认 Beta 客户名单</p>
+                    <p class="list-item__desc">需在 7/20 前确认 5 家客户</p>
+                  </div>
+                  <span class="tag">进行中</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">本周亮点与阻塞</h2>
+                <p class="surface-card__subtitle">关键成果与问题一览</p>
+              </div>
+              <a class="action-link" href="retrospective.html" data-keep-role>查看回顾</a>
+            </div>
+            <div class="board-columns">
+              <div class="board-column">
+                <div class="board-column__title">亮点</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">AI 推荐 MVP 完成</h3>
+                  <p class="list-item__desc">转化率预估提升 15%</p>
+                </div>
+                <div class="board-card">
+                  <h3 class="board-card__title">客户洞察闭环上线</h3>
+                  <p class="list-item__desc">反馈转需求自动化打通</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">阻塞</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">数据缓存方案延期</h3>
+                  <p class="list-item__desc">需 Infra 支援</p>
+                </div>
+                <div class="board-card">
+                  <h3 class="board-card__title">审计合规审批排队</h3>
+                  <p class="list-item__desc">需管理层协调</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">下一步</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">准备 Beta Demo</h3>
+                  <p class="list-item__desc">7/22 完成客户演练</p>
+                </div>
+                <div class="board-card">
+                  <h3 class="board-card__title">扩展自动化模板</h3>
+                  <p class="list-item__desc">重点客户专属</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">进度报告页面帮助 <span data-role-name></span> 在同一视图下掌握指标、范围、风险与决策请求，必要时可导出详细周报或切换至组合视图做更广泛的对比。</p>
+            <div class="page-info__actions">
+              <a href="report-detail.html" data-keep-role>→ 下载周报</a>
+              <a href="portfolio-dashboard.html" data-keep-role>→ 查看组合</a>
+              <a href="resource-planning.html" data-keep-role>→ 分配资源</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

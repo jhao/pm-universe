@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 发布计划</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-id="release-plan">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>Release：Phoenix 3.4</strong><br />
+          窗口：8 月 18 日 · 计划冻结：7 月 30 日<br />
+          发布负责人：Scrum Master 团队
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">发布管理 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">准备度</a>
+              <a class="system-link" href="#">变更</a>
+              <a class="system-link" href="#">风险</a>
+              <a class="system-link" href="#">核对表</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索版本或变更" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">发布计划 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">Phoenix 3.4 发布准备度</h1>
+              <p class="page-hero__subtitle">跟踪发布范围、变更审批、风险缓解和回滚计划，确保上线窗口可控。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">范围完成</span>
+                  <span class="hero-stat__value">74%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">阻塞事项</span>
+                  <span class="hero-stat__value">3</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">回滚准备</span>
+                  <span class="hero-stat__value">100%</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="release-readiness.html" data-keep-role>
+                ✅ 查看准备度清单
+              </a>
+              <a class="hero-actions__secondary" href="progress-report.html" data-keep-role>
+                🗂️ 发送发布周报
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">发布范围</h2>
+                  <p class="surface-card__subtitle">列出纳入版本的关键需求及状态</p>
+                </div>
+                <a class="action-link" href="backlog.html" data-keep-role>调整需求范围</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>标题</th>
+                    <th>状态</th>
+                    <th>验收</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>QL-231</td>
+                    <td>多渠道工单同步</td>
+                    <td><span class="tag">In Progress</span></td>
+                    <td>待验证</td>
+                  </tr>
+                  <tr>
+                    <td>QL-210</td>
+                    <td>CI/CD 自动回滚</td>
+                    <td><span class="tag">Code Review</span></td>
+                    <td>测试中</td>
+                  </tr>
+                  <tr>
+                    <td>QL-224</td>
+                    <td>AI 优先级建议</td>
+                    <td><span class="tag">Blocked</span></td>
+                    <td>等待数据</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">变更审批</h2>
+                  <p class="surface-card__subtitle">发布窗口内的新增/变更请求</p>
+                </div>
+                <a class="action-link" href="issue-detail.html" data-keep-role>查看变更详情</a>
+              </div>
+              <div class="stacked-list">
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">CR-12：支付 SDK 升级</h3>
+                  <p class="stacked-item__meta">状态：待批准 · 影响低 · 提出人：销售工程</p>
+                </div>
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">CR-15：治理模板扩展</h3>
+                  <p class="stacked-item__meta">状态：已批准 · 需增加 QA 回归</p>
+                </div>
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">CR-17：仪表板文案更新</h3>
+                  <p class="stacked-item__meta">状态：已实施 · 风险可接受</p>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">发布节奏</h2>
+                  <p class="surface-card__subtitle">按周跟踪关键里程碑</p>
+                </div>
+                <a class="action-link" href="roadmap.html" data-keep-role>回到路线图</a>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-item__marker"></div>
+                  <div class="timeline-item__content">
+                    <strong>7/19 · 代码冻结</strong>
+                    <p class="list-item__desc">确认所有范围需求进入 Code Review 状态</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-item__marker"></div>
+                  <div class="timeline-item__content">
+                    <strong>7/25 · Beta 发布</strong>
+                    <p class="list-item__desc">向 5 位重点客户开放 · 收集反馈</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-item__marker"></div>
+                  <div class="timeline-item__content">
+                    <strong>8/10 · 灰度上线</strong>
+                    <p class="list-item__desc">启用回滚自动化策略</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">风险分级</h2>
+                  <p class="surface-card__subtitle">展示发布相关的高风险项</p>
+                </div>
+                <a class="action-link" href="risk-overview.html" data-keep-role>打开风险概览</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">数据同步延迟</p>
+                    <p class="list-item__desc">等级：高 · 缓解：加大缓存 · owner：数据平台</p>
+                  </div>
+                  <span class="tag">高</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">审计合规审批</p>
+                    <p class="list-item__desc">等级：中 · 缓解：提前审计会议 · owner：合规</p>
+                  </div>
+                  <span class="tag">中</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">移动端性能回归</p>
+                    <p class="list-item__desc">等级：中 · 缓解：扩充测试基线 · owner：移动团队</p>
+                  </div>
+                  <span class="tag">中</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">回滚与通知</h2>
+                <p class="surface-card__subtitle">发布失败时的自动化方案与沟通计划</p>
+              </div>
+              <a class="action-link" href="automation-rules.html" data-keep-role>配置回滚自动化</a>
+            </div>
+            <div class="board-columns">
+              <div class="board-column">
+                <div class="board-column__title">回滚步骤</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">恢复至 3.3 版本</h3>
+                  <p class="list-item__desc">脚本：rollback-prod.sh</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">通知矩阵</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">客户通告模板</h3>
+                  <p class="list-item__desc">渠道：邮件、状态页、客服</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">验证检查</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">功能回归用例</h3>
+                  <p class="list-item__desc">覆盖 25 个关键路径</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">责任人</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">当班指挥官</h3>
+                  <p class="list-item__desc">Scrum Master · 24/7 可联系</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">发布计划面板帮助 <span data-role-name></span> 统筹发布范围、变更、风险与回滚方案。通过准备度清单可快速评估上线状态，必要时跳转至风险面板或自动化配置落实补救措施。</p>
+            <div class="page-info__actions">
+              <a href="release-readiness.html" data-keep-role>→ 查看准备度</a>
+              <a href="progress-report.html" data-keep-role>→ 生成周报</a>
+              <a href="automation-rules.html" data-keep-role>→ 设置回滚自动化</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
