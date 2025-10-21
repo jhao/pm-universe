@@ -2,83 +2,1910 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>SHEIN 跨境快时尚 原型概览</title>
+    <title>SHEIN 多角色界面原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --accent-color: #f97316;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: linear-gradient(145deg, #f7fafc, #eef2ff 45%, #e0f2fe);
+        color: #0f172a;
+      }
+
+      .page {
+        padding: 48px clamp(24px, 6vw, 72px) 64px;
+        min-height: 100vh;
+      }
+
+      header.page-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .page-header__info h1 {
+        margin: 0 0 8px;
+        font-size: clamp(26px, 3vw, 36px);
+        letter-spacing: 0.4px;
+      }
+
+      .page-header__info p {
+        margin: 0;
+        color: #475569;
+        font-size: 16px;
+      }
+
+      .role-switcher {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .role-button {
+        position: relative;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        background: rgba(15, 23, 42, 0.08);
+        color: #0f172a;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      }
+
+      .role-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+      }
+
+      .role-button.active {
+        background: var(--accent-color);
+        color: #fff;
+        box-shadow: 0 12px 26px rgba(249, 115, 22, 0.35);
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: minmax(260px, 320px) 1fr;
+        gap: 28px;
+        align-items: flex-start;
+      }
+
+      aside.sidebar {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 28px;
+        padding: 28px 24px;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+        position: sticky;
+        top: 48px;
+      }
+
+      .role-card h2 {
+        margin: 0 0 10px;
+        font-size: 22px;
+      }
+
+      .role-card p {
+        margin: 0 0 16px;
+        color: #475569;
+        line-height: 1.5;
+      }
+
+      .role-focus {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .role-focus span {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.06);
+        font-size: 13px;
+        color: #1e293b;
+      }
+
+      .menu-group {
+        display: grid;
+        gap: 8px;
+      }
+
+      .menu-item {
+        border: none;
+        border-radius: 16px;
+        padding: 16px 18px;
+        text-align: left;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        transition: background 0.2s ease, transform 0.18s ease;
+        font-size: 15px;
+        color: #1e293b;
+      }
+
+      .menu-item:hover {
+        background: rgba(15, 23, 42, 0.05);
+        transform: translateX(4px);
+      }
+
+      .menu-item.active {
+        background: rgba(15, 23, 42, 0.08);
+        color: #0f172a;
+        box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
+      }
+
+      .menu-item .menu-icon {
+        font-size: 20px;
+        line-height: 1;
+        margin-top: 2px;
+      }
+
+      .menu-item h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .menu-item p {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      main.main {
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 32px;
+        padding: 32px clamp(24px, 4vw, 48px) 40px;
+        box-shadow: 0 24px 55px rgba(15, 23, 42, 0.16);
+      }
+
+      .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .content-header h2 {
+        margin: 8px 0 12px;
+        font-size: 26px;
+      }
+
+      .content-header p {
+        margin: 0;
+        color: #475569;
+      }
+
+      .content-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--accent-color);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: flex-end;
+      }
+
+      .quick-actions button {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        background: rgba(15, 23, 42, 0.06);
+        color: #1e293b;
+        cursor: pointer;
+        transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+      }
+
+      .quick-actions button:hover {
+        background: var(--accent-color);
+        color: #fff;
+        transform: translateY(-1px);
+      }
+
+      .content-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .content-section {
+        background: rgba(248, 250, 252, 0.7);
+        border-radius: 24px;
+        padding: 24px 28px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .content-section h3 {
+        margin: 0 0 18px;
+        font-size: 20px;
+      }
+
+      .hero-panel {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+        align-items: stretch;
+      }
+
+      .hero-info {
+        flex: 1 1 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        background: rgba(15, 23, 42, 0.08);
+        padding: 6px 12px;
+        border-radius: 999px;
+        width: fit-content;
+      }
+
+      .hero-info h3 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .hero-info p {
+        margin: 0;
+        color: #475569;
+        line-height: 1.5;
+      }
+
+      .hero-tags,
+      .hero-highlights {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .hero-tags span,
+      .hero-highlights span {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.06);
+        font-size: 13px;
+        color: #1e293b;
+      }
+
+      .hero-side {
+        flex: 1 1 240px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .hero-visual {
+        position: relative;
+        border-radius: 22px;
+        padding: 24px;
+        background: linear-gradient(140deg, rgba(15, 23, 42, 0.82), rgba(59, 130, 246, 0.75));
+        color: #fff;
+        min-height: 180px;
+        overflow: hidden;
+      }
+
+      .hero-visual::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent 60%);
+        opacity: 0.7;
+      }
+
+      .hero-visual span {
+        position: relative;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+      }
+
+      .hero-visual-art {
+        position: absolute;
+        right: -20px;
+        bottom: -40px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), rgba(59, 130, 246, 0.2));
+        opacity: 0.7;
+      }
+
+      .hero-metrics {
+        display: grid;
+        gap: 12px;
+      }
+
+      .hero-metric {
+        background: rgba(255, 255, 255, 0.82);
+        padding: 14px 18px;
+        border-radius: 16px;
+        color: #1e293b;
+      }
+
+      .hero-metric span {
+        display: block;
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 6px;
+      }
+
+      .hero-metric strong {
+        font-size: 18px;
+      }
+
+      .metrics-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      }
+
+      .metric-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 16px 18px;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .metric-card h4 {
+        margin: 0 0 12px;
+        font-size: 14px;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .metric-card strong {
+        display: block;
+        font-size: 22px;
+        margin-bottom: 6px;
+      }
+
+      .metric-card span {
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .card-grid.columns-2 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .card-grid.columns-3 {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .info-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 18px 20px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .info-card h4 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .info-card ul {
+        margin: 0;
+        padding-left: 18px;
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .info-card footer {
+        font-size: 13px;
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 16px;
+        position: relative;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .timeline-item time {
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .timeline-item article {
+        background: #fff;
+        border-radius: 16px;
+        padding: 14px 18px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+        position: relative;
+      }
+
+      .timeline-item article::before {
+        content: '';
+        position: absolute;
+        left: -12px;
+        top: 18px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent-color);
+      }
+
+      .timeline-item article h4 {
+        margin: 0 0 6px;
+        font-size: 15px;
+      }
+
+      .timeline-item article span {
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .timeline-item article[data-status='success'] {
+        border-color: rgba(34, 197, 94, 0.3);
+      }
+
+      .timeline-item article[data-status='highlight'] {
+        border-color: rgba(249, 115, 22, 0.35);
+      }
+
+      .timeline-item article[data-status='in-progress'] {
+        border-color: rgba(59, 130, 246, 0.35);
+      }
+
+      .timeline-item article[data-status='upcoming'] {
+        border-style: dashed;
+      }
+
+      .split-layout {
+        display: grid;
+        gap: 22px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .split-column {
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px 20px;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+        display: grid;
+        gap: 16px;
+      }
+
+      .split-column h4 {
+        margin: 0;
+      }
+
+      .split-item {
+        display: grid;
+        gap: 4px;
+      }
+
+      .split-item-header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        font-size: 15px;
+        color: #1e293b;
+      }
+
+      .split-item-meta {
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .split-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .split-tags span {
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.06);
+      }
+
+      .split-metrics {
+        display: grid;
+        gap: 12px;
+      }
+
+      .split-metric {
+        display: flex;
+        justify-content: space-between;
+        font-size: 15px;
+      }
+
+      .split-cta {
+        margin-top: 12px;
+        align-self: flex-start;
+        border: none;
+        background: var(--accent-color);
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 14px 28px rgba(249, 115, 22, 0.35);
+      }
+
+      table.prototype-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .prototype-table th,
+      .prototype-table td {
+        padding: 14px 16px;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        text-align: left;
+      }
+
+      .prototype-table th {
+        background: rgba(15, 23, 42, 0.05);
+        color: #475569;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+
+      .board {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .board-lane {
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+        display: grid;
+        gap: 12px;
+      }
+
+      .board-lane h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .board-card {
+        background: rgba(241, 245, 249, 0.8);
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-size: 14px;
+        color: #1e293b;
+      }
+
+      @media (max-width: 1080px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        aside.sidebar {
+          position: relative;
+          top: 0;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 32px 20px 48px;
+        }
+
+        main.main {
+          padding: 28px 20px 32px;
+        }
+
+        .content-header {
+          flex-direction: column;
+        }
+
+        .timeline-item {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>SHEIN 跨境快时尚 原型</h1>
-      <p class="tagline">以柔性供应链支撑的全球快时尚电商平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>Z 世代消费者、跨境供应商、设计师</p>
-        <p><strong>核心痛点：</strong>趋势响应速度慢、库存风险高、跨境物流难</p>
-        <p><strong>价值主张：</strong>通过数据驱动选款、柔性制造与海外仓网络，实现高频上新与低成本配送</p>
+    <div class="page">
+      <header class="page-header">
+        <div class="page-header__info">
+          <h1>SHEIN 跨境快时尚 · 多角色原型</h1>
+          <p>通过角色切换演示用户端、管理员端、运营端的核心功能触点。</p>
+        </div>
+        <div id="role-switcher" class="role-switcher"></div>
+      </header>
+      <div class="app-shell">
+        <aside id="sidebar" class="sidebar"></aside>
+        <main id="content" class="main"></main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>消费者浏览新品专题并下单</li><li>供应商对接需求并快速生产</li><li>运营团队分析数据优化上新策略</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>内容种草与推荐</h3>
-              <p class="goal">功能目标：通过视觉化展示驱动转化</p>
-              <ul>
-                <li>首页频道、搭配指南与直播</li><li>社区穿搭分享与 UGC</li><li>个性化推荐与推送通知</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商品与库存</h3>
-              <p class="goal">功能目标：实现小单快返的柔性供应链</p>
-              <ul>
-                <li>商品生命周期管理与上新排期</li><li>供应商协同、质检与合规</li><li>库存预警与海外仓调拨</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>交易与履约</h3>
-              <p class="goal">功能目标：确保全球用户快速收货</p>
-              <ul>
-                <li>多币种结算与关税预付</li><li>物流方式选择、包裹追踪</li><li>售后服务、退换货与客服机器人</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>数据与增长</h3>
-              <p class="goal">功能目标：利用数据驱动商品与营销决策</p>
-              <ul>
-                <li>选品热度分析与 A/B 测试</li><li>用户分层、优惠策略与会员体系</li><li>社媒投放与达人合作管理</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>上新 SKU 数量与售罄率</li><li>物流履约时效与退货率</li><li>用户复购率与客单价</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script>
+      const roleConfigurations = [
+        {
+          id: 'consumer',
+          name: '用户端',
+          accent: '#f97316',
+          summary: '以发现、加购、履约为核心的沉浸式购物体验。',
+          focus: ['趋势洞察', '高转化推荐', '即时履约'],
+          menus: [
+            {
+              id: 'consumer-home',
+              icon: '🌟',
+              title: '潮流首页',
+              headline: '潮流首页',
+              description: '专题、直播与推荐组合的购物起点。',
+              quickActions: ['创建穿搭清单', '收藏直播', '设置推送提醒'],
+              sections: [
+                {
+                  type: 'hero',
+                  badge: '今日焦点',
+                  title: '都市海风系列 · Global Drop',
+                  subtitle: '海外仓极速达 · 热度指数 96%',
+                  tags: ['限量补货', '主推面料：轻透网纱', '直播 20:00 开播'],
+                  highlight: ['Lookbook 现已上线', '达人联动 12 位'],
+                  metrics: [
+                    { label: '上新 SKU', value: '128' },
+                    { label: '套装推荐', value: '36' },
+                    { label: '折扣价', value: '¥79 起' }
+                  ]
+                },
+                {
+                  type: 'metrics',
+                  title: '实时转化快照',
+                  items: [
+                    { label: '实时在线', value: '18,245', trend: '+12%' },
+                    { label: '购物车加购', value: '5,112', trend: '+8%' },
+                    { label: '直播转化率', value: '4.2%', trend: '↑ 稳定' }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '重点功能模块',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: '精选专题',
+                      body: ['「轻户外」主题墙', '功能风穿搭灵感', '主推色：玉石绿'],
+                      footer: '进入专题 >'
+                    },
+                    {
+                      title: '社区热帖',
+                      body: ['#OOTD 挑战赛', '达人 @Nova', '互动 3.6k / 收藏 2.1k'],
+                      footer: '查看详情 >'
+                    },
+                    {
+                      title: 'AI 搭配助手',
+                      body: ['12 套风格一键加购', '支持尺码试算', '同步库存动态'],
+                      footer: '开启助手 >'
+                    }
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '热门动向',
+                  items: [
+                    {
+                      time: '10:20',
+                      title: '纽约仓发出 600 单 · 海风系列',
+                      status: 'in-progress'
+                    },
+                    {
+                      time: '09:45',
+                      title: '都市海风直播预约突破 8k',
+                      status: 'success'
+                    },
+                    {
+                      time: '09:15',
+                      title: '话题 #轻盈网纱 登顶潮流榜',
+                      status: 'highlight'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'consumer-cart',
+              icon: '🛒',
+              title: '购物车与结算',
+              headline: '购物车与结算',
+              description: '结算流程、优惠组合与支付指引。',
+              quickActions: ['生成优惠组合', '开启分期选项', '联系专属客服'],
+              sections: [
+                {
+                  type: 'split',
+                  left: {
+                    title: '待结算商品',
+                    items: [
+                      {
+                        title: '海风透气衬衫',
+                        meta: '蓝色 / M · 预计 48h 发货',
+                        value: '¥189',
+                        tags: ['库存紧张']
+                      },
+                      {
+                        title: '光泽伞裙',
+                        meta: '杏色 / S · 参与满减',
+                        value: '¥209',
+                        tags: ['满减适用']
+                      },
+                      {
+                        title: '防水渔夫帽',
+                        meta: '均码 · 凑单推荐',
+                        value: '¥89',
+                        tags: ['搭配建议']
+                      }
+                    ]
+                  },
+                  right: {
+                    title: '结算概览',
+                    metrics: [
+                      { label: '商品金额', value: '¥487' },
+                      { label: '优惠券', value: '-¥60' },
+                      { label: '预计运费', value: '¥0' },
+                      { label: '应付总额', value: '¥427' }
+                    ],
+                    cta: '提交订单'
+                  }
+                },
+                {
+                  type: 'cards',
+                  title: '优惠与支付',
+                  columns: 2,
+                  cards: [
+                    {
+                      title: '优惠组合',
+                      body: ['满 399 减 80', '限 2 次使用', '叠加会员 95 折'],
+                      footer: '一键应用'
+                    },
+                    {
+                      title: '支付方式',
+                      body: ['支持 Klarna 分期', '支持 PayPal', '新增 Apple Pay'],
+                      footer: '管理支付 >'
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '发票与地址选择',
+                  columns: ['选项', '内容', '状态'],
+                  rows: [
+                    ['收货地址', '美国 · 洛杉矶 · 海外仓自提', '默认'],
+                    ['开票信息', '个人电子发票', '已填写'],
+                    ['配送偏好', '工作日送达', '可修改']
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'consumer-member',
+              icon: '💎',
+              title: '会员中心',
+              headline: '会员中心',
+              description: '成长任务、权益与服务预约。',
+              quickActions: ['兑换积分', '查看等级特权', '预约造型师'],
+              sections: [
+                {
+                  type: 'metrics',
+                  title: '会员资产',
+                  items: [
+                    { label: '当前等级', value: '白金', trend: '升级还差 1200 积分' },
+                    { label: '有效积分', value: '8,640', trend: '+420 本周' },
+                    { label: '专属券', value: '5 张', trend: '即将到期 2 张' },
+                    { label: '专属客服', value: '在线', trend: '响应 <3min' }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '权益与任务',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: '成长任务',
+                      body: ['签到送积分', '买单返 5%', '晒单再得 200'],
+                      footer: '查看任务 >'
+                    },
+                    {
+                      title: '会员日程',
+                      body: ['线下快闪门票', '造型师 1v1', '全球仓参观'],
+                      footer: '预约活动 >'
+                    },
+                    {
+                      title: '权益中心',
+                      body: ['免邮券 · 生效', '生日礼 · 待领取', '优先上新提醒'],
+                      footer: '管理权益 >'
+                    }
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '近期动态',
+                  items: [
+                    {
+                      time: '08:30',
+                      title: '完成「新品打卡」任务 · +200 积分',
+                      status: 'success'
+                    },
+                    {
+                      time: '昨天',
+                      title: '参与伦敦白金专属沙龙',
+                      status: 'highlight'
+                    },
+                    {
+                      time: '周一',
+                      title: '客服回访完成满意度调查',
+                      status: 'neutral'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'consumer-logistics',
+              icon: '🚚',
+              title: '物流追踪',
+              headline: '物流追踪',
+              description: '多仓同步、实时轨迹与售后入口。',
+              quickActions: ['催促发货', '创建退换申请', '查看理赔进度'],
+              sections: [
+                {
+                  type: 'split',
+                  left: {
+                    title: '当前订单',
+                    items: [
+                      {
+                        title: '#SH20240518098',
+                        meta: '预计 5 月 22 日送达 · 海外仓',
+                        value: '运输中',
+                        tags: ['优先派送']
+                      },
+                      {
+                        title: '包裹节点',
+                        meta: '洛杉矶集运中心 · 完成分拣',
+                        value: '05-19 07:45',
+                        tags: ['已扫描']
+                      }
+                    ]
+                  },
+                  right: {
+                    title: '实时轨迹',
+                    metrics: [
+                      { label: '运输阶段', value: '跨境派送' },
+                      { label: '最后更新', value: '1 小时前' },
+                      { label: '客服状态', value: '待反馈' }
+                    ],
+                    cta: '查看地图轨迹'
+                  }
+                },
+                {
+                  type: 'board',
+                  title: '售后看板',
+                  lanes: [
+                    {
+                      title: '待处理',
+                      items: ['退货申请 · 尺码不合', '补发配件 · 太阳镜链']
+                    },
+                    {
+                      title: '处理中',
+                      items: ['退款审核 · 预计 24h', '包裹异常查询']
+                    },
+                    {
+                      title: '已解决',
+                      items: ['物流延迟赔付完成', '包裹破损补寄']
+                    }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '服务辅助',
+                  columns: 2,
+                  cards: [
+                    {
+                      title: '智能客服',
+                      body: ['常见问题库', '语音助手', '多语言支持'],
+                      footer: '发起会话'
+                    },
+                    {
+                      title: '服务公告',
+                      body: ['国际物流高峰', '增设额外航班', '建议提前下单'],
+                      footer: '查看详情 >'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'admin',
+          name: '管理员端',
+          accent: '#6366f1',
+          summary: '聚焦全局监控、权限治理与稳定运行。',
+          focus: ['全局监控', '权限治理', '系统稳定'],
+          menus: [
+            {
+              id: 'admin-dashboard',
+              icon: '📊',
+              title: '运营驾驶舱',
+              headline: '运营驾驶舱',
+              description: '跨境业务实时概览，掌握 GMV 与履约健康。',
+              quickActions: ['刷新数据', '导出日报', '配置告警'],
+              sections: [
+                {
+                  type: 'metrics',
+                  title: '关键指标',
+                  items: [
+                    { label: 'GMV（日）', value: '$4.6M', trend: '+6.3%' },
+                    { label: '库存周转', value: '12 天', trend: '稳定' },
+                    { label: '履约准时率', value: '96.4%', trend: '+1.2%' },
+                    { label: '客服响应', value: '< 45s', trend: 'SLA 达成' }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '核心监控模块',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: '渠道热度雷达',
+                      body: ['站内', '站外', '达人投放'],
+                      footer: '打开监控'
+                    },
+                    {
+                      title: '海外仓状态',
+                      body: ['美国：83%', '欧洲：76%', '中东：65%'],
+                      footer: '查看仓网 >'
+                    },
+                    {
+                      title: '风控信号',
+                      body: ['异常订单 126', '高风险支付 18', '需复核 5'],
+                      footer: '进入风控中心'
+                    }
+                  ]
+                },
+                {
+                  type: 'board',
+                  title: '跨团队协作',
+                  lanes: [
+                    {
+                      title: '待认领',
+                      items: ['泰国站新仓上线验收', '东南亚合规条款更新']
+                    },
+                    {
+                      title: '进行中',
+                      items: ['欧盟 VAT 对账', '支付网关版本升级']
+                    },
+                    {
+                      title: '已完成',
+                      items: ['5 月渠道预算锁定', 'KOL 策略复盘']
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '实时告警',
+                  columns: ['模块', '内容', '级别', '负责人'],
+                  rows: [
+                    ['库存服务', '欧洲仓库存预警阈值高', '中', 'J. Chen'],
+                    ['支付系统', '巴西支付回调延迟 12s', '高', 'M. Costa'],
+                    ['物流追踪', '加拿大线路延迟 8h', '中', 'L. Wang']
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-permission',
+              icon: '🛡️',
+              title: '权限与审核',
+              headline: '权限与审核',
+              description: '角色矩阵、审批流与合规记录集中管理。',
+              quickActions: ['发起审批', '配置模板', '查看日志'],
+              sections: [
+                {
+                  type: 'split',
+                  left: {
+                    title: '待审批事项',
+                    items: [
+                      {
+                        title: '运营配置修改',
+                        meta: '活动弹窗 · 运营组',
+                        value: '等待复核',
+                        tags: ['SLA 2h']
+                      },
+                      {
+                        title: '供应商接入权限',
+                        meta: '工厂 #A672 · 新增',
+                        value: '待授权',
+                        tags: ['自动化']
+                      }
+                    ]
+                  },
+                  right: {
+                    title: '审批队列',
+                    metrics: [
+                      { label: '平均耗时', value: '18 分钟' },
+                      { label: '逾期任务', value: '0' }
+                    ],
+                    cta: '打开审批中心'
+                  }
+                },
+                {
+                  type: 'table',
+                  title: '角色权限矩阵',
+                  columns: ['角色', '核心模块', '最近更新', '审批人'],
+                  rows: [
+                    ['品类运营', '活动编排 / 价格体系', '05-16', 'Y. Zhao'],
+                    ['物流专员', '跨境线路 / 运力池', '05-18', 'F. Diaz'],
+                    ['客服主管', '工单中心 / 知识库', '05-19', 'R. Singh']
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '合规追踪',
+                  items: [
+                    {
+                      time: '09:50',
+                      title: '完成「隐私条款」年度审计',
+                      status: 'success'
+                    },
+                    {
+                      time: '昨日',
+                      title: '美国站支付权限追加 MFA',
+                      status: 'highlight'
+                    },
+                    {
+                      time: '周一',
+                      title: '东南亚站点权限收敛',
+                      status: 'neutral'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-monitor',
+              icon: '🧭',
+              title: '系统监控',
+              headline: '系统监控',
+              description: '掌控技术运行态势与容量规划。',
+              quickActions: ['查看拓扑', '扩容实例', '生成报告'],
+              sections: [
+                {
+                  type: 'metrics',
+                  title: '运行指标',
+                  items: [
+                    { label: '核心 API 成功率', value: '99.96%', trend: '+0.02%' },
+                    { label: '峰值 QPS', value: '38k', trend: '+12%' },
+                    { label: '平均延迟', value: '186ms', trend: '↓ 14ms' },
+                    { label: '错误工单', value: '3', trend: '及时响应' }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '系统状态',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: '应用健康',
+                      body: ['结算 · 绿色', '推荐 · 绿色', '客服 · 黄色'],
+                      footer: '查看详情'
+                    },
+                    {
+                      title: '容量预测',
+                      body: ['本周峰值 +18%', '预留弹性节点 12', '预算消耗 64%'],
+                      footer: '调整策略'
+                    },
+                    {
+                      title: '灰度发布',
+                      body: ['版本 4.12', '流量占比 35%', '无回滚'],
+                      footer: '查看进度'
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '关键日志回放',
+                  columns: ['时间', '事件', '级别', '跟进'],
+                  rows: [
+                    ['10:22', '推荐服务响应超阈', '警告', '分析中'],
+                    ['09:58', '支付服务容器扩容', '信息', '完成'],
+                    ['08:41', '全站 CDN 切换备用线路', '信息', '完成']
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '今日维护计划',
+                  items: [
+                    {
+                      time: '11:00',
+                      title: '数据库索引维护 · 预计 15min',
+                      status: 'in-progress'
+                    },
+                    {
+                      time: '14:30',
+                      title: '直播系统带宽扩容',
+                      status: 'upcoming'
+                    },
+                    {
+                      time: '19:00',
+                      title: '例行安全扫描',
+                      status: 'upcoming'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'admin-config',
+              icon: '⚙️',
+              title: '配置中心',
+              headline: '配置中心',
+              description: '站点、价格与实验统一配置与发布。',
+              quickActions: ['新增配置', '同步到生产', '查看历史'],
+              sections: [
+                {
+                  type: 'cards',
+                  title: '配置板块',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: '站点模板',
+                      body: ['美洲站 · 夏季', '中东站 · 斋月', '欧洲站 · 返校'],
+                      footer: '编辑 >'
+                    },
+                    {
+                      title: '价格策略',
+                      body: ['多币种浮动', '实时汇率同步', '阶梯折扣'],
+                      footer: '配置详情'
+                    },
+                    {
+                      title: '实验控制台',
+                      body: ['A/B 流程', '覆盖率 35%', '样本量 120k'],
+                      footer: '进入控制台'
+                    }
+                  ]
+                },
+                {
+                  type: 'split',
+                  left: {
+                    title: '变更草稿',
+                    items: [
+                      {
+                        title: '首页 Banner 排序',
+                        meta: '版本 2024.05.3',
+                        value: '待提交'
+                      },
+                      {
+                        title: '跨境运费模板',
+                        meta: '新增巴西区域',
+                        value: '校验通过'
+                      }
+                    ]
+                  },
+                  right: {
+                    title: '发布窗口',
+                    metrics: [
+                      { label: '上线窗口', value: '20:00 - 22:00' },
+                      { label: '冲突检测', value: '无' },
+                      { label: '审批状态', value: '已就绪' }
+                    ],
+                    cta: '安排发布'
+                  }
+                },
+                {
+                  type: 'timeline',
+                  title: '历史记录',
+                  items: [
+                    {
+                      time: '昨日 21:10',
+                      title: '完成价格体系热更新',
+                      status: 'success'
+                    },
+                    {
+                      time: '周二',
+                      title: '关闭老版本主题',
+                      status: 'neutral'
+                    },
+                    {
+                      time: '周日',
+                      title: '恢复默认 Banner 排列',
+                      status: 'highlight'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'operator',
+          name: '运营端',
+          accent: '#0ea5e9',
+          summary: '负责上新节奏、活动编排与多渠道触达。',
+          focus: ['上新排期', '活动联动', '数据洞察'],
+          menus: [
+            {
+              id: 'operator-schedule',
+              icon: '🗓️',
+              title: '上新排期',
+              headline: '上新排期',
+              description: '规划上新节奏、依赖与目标拆解。',
+              quickActions: ['同步供应计划', '锁定直播时段', '通知仓网'],
+              sections: [
+                {
+                  type: 'hero',
+                  badge: '重点企划',
+                  title: '5·20 情侣系列全渠道首发',
+                  subtitle: '站内首页 + 直播同步 · 余量 85%',
+                  tags: ['TOP 款 12', '主推市场：北美', '达人联动 24 位'],
+                  highlight: ['样稿确认完成', '物流已入仓'],
+                  metrics: [
+                    { label: '预计 GMV', value: '$1.2M' },
+                    { label: '曝光目标', value: '86M' },
+                    { label: '活动预算', value: '$320k' }
+                  ]
+                },
+                {
+                  type: 'metrics',
+                  title: '排期进度',
+                  items: [
+                    { label: '样稿完成', value: '92%', trend: '剩余 3 款' },
+                    { label: '库存备货', value: '78%', trend: '+5% 本周' },
+                    { label: '营销素材', value: '64%', trend: '达人待交付 8' }
+                  ]
+                },
+                {
+                  type: 'board',
+                  title: '跨团队任务',
+                  lanes: [
+                    {
+                      title: '待处理',
+                      items: ['确认葡萄牙站定价', '完善 Lookbook 文案']
+                    },
+                    {
+                      title: '进行中',
+                      items: ['韩语直播脚本排期', '北美达人首发拍摄']
+                    },
+                    {
+                      title: '已完成',
+                      items: ['全球货品清单冻结', '素材首图输出']
+                    }
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '关键里程碑',
+                  items: [
+                    {
+                      time: '今天 16:00',
+                      title: '首批预热视频投放',
+                      status: 'in-progress'
+                    },
+                    {
+                      time: '明日 10:00',
+                      title: '直播彩排 & 导购 SOP 过稿',
+                      status: 'upcoming'
+                    },
+                    {
+                      time: '周五 20:00',
+                      title: '正式上新 + 直播首发',
+                      status: 'upcoming'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'operator-campaign',
+              icon: '🎯',
+              title: '活动编排',
+              headline: '活动编排',
+              description: '多渠道资源组合与策略控制。',
+              quickActions: ['生成活动方案', '同步预算池', '创建 A/B 实验'],
+              sections: [
+                {
+                  type: 'split',
+                  left: {
+                    title: '站内活动',
+                    items: [
+                      {
+                        title: '首页头图',
+                        meta: '5·20 限时告白 · 曝光 65%',
+                        value: '已上线',
+                        tags: ['自动轮播']
+                      },
+                      {
+                        title: '限时秒杀',
+                        meta: '5.19 20:00 - 5.20 23:59',
+                        value: '预热中',
+                        tags: ['库存锁定']
+                      }
+                    ]
+                  },
+                  right: {
+                    title: '站外投放',
+                    metrics: [
+                      { label: '达人合作', value: '18 位' },
+                      { label: '社媒投放', value: '$160k' },
+                      { label: '预估曝光', value: '46M' }
+                    ],
+                    cta: '查看投放排期'
+                  }
+                },
+                {
+                  type: 'cards',
+                  title: '活动工具',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: '权益组合器',
+                      body: ['券包拼装', '限时折扣', '会员专享'],
+                      footer: '打开工具 >'
+                    },
+                    {
+                      title: '活动页面搭建',
+                      body: ['组件拖拽', '全端预览', '实时发布'],
+                      footer: '进入搭建器'
+                    },
+                    {
+                      title: '效果复盘板',
+                      body: ['GMV 拆解', '渠道对比', '复盘模板'],
+                      footer: '开始复盘'
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '资源排期',
+                  columns: ['资源位', '状态', '负责人', '备注'],
+                  rows: [
+                    ['APP Push', '已锁定 · 5.20 19:30', 'L. Wen', '测试版已发送'],
+                    ['直播场次', '待确认 · 2 场', 'Q. Gu', '等待达人确认'],
+                    ['达人短视频', '制作中 · 6 支', 'M. Gao', '预计 5.19 提交']
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'operator-content',
+              icon: '🪄',
+              title: '内容渠道',
+              headline: '内容渠道',
+              description: '渠道矩阵、素材动效与社区互动。',
+              quickActions: ['上传素材', '同步社媒日历', '生成互动话题'],
+              sections: [
+                {
+                  type: 'metrics',
+                  title: '内容表现',
+                  items: [
+                    { label: '站内内容曝光', value: '32M', trend: '+14%' },
+                    { label: '社区互动', value: '4.3M', trend: '+9%' },
+                    { label: '直播预约', value: '18k', trend: '+21%' }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '渠道矩阵',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: 'APP 社区',
+                      body: ['每日 8 篇精选', '话题挑战', '粉丝日历'],
+                      footer: '管理帖子'
+                    },
+                    {
+                      title: '直播中心',
+                      body: ['24h 场次监控', '脚本协同', '达人排班'],
+                      footer: '进入直播台'
+                    },
+                    {
+                      title: '站外矩阵',
+                      body: ['TikTok', 'Instagram', 'YouTube 合作'],
+                      footer: '同步素材'
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '素材上线清单',
+                  columns: ['渠道', '素材', '上线时间', '状态'],
+                  rows: [
+                    ['APP Banner', '都市海风主视觉', '05-19 09:00', '已上线'],
+                    ['Instagram', 'Lookbook Reel', '05-19 18:00', '待发布'],
+                    ['TikTok', '开箱短视频', '05-20 09:30', '排期中']
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '互动节奏',
+                  items: [
+                    {
+                      time: '今日 12:00',
+                      title: '社区话题 #夏日海风 发起',
+                      status: 'success'
+                    },
+                    {
+                      time: '今晚 21:00',
+                      title: '达人连麦彩排',
+                      status: 'upcoming'
+                    },
+                    {
+                      time: '明日 11:00',
+                      title: '站外短视频首发',
+                      status: 'upcoming'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'operator-insight',
+              icon: '📈',
+              title: '数据洞察',
+              headline: '数据洞察',
+              description: '选品、渠道与人群的实时分析。',
+              quickActions: ['导出看板', '设置对比组', '创建追踪'],
+              sections: [
+                {
+                  type: 'metrics',
+                  title: '核心表现',
+                  items: [
+                    { label: '新客贡献 GMV', value: '$1.9M', trend: '+11%' },
+                    { label: '复购率', value: '32%', trend: '+3.4%' },
+                    { label: '活动 ROI', value: '4.6', trend: '↑ 0.5' }
+                  ]
+                },
+                {
+                  type: 'cards',
+                  title: '洞察看板',
+                  columns: 3,
+                  cards: [
+                    {
+                      title: '人群分层',
+                      body: ['潮流先锋 24%', '品质舒适 38%', '性价比 26%'],
+                      footer: '查看人群详情'
+                    },
+                    {
+                      title: '渠道贡献',
+                      body: ['站内 58%', '社媒 22%', '达人 14%'],
+                      footer: '分析来源 >'
+                    },
+                    {
+                      title: '选品热度',
+                      body: ['裙装 +18%', '运动 +9%', '配件 +26%'],
+                      footer: '进入选品库'
+                    }
+                  ]
+                },
+                {
+                  type: 'table',
+                  title: '高潜力 SKU',
+                  columns: ['SKU', '热度指数', '库存状态', '建议动作'],
+                  rows: [
+                    ['SK-8721', '96', '库存紧张', '加急补货'],
+                    ['SK-5403', '89', '库存健康', '加大投放'],
+                    ['SK-9987', '84', '库存低', '触发预警']
+                  ]
+                },
+                {
+                  type: 'timeline',
+                  title: '洞察推送',
+                  items: [
+                    {
+                      time: '今日 09:20',
+                      title: '生成「北美新人群」推荐包',
+                      status: 'success'
+                    },
+                    {
+                      time: '昨日 17:45',
+                      title: '完成东南亚渠道对比分析',
+                      status: 'highlight'
+                    },
+                    {
+                      time: '周一 10:30',
+                      title: '推送趋势布料监控报告',
+                      status: 'neutral'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ];
+
+      const state = {
+        activeRoleId: roleConfigurations[0].id,
+        activeMenuId: roleConfigurations[0].menus[0].id
+      };
+
+      const roleSwitcher = document.getElementById('role-switcher');
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+
+      function getActiveRole() {
+        return roleConfigurations.find((role) => role.id === state.activeRoleId);
+      }
+
+      function getActiveMenu() {
+        const role = getActiveRole();
+        return role.menus.find((menu) => menu.id === state.activeMenuId) || role.menus[0];
+      }
+
+      function setAccent(color) {
+        document.documentElement.style.setProperty('--accent-color', color);
+      }
+
+      function renderRoleSwitcher() {
+        roleSwitcher.innerHTML = roleConfigurations
+          .map(
+            (role) => `
+              <button class="role-button ${role.id === state.activeRoleId ? 'active' : ''}" data-role="${role.id}">
+                ${role.name}
+              </button>
+            `
+          )
+          .join('');
+
+        roleSwitcher.querySelectorAll('button').forEach((button) => {
+          button.addEventListener('click', () => {
+            if (button.dataset.role === state.activeRoleId) return;
+            state.activeRoleId = button.dataset.role;
+            const role = getActiveRole();
+            state.activeMenuId = role.menus[0].id;
+            updateUI();
+          });
+        });
+      }
+
+      function renderSidebar() {
+        const role = getActiveRole();
+        const menuList = role.menus
+          .map(
+            (menu) => `
+              <button class="menu-item ${menu.id === state.activeMenuId ? 'active' : ''}" data-menu="${menu.id}">
+                <span class="menu-icon">${menu.icon}</span>
+                <span>
+                  <h3>${menu.title}</h3>
+                  <p>${menu.description}</p>
+                </span>
+              </button>
+            `
+          )
+          .join('');
+
+        sidebar.innerHTML = `
+          <div class="role-card">
+            <h2>${role.name}</h2>
+            <p>${role.summary}</p>
+            <div class="role-focus">
+              ${role.focus.map((item) => `<span>${item}</span>`).join('')}
+            </div>
+          </div>
+          <nav class="menu-group">${menuList}</nav>
+        `;
+
+        sidebar.querySelectorAll('[data-menu]').forEach((button) => {
+          button.addEventListener('click', () => {
+            if (button.dataset.menu === state.activeMenuId) return;
+            state.activeMenuId = button.dataset.menu;
+            renderSidebar();
+            renderContent();
+          });
+        });
+      }
+
+      function renderContent() {
+        const role = getActiveRole();
+        const menu = getActiveMenu();
+
+        const header = `
+          <div class="content-header">
+            <div>
+              <span class="content-label">${role.name}</span>
+              <h2>${menu.headline || menu.title}</h2>
+              <p>${menu.description || ''}</p>
+            </div>
+            ${
+              menu.quickActions && menu.quickActions.length
+                ? `<div class="quick-actions">${menu.quickActions
+                    .map((action) => `<button type="button">${action}</button>`)
+                    .join('')}</div>`
+                : ''
+            }
+          </div>
+        `;
+
+        const body = `
+          <div class="content-sections">
+            ${menu.sections.map((section) => renderSection(section)).join('')}
+          </div>
+        `;
+
+        content.innerHTML = header + body;
+      }
+
+      function renderSection(section) {
+        switch (section.type) {
+          case 'hero':
+            return renderHero(section);
+          case 'metrics':
+            return renderMetrics(section);
+          case 'cards':
+            return renderCards(section);
+          case 'timeline':
+            return renderTimeline(section);
+          case 'split':
+            return renderSplit(section);
+          case 'table':
+            return renderTable(section);
+          case 'board':
+            return renderBoard(section);
+          default:
+            return '';
+        }
+      }
+
+      function renderHero(section) {
+        const tags = section.tags && section.tags.length
+          ? `<div class="hero-tags">${section.tags.map((tag) => `<span>${tag}</span>`).join('')}</div>`
+          : '';
+        const highlight = section.highlight && section.highlight.length
+          ? `<div class="hero-highlights">${section.highlight.map((item) => `<span>${item}</span>`).join('')}</div>`
+          : '';
+        const metrics = section.metrics && section.metrics.length
+          ? `<div class="hero-metrics">${section.metrics
+              .map(
+                (metric) => `
+                  <div class="hero-metric">
+                    <span>${metric.label}</span>
+                    <strong>${metric.value}</strong>
+                  </div>
+                `
+              )
+              .join('')}</div>`
+          : '';
+
+        return `
+          <section class="content-section">
+            <div class="hero-panel">
+              <div class="hero-info">
+                <span class="hero-badge">${section.badge || '焦点'}</span>
+                <h3>${section.title}</h3>
+                ${section.subtitle ? `<p>${section.subtitle}</p>` : ''}
+                ${tags}
+                ${highlight}
+              </div>
+              <div class="hero-side">
+                <div class="hero-visual">
+                  <span>${section.visualLabel || 'Lookbook 预览'}</span>
+                  <div class="hero-visual-art"></div>
+                </div>
+                ${metrics}
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      function renderMetrics(section) {
+        return `
+          <section class="content-section">
+            ${section.title ? `<h3>${section.title}</h3>` : ''}
+            <div class="metrics-grid">
+              ${section.items
+                .map(
+                  (item) => `
+                    <div class="metric-card">
+                      <h4>${item.label}</h4>
+                      <strong>${item.value}</strong>
+                      ${item.trend ? `<span>${item.trend}</span>` : ''}
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      function renderCards(section) {
+        const columnsClass = section.columns ? `columns-${section.columns}` : 'columns-3';
+        return `
+          <section class="content-section">
+            ${section.title ? `<h3>${section.title}</h3>` : ''}
+            <div class="card-grid ${columnsClass}">
+              ${section.cards
+                .map(
+                  (card) => `
+                    <article class="info-card">
+                      <h4>${card.title}</h4>
+                      ${card.body && card.body.length
+                        ? `<ul>${card.body.map((line) => `<li>${line}</li>`).join('')}</ul>`
+                        : ''}
+                      ${card.footer ? `<footer>${card.footer}</footer>` : ''}
+                    </article>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      function renderTimeline(section) {
+        return `
+          <section class="content-section">
+            ${section.title ? `<h3>${section.title}</h3>` : ''}
+            <div class="timeline">
+              ${section.items
+                .map(
+                  (item) => `
+                    <div class="timeline-item">
+                      <time>${item.time}</time>
+                      <article data-status="${item.status || 'neutral'}">
+                        <h4>${item.title}</h4>
+                        ${item.description ? `<span>${item.description}</span>` : ''}
+                      </article>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      function renderSplit(section) {
+        const leftItems = section.left.items
+          .map(
+            (item) => `
+              <div class="split-item">
+                <div class="split-item-header">
+                  <span>${item.title}</span>
+                  ${item.value ? `<span>${item.value}</span>` : ''}
+                </div>
+                ${item.meta ? `<span class="split-item-meta">${item.meta}</span>` : ''}
+                ${
+                  item.tags && item.tags.length
+                    ? `<div class="split-tags">${item.tags.map((tag) => `<span>${tag}</span>`).join('')}</div>`
+                    : ''
+                }
+              </div>
+            `
+          )
+          .join('');
+
+        const rightMetrics = section.right.metrics
+          .map(
+            (metric) => `
+              <div class="split-metric">
+                <span>${metric.label}</span>
+                <strong>${metric.value}</strong>
+              </div>
+            `
+          )
+          .join('');
+
+        return `
+          <section class="content-section">
+            <div class="split-layout">
+              <div class="split-column">
+                <h4>${section.left.title}</h4>
+                ${leftItems}
+              </div>
+              <div class="split-column">
+                <h4>${section.right.title}</h4>
+                <div class="split-metrics">${rightMetrics}</div>
+                ${section.right.cta ? `<button class="split-cta" type="button">${section.right.cta}</button>` : ''}
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      function renderTable(section) {
+        const headerRow = section.columns
+          .map((column) => `<th scope="col">${column}</th>`)
+          .join('');
+        const rows = section.rows
+          .map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`)
+          .join('');
+
+        return `
+          <section class="content-section">
+            ${section.title ? `<h3>${section.title}</h3>` : ''}
+            <table class="prototype-table">
+              <thead><tr>${headerRow}</tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </section>
+        `;
+      }
+
+      function renderBoard(section) {
+        const lanes = section.lanes
+          .map(
+            (lane) => `
+              <div class="board-lane">
+                <h4>${lane.title}</h4>
+                ${lane.items.map((card) => `<div class="board-card">${card}</div>`).join('')}
+              </div>
+            `
+          )
+          .join('');
+
+        return `
+          <section class="content-section">
+            ${section.title ? `<h3>${section.title}</h3>` : ''}
+            <div class="board">${lanes}</div>
+          </section>
+        `;
+      }
+
+      function updateUI() {
+        const role = getActiveRole();
+        setAccent(role.accent);
+        renderRoleSwitcher();
+        renderSidebar();
+        renderContent();
+      }
+
+      updateUI();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
