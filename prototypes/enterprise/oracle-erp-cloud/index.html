@@ -2,83 +2,2652 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Oracle ERP Cloud 原型概览</title>
+    <title>Oracle ERP Cloud 角色原型演示</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: linear-gradient(135deg, #f5f7fb 0%, #edf1f9 100%);
+        color: #0f172a;
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background: linear-gradient(180deg, #1a2a6c 0%, #274c96 50%, #4b6cb7 100%);
+        color: #f8fafc;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        box-shadow: 12px 0 24px rgba(15, 23, 42, 0.08);
+        z-index: 1;
+      }
+
+      .sidebar::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 65%);
+        pointer-events: none;
+      }
+
+      .sidebar-header {
+        position: relative;
+        z-index: 1;
+      }
+
+      .system-name {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+      }
+
+      .system-subtitle {
+        margin-top: 6px;
+        font-size: 14px;
+        color: rgba(226, 232, 240, 0.78);
+      }
+
+      .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        position: relative;
+        z-index: 1;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: none;
+        background: rgba(255, 255, 255, 0.08);
+        color: #f8fafc;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+        text-align: left;
+      }
+
+      .menu-item span.icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.18);
+        font-size: 16px;
+      }
+
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateX(4px);
+      }
+
+      .menu-item.active {
+        background: #f8fafc;
+        color: #1a2a6c;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+      }
+
+      .menu-item.active span.icon {
+        background: rgba(26, 42, 108, 0.12);
+      }
+
+      .main-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(12px);
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 32px;
+        background: rgba(255, 255, 255, 0.96);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(20px);
+      }
+
+      .topbar-title h1 {
+        margin: 0 0 8px 0;
+        font-size: 22px;
+        color: #1f2937;
+      }
+
+      .breadcrumb {
+        font-size: 13px;
+        color: #64748b;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .breadcrumb span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .breadcrumb .divider::before {
+        content: '/';
+        opacity: 0.4;
+      }
+
+      .role-switch {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switch label {
+        font-size: 14px;
+        color: #475569;
+      }
+
+      .role-switch select {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(100, 116, 139, 0.3);
+        background: #ffffff;
+        font-size: 14px;
+        color: #0f172a;
+        min-width: 200px;
+      }
+
+      .page-container {
+        flex: 1;
+        padding: 32px;
+        overflow-y: auto;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .page-header h2 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      .page-header p {
+        margin: 6px 0 0 0;
+        color: #64748b;
+        font-size: 15px;
+        max-width: 520px;
+      }
+
+      .page-header .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(79, 70, 229, 0.12);
+        color: #4338ca;
+        font-weight: 600;
+      }
+
+      .page-body {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .widget-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+      }
+
+      .wide-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .kpi-value {
+        font-size: 30px;
+        font-weight: 700;
+        color: #1f2937;
+      }
+
+      .kpi-trend {
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+
+      .trend-up {
+        background: rgba(34, 197, 94, 0.18);
+        color: #16a34a;
+      }
+
+      .trend-down {
+        background: rgba(239, 68, 68, 0.18);
+        color: #dc2626;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: left;
+      }
+
+      .data-table th {
+        color: #475569;
+        font-weight: 600;
+        background: rgba(15, 23, 42, 0.02);
+      }
+
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .status-positive {
+        background: rgba(16, 185, 129, 0.16);
+        color: #0f766e;
+      }
+
+      .status-warning {
+        background: rgba(245, 158, 11, 0.18);
+        color: #b45309;
+      }
+
+      .status-critical {
+        background: rgba(248, 113, 113, 0.2);
+        color: #b91c1c;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .timeline-item strong {
+        color: #1f2937;
+      }
+
+      .pill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+        font-size: 13px;
+      }
+
+      .chart-placeholder {
+        height: 160px;
+        border-radius: 12px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.12),
+          rgba(59, 130, 246, 0.12) 12px,
+          rgba(37, 99, 235, 0.08) 12px,
+          rgba(37, 99, 235, 0.08) 24px
+        );
+        display: grid;
+        place-items: center;
+        color: rgba(30, 64, 175, 0.6);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .action-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .action-panel h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #1f2937;
+      }
+
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .action-button {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .action-button.primary {
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: #fff;
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+      }
+
+      .action-button.secondary {
+        background: rgba(37, 99, 235, 0.12);
+        color: #1e3a8a;
+      }
+
+      .action-button.link {
+        background: transparent;
+        color: #2563eb;
+        text-decoration: underline;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+
+      .action-button:hover {
+        transform: translateY(-2px);
+      }
+
+      .back-button {
+        border: none;
+        background: rgba(148, 163, 184, 0.16);
+        color: #1f2937;
+        padding: 8px 14px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .page-footer {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 14px;
+        padding: 16px 18px;
+        color: #475569;
+        font-size: 14px;
+      }
+
+      .page-footer strong {
+        color: #1f2937;
+      }
+
+      @media (max-width: 960px) {
+        .sidebar {
+          position: fixed;
+          inset: 0 auto 0 0;
+          width: 240px;
+          transform: translateX(0);
+          z-index: 1000;
+        }
+
+        .main-area {
+          margin-left: 240px;
+        }
+
+        .topbar-title h1 {
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .app-shell {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          position: static;
+          width: 100%;
+          flex-direction: row;
+          overflow-x: auto;
+          border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .menu-list {
+          flex-direction: row;
+          gap: 10px;
+        }
+
+        .menu-item {
+          flex-direction: column;
+          align-items: flex-start;
+          min-width: 160px;
+        }
+
+        .main-area {
+          margin: 0;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .role-switch {
+          width: 100%;
+        }
+
+        .role-switch select {
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Oracle ERP Cloud 原型</h1>
-      <p class="tagline">Oracle 云上的企业资源计划套件，覆盖财务、供应链与项目。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>财务团队、供应链运营、项目管理者</p>
-        <p><strong>核心痛点：</strong>传统 ERP 升级成本高、数据割裂、全球合规复杂</p>
-        <p><strong>价值主张：</strong>提供云原生 ERP 能力，支持端到端流程与智能分析</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>财务结账、预算与报表</li><li>采购、库存、制造与物流协同</li><li>大型项目成本与进度管理</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>财务管理</h3>
-              <p class="goal">功能目标：实现实时财务合并与合规</p>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="system-name">Oracle ERP Cloud</div>
+          <div class="system-subtitle">企业运营控制台</div>
+        </div>
+        <nav>
+          <ul id="menuList" class="menu-list"></ul>
+        </nav>
+      </aside>
+      <main class="main-area">
+        <header class="topbar">
+          <div class="topbar-title">
+            <h1>云端统一运营平台</h1>
+            <div id="breadcrumb" class="breadcrumb"></div>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <section id="pageContainer" class="page-container"></section>
+      </main>
+    </div>
+    <script>
+      const roles = {
+        cfo: {
+          name: '首席财务官（CFO）',
+          menu: [
+            { id: 'financial-dashboard', icon: '📊', label: '集团财务驾驶舱' },
+            { id: 'period-close', icon: '🧾', label: '月度结账控制' },
+            { id: 'budget-control', icon: '💰', label: '预算执行监控' },
+            { id: 'audit-workbench', icon: '🛡️', label: '审计稽核台' }
+          ]
+        },
+        procurement: {
+          name: '采购运营经理',
+          menu: [
+            { id: 'supplier-workbench', icon: '🤝', label: '供应商工作台' },
+            { id: 'sourcing-pipeline', icon: '📦', label: '寻源项目管道' },
+            { id: 'purchase-approval', icon: '✅', label: '采购审批中心' },
+            { id: 'contract-monitor', icon: '🗂️', label: '合同履约监控' }
+          ]
+        },
+        project: {
+          name: '项目控制主管',
+          menu: [
+            { id: 'project-portfolio', icon: '🗺️', label: '项目组合总览' },
+            { id: 'resource-schedule', icon: '🗓️', label: '资源排程板' },
+            { id: 'cost-analysis', icon: '📈', label: '成本差异分析' },
+            { id: 'change-control', icon: '🔄', label: '变更控制中心' }
+          ]
+        },
+        supplychain: {
+          name: '供应链运营总监',
+          menu: [
+            { id: 'demand-planning', icon: '📉', label: '需求计划协同' },
+            { id: 'production-monitor', icon: '🏭', label: '生产执行监控' },
+            { id: 'warehouse-operations', icon: '📦', label: '仓储作业面板' },
+            { id: 'logistics-tracking', icon: '🚚', label: '物流履约追踪' }
+          ]
+        }
+      };
+
+      const pages = {
+        'financial-dashboard': {
+          title: '集团财务驾驶舱',
+          subtitle: '实时掌握营收、利润与现金流，支持钻取全球区域表现',
+          status: '实时同步 · 5 分钟前更新',
+          content: `
+            <div class="widget-grid">
+              <div class="card">
+                <h3>季度营收</h3>
+                <div class="kpi-value">￥12.8B</div>
+                <div class="kpi-trend trend-up">↑ 8.6% 同比</div>
+                <div class="chart-placeholder">营收趋势预测</div>
+              </div>
+              <div class="card">
+                <h3>营业利润率</h3>
+                <div class="kpi-value">17.4%</div>
+                <div class="kpi-trend trend-down">↓ 1.2% 环比</div>
+                <div class="pill-list">
+                  <span class="pill">北美 19.8%</span>
+                  <span class="pill">亚太 14.2%</span>
+                  <span class="pill">EMEA 16.7%</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>自由现金流</h3>
+                <div class="kpi-value">￥2.1B</div>
+                <div class="kpi-trend trend-up">↑ 5.1% 预测</div>
+                <div class="chart-placeholder">现金流入/流出</div>
+              </div>
+            </div>
+            <div class="wide-grid">
+              <div class="card">
+                <h3>区域表现雷达图</h3>
+                <div class="chart-placeholder">利润率 · 订单增长 · 回款周期</div>
+                <p>区域健康度评分：北美 88，亚太 76，EMEA 81，拉美 69</p>
+              </div>
+              <div class="card">
+                <h3>风险与预警</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>事项</th>
+                      <th>影响区域</th>
+                      <th>级别</th>
+                      <th>预计影响</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>拉美汇率波动</td>
+                      <td>拉美区域</td>
+                      <td><span class="status-chip status-warning">预警</span></td>
+                      <td>利润率 -1.6%</td>
+                    </tr>
+                    <tr>
+                      <td>北美大客户延期</td>
+                      <td>北美区域</td>
+                      <td><span class="status-chip status-critical">重点</span></td>
+                      <td>现金流 -￥180M</td>
+                    </tr>
+                    <tr>
+                      <td>亚太库存积压</td>
+                      <td>亚太区域</td>
+                      <td><span class="status-chip status-warning">预警</span></td>
+                      <td>周转天数 +12 天</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '查看区域财务详情', target: 'financial-region-detail', style: 'primary' },
+            { label: '进入现金预测模型', target: 'cash-forecast-simulator', style: 'secondary' }
+          ],
+          summary: 'CFO 可在驾驶舱中快速评估各区域经营表现，并继续钻取区域或指标的异常详情，调度财务行动。'
+        },
+        'financial-region-detail': {
+          title: '区域财务详情 - 北美',
+          subtitle: '对比区域营收、成本与回款周期，定位异常业务单元',
+          status: '聚焦场景：北美 · 同步时间 09:30',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>事业部表现对比</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>事业部</th>
+                      <th>营收</th>
+                      <th>利润率</th>
+                      <th>回款周期</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>云服务</td>
+                      <td>￥4.6B</td>
+                      <td>24.8%</td>
+                      <td>38 天</td>
+                      <td><span class="status-chip status-positive">健康</span></td>
+                    </tr>
+                    <tr>
+                      <td>行业解决方案</td>
+                      <td>￥2.9B</td>
+                      <td>18.2%</td>
+                      <td>46 天</td>
+                      <td><span class="status-chip status-warning">关注</span></td>
+                    </tr>
+                    <tr>
+                      <td>咨询服务</td>
+                      <td>￥1.1B</td>
+                      <td>11.6%</td>
+                      <td>59 天</td>
+                      <td><span class="status-chip status-critical">异常</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>客户回款跟踪</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>客户 A - SaaS</strong>
+                    <div>应收 ￥320M · 已逾期 12 天 · <span class="status-chip status-warning">沟通中</span></div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>客户 B - 制造</strong>
+                    <div>应收 ￥210M · 风险备注：等待质保确认</div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>客户 C - 零售</strong>
+                    <div>应收 ￥140M · <span class="status-chip status-positive">按计划</span> · 已排入自动扣款</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '预算调整申请', target: 'budget-adjustment-form', style: 'primary' },
+            { label: '查看预算占用明细', target: 'budget-usage-drill', style: 'secondary' }
+          ],
+          summary: '区域详情用于协调区域 CFO、业务负责人对照目标，及时触发预算调整或加速回款的行动。'
+        },
+        'cash-forecast-simulator': {
+          title: '现金预测模拟器',
+          subtitle: '通过情景假设评估未来 12 周现金头寸变化',
+          status: '模型版本：FY24-Q3 · 风险中性场景',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>情景参数</h3>
+                <div class="pill-list">
+                  <span class="pill">订单增长 +6%</span>
+                  <span class="pill">付款周期 -5 天</span>
+                  <span class="pill">资本开支 -10%</span>
+                  <span class="pill">汇率波动 ±3%</span>
+                </div>
+                <div class="chart-placeholder">现金头寸曲线</div>
+              </div>
+              <div class="card">
+                <h3>敏感性分析</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>变量</th>
+                      <th>变化幅度</th>
+                      <th>现金影响</th>
+                      <th>备注</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>大客户回款</td>
+                      <td>-15 天</td>
+                      <td>+￥480M</td>
+                      <td>已与销售副总确认计划</td>
+                    </tr>
+                    <tr>
+                      <td>库存采购</td>
+                      <td>+8%</td>
+                      <td>-￥260M</td>
+                      <td>需协调供应链策略</td>
+                    </tr>
+                    <tr>
+                      <td>债务偿付</td>
+                      <td>维持</td>
+                      <td>-￥120M</td>
+                      <td>固定利率</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '生成董事会简报', target: 'cash-briefing', style: 'primary' },
+            { label: '返回财务驾驶舱', target: 'financial-dashboard', style: 'link' }
+          ],
+          summary: '现金预测模拟器帮助 CFO 设定多情景参数，输出现金缺口预警并自动生成沟通材料。'
+        },
+        'cash-briefing': {
+          title: '董事会现金简报生成',
+          subtitle: '汇总关键指标与建议行动，输出 PDF 模板',
+          status: '草稿版本 · 待 CFO 审核',
+          content: `
+            <div class="card">
+              <h3>重点摘要</h3>
               <ul>
-                <li>总账、应收应付与资产</li><li>自动化结账、审计与合并</li><li>现金流预测与财务分析</li>
+                <li>现金头寸高于安全线 ￥620M，建议保持债务结构不变</li>
+                <li>需关注北美逾期账款与亚太库存采购计划</li>
+                <li>建议批准拉美市场额外授信额度 ￥80M</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>采购与供应</h3>
-              <p class="goal">功能目标：优化采购策略与供应商协作</p>
+              <div class="chart-placeholder">三大情景对比</div>
+            </div>
+            <div class="card">
+              <h3>输出设置</h3>
+              <div class="pill-list">
+                <span class="pill">格式：PDF</span>
+                <span class="pill">包含：附录、敏感性分析</span>
+                <span class="pill">共享对象：董事会财务委员会</span>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '确认并发送', target: 'financial-dashboard', style: 'primary' },
+            { label: '返回现金预测', target: 'cash-forecast-simulator', style: 'secondary' }
+          ],
+          summary: '系统自动整合现金预测输出建议，并支持一键发送给董事会或指定的审批流程。'
+        },
+        'period-close': {
+          title: '月度结账控制中心',
+          subtitle: '查看结账进度、关键任务与异常审批，确保准时出具报表',
+          status: '结账周期：2024-07 · 完成度 68%',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>结账进度轨迹</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>总账关账</strong>
+                    <div>完成度 80% · 预计剩余 1.5 天 · <span class="status-chip status-warning">待审凭证 12</span></div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>子模块对账</strong>
+                    <div>应收/应付已完成，对应资产模块剩余 4 项</div>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>管理报表生成</strong>
+                    <div>计划时间 07-05 12:00 · 依赖结账审批通过</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>关键阻塞事项</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>任务</th>
+                      <th>责任人</th>
+                      <th>状态</th>
+                      <th>截止</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>资产折旧调整</td>
+                      <td>张敏</td>
+                      <td><span class="status-chip status-warning">待确认</span></td>
+                      <td>07-03</td>
+                    </tr>
+                    <tr>
+                      <td>北美收入摊销</td>
+                      <td>John</td>
+                      <td><span class="status-chip status-critical">审批阻塞</span></td>
+                      <td>07-02</td>
+                    </tr>
+                    <tr>
+                      <td>税务申报预校对</td>
+                      <td>刘颖</td>
+                      <td><span class="status-chip status-positive">完成</span></td>
+                      <td>07-01</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '查看结账任务详情', target: 'close-task-detail', style: 'primary' },
+            { label: '发起临时审批', target: 'close-exception-approval', style: 'secondary' }
+          ],
+          summary: '结账控制中心用于跟踪关键任务、阻塞原因并联动审批，保障财务按期出具合并报表。'
+        },
+        'close-task-detail': {
+          title: '结账任务详情 - 北美收入摊销',
+          subtitle: '查看任务依赖、凭证与审批链路，加速结账流程',
+          status: '负责人：John · 状态：审批阻塞',
+          content: `
+            <div class="card">
+              <h3>任务概览</h3>
               <ul>
-                <li>采购申请、招标与合同管理</li><li>供应商门户、绩效与风险评估</li><li>自助采购与费用控制</li>
+                <li>依赖完成：销售收入确认、合同附录上传</li>
+                <li>当前阻塞：等待 CFO 审批摊销调整方案</li>
+                <li>风控提示：调整金额超过预算 12%</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>项目组合</h3>
-              <p class="goal">功能目标：支持项目规划、执行与结算</p>
+            </div>
+            <div class="card">
+              <h3>凭证与附件</h3>
+              <div class="pill-list">
+                <span class="pill">凭证号：GL-2024-07-0321</span>
+                <span class="pill">附件：Revenue_Adjustment.xlsx</span>
+                <span class="pill">审批链：财务经理 → CFO</span>
+              </div>
+              <div class="chart-placeholder">摊销曲线对比</div>
+            </div>
+          `,
+          actions: [
+            { label: '立即批注并通过', target: 'period-close', style: 'primary' },
+            { label: '联系责任人', target: 'period-close', style: 'secondary' }
+          ],
+          summary: '任务详情页集中展示凭证与阻塞点，便于 CFO 直接批注通过或协调团队完成后续步骤。'
+        },
+        'close-exception-approval': {
+          title: '临时审批 - 摊销调整方案',
+          subtitle: '快速补充审批意见，并在结账计划内留痕',
+          status: '审批链：财务经理 → CFO → 审计',
+          content: `
+            <div class="card">
+              <h3>审批要点</h3>
               <ul>
-                <li>项目预算、资源与成本</li><li>进度跟踪、里程碑与审批</li><li>项目盈利分析与收入确认</li>
+                <li>调整原因：客户条款变更，需延长履约周期</li>
+                <li>金额影响：￥62M · 对利润率影响 -0.4%</li>
+                <li>风险控制：自动触发审计抽样</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>供应链与制造</h3>
-              <p class="goal">功能目标：统筹库存、生产与物流</p>
+            </div>
+            <div class="card">
+              <h3>审批意见草稿</h3>
+              <div class="chart-placeholder">批注输入占位</div>
+            </div>
+          `,
+          actions: [
+            { label: '提交审批', target: 'period-close', style: 'primary' },
+            { label: '返回结账中心', target: 'period-close', style: 'secondary' }
+          ],
+          summary: '临时审批流程确保结账调整被审计追踪，并自动同步进度到结账控制中心。'
+        },
+        'budget-control': {
+          title: '预算执行监控',
+          subtitle: '对照预算、实际与预测差异，掌握资源消耗',
+          status: 'FY24 · 执行进度 54%',
+          content: `
+            <div class="widget-grid">
+              <div class="card">
+                <h3>预算执行概览</h3>
+                <div class="kpi-value">￥8.6B / ￥16B</div>
+                <div class="kpi-trend trend-up">↓ 预算消耗 -2.4% 优于计划</div>
+                <div class="chart-placeholder">预算 vs 实际</div>
+              </div>
+              <div class="card">
+                <h3>部门差异</h3>
+                <table class="data-table">
+                  <tbody>
+                    <tr>
+                      <td>市场部</td>
+                      <td>+12%</td>
+                      <td><span class="status-chip status-warning">需审查</span></td>
+                    </tr>
+                    <tr>
+                      <td>研发部</td>
+                      <td>-6%</td>
+                      <td><span class="status-chip status-positive">可调拨</span></td>
+                    </tr>
+                    <tr>
+                      <td>运营部</td>
+                      <td>+2%</td>
+                      <td><span class="status-chip status-positive">正常</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>滚动预测</h3>
+                <div class="chart-placeholder">未来 6 个月预测</div>
+                <p>关键驱动：云服务拓展、资本开支放缓、AI 项目投入</p>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '预算调整申请', target: 'budget-adjustment-form', style: 'primary' },
+            { label: '查看预算占用明细', target: 'budget-usage-drill', style: 'secondary' }
+          ],
+          summary: '预算监控页面支持 CFO 发起预算调整、查看部门差异并联动滚动预测结果。'
+        },
+        'budget-adjustment-form': {
+          title: '预算调整申请单',
+          subtitle: '快速填写预算调拨信息并提交审批',
+          status: '流程状态：草稿 · 自动匹配审批链',
+          content: `
+            <div class="card">
+              <h3>调拨配置</h3>
+              <div class="pill-list">
+                <span class="pill">从：市场部 · 推广预算</span>
+                <span class="pill">至：研发部 · AI 创新项目</span>
+                <span class="pill">金额：￥120M</span>
+              </div>
+              <div class="chart-placeholder">预算影响模拟</div>
+            </div>
+            <div class="card">
+              <h3>审批与合规</h3>
               <ul>
-                <li>需求计划与主生产计划</li><li>车间执行与质量管理</li><li>全球订单、物流与退货处理</li>
+                <li>审批人：财务经理 → CFO → 合规官</li>
+                <li>合规模板：SOX · 落地控制 4-2</li>
+                <li>预计完成：2 个工作日</li>
               </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>财务结账周期与报表准确率</li><li>采购节省率与供应商绩效</li><li>项目盈利率与订单履约率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+            </div>
+          `,
+          actions: [
+            { label: '提交并通知', target: 'budget-control', style: 'primary' },
+            { label: '保存草稿', target: 'budget-control', style: 'secondary' }
+          ],
+          summary: '预算调整单预填审批链并模拟影响，提交后自动更新预算监控与结账计划。'
+        },
+        'budget-usage-drill': {
+          title: '预算占用明细',
+          subtitle: '分层查看预算科目与项目使用情况，识别异常消耗',
+          status: '筛选条件：市场部 · FY24-Q3',
+          content: `
+            <div class="card">
+              <h3>占用拆解</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>科目</th>
+                    <th>预算</th>
+                    <th>已用</th>
+                    <th>差异</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>数字广告</td>
+                    <td>￥320M</td>
+                    <td>￥390M</td>
+                    <td><span class="status-chip status-critical">+22%</span></td>
+                    <td>受新品上市拉动</td>
+                  </tr>
+                  <tr>
+                    <td>线下活动</td>
+                    <td>￥180M</td>
+                    <td>￥140M</td>
+                    <td><span class="status-chip status-positive">-22%</span></td>
+                    <td>可调拨至研发</td>
+                  </tr>
+                  <tr>
+                    <td>渠道返利</td>
+                    <td>￥260M</td>
+                    <td>￥250M</td>
+                    <td><span class="status-chip status-positive">-4%</span></td>
+                    <td>正常</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '导出明细', target: 'budget-control', style: 'secondary' },
+            { label: '返回预算监控', target: 'budget-control', style: 'link' }
+          ],
+          summary: '预算占用明细用于支持差异分析，导出后可共享给业务负责人校正资源投入。'
+        },
+        'audit-workbench': {
+          title: '审计稽核台',
+          subtitle: '集中处理财务控制例外、智能抽样与整改计划',
+          status: '本期例外：8 · 高风险：2',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>例外事项</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>编号</th>
+                      <th>类型</th>
+                      <th>责任部门</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>EX-2047</td>
+                      <td>收入确认</td>
+                      <td>北美销售</td>
+                      <td><span class="status-chip status-critical">整改中</span></td>
+                    </tr>
+                    <tr>
+                      <td>EX-2050</td>
+                      <td>采购授权</td>
+                      <td>供应链</td>
+                      <td><span class="status-chip status-warning">待复核</span></td>
+                    </tr>
+                    <tr>
+                      <td>EX-2053</td>
+                      <td>资产盘点</td>
+                      <td>制造</td>
+                      <td><span class="status-chip status-positive">关闭</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>控制健康度</h3>
+                <div class="chart-placeholder">关键控制指标热力图</div>
+                <p>高风险控制：收入确认、采购授权<br />中风险控制：费用报销、合同审批</p>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '查看审计例外详情', target: 'audit-exception-detail', style: 'primary' },
+            { label: '生成控制报告', target: 'audit-control-report', style: 'secondary' }
+          ],
+          summary: '审计稽核台聚合例外与控制健康度，支持 CFO 审阅整改计划并导出报告。'
+        },
+        'audit-exception-detail': {
+          title: '审计例外详情 - EX-2047',
+          subtitle: '记录例外原因、整改动作与验证节点',
+          status: '整改负责人：北美销售总监',
+          content: `
+            <div class="card">
+              <h3>例外说明</h3>
+              <ul>
+                <li>触发条件：订单提前确认收入，未完成交付</li>
+                <li>影响金额：￥86M · 影响利润率 -0.6%</li>
+                <li>整改期限：07-12 · 需重新确认合同条款</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>整改计划</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>7-02</strong>
+                  <div>销售团队补充交付证明 · <span class="status-chip status-warning">进行中</span></div>
+                </div>
+                <div class="timeline-item">
+                  <strong>7-05</strong>
+                  <div>财务重开凭证 · 重新确认收入</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>7-10</strong>
+                  <div>审计团队验证 · 更新控制矩阵</div>
+                </div>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '标记为完成', target: 'audit-workbench', style: 'primary' },
+            { label: '返回稽核台', target: 'audit-workbench', style: 'secondary' }
+          ],
+          summary: '例外详情页跟踪整改节点，完成后自动更新控制健康度与稽核报表。'
+        },
+        'audit-control-report': {
+          title: '控制报告生成器',
+          subtitle: '选择报告周期与控制域，生成 PDF 报告',
+          status: '模板：财务控制 - 季度版',
+          content: `
+            <div class="card">
+              <h3>报告设置</h3>
+              <div class="pill-list">
+                <span class="pill">周期：2024 Q2</span>
+                <span class="pill">范围：收入、采购、资产</span>
+                <span class="pill">输出：PDF + PowerPoint</span>
+              </div>
+              <div class="chart-placeholder">报告封面预览</div>
+            </div>
+          `,
+          actions: [
+            { label: '生成并发送', target: 'audit-workbench', style: 'primary' },
+            { label: '返回稽核台', target: 'audit-workbench', style: 'secondary' }
+          ],
+          summary: '控制报告生成器将稽核数据整合输出标准模版，支持一键共享给内控与审计团队。'
+        },
+        'supplier-workbench': {
+          title: '供应商工作台',
+          subtitle: '评估供应商绩效、风险与协同事项',
+          status: '重点供应商：12 · 风险预警：3',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>绩效评分</h3>
+                <div class="chart-placeholder">交付 · 质量 · 成本 · 创新</div>
+                <p>平均评分：86/100 · 本周新增预警：2</p>
+              </div>
+              <div class="card">
+                <h3>协同事项</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>事项</th>
+                      <th>负责人</th>
+                      <th>进度</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>季度绩效评估</td>
+                      <td>张倩</td>
+                      <td>80%</td>
+                      <td><span class="status-chip status-warning">待供应商确认</span></td>
+                    </tr>
+                    <tr>
+                      <td>联合降本项目</td>
+                      <td>Liang</td>
+                      <td>45%</td>
+                      <td><span class="status-chip status-positive">按计划</span></td>
+                    </tr>
+                    <tr>
+                      <td>质量整改</td>
+                      <td>Grace</td>
+                      <td>60%</td>
+                      <td><span class="status-chip status-warning">需复检</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '查看供应商详情', target: 'supplier-profile', style: 'primary' },
+            { label: '发起绩效评估', target: 'supplier-evaluation-wizard', style: 'secondary' }
+          ],
+          summary: '供应商工作台聚焦关键供应商表现，支持快速钻取资料与发起绩效评估流程。'
+        },
+        'supplier-profile': {
+          title: '供应商档案 - 极光电子',
+          subtitle: '查看履约记录、合同与风险评级',
+          status: '合作等级：战略 · 风险评级 B+',
+          content: `
+            <div class="card">
+              <h3>核心信息</h3>
+              <div class="pill-list">
+                <span class="pill">产品：核心芯片</span>
+                <span class="pill">年度采购额：￥860M</span>
+                <span class="pill">交付 SLA：98%</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3>风险摘要</h3>
+              <ul>
+                <li>地缘风险：无 · 供应基地在新加坡</li>
+                <li>质量得分：92 · 最近一次抽检通过</li>
+                <li>财务健康：资产负债率 41%</li>
+              </ul>
+            </div>
+          `,
+          actions: [
+            { label: '创建整改计划', target: 'supplier-evaluation-wizard', style: 'primary' },
+            { label: '返回供应商工作台', target: 'supplier-workbench', style: 'secondary' }
+          ],
+          summary: '供应商档案整合绩效、风险与合同信息，便于采购经理制定协同方案。'
+        },
+        'supplier-evaluation-wizard': {
+          title: '绩效评估向导',
+          subtitle: '配置评估模板、评分维度与整改动作',
+          status: '阶段：维度确认 · 负责人：张倩',
+          content: `
+            <div class="card">
+              <h3>评分维度</h3>
+              <div class="pill-list">
+                <span class="pill">交付及时性</span>
+                <span class="pill">质量缺陷率</span>
+                <span class="pill">成本改善</span>
+                <span class="pill">协同创新</span>
+              </div>
+              <div class="chart-placeholder">评分表单占位</div>
+            </div>
+            <div class="card">
+              <h3>整改计划建议</h3>
+              <ul>
+                <li>与制造团队共建降本项目</li>
+                <li>引入季度联合审核</li>
+                <li>订立交付延迟违约条款</li>
+              </ul>
+            </div>
+          `,
+          actions: [
+            { label: '提交评估结果', target: 'supplier-workbench', style: 'primary' },
+            { label: '保存并稍后继续', target: 'supplier-workbench', style: 'secondary' }
+          ],
+          summary: '绩效评估向导提供标准模板并生成整改建议，提交后会同步至供应商协同计划。'
+        },
+        'sourcing-pipeline': {
+          title: '寻源项目管道',
+          subtitle: '跟踪从需求到合同签署的寻源项目状态',
+          status: '在途项目：9 · 预期节省：7.4%',
+          content: `
+            <div class="card">
+              <h3>项目阶段</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>电子元件补标</strong>
+                  <div>阶段：评标 · 节省率 6.2%</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>物流外包</strong>
+                  <div>阶段：合同谈判 · 节省率 11.4%</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>IT SaaS 续约</strong>
+                  <div>阶段：需求确认 · 节省率 4.1%</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>节省贡献</h3>
+              <div class="chart-placeholder">节省金额漏斗</div>
+            </div>
+          `,
+          actions: [
+            { label: '创建招标项目', target: 'rfq-create', style: 'primary' },
+            { label: '查看投标比较', target: 'bid-comparison', style: 'secondary' }
+          ],
+          summary: '寻源项目管道展示各阶段进度及节省贡献，支持创建新的招标或对比投标方案。'
+        },
+        'rfq-create': {
+          title: '招标项目创建',
+          subtitle: '配置招标范围、供应商名单与时间线',
+          status: '状态：草稿 · 招标编号 RFQ-2407-03',
+          content: `
+            <div class="card">
+              <h3>核心配置</h3>
+              <div class="pill-list">
+                <span class="pill">范围：核心芯片</span>
+                <span class="pill">预算：￥480M</span>
+                <span class="pill">供应商：极光、恒星、Nova</span>
+              </div>
+              <div class="chart-placeholder">招标时间线</div>
+            </div>
+          `,
+          actions: [
+            { label: '发布招标', target: 'sourcing-pipeline', style: 'primary' },
+            { label: '返回寻源管道', target: 'sourcing-pipeline', style: 'secondary' }
+          ],
+          summary: '招标创建页面用于配置范围、预算与时间线，发布后供应商门户会接收邀标。'
+        },
+        'bid-comparison': {
+          title: '投标比较工作台',
+          subtitle: '对比供应商报价、服务条款与风险评分',
+          status: '项目：电子元件补标 · 阶段：评标',
+          content: `
+            <div class="card">
+              <h3>报价对比</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>供应商</th>
+                    <th>报价</th>
+                    <th>交期</th>
+                    <th>综合评分</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>极光电子</td>
+                    <td>￥452M</td>
+                    <td>45 天</td>
+                    <td>88</td>
+                  </tr>
+                  <tr>
+                    <td>恒星科技</td>
+                    <td>￥448M</td>
+                    <td>52 天</td>
+                    <td>84</td>
+                  </tr>
+                  <tr>
+                    <td>Nova Circuits</td>
+                    <td>￥460M</td>
+                    <td>40 天</td>
+                    <td>90</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '发起授标审批', target: 'purchase-approval', style: 'primary' },
+            { label: '导出比较报告', target: 'sourcing-pipeline', style: 'secondary' }
+          ],
+          summary: '投标比较工作台用于评估供应商方案，支持直接发起授标审批。'
+        },
+        'purchase-approval': {
+          title: '采购审批中心',
+          subtitle: '集中处理采购订单、授标与异常审批',
+          status: '待我处理：5 · 紧急：1',
+          content: `
+            <div class="card">
+              <h3>审批队列</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>单据</th>
+                    <th>金额</th>
+                    <th>类别</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>PO-2407-021</td>
+                    <td>￥180M</td>
+                    <td>战略采购</td>
+                    <td><span class="status-chip status-critical">加急</span></td>
+                  </tr>
+                  <tr>
+                    <td>PO-2407-032</td>
+                    <td>￥28M</td>
+                    <td>MRO</td>
+                    <td><span class="status-chip status-warning">待审批</span></td>
+                  </tr>
+                  <tr>
+                    <td>授标：电子元件</td>
+                    <td>￥452M</td>
+                    <td>招标</td>
+                    <td><span class="status-chip status-warning">待评估</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '审批详情', target: 'approval-detail', style: 'primary' },
+            { label: '查看历史记录', target: 'approval-history', style: 'secondary' }
+          ],
+          summary: '采购审批中心聚焦待办队列，支持继续查看单据详情或历史审批记录。'
+        },
+        'approval-detail': {
+          title: '审批详情 - PO-2407-021',
+          subtitle: '核对采购明细与合同条款',
+          status: '当前节点：采购运营经理',
+          content: `
+            <div class="card">
+              <h3>订单要点</h3>
+              <div class="pill-list">
+                <span class="pill">金额：￥180M</span>
+                <span class="pill">物料：高精度传感器</span>
+                <span class="pill">交期：45 天</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3>合同条款</h3>
+              <ul>
+                <li>付款：30/40/30 分期</li>
+                <li>质保：24 个月</li>
+                <li>违约：逾期 3%/周</li>
+              </ul>
+            </div>
+          `,
+          actions: [
+            { label: '批准并通知', target: 'purchase-approval', style: 'primary' },
+            { label: '退回修改', target: 'purchase-approval', style: 'secondary' }
+          ],
+          summary: '审批详情显示订单关键数据与条款，便于快速决策批准或退回修改。'
+        },
+        'approval-history': {
+          title: '审批历史',
+          subtitle: '查看近 30 日审批处理记录',
+          status: '审批通过率：92%',
+          content: `
+            <div class="card">
+              <h3>历史概览</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>单据</th>
+                    <th>结果</th>
+                    <th>处理时间</th>
+                    <th>耗时</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>PO-2406-118</td>
+                    <td><span class="status-chip status-positive">通过</span></td>
+                    <td>06-25 11:20</td>
+                    <td>4h</td>
+                  </tr>
+                  <tr>
+                    <td>授标：物流外包</td>
+                    <td><span class="status-chip status-warning">加签</span></td>
+                    <td>06-23 15:10</td>
+                    <td>1d</td>
+                  </tr>
+                  <tr>
+                    <td>PO-2406-099</td>
+                    <td><span class="status-chip status-positive">通过</span></td>
+                    <td>06-21 09:05</td>
+                    <td>3h</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '返回审批中心', target: 'purchase-approval', style: 'secondary' }
+          ],
+          summary: '审批历史提供处理记录与耗时分析，为优化审批 SLA 提供依据。'
+        },
+        'contract-monitor': {
+          title: '合同履约监控',
+          subtitle: '跟踪合同执行进度与风险预警',
+          status: '在执行：34 · 即将到期：5',
+          content: `
+            <div class="card">
+              <h3>履约状态</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>合同</th>
+                    <th>供应商</th>
+                    <th>进度</th>
+                    <th>风险</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CN-2403-08</td>
+                    <td>极光电子</td>
+                    <td>78%</td>
+                    <td><span class="status-chip status-warning">交期风险</span></td>
+                  </tr>
+                  <tr>
+                    <td>CN-2401-12</td>
+                    <td>Nova Circuits</td>
+                    <td>92%</td>
+                    <td><span class="status-chip status-positive">正常</span></td>
+                  </tr>
+                  <tr>
+                    <td>CN-2312-05</td>
+                    <td>恒星科技</td>
+                    <td>64%</td>
+                    <td><span class="status-chip status-warning">质量重检</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '合同续签计划', target: 'contract-renewal', style: 'primary' },
+            { label: '查看风险预警', target: 'contract-risk-insight', style: 'secondary' }
+          ],
+          summary: '合同监控页面用于追踪履约进度并快速进入续签或风险处理流程。'
+        },
+        'contract-renewal': {
+          title: '续签计划排期',
+          subtitle: '规划即将到期合同的续签任务',
+          status: '未来 90 天到期：5',
+          content: `
+            <div class="card">
+              <h3>续签任务列表</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>合同</th>
+                    <th>到期</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CN-2401-12</td>
+                    <td>08-15</td>
+                    <td>赵云</td>
+                    <td><span class="status-chip status-warning">待谈判</span></td>
+                  </tr>
+                  <tr>
+                    <td>CN-2312-05</td>
+                    <td>09-02</td>
+                    <td>张倩</td>
+                    <td><span class="status-chip status-positive">计划中</span></td>
+                  </tr>
+                  <tr>
+                    <td>CN-2309-18</td>
+                    <td>09-10</td>
+                    <td>Liang</td>
+                    <td><span class="status-chip status-warning">待确认</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '返回合同监控', target: 'contract-monitor', style: 'secondary' }
+          ],
+          summary: '续签计划为采购经理安排谈判节奏，确保关键合同不断档。'
+        },
+        'contract-risk-insight': {
+          title: '合同风险洞察',
+          subtitle: '查看风险分类与整改措施',
+          status: '当前预警：交期 2 · 质量 1',
+          content: `
+            <div class="card">
+              <h3>风险分类</h3>
+              <div class="chart-placeholder">风险分布图</div>
+              <ul>
+                <li>交期风险：极光电子 · 已启动联合排查</li>
+                <li>质量风险：恒星科技 · 重检计划 07-08</li>
+                <li>合规风险：无</li>
+              </ul>
+            </div>
+          `,
+          actions: [
+            { label: '返回合同监控', target: 'contract-monitor', style: 'secondary' }
+          ],
+          summary: '风险洞察帮助采购团队对异常合同制定整改与协同计划。'
+        },
+        'project-portfolio': {
+          title: '项目组合总览',
+          subtitle: '掌握关键项目的进度、成本与风险',
+          status: '项目总数：18 · 红色项目：2',
+          content: `
+            <div class="widget-grid">
+              <div class="card">
+                <h3>里程碑完成率</h3>
+                <div class="kpi-value">82%</div>
+                <div class="kpi-trend trend-up">↑ 较上周 +3%</div>
+                <div class="chart-placeholder">里程碑燃尽图</div>
+              </div>
+              <div class="card">
+                <h3>成本执行</h3>
+                <div class="kpi-value">￥2.4B / ￥3.1B</div>
+                <div class="kpi-trend trend-down">↑ 成本偏差 +4%</div>
+                <div class="pill-list">
+                  <span class="pill">AI 平台</span>
+                  <span class="pill">云迁移</span>
+                  <span class="pill">全球 CRM</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>风险热力</h3>
+                <div class="chart-placeholder">风险热力图</div>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '进入项目详情', target: 'project-detail', style: 'primary' },
+            { label: '生成项目报告', target: 'project-report-center', style: 'secondary' }
+          ],
+          summary: '项目组合总览用于监控里程碑与成本，支持钻取单个项目并生成报告。'
+        },
+        'project-detail': {
+          title: '项目详情 - 全球 CRM 升级',
+          subtitle: '查看里程碑、成本与风险动作',
+          status: '阶段：UAT · 完成度 76%',
+          content: `
+            <div class="card">
+              <h3>里程碑追踪</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>开发完成</strong>
+                  <div>完成 · 05-30</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>UAT 测试</strong>
+                  <div>进行中 · 完成度 76%</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>全球部署</strong>
+                  <div>计划 · 08-15 · 需确认培训日程</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>成本与资源</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>科目</th>
+                    <th>预算</th>
+                    <th>已用</th>
+                    <th>偏差</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>实施服务</td>
+                    <td>￥420M</td>
+                    <td>￥398M</td>
+                    <td><span class="status-chip status-positive">-5%</span></td>
+                  </tr>
+                  <tr>
+                    <td>用户培训</td>
+                    <td>￥65M</td>
+                    <td>￥78M</td>
+                    <td><span class="status-chip status-warning">+20%</span></td>
+                  </tr>
+                  <tr>
+                    <td>数据迁移</td>
+                    <td>￥120M</td>
+                    <td>￥118M</td>
+                    <td><span class="status-chip status-positive">-2%</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '资源冲突视图', target: 'resource-conflict', style: 'secondary' },
+            { label: '提交变更请求', target: 'change-request-detail', style: 'primary' }
+          ],
+          summary: '项目详情展示里程碑与成本结构，支持快速跳转到资源协调或变更管理页面。'
+        },
+        'project-report-center': {
+          title: '项目报告中心',
+          subtitle: '汇总关键项目指标并生成周报',
+          status: '最新生成：07-01 周报',
+          content: `
+            <div class="card">
+              <h3>报告模板</h3>
+              <div class="pill-list">
+                <span class="pill">高层周报</span>
+                <span class="pill">项目经理日报</span>
+                <span class="pill">风险专报</span>
+              </div>
+              <div class="chart-placeholder">报告封面预览</div>
+            </div>
+          `,
+          actions: [
+            { label: '生成并分享', target: 'project-portfolio', style: 'primary' },
+            { label: '返回项目组合', target: 'project-portfolio', style: 'secondary' }
+          ],
+          summary: '项目报告中心帮助项目控制主管快速生成标准化汇报材料。'
+        },
+        'resource-schedule': {
+          title: '资源排程板',
+          subtitle: '协调跨项目的关键资源负载',
+          status: '资源利用率：78%',
+          content: `
+            <div class="card">
+              <h3>核心资源负载</h3>
+              <div class="chart-placeholder">资源甘特图</div>
+              <p>本周冲突：架构师 (120%)、测试经理 (105%)</p>
+            </div>
+            <div class="card">
+              <h3>冲突详情</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>资源</th>
+                    <th>项目</th>
+                    <th>冲突时间</th>
+                    <th>解决方案</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>架构师</td>
+                    <td>全球 CRM / AI 平台</td>
+                    <td>07-08 ~ 07-19</td>
+                    <td>调整 AI 平台迭代优先级</td>
+                  </tr>
+                  <tr>
+                    <td>测试经理</td>
+                    <td>全球 CRM / 制造执行</td>
+                    <td>07-15 ~ 07-26</td>
+                    <td>引入外部测试资源</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '查看冲突视图', target: 'resource-conflict', style: 'primary' },
+            { label: '调整排班', target: 'schedule-adjust', style: 'secondary' }
+          ],
+          summary: '资源排程板用于识别跨项目资源冲突，并快速进入冲突详情或调整排班。'
+        },
+        'resource-conflict': {
+          title: '资源冲突视图',
+          subtitle: '聚焦需要协调的资源冲突时间段',
+          status: '冲突数：2 · 待协调：1',
+          content: `
+            <div class="card">
+              <h3>冲突列表</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>资源</th>
+                    <th>冲突项目</th>
+                    <th>严重度</th>
+                    <th>建议动作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>架构师</td>
+                    <td>全球 CRM / AI 平台</td>
+                    <td><span class="status-chip status-critical">高</span></td>
+                    <td>安排 AI 平台冲刺延期</td>
+                  </tr>
+                  <tr>
+                    <td>测试经理</td>
+                    <td>全球 CRM / 制造执行</td>
+                    <td><span class="status-chip status-warning">中</span></td>
+                    <td>引入外包测试</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '返回资源排程', target: 'resource-schedule', style: 'secondary' }
+          ],
+          summary: '资源冲突视图提供解决建议，协调完成后同步回排程板。'
+        },
+        'schedule-adjust': {
+          title: '排班调整工作台',
+          subtitle: '拖拽调整资源日程并通知相关团队',
+          status: '模式：建议 · 未发布',
+          content: `
+            <div class="card">
+              <h3>调整方案</h3>
+              <ul>
+                <li>架构师：AI 平台迭代延后 1 周</li>
+                <li>测试经理：增加外包测试 2 人周</li>
+                <li>通知对象：项目经理、HR</li>
+              </ul>
+              <div class="chart-placeholder">日程拖拽占位</div>
+            </div>
+          `,
+          actions: [
+            { label: '发布调整', target: 'resource-schedule', style: 'primary' },
+            { label: '返回排程板', target: 'resource-schedule', style: 'secondary' }
+          ],
+          summary: '排班调整工作台模拟资源日程变更，发布后自动推送给项目团队。'
+        },
+        'cost-analysis': {
+          title: '成本差异分析',
+          subtitle: '识别项目成本偏差并定位根因',
+          status: '成本偏差：+4.6% · 关键项目：3',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>差异来源</h3>
+                <div class="chart-placeholder">差异瀑布图</div>
+                <p>主要差异：外部顾问 +￥80M、培训 +￥12M、硬件 -￥24M</p>
+              </div>
+              <div class="card">
+                <h3>项目对比</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>项目</th>
+                      <th>预算</th>
+                      <th>实际</th>
+                      <th>偏差</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>全球 CRM</td>
+                      <td>￥620M</td>
+                      <td>￥668M</td>
+                      <td><span class="status-chip status-warning">+7.7%</span></td>
+                    </tr>
+                    <tr>
+                      <td>AI 平台</td>
+                      <td>￥540M</td>
+                      <td>￥512M</td>
+                      <td><span class="status-chip status-positive">-5.2%</span></td>
+                    </tr>
+                    <tr>
+                      <td>制造执行升级</td>
+                      <td>￥380M</td>
+                      <td>￥402M</td>
+                      <td><span class="status-chip status-warning">+5.8%</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '成本异常详情', target: 'cost-variance-detail', style: 'primary' },
+            { label: '模拟变更影响', target: 'change-impact-sim', style: 'secondary' }
+          ],
+          summary: '成本差异分析页面聚焦偏差来源，可进一步钻取异常详情或模拟变更影响。'
+        },
+        'cost-variance-detail': {
+          title: '成本异常详情 - 培训超支',
+          subtitle: '对比预算、实际与供应商账单',
+          status: '责任人：培训负责人 · 跟进中',
+          content: `
+            <div class="card">
+              <h3>异常摘要</h3>
+              <ul>
+                <li>偏差金额：￥12M · 原因：追加培训批次</li>
+                <li>受影响项目：全球 CRM · UAT 阶段</li>
+                <li>建议：评估外部培训预算调拨</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>供应商账单</h3>
+              <div class="chart-placeholder">账单列表占位</div>
+            </div>
+          `,
+          actions: [
+            { label: '发起预算调拨', target: 'budget-adjustment-form', style: 'primary' },
+            { label: '返回成本分析', target: 'cost-analysis', style: 'secondary' }
+          ],
+          summary: '成本异常详情联动预算调拨和供应商账单，用于快速闭环成本偏差。'
+        },
+        'change-impact-sim': {
+          title: '变更影响模拟',
+          subtitle: '评估范围、进度与成本变更的影响',
+          status: '当前场景：功能范围增加 8%',
+          content: `
+            <div class="card">
+              <h3>影响评估</h3>
+              <div class="pill-list">
+                <span class="pill">进度：+15 天</span>
+                <span class="pill">成本：+￥36M</span>
+                <span class="pill">资源：新增开发 4 人</span>
+              </div>
+              <div class="chart-placeholder">影响矩阵</div>
+            </div>
+          `,
+          actions: [
+            { label: '生成变更报告', target: 'project-report-center', style: 'primary' },
+            { label: '返回成本分析', target: 'cost-analysis', style: 'secondary' }
+          ],
+          summary: '变更模拟评估多维影响，为后续审批和报告提供量化依据。'
+        },
+        'change-control': {
+          title: '变更控制中心',
+          subtitle: '集中管理项目变更请求与审批',
+          status: '开放变更：4 · 待审批：2',
+          content: `
+            <div class="card">
+              <h3>变更队列</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>变更单</th>
+                    <th>项目</th>
+                    <th>类型</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CR-2407-05</td>
+                    <td>全球 CRM</td>
+                    <td>范围增加</td>
+                    <td><span class="status-chip status-warning">待审批</span></td>
+                  </tr>
+                  <tr>
+                    <td>CR-2407-04</td>
+                    <td>AI 平台</td>
+                    <td>资源调整</td>
+                    <td><span class="status-chip status-positive">实施中</span></td>
+                  </tr>
+                  <tr>
+                    <td>CR-2407-03</td>
+                    <td>制造执行</td>
+                    <td>进度延后</td>
+                    <td><span class="status-chip status-warning">评估中</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '变更单详情', target: 'change-request-detail', style: 'primary' },
+            { label: '发起审批流', target: 'change-approval-flow', style: 'secondary' }
+          ],
+          summary: '变更控制中心用于监控变更进展，快速跳转到详情或发起审批流程。'
+        },
+        'change-request-detail': {
+          title: '变更详情 - CR-2407-05',
+          subtitle: '新增客户 360 视图模块',
+          status: '影响评估完成 · 待审批',
+          content: `
+            <div class="card">
+              <h3>变更概览</h3>
+              <ul>
+                <li>范围：新增 4 个集成接口</li>
+                <li>成本：+￥28M · 资源：开发 4 人周</li>
+                <li>进度：上线时间延后 12 天</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>审批链</h3>
+              <div class="pill-list">
+                <span class="pill">项目经理</span>
+                <span class="pill">项目发起人</span>
+                <span class="pill">CIO</span>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '发起审批流', target: 'change-approval-flow', style: 'primary' },
+            { label: '返回变更中心', target: 'change-control', style: 'secondary' }
+          ],
+          summary: '变更详情展示评估结果与审批链，方便项目主管立刻发起审批。'
+        },
+        'change-approval-flow': {
+          title: '变更审批流程',
+          subtitle: '配置审批节点与通知对象',
+          status: '模板：重大范围变更',
+          content: `
+            <div class="card">
+              <h3>审批节点</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>节点 1</strong>
+                  <div>项目经理 · 审核评估结果</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>节点 2</strong>
+                  <div>项目发起人 · 确认预算来源</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>节点 3</strong>
+                  <div>CIO · 签批上线窗口</div>
+                </div>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '提交审批', target: 'change-control', style: 'primary' },
+            { label: '返回变更中心', target: 'change-control', style: 'secondary' }
+          ],
+          summary: '变更审批流程配置完成后，可直接提交并同步至项目管理计划。'
+        },
+        'demand-planning': {
+          title: '需求计划协同',
+          subtitle: '整合销售预测、运营计划与库存策略',
+          status: 'S&OP 周期：07 周 · 预测准确率 86%',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>预测对比</h3>
+                <div class="chart-placeholder">预测 vs 实际</div>
+                <p>关键品类：服务器、存储、网络设备</p>
+              </div>
+              <div class="card">
+                <h3>协同事项</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>事项</th>
+                      <th>负责人</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>调整服务器预测</td>
+                      <td>销售-王强</td>
+                      <td><span class="status-chip status-warning">待确认</span></td>
+                    </tr>
+                    <tr>
+                      <td>新增产能申请</td>
+                      <td>运营-李倩</td>
+                      <td><span class="status-chip status-positive">审批中</span></td>
+                    </tr>
+                    <tr>
+                      <td>库存去化计划</td>
+                      <td>供应链-赵云</td>
+                      <td><span class="status-chip status-warning">进行中</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '查看预测模型', target: 'forecast-model', style: 'primary' },
+            { label: '调整需求计划', target: 'demand-adjust', style: 'secondary' }
+          ],
+          summary: '需求计划协同页面帮助供应链总监协调销售与运营，及时调整预测与库存策略。'
+        },
+        'forecast-model': {
+          title: '预测模型详情',
+          subtitle: '选择预测算法并查看贡献度',
+          status: '模型：LSTM + 促销因子',
+          content: `
+            <div class="card">
+              <h3>模型权重</h3>
+              <div class="chart-placeholder">模型贡献度</div>
+              <p>历史趋势 45% · 市场因子 30% · 促销 15% · 事件 10%</p>
+            </div>
+          `,
+          actions: [
+            { label: '返回需求计划', target: 'demand-planning', style: 'secondary' }
+          ],
+          summary: '预测模型详情用于评估算法贡献度，辅助选择合适的预测策略。'
+        },
+        'demand-adjust': {
+          title: '需求计划调整',
+          subtitle: '修改关键品类的需求预测并同步审批',
+          status: '调整状态：草稿',
+          content: `
+            <div class="card">
+              <h3>调整参数</h3>
+              <div class="pill-list">
+                <span class="pill">服务器：+8%</span>
+                <span class="pill">存储：+5%</span>
+                <span class="pill">网络设备：-3%</span>
+              </div>
+              <div class="chart-placeholder">调整影响曲线</div>
+            </div>
+          `,
+          actions: [
+            { label: '提交审批', target: 'demand-planning', style: 'primary' },
+            { label: '返回需求计划', target: 'demand-planning', style: 'secondary' }
+          ],
+          summary: '需求计划调整提交后会自动更新生产与采购计划。'
+        },
+        'production-monitor': {
+          title: '生产执行监控',
+          subtitle: '实时监控产线产量、良率与工单状态',
+          status: '今日产量完成度：72%',
+          content: `
+            <div class="widget-grid">
+              <div class="card">
+                <h3>产线产量</h3>
+                <div class="kpi-value">1,280 台</div>
+                <div class="kpi-trend trend-up">↑ 较昨日 +5%</div>
+                <div class="chart-placeholder">产量趋势</div>
+              </div>
+              <div class="card">
+                <h3>良率</h3>
+                <div class="kpi-value">97.2%</div>
+                <div class="kpi-trend trend-down">↓ -0.6%</div>
+                <p>异常产线：P2 · 需质量复检</p>
+              </div>
+              <div class="card">
+                <h3>关键工单</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>工单</th>
+                      <th>产品</th>
+                      <th>进度</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>WO-2407-018</td>
+                      <td>服务器</td>
+                      <td>68%</td>
+                      <td><span class="status-chip status-warning">待物料</span></td>
+                    </tr>
+                    <tr>
+                      <td>WO-2407-021</td>
+                      <td>存储</td>
+                      <td>84%</td>
+                      <td><span class="status-chip status-positive">正常</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '查看工单详情', target: 'work-order-detail', style: 'primary' },
+            { label: '发布生产指令', target: 'production-dispatch', style: 'secondary' }
+          ],
+          summary: '生产执行监控提供产线实时数据，可快速跳转到工单详情或发出调度指令。'
+        },
+        'work-order-detail': {
+          title: '工单详情 - WO-2407-018',
+          subtitle: '查看工单物料、工序与异常记录',
+          status: '进度：68% · 异常：待物料',
+          content: `
+            <div class="card">
+              <h3>工序进度</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>组装</strong>
+                  <div>完成 · 07-01</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>测试</strong>
+                  <div>进行中 · 完成度 40%</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>包装</strong>
+                  <div>计划 · 07-06</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>物料状态</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>物料</th>
+                    <th>需求</th>
+                    <th>到货</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>主板</td>
+                    <td>1,500</td>
+                    <td>1,320</td>
+                    <td><span class="status-chip status-warning">补货中</span></td>
+                  </tr>
+                  <tr>
+                    <td>电源模块</td>
+                    <td>1,500</td>
+                    <td>1,500</td>
+                    <td><span class="status-chip status-positive">齐套</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '创建异常处理', target: 'logistics-exception-center', style: 'primary' },
+            { label: '返回生产监控', target: 'production-monitor', style: 'secondary' }
+          ],
+          summary: '工单详情跟踪工序与物料状态，支持直接创建异常处理单。'
+        },
+        'production-dispatch': {
+          title: '生产指令发布',
+          subtitle: '向产线发布临时调整指令',
+          status: '指令草稿 · 待总监确认',
+          content: `
+            <div class="card">
+              <h3>指令摘要</h3>
+              <ul>
+                <li>调整工单：WO-2407-018</li>
+                <li>操作：优先完成测试工序</li>
+                <li>资源：追加 QA 人员 2 名</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>通知对象</h3>
+              <div class="pill-list">
+                <span class="pill">生产经理</span>
+                <span class="pill">质量主管</span>
+                <span class="pill">物料计划</span>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '发布并通知', target: 'production-monitor', style: 'primary' },
+            { label: '返回生产监控', target: 'production-monitor', style: 'secondary' }
+          ],
+          summary: '生产指令页面将调整动作和通知对象打包，下发后产线数据实时更新。'
+        },
+        'warehouse-operations': {
+          title: '仓储作业面板',
+          subtitle: '监控库存、出入库任务与异常',
+          status: '库存周转天数：38 天',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>库存结构</h3>
+                <div class="chart-placeholder">库存分布</div>
+                <p>安全库存预警：服务器组件</p>
+              </div>
+              <div class="card">
+                <h3>作业任务</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>任务</th>
+                      <th>类型</th>
+                      <th>负责人</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>TASK-2407-12</td>
+                      <td>入库</td>
+                      <td>刘伟</td>
+                      <td><span class="status-chip status-warning">待质检</span></td>
+                    </tr>
+                    <tr>
+                      <td>TASK-2407-15</td>
+                      <td>盘点</td>
+                      <td>王敏</td>
+                      <td><span class="status-chip status-positive">进行中</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '库存盘点任务', target: 'inventory-count', style: 'primary' },
+            { label: '创建调拨申请', target: 'transfer-request', style: 'secondary' }
+          ],
+          summary: '仓储面板统筹库存与任务，支持进入盘点或调拨流程。'
+        },
+        'inventory-count': {
+          title: '库存盘点任务板',
+          subtitle: '查看盘点进度与差异处理',
+          status: '盘点周期：07-01 ~ 07-05',
+          content: `
+            <div class="card">
+              <h3>盘点结果</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>库位</th>
+                    <th>物料</th>
+                    <th>系统数量</th>
+                    <th>实盘数量</th>
+                    <th>差异</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>A-01-02</td>
+                    <td>服务器机箱</td>
+                    <td>520</td>
+                    <td>512</td>
+                    <td><span class="status-chip status-warning">-8</span></td>
+                  </tr>
+                  <tr>
+                    <td>B-03-05</td>
+                    <td>电源模块</td>
+                    <td>640</td>
+                    <td>640</td>
+                    <td><span class="status-chip status-positive">0</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '差异处理单', target: 'logistics-exception-center', style: 'primary' },
+            { label: '返回仓储面板', target: 'warehouse-operations', style: 'secondary' }
+          ],
+          summary: '盘点任务板记录差异并支持直接转入异常处理流程。'
+        },
+        'transfer-request': {
+          title: '调拨申请',
+          subtitle: '跨仓库调拨库存并生成运输指令',
+          status: '申请状态：草稿',
+          content: `
+            <div class="card">
+              <h3>调拨详情</h3>
+              <div class="pill-list">
+                <span class="pill">从：华东仓 → 至：华南仓</span>
+                <span class="pill">物料：服务器机箱 120 件</span>
+                <span class="pill">运输：冷链</span>
+              </div>
+              <div class="chart-placeholder">路线规划</div>
+            </div>
+          `,
+          actions: [
+            { label: '提交调拨', target: 'warehouse-operations', style: 'primary' },
+            { label: '返回仓储面板', target: 'warehouse-operations', style: 'secondary' }
+          ],
+          summary: '调拨申请确认后会生成运输任务，并在物流追踪中可见。'
+        },
+        'logistics-tracking': {
+          title: '物流履约追踪',
+          subtitle: '实时掌握运输状态与异常处理',
+          status: '在途运单：24 · 异常：2',
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>运输概览</h3>
+                <div class="chart-placeholder">运输路径地图</div>
+                <p>关键线路：上海 → 深圳，洛杉矶 → 休斯顿</p>
+              </div>
+              <div class="card">
+                <h3>异常监控</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>运单</th>
+                      <th>异常类型</th>
+                      <th>处理状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>SH-2407-011</td>
+                      <td>温度超标</td>
+                      <td><span class="status-chip status-warning">处理中</span></td>
+                    </tr>
+                    <tr>
+                      <td>LA-2407-004</td>
+                      <td>延迟</td>
+                      <td><span class="status-chip status-critical">需改派</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          actions: [
+            { label: '运单详情', target: 'shipment-detail', style: 'primary' },
+            { label: '异常处理中心', target: 'logistics-exception-center', style: 'secondary' }
+          ],
+          summary: '物流追踪页面监控在途运单，并提供跳转到运单详情或异常处理中心。'
+        },
+        'shipment-detail': {
+          title: '运单详情 - LA-2407-004',
+          subtitle: '查看节点时间、承运商与异常记录',
+          status: '当前节点：到达 Phoenix Hub',
+          content: `
+            <div class="card">
+              <h3>节点时间线</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>发货</strong>
+                  <div>06-30 18:20 · 洛杉矶</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>中转</strong>
+                  <div>07-01 22:10 · Phoenix Hub</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>预计到达</strong>
+                  <div>07-03 09:00 · 休斯顿</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>异常处理</h3>
+              <ul>
+                <li>延迟原因：天气影响 · 预计延后 12 小时</li>
+                <li>采取措施：改派备用运输车</li>
+              </ul>
+            </div>
+          `,
+          actions: [
+            { label: '创建异常单', target: 'logistics-exception-center', style: 'primary' },
+            { label: '返回物流追踪', target: 'logistics-tracking', style: 'secondary' }
+          ],
+          summary: '运单详情展示节点与异常处理，便于继续创建异常单并追踪。'
+        },
+        'logistics-exception-center': {
+          title: '异常处理中心',
+          subtitle: '汇总物流与仓储异常，追踪整改动作',
+          status: '未关闭异常：3',
+          content: `
+            <div class="card">
+              <h3>异常列表</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>编号</th>
+                    <th>类型</th>
+                    <th>责任人</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>EX-LOG-031</td>
+                    <td>温控</td>
+                    <td>张伟</td>
+                    <td><span class="status-chip status-warning">处理中</span></td>
+                  </tr>
+                  <tr>
+                    <td>EX-LOG-028</td>
+                    <td>延迟</td>
+                    <td>李倩</td>
+                    <td><span class="status-chip status-critical">升级</span></td>
+                  </tr>
+                  <tr>
+                    <td>EX-LOG-024</td>
+                    <td>盘点差异</td>
+                    <td>王敏</td>
+                    <td><span class="status-chip status-positive">已关闭</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          actions: [
+            { label: '返回上一页', target: null, style: 'secondary', back: true }
+          ],
+          summary: '异常处理中心用于跟踪物流与仓储异常，可从多个页面跳转并完成后返回。'
+        }
+      };
+
+      let currentRole = 'cfo';
+      let navStack = [];
+
+      const menuList = document.getElementById('menuList');
+      const roleSelect = document.getElementById('roleSelect');
+      const pageContainer = document.getElementById('pageContainer');
+      const breadcrumb = document.getElementById('breadcrumb');
+
+      function renderRoleOptions() {
+        roleSelect.innerHTML = Object.entries(roles)
+          .map(([key, role]) => `<option value="${key}">${role.name}</option>`)
+          .join('');
+        roleSelect.value = currentRole;
+      }
+
+      function renderMenu() {
+        const { menu } = roles[currentRole];
+        menuList.innerHTML = menu
+          .map(
+            (item) => `
+              <li>
+                <button class="menu-item" data-page="${item.id}">
+                  <span class="icon">${item.icon}</span>
+                  <span>${item.label}</span>
+                </button>
+              </li>
+            `
+          )
+          .join('');
+
+        menuList.querySelectorAll('.menu-item').forEach((button) => {
+          button.addEventListener('click', () => {
+            const pageId = button.getAttribute('data-page');
+            openFromMenu(pageId);
+          });
+        });
+      }
+
+      function updateMenuActive() {
+        const activeMenuId = navStack[0];
+        menuList.querySelectorAll('.menu-item').forEach((button) => {
+          if (button.getAttribute('data-page') === activeMenuId) {
+            button.classList.add('active');
+          } else {
+            button.classList.remove('active');
+          }
+        });
+      }
+
+      function renderBreadcrumb() {
+        if (navStack.length === 0) {
+          breadcrumb.innerHTML = '';
+          return;
+        }
+        const crumbs = navStack
+          .map((pageId, index) => {
+            const page = pages[pageId];
+            return `
+              <span>
+                ${index > 0 ? '<span class="divider"></span>' : ''}
+                <span>${page ? page.title : '页面'}</span>
+              </span>
+            `;
+          })
+          .join('');
+        breadcrumb.innerHTML = crumbs;
+      }
+
+      function renderPage(pageId) {
+        const page = pages[pageId];
+        if (!page) {
+          pageContainer.innerHTML = `<div class="page"><p>未找到页面：${pageId}</p></div>`;
+          return;
+        }
+
+        const hasBack = navStack.length > 1;
+        const headerActions = hasBack
+          ? `<button class="back-button" id="backButton" type="button">← 返回</button>`
+          : '';
+
+        const actionButtons = (page.actions || [])
+          .map((action) => {
+            if (action.back) {
+              return `<button class="action-button secondary" data-back="true" type="button">返回上一页</button>`;
+            }
+            return `
+              <button class="action-button ${action.style || 'secondary'}" data-target="${action.target || ''}" type="button">
+                ${action.label}
+              </button>
+            `;
+          })
+          .join('');
+
+        pageContainer.innerHTML = `
+          <div class="page" data-page="${pageId}">
+            <div class="page-header">
+              <div>
+                <h2>${page.title}</h2>
+                <p>${page.subtitle || ''}</p>
+              </div>
+              <div>
+                ${headerActions}
+                <div class="status">${page.status || ''}</div>
+              </div>
+            </div>
+            <div class="page-body">
+              ${page.content || ''}
+            </div>
+            <div class="action-panel">
+              <h3>相关操作</h3>
+              <div class="action-buttons">
+                ${actionButtons || '<span>暂无操作</span>'}
+              </div>
+            </div>
+            <div class="page-footer"><strong>业务说明：</strong>${page.summary || '暂无说明'}</div>
+          </div>
+        `;
+
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+          backButton.addEventListener('click', () => {
+            goBack();
+          });
+        }
+
+        pageContainer.querySelectorAll('[data-target]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const target = button.getAttribute('data-target');
+            if (target && pages[target]) {
+              openFromAction(target);
+            }
+          });
+        });
+
+        pageContainer.querySelectorAll('[data-back="true"]').forEach((button) => {
+          button.addEventListener('click', () => {
+            goBack();
+          });
+        });
+      }
+
+      function openFromMenu(pageId) {
+        navStack = [pageId];
+        renderPage(pageId);
+        updateMenuActive();
+        renderBreadcrumb();
+      }
+
+      function openFromAction(pageId) {
+        navStack.push(pageId);
+        renderPage(pageId);
+        updateMenuActive();
+        renderBreadcrumb();
+      }
+
+      function goBack() {
+        if (navStack.length > 1) {
+          navStack.pop();
+          const previous = navStack[navStack.length - 1];
+          renderPage(previous);
+          updateMenuActive();
+          renderBreadcrumb();
+        }
+      }
+
+      roleSelect.addEventListener('change', (event) => {
+        currentRole = event.target.value;
+        renderMenu();
+        const firstMenu = roles[currentRole].menu[0];
+        openFromMenu(firstMenu.id);
+      });
+
+      function init() {
+        renderRoleOptions();
+        renderMenu();
+        const firstMenu = roles[currentRole].menu[0];
+        openFromMenu(firstMenu.id);
+      }
+
+      init();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
