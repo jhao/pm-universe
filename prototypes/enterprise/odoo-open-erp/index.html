@@ -2,83 +2,1500 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Odoo Open ERP 原型概览</title>
+    <title>Odoo Open ERP 角色化原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f4f6fb;
+        --surface: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --brand: #4f46e5;
+        --brand-soft: rgba(79, 70, 229, 0.12);
+        --border: #e2e8f0;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(120deg, rgba(99, 102, 241, 0.08), rgba(14, 165, 233, 0.08)), var(--bg);
+        color: var(--text-primary);
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(12px);
+        background: rgba(244, 246, 251, 0.9);
+        border-bottom: 1px solid var(--border);
+        padding: 20px 48px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .brand-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.35), rgba(79, 70, 229, 0.12));
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        color: var(--brand);
+        box-shadow: 0 8px 24px rgba(79, 70, 229, 0.15);
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .brand p {
+        margin: 4px 0 0;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .role-switcher {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switcher label {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .role-switcher select {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        min-width: 180px;
+        color: var(--text-primary);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 264px 1fr;
+        min-height: calc(100vh - 96px);
+      }
+
+      aside {
+        border-right: 1px solid var(--border);
+        backdrop-filter: blur(8px);
+        background: rgba(255, 255, 255, 0.76);
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .menu-group h2 {
+        margin: 0;
+        font-size: 16px;
+        color: var(--text-secondary);
+      }
+
+      .menu-list {
+        list-style: none;
+        margin: 12px 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .menu-button {
+        display: flex;
+        width: 100%;
+        border: 1px solid transparent;
+        border-radius: 14px;
+        padding: 12px 14px;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        color: var(--text-primary);
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease, background 0.2s ease;
+      }
+
+      .menu-button:hover,
+      .menu-button:focus {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+        border-color: rgba(79, 70, 229, 0.35);
+        outline: none;
+      }
+
+      .menu-button.active {
+        background: var(--brand-soft);
+        border-color: rgba(79, 70, 229, 0.6);
+      }
+
+      .menu-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background: rgba(99, 102, 241, 0.12);
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+      }
+
+      main {
+        padding: 32px 48px 64px;
+        overflow-y: auto;
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: block;
+        animation: fadeIn 0.25s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .breadcrumb {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+      }
+
+      .page-header {
+        background: var(--surface);
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(15, 23, 42, 0.06);
+      }
+
+      .page-header h2 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      .page-header p {
+        margin: 12px 0 0;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .grid.columns-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .card {
+        background: var(--surface);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .card h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+
+      .card p {
+        margin: 8px 0 0;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: 14px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+
+      table th,
+      table td {
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      table tbody tr:hover {
+        background: rgba(148, 163, 184, 0.08);
+      }
+
+      .action-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 12px;
+        border: none;
+        padding: 10px 18px;
+        background: var(--brand);
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 12px 24px rgba(79, 70, 229, 0.25);
+      }
+
+      .button.secondary {
+        background: rgba(15, 23, 42, 0.08);
+        color: var(--text-primary);
+        box-shadow: none;
+      }
+
+      .button.link {
+        background: transparent;
+        color: var(--brand);
+        padding: 0;
+        box-shadow: none;
+      }
+
+      .tag-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .tag {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(79, 70, 229, 0.12);
+        color: var(--brand);
+      }
+
+      .page-footer {
+        margin-top: 32px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.88);
+        border-radius: 16px;
+        border: 1px dashed rgba(79, 70, 229, 0.35);
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .status-chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #047857;
+        background: rgba(16, 185, 129, 0.12);
+      }
+
+      .kanban {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        margin-top: 16px;
+      }
+
+      .kanban-column {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .kanban-card {
+        background: white;
+        border-radius: 12px;
+        padding: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+        font-size: 14px;
+      }
+
+      .analytics-grid {
+        margin-top: 16px;
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .metric {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+
+      .metric h4 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text-secondary);
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 10px;
+        font-size: 24px;
+      }
+
+      .timeline {
+        margin-top: 16px;
+        border-left: 2px dashed rgba(148, 163, 184, 0.35);
+        padding-left: 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 8px;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -31px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: var(--brand);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.16);
+      }
+
+      .breadcrumbs-link {
+        color: var(--brand);
+        cursor: pointer;
+      }
+
+      @media (max-width: 1024px) {
+        header {
+          padding: 16px 24px;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          position: sticky;
+          top: 72px;
+          z-index: 10;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 12px;
+          padding: 18px 20px 12px;
+        }
+        .menu-group {
+          flex: 1 1 220px;
+        }
+        main {
+          padding: 24px;
+        }
+      }
     </style>
   </head>
   <body>
     <header>
-      <h1>Odoo Open ERP 原型</h1>
-      <p class="tagline">开源、模块化的企业管理套件。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>中小企业、系统集成商、行业解决方案伙伴</p>
-        <p><strong>核心痛点：</strong>传统 ERP 灵活性不足、成本高昂</p>
-        <p><strong>价值主张：</strong>通过开源模块提供高度定制化的业务流程管理</p>
+      <div class="brand">
+        <div class="brand-logo">OO</div>
+        <div>
+          <h1>Odoo Open ERP 原型演示</h1>
+          <p>模块化 · 角色驱动 · 业务全流程</p>
+        </div>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>企业按需安装模块管理销售、库存、生产</li><li>会计团队对接本地税务体系</li><li>电商团队使用网站与营销模块</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>销售与 CRM</h3>
-              <p class="goal">功能目标：统一管理销售线索与报价</p>
+      <div class="role-switcher">
+        <label for="roleSelect">角色切换</label>
+        <select id="roleSelect">
+          <option value="admin">系统管理员</option>
+          <option value="sales">销售经理</option>
+          <option value="warehouse">仓库主管</option>
+          <option value="finance">财务主管</option>
+        </select>
+      </div>
+    </header>
+    <div class="layout">
+      <aside>
+        <div class="menu-group">
+          <h2 id="menuHeading">系统菜单</h2>
+          <ul class="menu-list" id="menuList"></ul>
+        </div>
+      </aside>
+      <main>
+        <div class="breadcrumb" id="breadcrumb">请选择左侧菜单以开始</div>
+        <section class="view active" id="welcome">
+          <div class="page-header">
+            <h2>欢迎进入 Odoo Open ERP</h2>
+            <p>
+              通过上方角色选择器与左侧菜单，演示不同角色在系统中的核心职责与关键页面布局。
+              每个功能页面均可继续点击内部按钮跳转到更多详情或编辑画面。
+            </p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>角色驱动体验</h3>
+              <p>
+                使用右上角的角色切换，可即时看到菜单与页面内容如何按岗位职责动态调整，确保演示贴近真实业务。
+              </p>
+              <div class="tag-group">
+                <span class="tag">多角色</span>
+                <span class="tag">动态导航</span>
+                <span class="tag">权限管理</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3>全流程模块</h3>
+              <p>
+                原型覆盖销售、库存、财务等关键模块，展示从线索到回款、从采购到出库的端到端流程，帮助快速比对方案。
+              </p>
+              <div class="tag-group">
+                <span class="tag">销售 CRM</span>
+                <span class="tag">库存 WMS</span>
+                <span class="tag">财务核算</span>
+              </div>
+            </div>
+          </div>
+          <div class="page-footer">
+            小提示：点击左侧任一菜单开始体验；在页面内寻找带有跳转图标的按钮，可进入详情或编辑原型。
+          </div>
+        </section>
+
+        <!-- 系统管理员 -->
+        <section class="view" id="admin-dashboard">
+          <div class="page-header">
+            <h2>系统控制台</h2>
+            <p>监控全局运行情况，快速处理待办告警与模块部署需求。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>关键运行指标</h3>
+              <div class="analytics-grid">
+                <div class="metric">
+                  <h4>在线用户</h4>
+                  <strong>368</strong>
+                  <p>同比 +18%</p>
+                </div>
+                <div class="metric">
+                  <h4>模块健康度</h4>
+                  <strong>96%</strong>
+                  <p>核心模块运行正常</p>
+                </div>
+                <div class="metric">
+                  <h4>集成服务</h4>
+                  <strong>12</strong>
+                  <p>第三方服务已连接</p>
+                </div>
+              </div>
+              <div class="action-bar">
+                <button class="button" data-view-target="admin-module-market">进入模块市场</button>
+                <button class="button secondary" data-view-target="admin-alert-center">查看告警中心</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>操作日志</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>14:32</strong>
+                  <p>仓库主管授权新的条码打印模板 <span class="status-chip">已完成</span></p>
+                </div>
+                <div class="timeline-item">
+                  <strong>13:10</strong>
+                  <p>销售经理导入本周线索：新增 240 条</p>
+                </div>
+                <div class="timeline-item">
+                  <strong>09:25</strong>
+                  <p>财务主管审批季度预算，生成预算版本 FY24-Q3</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：集中掌控系统健康度、服务集成、用户访问与安全策略，确保 ERP 平稳运行。可继续点击进入模块市场或告警中心进行演示。
+          </div>
+        </section>
+
+        <section class="view" id="admin-module-market">
+          <div class="page-header">
+            <h2>模块市场</h2>
+            <p>浏览并安装企业所需的业务模块，支持试用、订阅与部署。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>热门模块</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>模块名称</th>
+                    <th>评分</th>
+                    <th>部署量</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>制造 MRP 专业版</td>
+                    <td>4.9</td>
+                    <td>1,280</td>
+                  </tr>
+                  <tr>
+                    <td>中国税务本地化</td>
+                    <td>4.8</td>
+                    <td>980</td>
+                  </tr>
+                  <tr>
+                    <td>客服联络中心</td>
+                    <td>4.7</td>
+                    <td>865</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-bar">
+                <button class="button" data-view-target="admin-module-install">部署选中模块</button>
+                <button class="button secondary" data-view-target="admin-dashboard">返回控制台</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>模块详情预览</h3>
+              <p>选择左侧列表后，展示模块介绍、版本更新与依赖。</p>
               <ul>
-                <li>线索捕获、商机与活动</li><li>报价单、电子签名与合同</li><li>客户门户与订阅管理</li>
+                <li>包含多语言界面</li>
+                <li>与库存、采购模块联动</li>
+                <li>提供试用环境与自动部署脚本</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>库存与制造</h3>
-              <p class="goal">功能目标：优化仓储与生产流程</p>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：为管理员提供模块选型、安装、升级的操作界面，确保企业按需扩展 ERP 能力。
+          </div>
+        </section>
+
+        <section class="view" id="admin-module-install">
+          <div class="page-header">
+            <h2>模块部署流程</h2>
+            <p>确认部署环境、依赖检查与回滚策略，保障上线安全。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>部署参数</h3>
+              <p>目标环境：生产集群 A · 计划时间：今晚 23:30 · 回滚方案：保留前一版本镜像</p>
+              <div class="action-bar">
+                <button class="button" data-view-target="admin-dashboard">执行部署</button>
+                <button class="button secondary" data-view-target="admin-module-market">返回模块市场</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>依赖检查</h3>
               <ul>
-                <li>多仓库、批次与条码管理</li><li>MRP、工单与质量检查</li><li>维修保养与成本核算</li>
+                <li>库存模块版本 ≥ 15.2</li>
+                <li>财务模块启用税务接口</li>
+                <li>确保队列服务 Q-CORE 运行</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>会计与财务</h3>
-              <p class="goal">功能目标：支持本地化税务与财务合规</p>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：执行模块部署前的准备动作，确保业务连续性；可随时回到控制台查看结果。
+          </div>
+        </section>
+
+        <section class="view" id="admin-alert-center">
+          <div class="page-header">
+            <h2>告警中心</h2>
+            <p>汇总安全、性能、集成异常，提供快速处理闭环。</p>
+          </div>
+          <div class="card">
+            <h3>实时告警列表</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>类型</th>
+                  <th>模块</th>
+                  <th>状态</th>
+                  <th>处理人</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>15:45</td>
+                  <td>安全</td>
+                  <td>用户权限</td>
+                  <td><span class="status-chip">处理中</span></td>
+                  <td>系统管理员</td>
+                </tr>
+                <tr>
+                  <td>14:22</td>
+                  <td>性能</td>
+                  <td>库存同步</td>
+                  <td>已派单</td>
+                  <td>仓库主管</td>
+                </tr>
+                <tr>
+                  <td>09:50</td>
+                  <td>集成</td>
+                  <td>第三方支付</td>
+                  <td>已解决</td>
+                  <td>财务主管</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="action-bar">
+              <button class="button" data-view-target="admin-dashboard">返回控制台</button>
+              <button class="button secondary" data-view-target="admin-alert-playbook">查看处置手册</button>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：统一跟踪系统告警、分配处理人、查看闭环效率；可继续查看处置手册了解标准操作流程。
+          </div>
+        </section>
+
+        <section class="view" id="admin-alert-playbook">
+          <div class="page-header">
+            <h2>告警处置手册</h2>
+            <p>提供标准化 SOP，指导团队快速响应不同类型的事件。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>安全事件流程</h3>
+              <ol>
+                <li>初步确认事件级别</li>
+                <li>冻结相关账号与 API 密钥</li>
+                <li>启动审计追踪并生成报告</li>
+              </ol>
+            </div>
+            <div class="card">
+              <h3>性能瓶颈排查</h3>
+              <ol>
+                <li>查看监控面板，定位模块</li>
+                <li>触发自动扩容或限流</li>
+                <li>记录根因并发起优化任务</li>
+              </ol>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：沉淀应急知识库，缩短故障恢复时间。点击左侧其他菜单继续演示。
+          </div>
+        </section>
+
+        <!-- 销售经理 -->
+        <section class="view" id="sales-pipeline">
+          <div class="page-header">
+            <h2>销售漏斗看板</h2>
+            <p>集中跟踪线索、商机、报价各阶段进度，提升转化。</p>
+          </div>
+          <div class="kanban">
+            <div class="kanban-column">
+              <h4>新线索 (42)</h4>
+              <div class="kanban-card">LinkedIn 活动 - 12 条</div>
+              <div class="kanban-card">展会扫码 - 30 条</div>
+            </div>
+            <div class="kanban-column">
+              <h4>培育中 (28)</h4>
+              <div class="kanban-card">华南制造 - 预计 80 万</div>
+              <div class="kanban-card">星际电商 - 预计 45 万</div>
+            </div>
+            <div class="kanban-column">
+              <h4>报价 (16)</h4>
+              <div class="kanban-card">北辰集团 - 待审批</div>
+              <div class="kanban-card">鼎盛服饰 - 需修订条款</div>
+            </div>
+            <div class="kanban-column">
+              <h4>赢单 (8)</h4>
+              <div class="kanban-card">未来科技 - 年费版</div>
+            </div>
+          </div>
+          <div class="action-bar">
+            <button class="button" data-view-target="sales-opportunity-detail">查看商机详情</button>
+            <button class="button secondary" data-view-target="sales-quote-center">进入报价中心</button>
+          </div>
+          <div class="page-footer">
+            核心业务：可视化销售管道，支持拖拽阶段、实时更新预测数据。继续点击进入商机详情或报价处理流程。
+          </div>
+        </section>
+
+        <section class="view" id="sales-opportunity-detail">
+          <div class="page-header">
+            <h2>商机详情 · 华南制造</h2>
+            <p>展示客户画像、沟通记录与推进任务，帮助销售全盘掌握。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>客户概况</h3>
+              <p>行业：精密制造 · 员工数：1,200 · CRM 来源：线下活动</p>
+              <div class="tag-group">
+                <span class="tag">重点客户</span>
+                <span class="tag">高潜力</span>
+              </div>
+              <div class="action-bar">
+                <button class="button" data-view-target="sales-pipeline">返回漏斗</button>
+                <button class="button secondary" data-view-target="sales-quote-center">创建报价单</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>沟通记录</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>方式</th>
+                    <th>纪要</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>昨天</td>
+                    <td>电话</td>
+                    <td>确认试用需求，需附加 PLM 模块</td>
+                  </tr>
+                  <tr>
+                    <td>7 月 12 日</td>
+                    <td>现场拜访</td>
+                    <td>演示库存可视化，反馈良好</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <h3>推进任务</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>任务</th>
+                  <th>负责人</th>
+                  <th>截止时间</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>安排方案路演</td>
+                  <td>王璇</td>
+                  <td>本周五</td>
+                  <td><span class="status-chip">计划中</span></td>
+                </tr>
+                <tr>
+                  <td>完成 ROI 测算</td>
+                  <td>数据分析团队</td>
+                  <td>7 月 20 日</td>
+                  <td>进行中</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            核心业务：整合商机信息、任务协作、沟通历史，确保销售推进有据可依；可继续进入报价中心创建方案。
+          </div>
+        </section>
+
+        <section class="view" id="sales-quote-center">
+          <div class="page-header">
+            <h2>报价中心</h2>
+            <p>统一管理各客户的报价单、审批状态与电子签约。</p>
+          </div>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>报价编号</th>
+                  <th>客户</th>
+                  <th>金额</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>QT-20240718-01</td>
+                  <td>华南制造</td>
+                  <td>¥ 860,000</td>
+                  <td>待审批</td>
+                  <td><button class="button link" data-view-target="sales-quote-edit">编辑</button></td>
+                </tr>
+                <tr>
+                  <td>QT-20240710-05</td>
+                  <td>星际电商</td>
+                  <td>¥ 420,000</td>
+                  <td>已签约</td>
+                  <td><button class="button link" data-view-target="sales-quote-detail">查看</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="action-bar">
+              <button class="button" data-view-target="sales-quote-edit">新建报价单</button>
+              <button class="button secondary" data-view-target="sales-pipeline">返回漏斗</button>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：汇总报价进度、快速进入编辑或审批流程，并与电子签约打通完成闭环。
+          </div>
+        </section>
+
+        <section class="view" id="sales-quote-edit">
+          <div class="page-header">
+            <h2>报价单编辑</h2>
+            <p>调整产品、折扣、付款计划，并提交审批。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>基础信息</h3>
+              <p>客户：华南制造 · 有效期：30 天 · 币种：CNY</p>
+              <div class="action-bar">
+                <button class="button" data-view-target="sales-quote-center">保存并返回</button>
+                <button class="button secondary" data-view-target="sales-quote-center">取消</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>产品与折扣</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>产品</th>
+                    <th>数量</th>
+                    <th>单价</th>
+                    <th>折扣</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ERP 企业版</td>
+                    <td>120</td>
+                    <td>¥ 5,000</td>
+                    <td>10%</td>
+                  </tr>
+                  <tr>
+                    <td>PLM 模块</td>
+                    <td>1</td>
+                    <td>¥ 180,000</td>
+                    <td>0%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：聚焦报价核心信息编辑并提交审批；销售可随时返回报价中心查看结果。
+          </div>
+        </section>
+
+        <section class="view" id="sales-quote-detail">
+          <div class="page-header">
+            <h2>报价详情 · 星际电商</h2>
+            <p>展示审批流与签约状态，便于复盘成功案例。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>审批流程</h3>
+              <ol>
+                <li>销售经理提交报价</li>
+                <li>财务主管审核折扣策略</li>
+                <li>客户完成电子签章</li>
+              </ol>
+              <div class="action-bar">
+                <button class="button secondary" data-view-target="sales-quote-center">返回列表</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>签约记录</h3>
+              <p>签署时间：2024-07-10 18:32 · 签署人：客户 CEO</p>
+              <p>附加条款：附赠营销自动化培训 2 场</p>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：复盘成功案例、沉淀模板，辅助销售团队复制经验。
+          </div>
+        </section>
+
+        <!-- 仓库主管 -->
+        <section class="view" id="warehouse-dashboard">
+          <div class="page-header">
+            <h2>仓储运营总览</h2>
+            <p>实时监控库存、入库、出库任务，保障供应连续。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>库存关键指标</h3>
+              <div class="analytics-grid">
+                <div class="metric">
+                  <h4>总库存周转天数</h4>
+                  <strong>36 天</strong>
+                </div>
+                <div class="metric">
+                  <h4>缺货 SKU</h4>
+                  <strong>4</strong>
+                  <p>需快速补货</p>
+                </div>
+                <div class="metric">
+                  <h4>条码扫描准确率</h4>
+                  <strong>99.2%</strong>
+                </div>
+              </div>
+              <div class="action-bar">
+                <button class="button" data-view-target="warehouse-transfer">进入调拨中心</button>
+                <button class="button secondary" data-view-target="warehouse-inbound">查看入库任务</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>任务动态</h3>
               <ul>
-                <li>总账、发票与银行对账</li><li>税率配置、申报与审计</li><li>财务报表与预算分析</li>
+                <li>补货任务 #IN-2390 · 进行中</li>
+                <li>盘点批次 · 华东仓 7 月 · 计划中</li>
+                <li>出库任务 #OUT-9821 · 待核验</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>网站与电商</h3>
-              <p class="goal">功能目标：帮助企业构建线上渠道</p>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：集中展示库存健康状况与任务队列，可进一步进入调拨、入库、出库页面操作。
+          </div>
+        </section>
+
+        <section class="view" id="warehouse-transfer">
+          <div class="page-header">
+            <h2>仓库调拨中心</h2>
+            <p>协调多仓之间的库存调拨，确保区域供货平衡。</p>
+          </div>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>调拨单号</th>
+                  <th>调出仓</th>
+                  <th>调入仓</th>
+                  <th>状态</th>
+                  <th>预计到达</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>TF-20240718-02</td>
+                  <td>华东仓</td>
+                  <td>华南仓</td>
+                  <td>运输中</td>
+                  <td>7 月 20 日</td>
+                </tr>
+                <tr>
+                  <td>TF-20240717-05</td>
+                  <td>华北仓</td>
+                  <td>华东仓</td>
+                  <td>待发货</td>
+                  <td>7 月 19 日</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="action-bar">
+              <button class="button" data-view-target="warehouse-transfer-detail">查看调拨明细</button>
+              <button class="button secondary" data-view-target="warehouse-dashboard">返回总览</button>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：管理跨仓调拨，支持明细核对、进度追踪与异常处理。
+          </div>
+        </section>
+
+        <section class="view" id="warehouse-transfer-detail">
+          <div class="page-header">
+            <h2>调拨明细 · TF-20240718-02</h2>
+            <p>确认调拨商品、数量与物流节点。</p>
+          </div>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>名称</th>
+                  <th>数量</th>
+                  <th>批次</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ERP-BOX-01</td>
+                  <td>ERP 授权盒装</td>
+                  <td>80</td>
+                  <td>202407A</td>
+                </tr>
+                <tr>
+                  <td>SCN-READER</td>
+                  <td>条码扫描器</td>
+                  <td>20</td>
+                  <td>202406B</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="action-bar">
+              <button class="button" data-view-target="warehouse-transfer">返回调拨中心</button>
+              <button class="button secondary" data-view-target="warehouse-dashboard">返回总览</button>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：复核调拨物料，跟踪物流状态，确保库存流向准确。
+          </div>
+        </section>
+
+        <section class="view" id="warehouse-inbound">
+          <div class="page-header">
+            <h2>入库任务面板</h2>
+            <p>统筹采购到货、退货入库的执行进度。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>待处理入库</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>任务号</th>
+                    <th>来源</th>
+                    <th>数量</th>
+                    <th>负责人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>IN-2390</td>
+                    <td>采购订单 PO-5566</td>
+                    <td>120 箱</td>
+                    <td>张敏</td>
+                  </tr>
+                  <tr>
+                    <td>IN-2382</td>
+                    <td>客户退货</td>
+                    <td>18 箱</td>
+                    <td>李俊</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-bar">
+                <button class="button" data-view-target="warehouse-inbound-detail">查看入库详情</button>
+                <button class="button secondary" data-view-target="warehouse-dashboard">返回总览</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>自动化规则</h3>
               <ul>
-                <li>网站构建、博客与表单</li><li>电商购物车、支付与配送</li><li>营销自动化与优惠活动</li>
+                <li>高价值物料需双人复核</li>
+                <li>条码异常自动发起质检</li>
+                <li>超时任务推送移动端提醒</li>
               </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>模块部署周期与定制成本</li><li>库存准确率与生产及时率</li><li>线上销售额与客户续订率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：统筹入库执行、配置自动化规则，提高仓库效率与准确率。
+          </div>
+        </section>
+
+        <section class="view" id="warehouse-inbound-detail">
+          <div class="page-header">
+            <h2>入库详情 · IN-2390</h2>
+            <p>核对采购到货，安排上架波次。</p>
+          </div>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>物料</th>
+                  <th>数量</th>
+                  <th>上架库位</th>
+                  <th>质检</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>服务器主机</td>
+                  <td>20 台</td>
+                  <td>A01-01-01</td>
+                  <td>已完成</td>
+                </tr>
+                <tr>
+                  <td>条码打印机</td>
+                  <td>50 台</td>
+                  <td>A01-02-02</td>
+                  <td>待检</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="action-bar">
+              <button class="button" data-view-target="warehouse-inbound">返回入库面板</button>
+              <button class="button secondary" data-view-target="warehouse-dashboard">返回总览</button>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：确保入库准确、质检合规，并推动后续上架安排。
+          </div>
+        </section>
+
+        <!-- 财务主管 -->
+        <section class="view" id="finance-dashboard">
+          <div class="page-header">
+            <h2>财务总览</h2>
+            <p>监控收入、成本、现金流等关键财务指标。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>本月指标</h3>
+              <div class="analytics-grid">
+                <div class="metric">
+                  <h4>营业收入</h4>
+                  <strong>¥ 12.6M</strong>
+                </div>
+                <div class="metric">
+                  <h4>运营成本</h4>
+                  <strong>¥ 4.3M</strong>
+                </div>
+                <div class="metric">
+                  <h4>自由现金流</h4>
+                  <strong>¥ 1.9M</strong>
+                </div>
+              </div>
+              <div class="action-bar">
+                <button class="button" data-view-target="finance-invoice-center">进入发票中心</button>
+                <button class="button secondary" data-view-target="finance-budget">查看预算执行</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>风险提示</h3>
+              <ul>
+                <li>客户应收账款逾期率 12%，建议催收</li>
+                <li>季度预算执行 78%，需关注下月支出</li>
+                <li>最新税务政策提醒：增值税申报表升级</li>
+              </ul>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：掌握财务关键指标，并能快速进入发票、预算等核心功能进行操作。
+          </div>
+        </section>
+
+        <section class="view" id="finance-invoice-center">
+          <div class="page-header">
+            <h2>发票中心</h2>
+            <p>管理销售发票开具、收票匹配及税务申报。</p>
+          </div>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>发票号</th>
+                  <th>客户</th>
+                  <th>金额</th>
+                  <th>状态</th>
+                  <th>税率</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>FP-20240718-02</td>
+                  <td>华南制造</td>
+                  <td>¥ 860,000</td>
+                  <td>待开具</td>
+                  <td>13%</td>
+                </tr>
+                <tr>
+                  <td>FP-20240715-08</td>
+                  <td>星际电商</td>
+                  <td>¥ 420,000</td>
+                  <td>已开具</td>
+                  <td>13%</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="action-bar">
+              <button class="button" data-view-target="finance-invoice-detail">开具发票</button>
+              <button class="button secondary" data-view-target="finance-dashboard">返回财务总览</button>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：集中处理发票开具与税率管理，衔接后续申报流程。
+          </div>
+        </section>
+
+        <section class="view" id="finance-invoice-detail">
+          <div class="page-header">
+            <h2>发票开具 · FP-20240718-02</h2>
+            <p>确认客户信息、明细行与税额，提交电子发票。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>客户信息</h3>
+              <p>纳税人识别号：9144XXXXXXXXX · 开票地址：深圳市科技园</p>
+              <div class="action-bar">
+                <button class="button" data-view-target="finance-invoice-center">提交开票</button>
+                <button class="button secondary" data-view-target="finance-invoice-center">暂存</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>明细行</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>产品</th>
+                    <th>数量</th>
+                    <th>含税单价</th>
+                    <th>税额</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ERP 企业版</td>
+                    <td>120</td>
+                    <td>¥ 5,650</td>
+                    <td>¥ 79,560</td>
+                  </tr>
+                  <tr>
+                    <td>PLM 模块</td>
+                    <td>1</td>
+                    <td>¥ 203,400</td>
+                    <td>¥ 23,400</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：在发票开具过程中核对客户与明细，确保税务合规。
+          </div>
+        </section>
+
+        <section class="view" id="finance-budget">
+          <div class="page-header">
+            <h2>预算执行监控</h2>
+            <p>对比预算与实际支出，跟踪偏差与原因分析。</p>
+          </div>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>部门</th>
+                  <th>预算</th>
+                  <th>已用</th>
+                  <th>偏差</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>销售部</td>
+                  <td>¥ 3.0M</td>
+                  <td>¥ 2.2M</td>
+                  <td>-26%</td>
+                  <td>市场活动延期</td>
+                </tr>
+                <tr>
+                  <td>运营部</td>
+                  <td>¥ 4.2M</td>
+                  <td>¥ 3.9M</td>
+                  <td>-7%</td>
+                  <td>新增仓储项目</td>
+                </tr>
+                <tr>
+                  <td>研发部</td>
+                  <td>¥ 6.5M</td>
+                  <td>¥ 5.8M</td>
+                  <td>-11%</td>
+                  <td>加速云成本投入</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="action-bar">
+              <button class="button" data-view-target="finance-budget-adjust">发起预算调整</button>
+              <button class="button secondary" data-view-target="finance-dashboard">返回总览</button>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：掌控预算执行情况，并支持偏差处理、调整申请。
+          </div>
+        </section>
+
+        <section class="view" id="finance-budget-adjust">
+          <div class="page-header">
+            <h2>预算调整申请</h2>
+            <p>收集各部门的调整需求，提交审批流程。</p>
+          </div>
+          <div class="grid columns-2">
+            <div class="card">
+              <h3>调整表单</h3>
+              <p>选择部门、调整金额与原因，生成审批单。</p>
+              <div class="action-bar">
+                <button class="button" data-view-target="finance-budget">提交审批</button>
+                <button class="button secondary" data-view-target="finance-budget">返回预算监控</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>审批链路</h3>
+              <ol>
+                <li>部门负责人确认</li>
+                <li>财务主管复核</li>
+                <li>总经理批准</li>
+              </ol>
+            </div>
+          </div>
+          <div class="page-footer">
+            核心业务：处理预算变更申请，确保资金使用透明与合规。
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const roleConfig = {
+        admin: {
+          name: "系统管理员",
+          menu: [
+            { id: "admin-dashboard", label: "系统控制台", icon: "🛡️" },
+            { id: "admin-module-market", label: "模块市场", icon: "🧩" },
+            { id: "admin-alert-center", label: "告警中心", icon: "🚨" },
+            { id: "admin-alert-playbook", label: "处置手册", icon: "📘" }
+          ]
+        },
+        sales: {
+          name: "销售经理",
+          menu: [
+            { id: "sales-pipeline", label: "销售漏斗", icon: "📈" },
+            { id: "sales-opportunity-detail", label: "商机详情", icon: "💼" },
+            { id: "sales-quote-center", label: "报价中心", icon: "📝" },
+            { id: "sales-quote-edit", label: "报价编辑", icon: "✏️" },
+            { id: "sales-quote-detail", label: "报价详情", icon: "🔍" }
+          ]
+        },
+        warehouse: {
+          name: "仓库主管",
+          menu: [
+            { id: "warehouse-dashboard", label: "仓储总览", icon: "🏭" },
+            { id: "warehouse-transfer", label: "调拨中心", icon: "🔁" },
+            { id: "warehouse-transfer-detail", label: "调拨明细", icon: "📦" },
+            { id: "warehouse-inbound", label: "入库任务", icon: "📥" },
+            { id: "warehouse-inbound-detail", label: "入库详情", icon: "🗂️" }
+          ]
+        },
+        finance: {
+          name: "财务主管",
+          menu: [
+            { id: "finance-dashboard", label: "财务总览", icon: "💹" },
+            { id: "finance-invoice-center", label: "发票中心", icon: "🧾" },
+            { id: "finance-invoice-detail", label: "发票开具", icon: "🖋️" },
+            { id: "finance-budget", label: "预算执行", icon: "📊" },
+            { id: "finance-budget-adjust", label: "预算调整", icon: "♻️" }
+          ]
+        }
+      };
+
+      const roleSelect = document.getElementById("roleSelect");
+      const menuList = document.getElementById("menuList");
+      const breadcrumb = document.getElementById("breadcrumb");
+      const views = document.querySelectorAll(".view");
+
+      function setActiveView(id, fromMenu = false) {
+        views.forEach((view) => view.classList.remove("active"));
+        const target = document.getElementById(id) || document.getElementById("welcome");
+        target.classList.add("active");
+
+        const currentRole = roleSelect.value;
+        const menuEntry = roleConfig[currentRole].menu.find((item) => item.id === id);
+        const roleName = roleConfig[currentRole].name;
+
+        if (menuEntry) {
+          breadcrumb.innerHTML = `<span class="breadcrumbs-link" data-view-target="welcome">首页</span> / ${roleName} / ${menuEntry.label}`;
+        } else if (id === "welcome") {
+          breadcrumb.textContent = "请选择左侧菜单以开始";
+        } else {
+          breadcrumb.innerHTML = `<span class="breadcrumbs-link" data-view-target="welcome">首页</span> / ${roleName} / ${target.querySelector("h2")?.textContent || "页面"}`;
+        }
+
+        document.querySelectorAll(".menu-button").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.viewId === id);
+        });
+
+        if (!fromMenu && menuEntry) {
+          const button = menuList.querySelector(`[data-view-id="${id}"]`);
+          button?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+
+      function renderMenu(roleKey) {
+        menuList.innerHTML = "";
+        roleConfig[roleKey].menu.forEach((item, index) => {
+          const li = document.createElement("li");
+          const button = document.createElement("button");
+          button.className = "menu-button";
+          button.dataset.viewId = item.id;
+          button.innerHTML = `<span class="menu-icon">${item.icon}</span><span>${item.label}</span>`;
+          button.addEventListener("click", () => {
+            setActiveView(item.id, true);
+          });
+          if (index === 0) {
+            button.classList.add("active");
+            setActiveView(item.id, true);
+          }
+          li.appendChild(button);
+          menuList.appendChild(li);
+        });
+      }
+
+      roleSelect.addEventListener("change", () => {
+        renderMenu(roleSelect.value);
+      });
+
+      document.body.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-view-target]");
+        if (target) {
+          event.preventDefault();
+          const viewId = target.getAttribute("data-view-target");
+          setActiveView(viewId);
+        }
+      });
+
+      document.body.addEventListener("click", (event) => {
+        const crumb = event.target.closest(".breadcrumbs-link");
+        if (crumb) {
+          const viewId = crumb.getAttribute("data-view-target");
+          setActiveView(viewId, true);
+        }
+      });
+
+      renderMenu(roleSelect.value);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
