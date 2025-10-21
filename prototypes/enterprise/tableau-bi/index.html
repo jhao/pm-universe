@@ -2,83 +2,2076 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Tableau BI 原型概览</title>
+    <title>Tableau BI 多角色原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f2f5fb;
+        --sidebar-bg: #0f172a;
+        --sidebar-active: #1d4ed8;
+        --card-bg: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --border: #e2e8f0;
+        --accent: #2563eb;
+        --success: #16a34a;
+        --warning: #f97316;
+        --danger: #dc2626;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: var(--bg);
+        color: var(--text-primary);
+      }
+
+      .app {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 248px;
+        background: linear-gradient(180deg, #111c3d 0%, #0f172a 100%);
+        color: rgba(255, 255, 255, 0.86);
+        display: flex;
+        flex-direction: column;
+        padding: 28px 20px;
+        box-shadow: 12px 0 32px rgba(15, 23, 42, 0.22);
+        position: relative;
+        z-index: 2;
+      }
+
+      .sidebar::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(59, 130, 246, 0.1), transparent 60%);
+        pointer-events: none;
+      }
+
+      .sidebar-logo {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .sidebar-logo span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background: rgba(37, 99, 235, 0.2);
+        color: #60a5fa;
+        font-weight: 700;
+      }
+
+      .sidebar-section-title {
+        font-size: 13px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(226, 232, 240, 0.58);
+        margin-bottom: 12px;
+      }
+
+      .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .menu-item {
+        background: transparent;
+        border: none;
+        text-align: left;
+        padding: 10px 14px;
+        border-radius: 12px;
+        color: rgba(248, 250, 252, 0.86);
+        font-size: 15px;
+        line-height: 1.4;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+
+      .menu-item:hover {
+        background: rgba(59, 130, 246, 0.25);
+        transform: translateX(4px);
+      }
+
+      .menu-item.active {
+        background: rgba(37, 99, 235, 0.45);
+        box-shadow: inset 0 0 0 1px rgba(191, 219, 254, 0.3);
+      }
+
+      .menu-item span {
+        font-size: 12px;
+        color: rgba(148, 163, 184, 0.88);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding-top: 24px;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+        font-size: 12px;
+        line-height: 1.6;
+        color: rgba(148, 163, 184, 0.72);
+      }
+
+      .content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 36px;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(18px);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+      }
+
+      .topbar h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .topbar-subtitle {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-top: 6px;
+      }
+
+      .role-switcher {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+      }
+
+      .role-select {
+        appearance: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 10px 34px 10px 14px;
+        font-size: 14px;
+        background: #fff url('data:image/svg+xml,%3Csvg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M1 1.5L6 6.5L11 1.5" stroke="%232563EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/%3E%3C/svg%3E') no-repeat right 12px center;
+        cursor: pointer;
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .role-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .view-container {
+        padding: 28px 36px 44px;
+      }
+
+      .view {
+        display: none;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9));
+        border-radius: 22px;
+        padding: 26px 28px;
+        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(226, 232, 240, 0.7);
+        margin-bottom: 24px;
+      }
+
+      .view.active {
+        display: block;
+        animation: fadeIn 0.4s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .view-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      .view-header h2 {
+        margin: 0;
+        font-size: 22px;
+        color: var(--text-primary);
+      }
+
+      .view-header p {
+        margin: 6px 0 0 0;
+        color: var(--text-secondary);
+        font-size: 15px;
+        max-width: 480px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--accent);
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: 18px;
+        padding: 18px 20px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+      }
+
+      .card h3 {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+        color: var(--text-primary);
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .stat-value {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .stat-trend {
+        margin-top: 6px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-weight: 500;
+      }
+
+      .stat-trend.up {
+        background: rgba(22, 163, 74, 0.12);
+        color: var(--success);
+      }
+
+      .stat-trend.down {
+        background: rgba(220, 38, 38, 0.12);
+        color: var(--danger);
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-size: 14px;
+      }
+
+      .table thead {
+        background: rgba(226, 232, 240, 0.6);
+      }
+
+      .table th,
+      .table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+        text-align: left;
+        color: var(--text-secondary);
+      }
+
+      .table tbody tr:hover {
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .chart-placeholder {
+        margin-top: 12px;
+        border-radius: 14px;
+        border: 1px dashed rgba(148, 163, 184, 0.4);
+        min-height: 160px;
+        background: repeating-linear-gradient(
+            -45deg,
+            rgba(59, 130, 246, 0.08),
+            rgba(59, 130, 246, 0.08) 12px,
+            transparent 12px,
+            transparent 24px
+          ),
+          rgba(248, 250, 252, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(37, 99, 235, 0.7);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .view-actions {
+        margin: 20px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .view-actions button,
+      .view-actions a,
+      .inline-link {
+        padding: 10px 18px;
+        border-radius: 12px;
+        border: 1px solid rgba(37, 99, 235, 0.2);
+        background: rgba(37, 99, 235, 0.08);
+        color: var(--accent);
+        font-size: 14px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .view-actions button:hover,
+      .view-actions a:hover,
+      .inline-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.16);
+      }
+
+      .inline-link {
+        border: none;
+        background: none;
+        padding: 0;
+        font-size: 13px;
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .view-description {
+        margin-top: 24px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(226, 232, 240, 0.7);
+      }
+
+      .view-description h3 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+      }
+
+      .view-description ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--text-secondary);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .timeline-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .timeline-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-top: 6px;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+      }
+
+      .timeline-content {
+        flex: 1;
+        background: rgba(37, 99, 235, 0.08);
+        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1px solid rgba(37, 99, 235, 0.18);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 500;
+        background: rgba(148, 163, 184, 0.18);
+        color: var(--text-secondary);
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 12px;
+      }
+
+      .kanban-column {
+        background: rgba(248, 250, 252, 0.9);
+        border-radius: 14px;
+        padding: 12px;
+        border: 1px solid rgba(226, 232, 240, 0.7);
+      }
+
+      .kanban-column h4 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .kanban-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        margin-bottom: 10px;
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.06);
+      }
+
+      .kanban-card:last-child {
+        margin-bottom: 0;
+      }
+
+      .progress {
+        margin-top: 10px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(226, 232, 240, 0.8);
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #38bdf8, #2563eb);
+      }
+
+      .insight-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .insight-item {
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        background: rgba(79, 70, 229, 0.08);
+      }
+
+      .comment-thread {
+        margin-top: 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(226, 232, 240, 0.7);
+        background: rgba(248, 250, 252, 0.92);
+        padding: 14px 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .comment {
+        display: flex;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.8), rgba(59, 130, 246, 0.6));
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .comment-content {
+        flex: 1;
+      }
+
+      .comment-content h4 {
+        margin: 0 0 4px 0;
+        font-size: 14px;
+      }
+
+      .comment-content p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+
+      @media (max-width: 1024px) {
+        .app {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          gap: 24px;
+          overflow-x: auto;
+          padding: 16px;
+        }
+
+        .sidebar::after {
+          display: none;
+        }
+
+        .sidebar-logo {
+          margin-bottom: 0;
+          flex-shrink: 0;
+        }
+
+        .sidebar-content-wrapper {
+          display: flex;
+          gap: 18px;
+          width: 100%;
+        }
+
+        .sidebar-section {
+          min-width: 220px;
+        }
+
+        .menu-list {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .menu-item {
+          flex: 1 1 auto;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Tableau BI 原型</h1>
-      <p class="tagline">可视化分析与数据探索平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>业务分析师、数据科学家、管理层</p>
-        <p><strong>核心痛点：</strong>传统报表缺乏交互性，难以快速探索数据</p>
-        <p><strong>价值主张：</strong>通过拖拽式建模与交互式仪表盘，让更多用户进行数据分析</p>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="sidebar-logo"><span>BI</span>Tableau 企业分析</div>
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">功能导航</div>
+          <div class="menu-list" id="menuList"></div>
+        </div>
+        <div class="sidebar-footer">
+          Tableau Server 企业部署原型演示。<br />
+          可通过右上角切换不同角色体验对应场景。
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="topbar">
+          <div>
+            <h1>Tableau 企业级分析体验</h1>
+            <div class="topbar-subtitle">
+              通过角色驱动的界面切换，演示管理员、数据管家、分析师与业务主管的核心工作流。
+            </div>
+          </div>
+          <div class="role-switcher">
+            <span class="role-pill">当前角色</span>
+            <select id="roleSwitcher" class="role-select" aria-label="切换角色"></select>
+          </div>
+        </header>
+        <div class="view-container">
+          <!-- 系统管理员视图 -->
+          <section class="view" data-role="admin" data-view="admin-overview">
+            <div class="view-header">
+              <div>
+                <h2>部署运行概览</h2>
+                <p>纵览整个 Tableau Server 集群的运行健康度、活跃发布者与资源占用情况，确保平台稳定可用。</p>
+              </div>
+              <div class="badge">实时同步 · 3 分钟前更新</div>
+            </div>
+            <div class="grid grid-3">
+              <div class="card">
+                <h3>活跃发布者</h3>
+                <div class="stat-value">128</div>
+                <div class="stat-trend up">↑ 较上周 +12%</div>
+                <p>近 30 天内发布过内容的创作者数量。</p>
+              </div>
+              <div class="card">
+                <h3>服务器资源占用</h3>
+                <div class="chart-placeholder">资源使用堆叠图</div>
+                <p>查看 VizQL、后台程序与数据引擎的 CPU / 内存占用情况。</p>
+              </div>
+              <div class="card">
+                <h3>数据刷新成功率</h3>
+                <div class="stat-value">99.4%</div>
+                <div class="stat-trend up">↑ 连续 14 天稳定</div>
+                <p>自动刷新任务的成功率趋势。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-monitoring-detail">查看节点性能分析</button>
+              <button type="button" data-navigate="admin-publishing-report">导出发布活动报告</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>支持管理员对资源使用、活跃度进行快速巡检，定位潜在风险。</li>
+                <li>可以从指标卡钻取到具体节点、进程级的性能细节。</li>
+                <li>导出活动报告，供 IT 治理会议使用。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-permissions">
+            <div class="view-header">
+              <div>
+                <h2>内容权限矩阵</h2>
+                <p>集中管理项目、群组与工作簿的访问权限，支持批量调整与策略模拟。</p>
+              </div>
+              <div class="badge">策略模拟 · Beta</div>
+            </div>
+            <div class="card">
+              <h3>项目 / 群组权限表</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>项目</th>
+                    <th>群组</th>
+                    <th>权限模板</th>
+                    <th>覆盖工作簿</th>
+                    <th>异常数量</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>全球销售</td>
+                    <td>销售分析师</td>
+                    <td>查看 + 下载数据</td>
+                    <td>38</td>
+                    <td><span class="pill">0</span></td>
+                  </tr>
+                  <tr>
+                    <td>财务洞察</td>
+                    <td>财务共享</td>
+                    <td>查看</td>
+                    <td>22</td>
+                    <td><span class="pill">2 条冲突</span></td>
+                  </tr>
+                  <tr>
+                    <td>市场活动</td>
+                    <td>市场经理</td>
+                    <td>编辑 + 发布</td>
+                    <td>15</td>
+                    <td><span class="pill">1 条继承</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-permissions-detail">打开权限策略模拟</button>
+              <button type="button" data-navigate="admin-permissions-bulk">批量调整群组权限</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>支持管理员查看项目与群组的权限矩阵，识别冲突规则。</li>
+                <li>权限模拟帮助验证更改前后的影响范围。</li>
+                <li>批量调整工具可对多个群组一次性授权。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-data-governance">
+            <div class="view-header">
+              <div>
+                <h2>数据源治理工作台</h2>
+                <p>掌控企业认证数据源、提取刷新与数据血缘，保障分析结果可靠。</p>
+              </div>
+              <div class="badge">治理视图</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>认证数据源追踪</h3>
+                <div class="chart-placeholder">认证率 / 使用率</div>
+                <p>展示认证数据源的使用覆盖率与最近审批状态。</p>
+              </div>
+              <div class="card">
+                <h3>血缘分析</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>Salesforce CRM</strong> → 数据准备流 <span class="pill">自动</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>数据准备流</strong> → 提取 <span class="pill">每日 02:00</span>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>提取</strong> → 仪表盘《区域销售预测》
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-data-policy-editor">编辑治理策略</button>
+              <button type="button" data-navigate="steward-pipeline">切换到数据管家视角</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>聚合所有认证数据源、审批流程与血缘关系。</li>
+                <li>快速跳转至策略编辑或交接给数据管家执行。</li>
+                <li>保障跨团队使用一致、可信的数据资产。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-monitoring">
+            <div class="view-header">
+              <div>
+                <h2>服务器监控中心</h2>
+                <p>实时监控节点健康度、会话并发与队列长度，提供告警阈值调整入口。</p>
+              </div>
+              <div class="badge">实时监控</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>节点状态</h3>
+                <div class="table-wrapper">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>节点</th>
+                        <th>角色</th>
+                        <th>CPU</th>
+                        <th>内存</th>
+                        <th>告警</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>node-01</td>
+                        <td>主控 + VizQL</td>
+                        <td>62%</td>
+                        <td>54%</td>
+                        <td><span class="pill">正常</span></td>
+                      </tr>
+                      <tr>
+                        <td>node-02</td>
+                        <td>后台程序</td>
+                        <td>74%</td>
+                        <td>68%</td>
+                        <td><span class="pill">磁盘预警</span></td>
+                      </tr>
+                      <tr>
+                        <td>node-03</td>
+                        <td>数据引擎</td>
+                        <td>48%</td>
+                        <td>39%</td>
+                        <td><span class="pill">正常</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card">
+                <h3>并发与队列趋势</h3>
+                <div class="chart-placeholder">并发 / 队列趋势图</div>
+                <p>对比最近 24 小时的会话并发峰值与后台任务队列长度。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-monitoring-detail">节点资源明细</button>
+              <button type="button" data-navigate="admin-alert-policy">配置阈值与告警</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>帮助管理员快速识别异常节点并深入查看进程级指标。</li>
+                <li>提供阈值配置入口，连接企业告警体系。</li>
+                <li>支持导出监控截图用于运维周报。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-monitoring-detail" data-root="admin-monitoring">
+            <div class="view-header">
+              <div>
+                <h2>节点资源明细</h2>
+                <p>查看 node-02 的进程级 CPU / 内存占用趋势，并比较历史基线。</p>
+              </div>
+              <div class="badge">深度分析</div>
+            </div>
+            <div class="card">
+              <h3>VizQL 进程资源</h3>
+              <div class="chart-placeholder">CPU / 内存趋势对比</div>
+              <p>对比节点在不同时间段的资源占用，并标记异常尖峰。</p>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-monitoring">返回监控中心</button>
+              <button type="button" data-navigate="admin-alert-policy">调整告警阈值</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>支持对单节点或单进程的详细指标钻取。</li>
+                <li>比对历史基线，辅助判断资源扩容需求。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-alert-policy" data-root="admin-monitoring">
+            <div class="view-header">
+              <div>
+                <h2>告警策略配置</h2>
+                <p>自定义各项指标阈值，绑定通知渠道并模拟告警触发。</p>
+              </div>
+              <div class="badge">自动化</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>阈值设置</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>指标</th>
+                      <th>阈值</th>
+                      <th>通知方式</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>CPU 利用率</td>
+                      <td>80%</td>
+                      <td>Slack · 运维频道</td>
+                    </tr>
+                    <tr>
+                      <td>提取失败次数</td>
+                      <td>连续 3 次</td>
+                      <td>Email · 数据管家</td>
+                    </tr>
+                    <tr>
+                      <td>登录失败</td>
+                      <td>5 分钟内 20 次</td>
+                      <td>PagerDuty · 安全</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>触发模拟</h3>
+                <div class="chart-placeholder">模拟告警流程</div>
+                <p>验证告警是否能正确触达责任人。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-monitoring">保存并返回</button>
+              <button type="button" data-navigate="admin-overview">同步概览看板</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>统一配置告警阈值与通知方式，确保问题及时响应。</li>
+                <li>支持模拟触发，降低误报或漏报风险。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-permissions-detail" data-root="admin-permissions">
+            <div class="view-header">
+              <div>
+                <h2>权限策略模拟器</h2>
+                <p>选择项目《财务洞察》，测试将群组“财务共享”权限升级为“编辑”后的影响范围。</p>
+              </div>
+              <div class="badge">模拟结果</div>
+            </div>
+            <div class="card">
+              <h3>变更影响</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>资源</th>
+                    <th>当前权限</th>
+                    <th>变更后</th>
+                    <th>风险提示</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>工作簿《月度现金流》</td>
+                    <td>查看</td>
+                    <td>编辑</td>
+                    <td><span class="pill">包含敏感视图</span></td>
+                  </tr>
+                  <tr>
+                    <td>数据源《ERP 资金》</td>
+                    <td>连接</td>
+                    <td>编辑 + 下载</td>
+                    <td><span class="pill">建议审批</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-permissions">返回权限矩阵</button>
+              <button type="button" data-navigate="admin-permissions-bulk">提交审批流程</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>模拟变更帮助评估权限升级的风险与覆盖面。</li>
+                <li>可直接转化为审批任务并交由数据管家执行。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-permissions-bulk" data-root="admin-permissions">
+            <div class="view-header">
+              <div>
+                <h2>批量权限调整</h2>
+                <p>对多个群组套用模板，支持即时预览与回滚计划。</p>
+              </div>
+              <div class="badge">批量处理</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>选择群组</h3>
+                <ul>
+                  <li>财务共享 · 22 位成员</li>
+                  <li>审计观察员 · 8 位成员</li>
+                  <li>执行董事会 · 5 位成员</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>应用模板</h3>
+                <p>将模板 <strong>“财务编辑 + 导出”</strong> 应用至选中群组。</p>
+                <div class="progress">
+                  <div class="progress-bar" style="width: 62%"></div>
+                </div>
+                <p>预计影响 7 个项目、54 个工作簿。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-permissions">确认并发布</button>
+              <button type="button" data-navigate="admin-permissions-detail">回到模拟检查</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>对多个群组应用同一套权限模板。</li>
+                <li>同步生成回滚计划，并提醒审批人。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-data-policy-editor" data-root="admin-data-governance">
+            <div class="view-header">
+              <div>
+                <h2>治理策略编辑器</h2>
+                <p>更新数据源认证标准、审批人及失效提醒，确保跨团队协同。</p>
+              </div>
+              <div class="badge">策略草稿</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>认证标准</h3>
+                <ul>
+                  <li>必须有数据负责人与业务负责人</li>
+                  <li>通过 2 次数据质量检测</li>
+                  <li>具备刷新失败应急方案</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>审批流程</h3>
+                <p>阶段 1：数据管家初审 → 阶段 2：安全团队复核 → 阶段 3：管理员确认</p>
+                <p>预计周期：3 个工作日</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-data-governance">保存草稿</button>
+              <button type="button" data-navigate="steward-certification">通知数据管家</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>集中维护数据治理策略，记录标准与审批流。</li>
+                <li>可以直接通知数据管家进入执行阶段。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="admin" data-view="admin-publishing-report" data-root="admin-overview">
+            <div class="view-header">
+              <div>
+                <h2>发布活动报告</h2>
+                <p>导出近 30 天的内容发布情况，帮助评估内容供应与需求匹配。</p>
+              </div>
+              <div class="badge">报告生成</div>
+            </div>
+            <div class="card">
+              <h3>发布趋势</h3>
+              <div class="chart-placeholder">发布趋势面积图</div>
+              <p>展示每日发布的工作簿数量与发布者分布。</p>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="admin-overview">生成 PDF 并返回概览</button>
+              <button type="button" data-navigate="analyst-home">查看热门工作簿</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>帮助管理员了解内容生产活跃度。</li>
+                <li>可导出报告供业务部门回顾。</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 数据管家视图 -->
+          <section class="view" data-role="steward" data-view="steward-pipeline">
+            <div class="view-header">
+              <div>
+                <h2>数据准备流水线</h2>
+                <p>监控 Tableau Prep 流程执行状态，及时处理失败步骤，保障数据按时上线。</p>
+              </div>
+              <div class="badge">流水线监控</div>
+            </div>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h4>待执行</h4>
+                <div class="kanban-card">
+                  <strong>市场活动归因</strong>
+                  <p>计划时间：06:00</p>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>运行中</h4>
+                <div class="kanban-card">
+                  <strong>CRM→销售提取</strong>
+                  <p>当前步骤：字段清洗</p>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 48%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>已完成</h4>
+                <div class="kanban-card">
+                  <strong>财务预测合并</strong>
+                  <p>耗时 18 分钟 · 08:30 完成</p>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>异常</h4>
+                <div class="kanban-card">
+                  <strong>门店库存同步</strong>
+                  <p>错误：字段缺失</p>
+                  <button class="inline-link" type="button" data-navigate="steward-pipeline-detail">查看失败详情</button>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-pipeline-detail">进入步骤详情</button>
+              <button type="button" data-navigate="steward-refresh">跳转刷新计划</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>提供流水线状态总览，快速发现异常任务。</li>
+                <li>可直接跳转到刷新计划或执行记录页面处理问题。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-certification">
+            <div class="view-header">
+              <div>
+                <h2>数据源认证队列</h2>
+                <p>追踪待审批、已认证的数据源，并指派数据责任人。</p>
+              </div>
+              <div class="badge">审批中心</div>
+            </div>
+            <div class="card">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>数据源</th>
+                    <th>状态</th>
+                    <th>责任人</th>
+                    <th>上次评估</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ERP 收入明细</td>
+                    <td><span class="pill">待认证</span></td>
+                    <td>李倩</td>
+                    <td>—</td>
+                    <td><button class="inline-link" type="button" data-navigate="steward-certification-detail">打开详情</button></td>
+                  </tr>
+                  <tr>
+                    <td>全球销售提取</td>
+                    <td><span class="pill">已认证</span></td>
+                    <td>周一鸣</td>
+                    <td>2024-05-01</td>
+                    <td><button class="inline-link" type="button" data-navigate="steward-certification-audit">查看评估</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-certification-detail">审批数据源</button>
+              <button type="button" data-navigate="admin-data-policy-editor">查看治理策略</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>集中处理认证请求，记录评估历史。</li>
+                <li>数据责任人可在此完成自助更新。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-refresh">
+            <div class="view-header">
+              <div>
+                <h2>刷新计划总览</h2>
+                <p>维护提取任务的频率、窗口与失败重试策略，确保数据按 SLA 更新。</p>
+              </div>
+              <div class="badge">刷新管理</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>计划排程</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>计划</th>
+                      <th>频率</th>
+                      <th>窗口</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>销售提取</td>
+                      <td>每日</td>
+                      <td>01:00-02:00</td>
+                      <td><span class="pill">成功</span></td>
+                    </tr>
+                    <tr>
+                      <td>财务预算</td>
+                      <td>每周一</td>
+                      <td>02:00-02:30</td>
+                      <td><span class="pill">重试 1 次</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>失败回顾</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      05-16 02:15 <strong>财务预算</strong> 网络中断 · 已重跑成功
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      05-14 01:42 <strong>门店库存</strong> 凭证失效 · 待处理
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-refresh-edit">编辑刷新策略</button>
+              <button type="button" data-navigate="steward-pipeline">返回流水线</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>维护所有提取刷新计划，确保任务按时完成。</li>
+                <li>提供失败回顾与快速指派的入口。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-alerts">
+            <div class="view-header">
+              <div>
+                <h2>数据质量警报</h2>
+                <p>处理来自数据质量监控的异常，协调团队修复。</p>
+              </div>
+              <div class="badge">质量监控</div>
+            </div>
+            <div class="card">
+              <h3>最新告警</h3>
+              <div class="insight-list">
+                <div class="insight-item">
+                  <strong>订单事实表缺少字段</strong>
+                  <p>触发来源：Tableau 数据质量监控 · 影响 3 个仪表盘</p>
+                  <button class="inline-link" type="button" data-navigate="steward-alert-detail">查看修复计划</button>
+                </div>
+                <div class="insight-item">
+                  <strong>销售 KPI 刷新延迟</strong>
+                  <p>触发来源：刷新 SLA 监控 · 已通知管理员</p>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-alert-detail">生成修复任务</button>
+              <button type="button" data-navigate="admin-monitoring">反馈至管理员</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>接收数据质量告警并创建修复任务。</li>
+                <li>与管理员协同确保问题闭环。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-pipeline-detail" data-root="steward-pipeline">
+            <div class="view-header">
+              <div>
+                <h2>流水线执行详情</h2>
+                <p>排查“门店库存同步”失败步骤，查看日志并快速修复。</p>
+              </div>
+              <div class="badge">执行日志</div>
+            </div>
+            <div class="card">
+              <h3>步骤状态</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>步骤</th>
+                    <th>耗时</th>
+                    <th>状态</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>提取源数据</td>
+                    <td>6 分钟</td>
+                    <td><span class="pill">成功</span></td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>字段映射</td>
+                    <td>—</td>
+                    <td><span class="pill">失败</span></td>
+                    <td>缺少字段 store_region</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="view-actions">
+                <button type="button" data-navigate="steward-pipeline">标记已修复并返回</button>
+                <button type="button" data-navigate="steward-alert-detail">创建质量告警任务</button>
+              </div>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>提供执行日志、错误定位与快速修复入口。</li>
+                <li>可直接创建质量任务以跟进问题。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-refresh-edit" data-root="steward-refresh">
+            <div class="view-header">
+              <div>
+                <h2>刷新策略编辑</h2>
+                <p>调整“财务预算”提取的刷新频率、通知对象与重试策略。</p>
+              </div>
+              <div class="badge">策略更新</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>频率设置</h3>
+                <p>当前：每周一 02:00 · 重试 2 次 · 通知 财务共享 群组</p>
+                <div class="progress">
+                  <div class="progress-bar" style="width: 45%"></div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>通知预览</h3>
+                <div class="insight-item">
+                  将在失败时通过 Slack 频道 #finance-alert 推送，并抄送管理员。
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-refresh">保存策略</button>
+              <button type="button" data-navigate="steward-certification">发送治理确认</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>细化提取计划的执行策略与通知逻辑。</li>
+                <li>更新后可同步给相关治理负责人确认。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-certification-detail" data-root="steward-certification">
+            <div class="view-header">
+              <div>
+                <h2>认证审批详情</h2>
+                <p>检查数据源《ERP 收入明细》的质量报告与责任人信息。</p>
+              </div>
+              <div class="badge">审批流程</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>质量检查</h3>
+                <div class="chart-placeholder">数据质量评分</div>
+                <p>字段完整度 98% · 异常占比 0.4%</p>
+              </div>
+              <div class="card">
+                <h3>责任人信息</h3>
+                <p>数据负责人：李倩 · 业务负责人：王诚</p>
+                <p>下一次复评：2024-07-01</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-certification">通过认证</button>
+              <button type="button" data-navigate="admin-data-governance">反馈治理策略</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>展示质量报告、责任人和复评计划。</li>
+                <li>审批后可同步管理员更新策略。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-certification-audit" data-root="steward-certification">
+            <div class="view-header">
+              <div>
+                <h2>认证复评记录</h2>
+                <p>回顾数据源《全球销售提取》的评估历史与整改记录。</p>
+              </div>
+              <div class="badge">复评档案</div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  2024-05-01 · 复评通过 · 更新字段说明文档
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  2024-02-12 · 发现延迟 · 已扩容刷新节点
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-certification">返回认证队列</button>
+              <button type="button" data-navigate="steward-alerts">创建追踪告警</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>记录历次复评结果与整改措施。</li>
+                <li>支持立即创建质量追踪告警。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="steward" data-view="steward-alert-detail" data-root="steward-alerts">
+            <div class="view-header">
+              <div>
+                <h2>质量告警任务</h2>
+                <p>为“订单事实表缺少字段”创建跨部门协同任务。</p>
+              </div>
+              <div class="badge">修复计划</div>
+            </div>
+            <div class="comment-thread">
+              <div class="comment">
+                <div class="avatar">JH</div>
+                <div class="comment-content">
+                  <h4>金浩 · 管理员</h4>
+                  <p>已确认问题来自源系统 ETL，将与 IT 协作修复。</p>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="avatar">LQ</div>
+                <div class="comment-content">
+                  <h4>李倩 · 数据负责人</h4>
+                  <p>补丁预计今晚完成，完成后重新跑流水线。</p>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="steward-alerts">标记完成</button>
+              <button type="button" data-navigate="steward-pipeline">回到流水线</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>记录跨部门沟通，确保质量告警闭环。</li>
+                <li>可回跳至流水线验证修复结果。</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 分析师视图 -->
+          <section class="view" data-role="analyst" data-view="analyst-home">
+            <div class="view-header">
+              <div>
+                <h2>我的工作区</h2>
+                <p>快速访问常用工作簿、最近打开的仪表盘与协作通知，进入分析流程。</p>
+              </div>
+              <div class="badge">工作区</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>常用仪表盘</h3>
+                <ul>
+                  <li>📊 全球销售趋势 <button class="inline-link" type="button" data-navigate="analyst-dashboard-detail">打开</button></li>
+                  <li>📦 库存健康度 <button class="inline-link" type="button" data-navigate="analyst-dashboard-detail">打开</button></li>
+                  <li>🧾 财务周报 <button class="inline-link" type="button" data-navigate="analyst-dashboard-detail">打开</button></li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>协作提醒</h3>
+                <div class="comment-thread">
+                  <div class="comment">
+                    <div class="avatar">ZW</div>
+                    <div class="comment-content">
+                      <h4>张薇 · 销售运营</h4>
+                      <p>请补充 APAC 区域维度的同比分析。</p>
+                    </div>
+                  </div>
+                  <div class="comment">
+                    <div class="avatar">LX</div>
+                    <div class="comment-content">
+                      <h4>刘鑫 · 市场</h4>
+                      <p>需要嵌入官网的简化版本。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-exploration">开始探索数据</button>
+              <button type="button" data-navigate="analyst-share">发布协作</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>集中入口帮助分析师快速切换任务。</li>
+                <li>结合通知与常用内容，提升工作效率。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="analyst" data-view="analyst-exploration">
+            <div class="view-header">
+              <div>
+                <h2>可视化建模</h2>
+                <p>拖拽维度、度量构建视图，使用字段列表、标记卡与过滤器进行探索。</p>
+              </div>
+              <div class="badge">VizQL 引擎</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>字段列表</h3>
+                <ul>
+                  <li>维度 · 区域、产品、客户等级 <button class="inline-link" type="button" data-navigate="analyst-field-picker">选择</button></li>
+                  <li>度量 · 销售额、利润、订单量</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>视图画布</h3>
+                <div class="chart-placeholder">视图预览</div>
+                <p>拖拽字段至列 / 行区域，快速切换图表类型。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-story">保存为故事</button>
+              <button type="button" data-navigate="analyst-dashboard-detail">查看仪表盘版本</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>展示核心建模交互：字段列表、画布、标记卡。</li>
+                <li>支持一键保存并进入故事线或仪表盘。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="analyst" data-view="analyst-story">
+            <div class="view-header">
+              <div>
+                <h2>故事线编辑器</h2>
+                <p>将多个视图组合为故事，设置评论与高亮，引导业务方理解。</p>
+              </div>
+              <div class="badge">故事线</div>
+            </div>
+            <div class="card">
+              <h3>故事幻灯</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    Slide 1 · 全球销售概览 <button class="inline-link" type="button" data-navigate="analyst-story-slide">编辑</button>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    Slide 2 · 区域 KPI 对比
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    Slide 3 · 行动建议
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-share">发布故事</button>
+              <button type="button" data-navigate="analyst-home">返回工作区</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>组织多个视图形成叙事。</li>
+                <li>可以继续编辑单个幻灯并发布给业务方。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="analyst" data-view="analyst-share">
+            <div class="view-header">
+              <div>
+                <h2>发布与协作</h2>
+                <p>将内容发布到指定项目，配置订阅、数据警报与嵌入。</p>
+              </div>
+              <div class="badge">协作中心</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>发布设置</h3>
+                <p>目标项目：全球销售 · 权限：销售分析师（可编辑）</p>
+                <button class="inline-link" type="button" data-navigate="analyst-share-subscription">订阅设置</button>
+              </div>
+              <div class="card">
+                <h3>嵌入预览</h3>
+                <div class="chart-placeholder">嵌入式预览</div>
+                <p>复制嵌入代码到门户网站或 CRM。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-share-subscription">配置订阅</button>
+              <button type="button" data-navigate="analyst-home">完成并返回</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>展示发布、订阅、嵌入等协作能力。</li>
+                <li>支持将内容推送给指定角色。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="analyst" data-view="analyst-dashboard-detail" data-root="analyst-home">
+            <div class="view-header">
+              <div>
+                <h2>仪表盘细节视图</h2>
+                <p>深入查看“全球销售趋势”仪表盘，包含过滤器、参数与动作。</p>
+              </div>
+              <div class="badge">仪表盘</div>
+            </div>
+            <div class="card">
+              <h3>交互区域</h3>
+              <div class="chart-placeholder">仪表盘布局</div>
+              <p>包含 KPI 卡片、趋势折线与地图视图，可通过参数切换货币。</p>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-exploration">编辑可视化</button>
+              <button type="button" data-navigate="analyst-home">返回工作区</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>展示仪表盘的主要交互。</li>
+                <li>提供返回工作区或进入编辑的路径。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="analyst" data-view="analyst-field-picker" data-root="analyst-exploration">
+            <div class="view-header">
+              <div>
+                <h2>字段选择器</h2>
+                <p>挑选需要加入视图的维度与度量，并查看字段描述。</p>
+              </div>
+              <div class="badge">字段目录</div>
+            </div>
+            <div class="card">
+              <h3>字段列表</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>字段</th>
+                    <th>类型</th>
+                    <th>描述</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>区域</td>
+                    <td>维度</td>
+                    <td>包含全球 8 个业务大区</td>
+                  </tr>
+                  <tr>
+                    <td>销售额</td>
+                    <td>度量</td>
+                    <td>以本币计算，可切换货币参数</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-exploration">添加到视图</button>
+              <button type="button" data-navigate="steward-certification">查看字段治理</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>帮助分析师了解字段元数据。</li>
+                <li>可以跳转到治理页面了解认证信息。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="analyst" data-view="analyst-story-slide" data-root="analyst-story">
+            <div class="view-header">
+              <div>
+                <h2>故事幻灯编辑</h2>
+                <p>调整 Slide 1 的标题、重点标记与评论。</p>
+              </div>
+              <div class="badge">幻灯编辑</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>标题与注释</h3>
+                <p>标题：全球销售概览 · 注释：上季度 APAC 贡献 38%</p>
+              </div>
+              <div class="card">
+                <h3>故事视图</h3>
+                <div class="chart-placeholder">幻灯预览</div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-story">保存幻灯</button>
+              <button type="button" data-navigate="analyst-share">分享故事</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>展示故事单页的编辑能力。</li>
+                <li>与发布流程联动，完成内容发布。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="analyst" data-view="analyst-share-subscription" data-root="analyst-share">
+            <div class="view-header">
+              <div>
+                <h2>订阅配置</h2>
+                <p>设置订阅频率、收件人以及触发条件。</p>
+              </div>
+              <div class="badge">自动通知</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>订阅计划</h3>
+                <p>频率：每周一 09:00 · 收件人：销售领导层 · 附件：PNG + 数据摘要</p>
+              </div>
+              <div class="card">
+                <h3>触发条件</h3>
+                <p>若利润率低于 20% 自动追加一次推送。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="analyst-share">保存订阅</button>
+              <button type="button" data-navigate="executive-dashboard">分享给业务主管</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>配置订阅与预警触发。</li>
+                <li>与业务主管视角衔接，保障信息触达。</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 业务主管视图 -->
+          <section class="view" data-role="executive" data-view="executive-dashboard">
+            <div class="view-header">
+              <div>
+                <h2>战略 KPI 仪表盘</h2>
+                <p>聚焦收入、利润、续约率等高层指标，支持一键切换区域。</p>
+              </div>
+              <div class="badge">战略视图</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>收入与利润</h3>
+                <div class="chart-placeholder">KPI 组合图</div>
+                <p>本季度收入 3.2B · 利润率 28% · 较目标 +4%。</p>
+              </div>
+              <div class="card">
+                <h3>区域表现</h3>
+                <ul>
+                  <li>北美：目标完成 112%</li>
+                  <li>亚太：目标完成 98% <button class="inline-link" type="button" data-navigate="executive-insights">查看洞察</button></li>
+                  <li>欧洲：目标完成 87%</li>
+                </ul>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="executive-targets">查看目标进度</button>
+              <button type="button" data-navigate="executive-insights">生成智能洞察</button>
+              <button type="button" data-navigate="executive-region-detail">区域表现详情</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>帮助高层快速掌握关键指标。</li>
+                <li>提供深入洞察与目标管理入口。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="executive" data-view="executive-targets">
+            <div class="view-header">
+              <div>
+                <h2>目标进度追踪</h2>
+                <p>对比年度目标与实际完成情况，并查看风险项目。</p>
+              </div>
+              <div class="badge">目标管理</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>目标对比</h3>
+                <div class="chart-placeholder">目标 vs 实际</div>
+                <p>收入目标完成 104%，利润目标完成 95%。</p>
+              </div>
+              <div class="card">
+                <h3>风险列表</h3>
+                <ul>
+                  <li>欧洲市场： pipeline 仅完成 68%</li>
+                  <li>渠道伙伴：续约率低于 75%</li>
+                </ul>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="executive-collaboration">指派跟进</button>
+              <button type="button" data-navigate="executive-dashboard">返回 KPI 仪表盘</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>跟踪年度指标完成情况。</li>
+                <li>识别风险并指派跟进责任人。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="executive" data-view="executive-insights">
+            <div class="view-header">
+              <div>
+                <h2>智能洞察助手</h2>
+                <p>基于 Tableau GPT 生成的洞察，解释指标异常并给出建议。</p>
+              </div>
+              <div class="badge">AI 洞察</div>
+            </div>
+            <div class="insight-list">
+              <div class="insight-item">
+                <strong>亚太区域销售略低于目标</strong>
+                <p>原因：日本市场订单量下滑 12%，建议查看渠道转化率。</p>
+              </div>
+              <div class="insight-item">
+                <strong>线上渠道利润率提升</strong>
+                <p>原因：本月退货率下降 4 个百分点，建议扩大促销力度。</p>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="executive-dashboard">返回仪表盘</button>
+              <button type="button" data-navigate="executive-collaboration">发起讨论</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>展示 AI 驱动的洞察生成能力。</li>
+                <li>可立即转化为协同讨论。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="executive" data-view="executive-collaboration">
+            <div class="view-header">
+              <div>
+                <h2>高层协同空间</h2>
+                <p>围绕关键指标展开讨论，并指派责任人跟进。</p>
+              </div>
+              <div class="badge">协同</div>
+            </div>
+            <div class="comment-thread">
+              <div class="comment">
+                <div class="avatar">GY</div>
+                <div class="comment-content">
+                  <h4>高远 · COO</h4>
+                  <p>请市场团队评估亚太区域的渠道投入。</p>
+                </div>
+              </div>
+              <div class="comment">
+                <div class="avatar">LY</div>
+                <div class="comment-content">
+                  <h4>李妍 · 市场 VP</h4>
+                  <p>已安排 3 个重点区域的战役，本周五反馈。</p>
+                </div>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="executive-dashboard">返回战略视图</button>
+              <button type="button" data-navigate="analyst-share">通知分析师更新内容</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>记录高层决策讨论。</li>
+                <li>与分析团队形成闭环，确保信息更新。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="view" data-role="executive" data-view="executive-region-detail" data-root="executive-dashboard">
+            <div class="view-header">
+              <div>
+                <h2>区域表现详情</h2>
+                <p>针对亚太区域查看子市场表现、关键客户与渠道分析。</p>
+              </div>
+              <div class="badge">区域详情</div>
+            </div>
+            <div class="grid grid-2">
+              <div class="card">
+                <h3>子市场表现</h3>
+                <div class="chart-placeholder">市场表现图</div>
+                <p>日本 88% · 新加坡 102% · 澳大利亚 94%</p>
+              </div>
+              <div class="card">
+                <h3>关键客户健康度</h3>
+                <ul>
+                  <li>Top 客户续约率 92%</li>
+                  <li>渠道合作伙伴贡献 38%</li>
+                </ul>
+              </div>
+            </div>
+            <div class="view-actions">
+              <button type="button" data-navigate="executive-dashboard">返回 KPI 仪表盘</button>
+              <button type="button" data-navigate="executive-collaboration">指派行动计划</button>
+            </div>
+            <div class="view-description">
+              <h3>业务说明</h3>
+              <ul>
+                <li>提供区域钻取数据，辅助决策。</li>
+                <li>可以立即创建协同任务。</li>
+              </ul>
+            </div>
+          </section>
+
+        </div>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>分析师连接数据源并构建数据抽取</li><li>业务用户探索仪表盘并提问</li><li>企业将仪表盘嵌入业务系统</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>数据连接与准备</h3>
-              <p class="goal">功能目标：轻松接入多源数据</p>
-              <ul>
-                <li>Live/Extract 连接模式</li><li>数据准备、联接与融合</li><li>数据提取刷新与调度</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>可视化分析</h3>
-              <p class="goal">功能目标：快速构建交互式视图</p>
-              <ul>
-                <li>拖拽建模与 VizQL 引擎</li><li>仪表盘、故事板与参数控制</li><li>高级分析、预测与趋势线</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>协作与分享</h3>
-              <p class="goal">功能目标：扩大数据洞察的触达</p>
-              <ul>
-                <li>Tableau Server/Online 发布</li><li>权限、订阅与数据警报</li><li>嵌入式分析与 API</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>治理与扩展</h3>
-              <p class="goal">功能目标：保障企业级部署与扩展</p>
-              <ul>
-                <li>内容目录、认证数据源</li><li>资源监控与性能优化</li><li>与 Salesforce、Slack 等生态集成</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>仪表盘使用率与活跃发布者</li><li>数据刷新成功率与延迟</li><li>自助分析覆盖率与业务决策周期</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+
+    <script>
+      const roles = {
+        admin: {
+          label: "系统管理员",
+          menus: [
+            { view: "admin-overview", name: "部署运行概览" },
+            { view: "admin-permissions", name: "内容权限矩阵" },
+            { view: "admin-data-governance", name: "数据治理" },
+            { view: "admin-monitoring", name: "服务器监控" }
+          ]
+        },
+        steward: {
+          label: "数据管家",
+          menus: [
+            { view: "steward-pipeline", name: "数据准备流水线" },
+            { view: "steward-certification", name: "认证队列" },
+            { view: "steward-refresh", name: "刷新计划" },
+            { view: "steward-alerts", name: "质量警报" }
+          ]
+        },
+        analyst: {
+          label: "业务分析师",
+          menus: [
+            { view: "analyst-home", name: "我的工作区" },
+            { view: "analyst-exploration", name: "可视化建模" },
+            { view: "analyst-story", name: "故事线" },
+            { view: "analyst-share", name: "发布协作" }
+          ]
+        },
+        executive: {
+          label: "业务主管",
+          menus: [
+            { view: "executive-dashboard", name: "战略仪表盘" },
+            { view: "executive-targets", name: "目标进度" },
+            { view: "executive-insights", name: "智能洞察" },
+            { view: "executive-collaboration", name: "协同空间" }
+          ]
+        }
+      };
+
+      const roleSwitcher = document.getElementById("roleSwitcher");
+      const menuList = document.getElementById("menuList");
+      const views = Array.from(document.querySelectorAll(".view"));
+      const viewMap = Object.fromEntries(views.map((view) => [view.dataset.view, view]));
+
+      function clearMenuActive() {
+        menuList.querySelectorAll(".menu-item").forEach((item) => item.classList.remove("active"));
+      }
+
+      function highlightMenu(view) {
+        const targetRoot = view.dataset.root || view.dataset.view;
+        clearMenuActive();
+        const menuItem = menuList.querySelector(`[data-view="${targetRoot}"]`);
+        if (menuItem) {
+          menuItem.classList.add("active");
+        }
+      }
+
+      function showView(viewId) {
+        const targetView = viewMap[viewId];
+        if (!targetView) return;
+        views.forEach((view) => view.classList.remove("active"));
+        targetView.classList.add("active");
+        highlightMenu(targetView);
+      }
+
+      function renderMenu(roleKey) {
+        const role = roles[roleKey];
+        menuList.innerHTML = "";
+        role.menus.forEach((menu) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = menu.name;
+          button.className = "menu-item";
+          button.dataset.view = menu.view;
+          button.addEventListener("click", () => showView(menu.view));
+          menuList.appendChild(button);
+        });
+      }
+
+      function switchRole(roleKey) {
+        renderMenu(roleKey);
+        const firstView = roles[roleKey].menus[0]?.view;
+        if (firstView) {
+          showView(firstView);
+        }
+      }
+
+      Object.entries(roles).forEach(([value, config]) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = config.label;
+        roleSwitcher.appendChild(option);
+      });
+
+      roleSwitcher.addEventListener("change", (event) => {
+        switchRole(event.target.value);
+      });
+
+      document.body.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-navigate]");
+        if (!target) return;
+        const navigateTo = target.dataset.navigate;
+        if (viewMap[navigateTo]) {
+          const targetRole = viewMap[navigateTo].dataset.role;
+          if (targetRole && roleSwitcher.value !== targetRole) {
+            roleSwitcher.value = targetRole;
+            renderMenu(targetRole);
+          }
+          showView(navigateTo);
+        }
+      });
+
+      roleSwitcher.value = "analyst";
+      switchRole("analyst");
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
