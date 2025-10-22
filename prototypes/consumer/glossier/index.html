@@ -2,83 +2,2280 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Glossier DTC 美妆 原型概览</title>
+    <title>Glossier 全角色数字体验原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --accent-color: #ec4899;
+        --accent-soft: rgba(236, 72, 153, 0.12);
+        --sidebar-grad-start: #111827;
+        --sidebar-grad-end: #1f2937;
+        --text-strong: #0f172a;
+        --text-muted: #64748b;
+        --surface: #ffffff;
+        --surface-subtle: #f8fafc;
+        --border-soft: rgba(148, 163, 184, 0.25);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'HarmonyOS Sans', 'PingFang SC', 'Microsoft YaHei',
+          sans-serif;
+        background: var(--surface-subtle);
+        color: var(--text-strong);
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: linear-gradient(
+          180deg,
+          var(--sidebar-grad-start),
+          var(--sidebar-grad-end)
+        );
+        color: #f8fafc;
+        padding: 28px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: sticky;
+        top: 0;
+        max-height: 100vh;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .brand-badge {
+        padding: 6px 10px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 12px;
+        letter-spacing: 0.6px;
+      }
+
+      .role-switch {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: rgba(15, 23, 42, 0.35);
+        padding: 18px 16px;
+        border-radius: 18px;
+      }
+
+      .role-switch-label {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: rgba(248, 250, 252, 0.7);
+      }
+
+      .role-switch button {
+        appearance: none;
+        border: 1px solid transparent;
+        border-radius: 14px;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #f8fafc;
+        background: rgba(248, 250, 252, 0.04);
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .role-switch button span {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .role-switch button.active {
+        background: rgba(248, 250, 252, 0.14);
+        border-color: rgba(248, 250, 252, 0.5);
+        transform: translateX(4px);
+      }
+
+      .menu {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 6px;
+      }
+
+      .menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .menu-list li {
+        margin: 0;
+      }
+
+      .menu-item-button {
+        width: 100%;
+        border: 1px solid transparent;
+        border-radius: 16px;
+        padding: 12px 14px;
+        background: transparent;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: border-color 0.2s ease, background 0.2s ease,
+          transform 0.2s ease;
+        text-align: left;
+      }
+
+      .menu-item-button:hover {
+        background: rgba(248, 250, 252, 0.08);
+        border-color: rgba(248, 250, 252, 0.15);
+        transform: translateX(2px);
+      }
+
+      .menu-item-button.active {
+        background: rgba(248, 250, 252, 0.16);
+        border-color: rgba(248, 250, 252, 0.35);
+        box-shadow: inset 0 0 0 1px rgba(248, 250, 252, 0.25);
+      }
+
+      .menu-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 12px;
+        background: rgba(248, 250, 252, 0.16);
+        display: grid;
+        place-items: center;
+        font-size: 16px;
+      }
+
+      .menu-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .menu-label {
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+      }
+
+      .menu-desc {
+        font-size: 12px;
+        color: rgba(248, 250, 252, 0.68);
+      }
+
+      .menu-footer {
+        font-size: 12px;
+        color: rgba(248, 250, 252, 0.55);
+        line-height: 1.6;
+        padding-top: 10px;
+        border-top: 1px solid rgba(248, 250, 252, 0.1);
+      }
+
+      .main-area {
+        padding: 32px 40px 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .topbar-title h1 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: 0.4px;
+      }
+
+      .topbar-title p {
+        margin: 8px 0 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-color);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .topbar-tools {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .search-box {
+        position: relative;
+      }
+
+      .search-box input {
+        padding: 10px 14px 10px 36px;
+        border-radius: 14px;
+        border: 1px solid var(--border-soft);
+        background: #fff;
+        font-size: 14px;
+        min-width: 220px;
+      }
+
+      .search-box::before {
+        content: '🔍';
+        position: absolute;
+        left: 12px;
+        top: 9px;
+        font-size: 14px;
+        opacity: 0.6;
+      }
+
+      .ghost-btn,
+      .primary-btn {
+        appearance: none;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .ghost-btn {
+        background: rgba(148, 163, 184, 0.14);
+        color: var(--text-strong);
+      }
+
+      .ghost-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(148, 163, 184, 0.18);
+      }
+
+      .primary-btn {
+        background: var(--accent-color);
+        color: #fff;
+        box-shadow: 0 12px 22px rgba(236, 72, 153, 0.24);
+      }
+
+      .primary-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .content-area {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .content-block,
+      .stat-card,
+      .kanban-column,
+      .feed-card {
+        background: var(--surface);
+        border-radius: 22px;
+        padding: 22px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+      }
+
+      .stat-card h3 {
+        margin: 0 0 12px;
+        font-size: 15px;
+        color: var(--text-muted);
+        letter-spacing: 0.6px;
+      }
+
+      .stat-value {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .stat-trend {
+        font-size: 12px;
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+
+      .block-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .block-header h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .tag,
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .tag {
+        background: rgba(14, 165, 233, 0.14);
+        color: #0ea5e9;
+      }
+
+      .pill {
+        background: var(--accent-soft);
+        color: var(--accent-color);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 16px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 16px;
+        align-items: center;
+        padding: 16px;
+        border-radius: 18px;
+        background: var(--surface-subtle);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .timeline-item strong {
+        font-size: 14px;
+      }
+
+      .progress-bar {
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.24);
+        overflow: hidden;
+        margin-top: 12px;
+      }
+
+      .progress-bar span {
+        display: block;
+        height: 100%;
+        background: var(--accent-color);
+      }
+
+      .product-grid,
+      .post-grid,
+      .insight-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .product-card,
+      .post-card,
+      .insight-card {
+        background: var(--surface-subtle);
+        border-radius: 18px;
+        padding: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        display: grid;
+        gap: 10px;
+      }
+
+      .product-card h3,
+      .post-card h3,
+      .insight-card h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .product-card footer,
+      .post-card footer,
+      .insight-card footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      table thead th {
+        text-align: left;
+        padding: 12px 0;
+        color: var(--text-muted);
+        font-weight: 600;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+      }
+
+      table tbody tr {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+
+      table tbody tr:last-child {
+        border-bottom: none;
+      }
+
+      table tbody td {
+        padding: 14px 0;
+      }
+
+      .kanban {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .kanban-column header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .kanban-card {
+        background: var(--surface-subtle);
+        border-radius: 16px;
+        padding: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        display: grid;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .status-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+
+      .chart-placeholder {
+        height: 220px;
+        border-radius: 18px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(148, 163, 184, 0.16),
+          rgba(148, 163, 184, 0.16) 12px,
+          rgba(226, 232, 240, 0.24) 12px,
+          rgba(226, 232, 240, 0.24) 24px
+        );
+        display: grid;
+        place-items: center;
+        color: var(--text-muted);
+        font-size: 13px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+      }
+
+      .feed-card {
+        display: grid;
+        gap: 14px;
+      }
+
+      .feed-card header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .feed-items {
+        display: grid;
+        gap: 14px;
+      }
+
+      .feed-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        padding: 14px;
+        border-radius: 16px;
+        background: var(--surface-subtle);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+      }
+
+      .feed-item strong {
+        font-size: 14px;
+      }
+
+      .trend-positive {
+        color: #10b981;
+        font-weight: 600;
+      }
+
+      .trend-negative {
+        color: #ef4444;
+        font-weight: 600;
+      }
+
+      .divider {
+        border-top: 1px dashed rgba(148, 163, 184, 0.2);
+        margin: 18px 0;
+      }
+
+      @media (max-width: 1080px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          max-height: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Glossier DTC 美妆 原型</h1>
-      <p class="tagline">以社区驱动的直面消费者美妆品牌数字体验。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>美妆爱好者、品牌粉丝、产品研发团队</p>
-        <p><strong>核心痛点：</strong>消费者需要真实口碑与个性化推荐，品牌需要闭环用户数据</p>
-        <p><strong>价值主张：</strong>通过社区互动、内容种草与电商闭环，打造高粘性品牌体验</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>用户浏览产品故事并完成下单</li><li>社区成员分享妆容灵感与使用心得</li><li>品牌团队收集反馈优化新品研发</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>品牌内容与社区</h3>
-              <p class="goal">功能目标：强化品牌故事与用户共创</p>
-              <ul>
-                <li>Into The Gloss 内容栏目</li><li>用户故事、妆容灵感与UGC</li><li>话题讨论、活动报名与积分</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>产品体验与推荐</h3>
-              <p class="goal">功能目标：提升产品探索与匹配效率</p>
-              <ul>
-                <li>肤质测评问卷与推荐算法</li><li>套装搭配、试色与成分说明</li><li>库存提醒、补货通知与试用装</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>购物流程与服务</h3>
-              <p class="goal">功能目标：提供无缝的购买与售后体验</p>
-              <ul>
-                <li>快速结账、订阅补货服务</li><li>礼品包装、会员权益与线下门店预约</li><li>客服咨询、退换货与物流追踪</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>数据洞察与共创</h3>
-              <p class="goal">功能目标：沉淀用户洞察并驱动共创</p>
-              <ul>
-                <li>消费者反馈收集与分析仪表盘</li><li>新品测试、beta 社群与问卷</li><li>会员等级与共创激励计划</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>社区互动次数与内容贡献率</li><li>新品首发转化率与复购率</li><li>会员增长与共创活动参与度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          Glossier OS
+          <span class="brand-badge">DTC EXPERIENCE</span>
+        </div>
+        <div class="role-switch">
+          <span class="role-switch-label">切换角色视图</span>
+          <button type="button" data-role-switch="user">
+            👩🏻‍💻 用户体验端 <span>探索 + 购买</span>
+          </button>
+          <button type="button" data-role-switch="admin">
+            🧑🏻‍✈️ 品牌管理员 <span>配置 + 治理</span>
+          </button>
+          <button type="button" data-role-switch="ops">
+            📈 运营增长端 <span>洞察 + 转化</span>
+          </button>
+        </div>
+        <nav class="menu">
+          <ul class="menu-list" id="menuList"></ul>
+        </nav>
+        <div class="menu-footer">
+          演示说明：点击左侧任意导航查看对应功能原型，使用上方角色切换体验不同界面布局与模块。
+        </div>
+      </aside>
+      <main class="main-area">
+        <header class="topbar">
+          <div class="topbar-title">
+            <span class="role-badge" id="roleBadge">ROLE</span>
+            <h1 id="roleTitle">角色视图</h1>
+            <p id="roleSubtitle">加载 Glossier 数字体验……</p>
+          </div>
+          <div class="topbar-tools">
+            <div class="search-box">
+              <input type="search" placeholder="搜索功能、SKU 或社区内容" />
+            </div>
+            <button type="button" class="ghost-btn">创建快捷入口</button>
+            <button type="button" class="primary-btn">生成洞察报告</button>
+          </div>
+        </header>
+        <section class="content-area" id="contentArea"></section>
+      </main>
+    </div>
+    <script>
+      const roleConfigs = {
+        user: {
+          name: 'USER',
+          title: '用户端体验空间',
+          subtitle: '沉浸式探索新品、定制护肤计划、实时参与品牌社区。',
+          palette: {
+            accent: '#ec4899',
+            soft: 'rgba(236, 72, 153, 0.12)',
+            sidebarStart: '#f472b6',
+            sidebarEnd: '#be185d',
+          },
+          menu: [
+            {
+              id: 'home',
+              icon: '✨',
+              label: '首页概览',
+              description: '会员权益 · 动态提醒',
+              content: /* html */ `
+                <div class="grid grid-3">
+                  <article class="stat-card">
+                    <h3>会员等级</h3>
+                    <div class="stat-value">Rose Tier</div>
+                    <p class="stat-meta">距离下一等级还差 320 积分</p>
+                    <div class="progress-bar"><span style="width: 68%"></span></div>
+                  </article>
+                  <article class="stat-card">
+                    <h3>美妆 Mood</h3>
+                    <div class="stat-value">光泽肌 +4</div>
+                    <p class="stat-meta">本周完成 5 次 Routine</p>
+                    <span class="pill">连续打卡 12 天</span>
+                  </article>
+                  <article class="stat-card">
+                    <h3>订单动态</h3>
+                    <div class="stat-value">2 个包裹在路上</div>
+                    <p class="stat-meta">预计 48 小时内送达</p>
+                    <span class="tag">冷链护肤</span>
+                  </article>
+                </div>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>今日护肤流程</h2>
+                    <button type="button" class="ghost-btn">一键开始</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>07:30</strong>
+                      <div>
+                        <div><strong>晨间清洁</strong> · Milky Jelly Cleanser</div>
+                        <small>智能提醒：水温控制 32℃，保持 60 秒按摩</small>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>07:40</strong>
+                      <div>
+                        <div><strong>防护层</strong> · Priming Moisturizer + SPF50</div>
+                        <small>紫外线指数 6，推荐随身补涂</small>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>21:30</strong>
+                      <div>
+                        <div><strong>夜间修护</strong> · Futuredew + AHA 水杨酸贴</div>
+                        <small>社区热门搭配，满意度 96%</small>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>灵感快照</h2>
+                    <span class="pill">今日为你精选</span>
+                  </div>
+                  <div class="post-grid">
+                    <article class="post-card">
+                      <span class="tag">妆容教程</span>
+                      <h3>日落渐层眼妆 · Boy Brow + Skywash</h3>
+                      <p>来自 @GlowByMia 的 6 步妆容拆解，已收藏 2.3 万次。</p>
+                      <footer>
+                        <span>适配肤质：混合性</span>
+                        <strong class="trend-positive">+新 320 粉丝</strong>
+                      </footer>
+                    </article>
+                    <article class="post-card">
+                      <span class="tag">真实测评</span>
+                      <h3>可持续补充装使用体验</h3>
+                      <p>6 位会员实测 14 天，节省塑料 120g，推荐指数 4.8。</p>
+                      <footer>
+                        <span>讨论 186 条</span>
+                        <strong>想要 812</strong>
+                      </footer>
+                    </article>
+                    <article class="post-card">
+                      <span class="tag">限量新品</span>
+                      <h3>Cloud Paint Aurora 特调色</h3>
+                      <p>AI 为你生成个性妆感，支持虚拟试色，立即加入心愿单。</p>
+                      <footer>
+                        <span>剩余 23% 库存</span>
+                        <strong class="trend-negative">热度↑</strong>
+                      </footer>
+                    </article>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'routine',
+              icon: '🧴',
+              label: 'Routine 工作台',
+              description: '肌肤洞察 · 进度追踪',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>肌肤数据雷达</h2>
+                    <button type="button" class="primary-btn">刷新测肤结果</button>
+                  </div>
+                  <div class="grid grid-2">
+                    <article class="feed-card">
+                      <header>
+                        <strong>实时指标</strong>
+                        <span class="pill">AI 诊断</span>
+                      </header>
+                      <div class="feed-items">
+                        <div class="feed-item">
+                          <div>
+                            <strong>水润度 86%</strong>
+                            <p>目标区间 80%-92%，近 7 天提升 12%。</p>
+                          </div>
+                          <span class="trend-positive">↑</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>屏障状态 稳定</strong>
+                            <p>敏感预警指数 18，低于警戒线。</p>
+                          </div>
+                          <span class="trend-positive">安心</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>黑头指数 42</strong>
+                            <p>T 区建议加上每周 2 次去角质。</p>
+                          </div>
+                          <span class="trend-negative">需关注</span>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="chart-placeholder">实时趋势图占位</article>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>本周 Routine 计划</h2>
+                    <button type="button" class="ghost-btn">导出日程</button>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <header>
+                        <strong>Daily Glow</strong>
+                        <span class="tag">晨间</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>Step 1 · Cleanse</strong>
+                        <p>Milky Jelly Cleanser</p>
+                        <small>搭配智能洁面仪，力度 2 档。</small>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>Step 2 · Prep</strong>
+                        <p>Soothing Face Mist</p>
+                        <small>加入 2 滴 Balance Serum。</small>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>Night Reset</strong>
+                        <span class="tag">夜间</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>Step 1 · Double Clean</strong>
+                        <p>Oil Cleanser + Milky Jelly</p>
+                        <small>卸妆时长 90 秒，搭配毛巾热敷。</small>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>Step 2 · Treat</strong>
+                        <p>Solution Exfoliating Skin Perfector</p>
+                        <small>控制 2 分钟，避开眼周。</small>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>Step 3 · Seal</strong>
+                        <p>Futuredew + Priming Moisturizer Rich</p>
+                        <small>AI 提醒：今晚空气湿度 42%，补充锁水。</small>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>Booster Lab</strong>
+                        <span class="tag">周任务</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>周二 · 新品试用</strong>
+                        <p>Acne Clearing Serum 原型体验</p>
+                        <small>提交 6 个感受点即可得共创积分。</small>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>周四 · 社区直播</strong>
+                        <p>与首席调香师互动 Q&A</p>
+                        <small>直播提醒已加入日历。</small>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'discover',
+              icon: '🌈',
+              label: '灵感 & 新品',
+              description: '虚拟试色 · 个性推荐',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>为你策划的专属套装</h2>
+                    <button type="button" class="primary-btn">加入购物袋</button>
+                  </div>
+                  <div class="product-grid">
+                    <article class="product-card">
+                      <span class="pill">AI 组合</span>
+                      <h3>Glow Reset 晚间套装</h3>
+                      <p>Futuredew + Solution + Moon Mask，适配微干肤质。</p>
+                      <footer>
+                        <span>预计节省 ¥126</span>
+                        <strong>已匹配 94%</strong>
+                      </footer>
+                    </article>
+                    <article class="product-card">
+                      <span class="pill">限量</span>
+                      <h3>Cloud Paint Aurora</h3>
+                      <p>三色渐层腮红，推荐与 Stretch Concealer 同步使用。</p>
+                      <footer>
+                        <span>热度 9.4</span>
+                        <strong>剩余 23%</strong>
+                      </footer>
+                    </article>
+                    <article class="product-card">
+                      <span class="pill">社区爆款</span>
+                      <h3>Boy Brow 柔雾雾眉</h3>
+                      <p>近 30 天分享 +216%，支持虚拟 Brow 模型试戴。</p>
+                      <footer>
+                        <span>复购率 62%</span>
+                        <strong class="trend-positive">推荐</strong>
+                      </footer>
+                    </article>
+                    <article class="product-card">
+                      <span class="pill">预约</span>
+                      <h3>Body Hero 香氛凝胶</h3>
+                      <p>提前预定 2024 春季新品，首发线下旗舰店自提。</p>
+                      <footer>
+                        <span>预约 3,240</span>
+                        <strong>提货 4/18</strong>
+                      </footer>
+                    </article>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>Into The Gloss 精选</h2>
+                    <button type="button" class="ghost-btn">订阅专栏</button>
+                  </div>
+                  <div class="grid grid-2">
+                    <article class="feed-card">
+                      <header>
+                        <strong>编辑精选故事</strong>
+                        <span class="tag">故事</span>
+                      </header>
+                      <div class="feed-items">
+                        <div class="feed-item">
+                          <div>
+                            <strong>「Clean Girl」的可持续早晨</strong>
+                            <p>联合 Patagonia 与 Glossier 的清爽 Look。</p>
+                          </div>
+                          <span>阅读 12.6K</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>实验室里的下一瓶爆款</strong>
+                            <p>研发主管分享原料创新，邀请 100 名会员共创。</p>
+                          </div>
+                          <span>申请 864</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>纽约旗舰店体验升级</strong>
+                            <p>5 月推出 AR 试妆镜，预订 VIP 导览。</p>
+                          </div>
+                          <span>预约 320</span>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="chart-placeholder">互动热力图占位</article>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'community',
+              icon: '💬',
+              label: '社区互动',
+              description: '话题 · 共创 · 活动',
+              content: /* html */ `
+                <div class="grid grid-2">
+                  <section class="content-block">
+                    <div class="block-header">
+                      <h2>实时话题榜</h2>
+                      <span class="pill">社区热度</span>
+                    </div>
+                    <div class="feed-items">
+                      <div class="feed-item">
+                        <div>
+                          <strong>#柔光底妆实验室</strong>
+                          <p>投稿 1.9K · 官方导师驻场答疑。</p>
+                        </div>
+                        <span class="trend-positive">热度 98</span>
+                      </div>
+                      <div class="feed-item">
+                        <div>
+                          <strong>#我的香氛人格</strong>
+                          <p>AI 生成香氛画像，赠送专属标签。</p>
+                        </div>
+                        <span>热度 87</span>
+                      </div>
+                      <div class="feed-item">
+                        <div>
+                          <strong>#返图挑战 x Cloud Paint</strong>
+                          <p>上传妆容即可抽签入围纽约快闪。</p>
+                        </div>
+                        <span>热度 81</span>
+                      </div>
+                    </div>
+                  </section>
+                  <section class="content-block">
+                    <div class="block-header">
+                      <h2>共创任务中心</h2>
+                      <button type="button" class="primary-btn">提交灵感</button>
+                    </div>
+                    <div class="kanban-card">
+                      <strong>新品气垫命名投票</strong>
+                      <p>投票截止：本周日 · 参与返 50 共创积分。</p>
+                      <div class="progress-bar"><span style="width: 72%"></span></div>
+                    </div>
+                    <div class="kanban-card">
+                      <strong>质地调研日记上传</strong>
+                      <p>已收到 182 份，目标 300 份。</p>
+                      <div class="progress-bar"><span style="width: 60%"></span></div>
+                    </div>
+                    <div class="kanban-card">
+                      <strong>快闪活动志愿者</strong>
+                      <p>纽约、首尔双城同步，需 40 名体验官。</p>
+                      <div class="progress-bar"><span style="width: 48%"></span></div>
+                    </div>
+                  </section>
+                </div>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>直播 & 活动日历</h2>
+                    <button type="button" class="ghost-btn">同步到 iCal</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>时间</th>
+                        <th>主题</th>
+                        <th>嘉宾</th>
+                        <th>互动福利</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>今晚 20:00</td>
+                        <td>与调香师的夜谈 · You 香型</td>
+                        <td>首席调香师 Natalie</td>
+                        <td>限量试香包 500 份</td>
+                      </tr>
+                      <tr>
+                        <td>周三 19:30</td>
+                        <td>Cloud Paint 实战课堂</td>
+                        <td>彩妆导师 Zoey</td>
+                        <td>直播间专属折扣 85 折</td>
+                      </tr>
+                      <tr>
+                        <td>周六 11:00</td>
+                        <td>社区快闪 · SoHo 店</td>
+                        <td>品牌体验官团队</td>
+                        <td>线下定制刻字服务</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: 'orders',
+              icon: '📦',
+              label: '订单 & 物流',
+              description: '包裹追踪 · 售后服务',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>我的包裹</h2>
+                    <button type="button" class="ghost-btn">联系客服</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>订单号</th>
+                        <th>状态</th>
+                        <th>预计送达</th>
+                        <th>内容</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#GLS-20240418-01</td>
+                        <td><span class="pill">运输中</span></td>
+                        <td>4 月 20 日 18:00</td>
+                        <td>Cloud Paint 套装 + Boy Brow</td>
+                        <td><button class="ghost-btn">定位包裹</button></td>
+                      </tr>
+                      <tr>
+                        <td>#GLS-20240402-03</td>
+                        <td><span class="pill">待评价</span></td>
+                        <td>已签收 · 2 天前</td>
+                        <td>Milky Jelly Cleanser 补充装</td>
+                        <td><button class="ghost-btn">添加测评</button></td>
+                      </tr>
+                      <tr>
+                        <td>#GLS-20240322-05</td>
+                        <td><span class="pill">售后处理中</span></td>
+                        <td>预计 48 小时</td>
+                        <td>Stretch Balm 定制款</td>
+                        <td><button class="ghost-btn">查看进度</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>补货提醒</h2>
+                    <button type="button" class="primary-btn">一键补货</button>
+                  </div>
+                  <div class="feed-items">
+                    <div class="feed-item">
+                      <div>
+                        <strong>Solution Exfoliating Skin Perfector</strong>
+                        <p>预计 8 天后用尽，订阅补货节省 10%。</p>
+                      </div>
+                      <span class="trend-positive">订阅中</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>Super Bounce Serum</strong>
+                        <p>库存紧张，建议提前锁定下一瓶。</p>
+                      </div>
+                      <span class="trend-negative">库存低</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>Boy Brow</strong>
+                        <p>社区热度激增，补货周期 14 天。</p>
+                      </div>
+                      <span>提醒已设置</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'support',
+              icon: '🤝',
+              label: '会员服务中心',
+              description: '专属礼遇 · 客服咨询',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>专属礼遇</h2>
+                    <button type="button" class="ghost-btn">兑换更多</button>
+                  </div>
+                  <div class="product-grid">
+                    <article class="product-card">
+                      <span class="pill">权益</span>
+                      <h3>生日月「Glossier Pink」体验盒</h3>
+                      <p>含限定唇釉、旅行香氛、社区徽章，需 1,200 积分。</p>
+                      <footer>
+                        <span>剩余 68 份</span>
+                        <strong>立即兑换</strong>
+                      </footer>
+                    </article>
+                    <article class="product-card">
+                      <span class="pill">权益</span>
+                      <h3>线下旗舰店预约护肤</h3>
+                      <p>45 分钟专属顾问 + AR 试妆，需 600 积分。</p>
+                      <footer>
+                        <span>SoHo / Silverlake</span>
+                        <strong>预约开放</strong>
+                      </footer>
+                    </article>
+                    <article class="product-card">
+                      <span class="pill">权益</span>
+                      <h3>共创实验室 VIP 通道</h3>
+                      <p>优先体验实验配方，分享反馈赢取下一季邀请。</p>
+                      <footer>
+                        <span>席位 12</span>
+                        <strong>申请中</strong>
+                      </footer>
+                    </article>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>服务联络</h2>
+                    <button type="button" class="primary-btn">开启智能客服</button>
+                  </div>
+                  <div class="feed-items">
+                    <div class="feed-item">
+                      <div>
+                        <strong>Beauty Coach · Maggie</strong>
+                        <p>已预约 4 月 19 日 20:00 的妆容诊断视频通话。</p>
+                      </div>
+                      <span>可改期</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>售后工单 #SR-39281</strong>
+                        <p>退换货进度：仓库已收件，等待质检。</p>
+                      </div>
+                      <span class="trend-positive">进度 80%</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>社区管家 @Jamie</strong>
+                        <p>向你发来共创问卷邀请，完成奖励 200 积分。</p>
+                      </div>
+                      <span>待回复</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+        admin: {
+          name: 'ADMIN',
+          title: '品牌管理员控制台',
+          subtitle: '集中管理商品、权限、库存与全链路合规。',
+          palette: {
+            accent: '#6366f1',
+            soft: 'rgba(99, 102, 241, 0.12)',
+            sidebarStart: '#312e81',
+            sidebarEnd: '#1e1b4b',
+          },
+          menu: [
+            {
+              id: 'dashboard',
+              icon: '🧭',
+              label: '品牌驾驶舱',
+              description: '实时指标 · 风险监控',
+              content: /* html */ `
+                <div class="grid grid-3">
+                  <article class="stat-card">
+                    <h3>今日 GMV</h3>
+                    <div class="stat-value">¥ 1,286,400</div>
+                    <span class="stat-trend">较昨日 +18%</span>
+                  </article>
+                  <article class="stat-card">
+                    <h3>订单履约 SLA</h3>
+                    <div class="stat-value">96.2%</div>
+                    <span class="trend-negative">冷链区域待优化</span>
+                  </article>
+                  <article class="stat-card">
+                    <h3>客服满意度</h3>
+                    <div class="stat-value">4.82 / 5</div>
+                    <span class="stat-trend">自动化分单覆盖 73%</span>
+                  </article>
+                </div>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>全渠道实时监控</h2>
+                    <button type="button" class="ghost-btn">下载数据快照</button>
+                  </div>
+                  <div class="grid grid-2">
+                    <article class="chart-placeholder">销量 & 流量趋势图</article>
+                    <article class="feed-card">
+                      <header>
+                        <strong>关键预警</strong>
+                        <span class="tag">实时</span>
+                      </header>
+                      <div class="feed-items">
+                        <div class="feed-item">
+                          <div>
+                            <strong>仓库波峰预警</strong>
+                            <p>洛杉矶仓本小时入库 1,260 件，触发扩容策略。</p>
+                          </div>
+                          <span class="trend-negative">Level 2</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>支付渠道异常</strong>
+                            <p>Apple Pay 失败率 4.6%，已自动切换备用路由。</p>
+                          </div>
+                          <span class="trend-positive">已处理</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>SKU 缺货提醒</strong>
+                            <p>Cloud Paint Beam 库存 &lt; 5%，建议停投广告。</p>
+                          </div>
+                          <span>指派给供应链</span>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>团队作业流</h2>
+                    <span class="pill">权限驱动</span>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <header>
+                        <strong>待审核</strong>
+                        <span class="tag">4</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>新品 Aurora 定价策略</strong>
+                        <p>需要定价委员会确认 · 截止今日 18:00</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>全球价格变更 · 欧盟区</strong>
+                        <p>合规团队要求附上增值税说明。</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>执行中</strong>
+                        <span class="tag">6</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>会员等级权益更新</strong>
+                        <p>版本 2.1 · 预计上线 4 月 20 日。</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>东亚仓补货计划</strong>
+                        <p>已锁定 8,000 件 Futuredew，等待物流安排。</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>已完成</strong>
+                        <span class="tag">9</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>支付风控白名单</strong>
+                        <p>自动更新完成，已同步至风控系统。</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>纽约旗舰店 AR 镜维护</strong>
+                        <p>软硬件升级完毕，回传数据稳定。</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'catalog',
+              icon: '🗂️',
+              label: '商品 & 套装',
+              description: 'SKU 管理 · 上新流程',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>SKU 生命周期</h2>
+                    <button type="button" class="primary-btn">创建新 SKU</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>SKU</th>
+                        <th>阶段</th>
+                        <th>库存</th>
+                        <th>渠道</th>
+                        <th>负责人</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>GLS-CP-AURORA</td>
+                        <td><span class="pill">预售</span></td>
+                        <td>计划 12,000</td>
+                        <td>DTC / Sephora POP-UP</td>
+                        <td>Anna · Merch</td>
+                      </tr>
+                      <tr>
+                        <td>GLS-FD-CLASSIC</td>
+                        <td><span class="pill">常青</span></td>
+                        <td>现货 6,820</td>
+                        <td>DTC / Selfridges</td>
+                        <td>Leo · BD</td>
+                      </tr>
+                      <tr>
+                        <td>GLS-BB-BOOST</td>
+                        <td><span class="pill">升级测试</span></td>
+                        <td>试产 2,400</td>
+                        <td>社区共创</td>
+                        <td>Mika · R&amp;D</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>上新任务清单</h2>
+                    <button type="button" class="ghost-btn">查看 SOP</button>
+                  </div>
+                  <div class="feed-items">
+                    <div class="feed-item">
+                      <div>
+                        <strong>拍摄素材交付</strong>
+                        <p>视觉团队 · 截止 4/18 · 进度 80%</p>
+                      </div>
+                      <span class="trend-positive">跟进</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>法规审查包</strong>
+                        <p>法国、加拿大双重合规审核进行中。</p>
+                      </div>
+                      <span class="trend-negative">待补资料</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>电商详情页翻译</strong>
+                        <p>意大利语、韩语文案待确认。</p>
+                      </div>
+                      <span>待审批</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'inventory',
+              icon: '🏭',
+              label: '库存 & 供应链',
+              description: '仓储调度 · 产能排程',
+              content: /* html */ `
+                <div class="grid grid-2">
+                  <section class="content-block">
+                    <div class="block-header">
+                      <h2>区域库存概览</h2>
+                      <span class="pill">实时同步</span>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>仓库</th>
+                          <th>可用库存</th>
+                          <th>周转天数</th>
+                          <th>预警</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>洛杉矶</td>
+                          <td>18,420</td>
+                          <td>12</td>
+                          <td><span class="trend-positive">健康</span></td>
+                        </tr>
+                        <tr>
+                          <td>纽约</td>
+                          <td>9,860</td>
+                          <td>9</td>
+                          <td><span class="trend-negative">需补货</span></td>
+                        </tr>
+                        <tr>
+                          <td>多伦多</td>
+                          <td>6,230</td>
+                          <td>16</td>
+                          <td><span>正常</span></td>
+                        </tr>
+                        <tr>
+                          <td>东京</td>
+                          <td>4,180</td>
+                          <td>7</td>
+                          <td><span class="trend-negative">加急</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </section>
+                  <section class="content-block">
+                    <div class="block-header">
+                      <h2>产能排程</h2>
+                      <button type="button" class="ghost-btn">调整排期</button>
+                    </div>
+                    <div class="feed-items">
+                      <div class="feed-item">
+                        <div>
+                          <strong>周产能分布</strong>
+                          <p>合作工厂 4 家，总产能 32,000 单位 / 周。</p>
+                        </div>
+                        <span>稳定</span>
+                      </div>
+                      <div class="feed-item">
+                        <div>
+                          <strong>关键原料：玫瑰纯露</strong>
+                          <p>库存覆盖 18 天，建议触发备货策略。</p>
+                        </div>
+                        <span class="trend-negative">预警</span>
+                      </div>
+                      <div class="feed-item">
+                        <div>
+                          <strong>包装供应</strong>
+                          <p>环保纸盒产能 +20%，可承接新品。</p>
+                        </div>
+                        <span class="trend-positive">已确认</span>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>供应商协同面板</h2>
+                    <button type="button" class="primary-btn">发起协同会议</button>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <header>
+                        <strong>待确认</strong>
+                        <span class="tag">3</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>绿色玻璃瓶补货</strong>
+                        <p>供应商：EcoGlass · 交付周次 W18</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>冷链合作续约</strong>
+                        <p>等待法务反馈 SLA 条款。</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>执行中</strong>
+                        <span class="tag">5</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>越南代工厂试产</strong>
+                        <p>Futuredew 新配方 · 品控报告预计 4/21。</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>物流逆向回收</strong>
+                        <p>回收补充装空瓶，覆盖 120 家门店。</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>已完成</strong>
+                        <span class="tag">7</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>Sephora 联名物料</strong>
+                        <p>第二批展台道具已入库，等待分发。</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>包装碳足迹审计</strong>
+                        <p>完成年度校验，节省 12% 运输排放。</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'promotion',
+              icon: '🎯',
+              label: '活动 & 营销',
+              description: '推广矩阵 · ROI 追踪',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>在投活动看板</h2>
+                    <button type="button" class="primary-btn">新建营销活动</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>活动名称</th>
+                        <th>渠道</th>
+                        <th>进度</th>
+                        <th>预算使用</th>
+                        <th>负责人</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Aurora 全球预热</td>
+                        <td>Instagram / 小红书</td>
+                        <td><span class="pill">进行中</span></td>
+                        <td>¥ 420,000 · 68%</td>
+                        <td>Celia · Growth</td>
+                      </tr>
+                      <tr>
+                        <td>会员周年回馈</td>
+                        <td>Email / SMS</td>
+                        <td><span class="pill">执行中</span></td>
+                        <td>¥ 120,000 · 44%</td>
+                        <td>Ben · CRM</td>
+                      </tr>
+                      <tr>
+                        <td>线下快闪巡展</td>
+                        <td>纽约 / 首尔</td>
+                        <td><span class="pill">筹备</span></td>
+                        <td>¥ 300,000 · 26%</td>
+                        <td>Rae · Retail</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>优惠策略模拟</h2>
+                    <button type="button" class="ghost-btn">查看预测模型</button>
+                  </div>
+                  <div class="product-grid">
+                    <article class="product-card">
+                      <span class="pill">场景</span>
+                      <h3>新品首购折扣</h3>
+                      <p>首单 92 折 + 双件包邮，预计提升转化率 16%。</p>
+                      <footer>
+                        <span>A/B 测试中</span>
+                        <strong>样本 3,200</strong>
+                      </footer>
+                    </article>
+                    <article class="product-card">
+                      <span class="pill">场景</span>
+                      <h3>会员等级加权</h3>
+                      <p>Rose+ 会员额外 5% 积分返还，预估客单价 +9%。</p>
+                      <footer>
+                        <span>上线 4/22</span>
+                        <strong>覆盖 38K</strong>
+                      </footer>
+                    </article>
+                    <article class="product-card">
+                      <span class="pill">场景</span>
+                      <h3>渠道投放分层</h3>
+                      <p>高价值用户社交重定向，低活跃用户短信唤醒。</p>
+                      <footer>
+                        <span>成本控制</span>
+                        <strong class="trend-positive">ROI 3.2</strong>
+                      </footer>
+                    </article>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'feedback',
+              icon: '📝',
+              label: '口碑 & 质检',
+              description: 'NPS · 合规巡检',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>口碑指标追踪</h2>
+                    <span class="pill">实时刷新</span>
+                  </div>
+                  <div class="grid grid-3">
+                    <article class="stat-card">
+                      <h3>NPS</h3>
+                      <div class="stat-value">64</div>
+                      <span class="stat-trend">较上周 +3</span>
+                    </article>
+                    <article class="stat-card">
+                      <h3>评论正向率</h3>
+                      <div class="stat-value">92%</div>
+                      <span class="stat-trend">4,820 条评论监测</span>
+                    </article>
+                    <article class="stat-card">
+                      <h3>品质工单</h3>
+                      <div class="stat-value">12</div>
+                      <span class="trend-negative">需重点跟进</span>
+                    </article>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>质检巡查面板</h2>
+                    <button type="button" class="ghost-btn">导出巡检表</button>
+                  </div>
+                  <div class="feed-items">
+                    <div class="feed-item">
+                      <div>
+                        <strong>批次 QA-0420</strong>
+                        <p>Futuredew 生产线抽检通过，记录 0 异常。</p>
+                      </div>
+                      <span class="trend-positive">通过</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>批次 QA-0418</strong>
+                        <p>发现包装色差，已通知供应商返工。</p>
+                      </div>
+                      <span class="trend-negative">处理中</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>用户反馈 · 香氛敏感</strong>
+                        <p>来自社区的 6 条反馈，R&D 已介入追踪。</p>
+                      </div>
+                      <span>跟进中</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'settings',
+              icon: '⚙️',
+              label: '团队 & 权限',
+              description: '角色管理 · 审批流',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>团队成员</h2>
+                    <button type="button" class="primary-btn">邀请新成员</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>成员</th>
+                        <th>角色</th>
+                        <th>负责域</th>
+                        <th>最近活动</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Olivia Chen</td>
+                        <td>超级管理员</td>
+                        <td>全球配置</td>
+                        <td>5 分钟前 · 更新库存策略</td>
+                        <td><span class="pill">在线</span></td>
+                      </tr>
+                      <tr>
+                        <td>Marcus Lee</td>
+                        <td>供应链经理</td>
+                        <td>仓储 / 物流</td>
+                        <td>12 分钟前 · 提交补货计划</td>
+                        <td><span class="pill">在线</span></td>
+                      </tr>
+                      <tr>
+                        <td>Sophia Park</td>
+                        <td>法务合规</td>
+                        <td>内容审核</td>
+                        <td>昨日 · 审批宣传素材</td>
+                        <td><span class="pill">离线</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>权限矩阵</h2>
+                    <button type="button" class="ghost-btn">配置审批流</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>模块</th>
+                        <th>查看</th>
+                        <th>编辑</th>
+                        <th>发布</th>
+                        <th>审批</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>商品中心</td>
+                        <td>所有人</td>
+                        <td>Merch 团队</td>
+                        <td>Merch 主管</td>
+                        <td>品牌 VP</td>
+                      </tr>
+                      <tr>
+                        <td>营销活动</td>
+                        <td>Marketing</td>
+                        <td>Growth 团队</td>
+                        <td>CMO</td>
+                        <td>CMO</td>
+                      </tr>
+                      <tr>
+                        <td>社区内容</td>
+                        <td>Community</td>
+                        <td>Community 主管</td>
+                        <td>Community Director</td>
+                        <td>法务</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+          ],
+        },
+        ops: {
+          name: 'OPS',
+          title: '运营增长指挥舱',
+          subtitle: '洞察用户旅程、编排渠道策略、驱动复购增长。',
+          palette: {
+            accent: '#10b981',
+            soft: 'rgba(16, 185, 129, 0.14)',
+            sidebarStart: '#0f766e',
+            sidebarEnd: '#064e3b',
+          },
+          menu: [
+            {
+              id: 'insights',
+              icon: '📊',
+              label: '增长洞察',
+              description: '实时漏斗 · 指标趋势',
+              content: /* html */ `
+                <div class="grid grid-3">
+                  <article class="stat-card">
+                    <h3>日活跃用户</h3>
+                    <div class="stat-value">182,640</div>
+                    <span class="stat-trend">7 日环比 +12%</span>
+                  </article>
+                  <article class="stat-card">
+                    <h3>首购转化率</h3>
+                    <div class="stat-value">3.84%</div>
+                    <span class="trend-positive">目标达成度 109%</span>
+                  </article>
+                  <article class="stat-card">
+                    <h3>复购率</h3>
+                    <div class="stat-value">42%</div>
+                    <span class="trend-positive">高于行业 8pt</span>
+                  </article>
+                </div>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>增长漏斗 & KPI</h2>
+                    <button type="button" class="ghost-btn">下载月度报告</button>
+                  </div>
+                  <div class="grid grid-2">
+                    <article class="chart-placeholder">转化漏斗图占位</article>
+                    <article class="feed-card">
+                      <header>
+                        <strong>洞察提示</strong>
+                        <span class="tag">AI 推荐</span>
+                      </header>
+                      <div class="feed-items">
+                        <div class="feed-item">
+                          <div>
+                            <strong>内容触达效率</strong>
+                            <p>社区长文阅读完成率 68%，建议解锁音频版本。</p>
+                          </div>
+                          <span class="trend-positive">执行中</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>渠道 ROI 变化</strong>
+                            <p>Instagram CPL 下降 9%，可追加预算 12%。</p>
+                          </div>
+                          <span class="trend-positive">机会</span>
+                        </div>
+                        <div class="feed-item">
+                          <div>
+                            <strong>用户流失段</strong>
+                            <p>Routine 第 8 天流失率 22%，建议推送激励任务。</p>
+                          </div>
+                          <span class="trend-negative">需干预</span>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'campaigns',
+              icon: '🪄',
+              label: '渠道运营',
+              description: '投放编排 · 节奏管理',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>多渠道排期</h2>
+                    <button type="button" class="ghost-btn">查看甘特图</button>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <header>
+                        <strong>社交渠道</strong>
+                        <span class="tag">今日</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>Instagram Reel</strong>
+                        <p>新品幕后花絮 · 发布 18:00</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>小红书直播</strong>
+                        <p>美妆达人联动 · 预约 8,200 人</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>付费投放</strong>
+                        <span class="tag">本周</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>Meta Ads</strong>
+                        <p>Lookalike 5% 受众 · ROI 3.4</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>Search 品牌词</strong>
+                        <p>竞价上调 12%，稳定排名 Top1。</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>线下触点</strong>
+                        <span class="tag">本月</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>SoHo 快闪</strong>
+                        <p>沉浸式香氛体验 · 预计到店 3,200 人</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>旗舰店 Masterclass</strong>
+                        <p>预约制彩妆课堂 · 5 月 4 场</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>渠道表现对比</h2>
+                    <button type="button" class="primary-btn">同步至 BI</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>渠道</th>
+                        <th>曝光</th>
+                        <th>点击率</th>
+                        <th>转化率</th>
+                        <th>获客成本</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Instagram</td>
+                        <td>4.2M</td>
+                        <td>2.8%</td>
+                        <td>4.1%</td>
+                        <td>¥ 42</td>
+                      </tr>
+                      <tr>
+                        <td>TikTok</td>
+                        <td>3.6M</td>
+                        <td>3.4%</td>
+                        <td>3.2%</td>
+                        <td>¥ 37</td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td>860K</td>
+                        <td>32%</td>
+                        <td>6.4%</td>
+                        <td>¥ 24</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: 'crm',
+              icon: '💎',
+              label: '私域 CRM',
+              description: '人群分层 · 旅程编排',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>会员分层</h2>
+                    <button type="button" class="ghost-btn">调整人群规则</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>人群</th>
+                        <th>规模</th>
+                        <th>ARPU</th>
+                        <th>最近动作</th>
+                        <th>下一步策略</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Glow Maker</td>
+                        <td>28,460</td>
+                        <td>¥ 1,280</td>
+                        <td>完成 3 次共创任务</td>
+                        <td>邀请线下 VIP 夜</td>
+                      </tr>
+                      <tr>
+                        <td>Fresh Explorer</td>
+                        <td>64,210</td>
+                        <td>¥ 620</td>
+                        <td>加入 Routine 计划</td>
+                        <td>推送试用装礼包</td>
+                      </tr>
+                      <tr>
+                        <td>Reactivation</td>
+                        <td>18,900</td>
+                        <td>¥ 140</td>
+                        <td>超过 45 天未登录</td>
+                        <td>发送再激活挑战</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>旅程自动化</h2>
+                    <button type="button" class="primary-btn">创建新旅程</button>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <header>
+                        <strong>欢迎序列</strong>
+                        <span class="tag">已上线</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>Day 0</strong>
+                        <p>品牌故事 + 个性化推荐</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>Day 3</strong>
+                        <p>邀请加入社区挑战，转化率 28%</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>复购唤醒</strong>
+                        <span class="tag">测试中</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>Day 30</strong>
+                        <p>补货提醒 + 会员积分激励</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>Day 37</strong>
+                        <p>发送用户故事，附带专属优惠码</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>高价值培育</strong>
+                        <span class="tag">规划中</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>季度礼遇</strong>
+                        <p>线下沙龙 + 共创实验室门票</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>数据回流</strong>
+                        <p>回传至 CRM，更新积分策略</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'logistics',
+              icon: '🚚',
+              label: '履约监控',
+              description: '发货效率 · 异常处理',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>履约效率</h2>
+                    <button type="button" class="ghost-btn">查看 SLA 详情</button>
+                  </div>
+                  <div class="grid grid-3">
+                    <article class="stat-card">
+                      <h3>平均发货时长</h3>
+                      <div class="stat-value">6.2 小时</div>
+                      <span class="trend-positive">目标 8 小时</span>
+                    </article>
+                    <article class="stat-card">
+                      <h3>准时率</h3>
+                      <div class="stat-value">97.4%</div>
+                      <span class="trend-positive">较昨日 +1.2%</span>
+                    </article>
+                    <article class="stat-card">
+                      <h3>异常工单</h3>
+                      <div class="stat-value">34</div>
+                      <span class="trend-negative">需升级 6 单</span>
+                    </article>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>异常追踪</h2>
+                    <button type="button" class="primary-btn">批量处理</button>
+                  </div>
+                  <div class="feed-items">
+                    <div class="feed-item">
+                      <div>
+                        <strong>冷链温控异常</strong>
+                        <p>仓库：洛杉矶 · 订单 24 单转人工复核。</p>
+                      </div>
+                      <span class="trend-negative">处理中</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>地址验证失败</strong>
+                        <p>系统自动修复 36 单，剩余 8 单待用户确认。</p>
+                      </div>
+                      <span>待跟进</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>跨境通关延迟</strong>
+                        <p>香港关区清关时间 +12 小时，已触发补偿策略。</p>
+                      </div>
+                      <span class="trend-negative">升级</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'service',
+              icon: '🎧',
+              label: '服务质控',
+              description: '客服体验 · 社区响应',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>客服表现概览</h2>
+                    <button type="button" class="ghost-btn">下载录音</button>
+                  </div>
+                  <div class="grid grid-3">
+                    <article class="stat-card">
+                      <h3>平均响应时间</h3>
+                      <div class="stat-value">36 秒</div>
+                      <span class="trend-positive">目标 45 秒</span>
+                    </article>
+                    <article class="stat-card">
+                      <h3>一次解决率</h3>
+                      <div class="stat-value">89%</div>
+                      <span class="trend-positive">AI 辅助占比 62%</span>
+                    </article>
+                    <article class="stat-card">
+                      <h3>满意度 (CSAT)</h3>
+                      <div class="stat-value">4.86 / 5</div>
+                      <span class="trend-positive">较上周 +0.12</span>
+                    </article>
+                  </div>
+                </section>
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>声量雷达</h2>
+                    <button type="button" class="primary-btn">生成话题报告</button>
+                  </div>
+                  <div class="feed-items">
+                    <div class="feed-item">
+                      <div>
+                        <strong>新品试色咨询</strong>
+                        <p>社区 & 客服双渠道高发 · AI 建议增加 FAQ 模块。</p>
+                      </div>
+                      <span class="trend-positive">已上线</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>物流延迟反馈</strong>
+                        <p>集中在东海岸，已协同物流团队发出安抚方案。</p>
+                      </div>
+                      <span>处理中</span>
+                    </div>
+                    <div class="feed-item">
+                      <div>
+                        <strong>社区挑战参与率</strong>
+                        <p>「柔光底妆实验室」参与率 46%，建议延长 3 天。</p>
+                      </div>
+                      <span class="trend-positive">执行中</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'automation',
+              icon: '🤖',
+              label: '自动化编排',
+              description: '触发器 · 流程编排',
+              content: /* html */ `
+                <section class="content-block">
+                  <div class="block-header">
+                    <h2>流程编排中心</h2>
+                    <button type="button" class="primary-btn">新建工作流</button>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <header>
+                        <strong>活跃流程</strong>
+                        <span class="tag">4</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>实时库存联动</strong>
+                        <p>库存低于阈值 → 停止广告 + 通知采购</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>社区热点同步</strong>
+                        <p>UGC 热度突破 85 → 推送站内推荐位</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>测试流程</strong>
+                        <span class="tag">2</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>客服情绪路由</strong>
+                        <p>语音情绪分析 → 识别高风险转专家席位</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>海外节点扩容</strong>
+                        <p>访问延迟 &gt; 200ms → 自动切换 CDN 节点</p>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <header>
+                        <strong>规划流程</strong>
+                        <span class="tag">3</span>
+                      </header>
+                      <div class="kanban-card">
+                        <strong>实验室预约排程</strong>
+                        <p>新品测试报名 → 自动匹配时间段</p>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>线下活动回访</strong>
+                        <p>到店 48 小时内 → 发送满意度问卷</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+      };
+      const menuListEl = document.getElementById('menuList');
+      const contentAreaEl = document.getElementById('contentArea');
+      const roleTitleEl = document.getElementById('roleTitle');
+      const roleSubtitleEl = document.getElementById('roleSubtitle');
+      const roleBadgeEl = document.getElementById('roleBadge');
+      const roleSwitchButtons = document.querySelectorAll('[data-role-switch]');
+
+      let currentRole = null;
+      let currentMenu = null;
+
+      const applyPalette = (palette) => {
+        document.documentElement.style.setProperty('--accent-color', palette.accent);
+        document.documentElement.style.setProperty('--accent-soft', palette.soft);
+        document.documentElement.style.setProperty('--sidebar-grad-start', palette.sidebarStart);
+        document.documentElement.style.setProperty('--sidebar-grad-end', palette.sidebarEnd);
+      };
+
+      const updateRoleSwitch = (activeRole) => {
+        roleSwitchButtons.forEach((button) => {
+          button.classList.toggle('active', button.dataset.roleSwitch === activeRole);
+        });
+      };
+
+      const renderMenu = (config) => {
+        menuListEl.innerHTML = '';
+        config.menu.forEach((item) => {
+          const listItem = document.createElement('li');
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'menu-item-button';
+          button.dataset.menuId = item.id;
+          button.innerHTML = `
+            <span class="menu-icon">${item.icon}</span>
+            <div class="menu-text">
+              <span class="menu-label">${item.label}</span>
+              <span class="menu-desc">${item.description}</span>
+            </div>
+          `;
+          button.addEventListener('click', () => {
+            setActiveMenu(item.id);
+          });
+          listItem.appendChild(button);
+          menuListEl.appendChild(listItem);
+        });
+      };
+
+      const setActiveMenu = (menuId) => {
+        const config = roleConfigs[currentRole];
+        if (!config) return;
+        const menuItem = config.menu.find((item) => item.id === menuId);
+        if (!menuItem) return;
+        currentMenu = menuId;
+        document.querySelectorAll('.menu-item-button').forEach((button) => {
+          button.classList.toggle('active', button.dataset.menuId === menuId);
+        });
+        contentAreaEl.innerHTML = menuItem.content;
+      };
+
+      const setRole = (roleId) => {
+        const config = roleConfigs[roleId];
+        if (!config) return;
+        currentRole = roleId;
+        applyPalette(config.palette);
+        roleBadgeEl.textContent = config.name;
+        roleTitleEl.textContent = config.title;
+        roleSubtitleEl.textContent = config.subtitle;
+        updateRoleSwitch(roleId);
+        renderMenu(config);
+        if (config.menu.length > 0) {
+          setActiveMenu(config.menu[0].id);
+        } else {
+          contentAreaEl.innerHTML = '';
+        }
+      };
+
+      roleSwitchButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          setRole(button.dataset.roleSwitch);
+        });
+      });
+
+      setRole('user');
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
