@@ -2,83 +2,1662 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Instagram 社交平台 原型概览</title>
+    <title>Instagram 多角色工作台原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #eef1f8;
+        --text: #1f2937;
+        --muted: #64748b;
+        --accent: #f56040;
+        --accent-soft: rgba(245, 96, 64, 0.18);
+        --accent-gradient: linear-gradient(135deg, #f56040, #f77737);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 288px minmax(0, 1fr);
+        gap: 32px;
+        padding: 32px;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: linear-gradient(160deg, #0f172a, #1e293b 45%, rgba(15, 23, 42, 0.92));
+        color: #f8fafc;
+        border-radius: 28px;
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 32px;
+        height: calc(100vh - 64px);
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+      }
+
+      .brand {
+        font-size: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+
+      .brand-icon {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: rgba(148, 163, 184, 0.2);
+        font-size: 22px;
+      }
+
+      .role-switcher {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+
+      .role-chip {
+        appearance: none;
+        border: none;
+        border-radius: 18px;
+        padding: 8px 16px;
+        background: rgba(148, 163, 184, 0.2);
+        color: inherit;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .role-chip[data-active="true"] {
+        background: #f8fafc;
+        color: #0f172a;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.25);
+      }
+
+      .role-chip:hover {
+        transform: translateY(-2px);
+      }
+
+      .menu-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        color: #e2e8f0;
+        text-decoration: none;
+        transition: background 0.2s ease, transform 0.2s ease;
+        cursor: pointer;
+      }
+
+      .menu-item:hover {
+        background: rgba(148, 163, 184, 0.14);
+        transform: translateX(4px);
+      }
+
+      .menu-item[data-active="true"] {
+        background: rgba(248, 250, 252, 0.18);
+        color: #fff;
+        box-shadow: inset 0 0 0 1px rgba(248, 250, 252, 0.22);
+      }
+
+      .menu-icon {
+        display: inline-flex;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(148, 163, 184, 0.18);
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .sidebar-footer {
+        margin-top: 32px;
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.72);
+        line-height: 1.6;
+      }
+
+      .workspace {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .workspace-header {
+        background: var(--accent-gradient);
+        border-radius: 28px;
+        padding: 28px 32px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        box-shadow: 0 22px 48px rgba(245, 96, 64, 0.25);
+      }
+
+      .workspace-header h1 {
+        margin: 8px 0 12px 0;
+        font-size: 28px;
+      }
+
+      .workspace-header p {
+        margin: 0;
+      }
+
+      .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.24);
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .workspace-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .ghost-btn,
+      .filled-btn {
+        appearance: none;
+        border: none;
+        border-radius: 16px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .filled-btn {
+        background: rgba(255, 255, 255, 0.18);
+        color: #fff;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.2);
+      }
+
+      .ghost-btn {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+
+      .ghost-btn:hover,
+      .filled-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .workspace-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-bottom: 24px;
+      }
+
+      .panel {
+        background: #fff;
+        border-radius: 26px;
+        padding: 24px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+      }
+
+      .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 16px;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .text-link {
+        appearance: none;
+        border: none;
+        background: rgba(15, 23, 42, 0.06);
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 13px;
+        color: #0f172a;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .text-link:hover {
+        background: rgba(15, 23, 42, 0.12);
+      }
+
+      .story-strip {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 84px;
+        gap: 16px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .story-card {
+        text-align: center;
+        color: #1e293b;
+        font-size: 12px;
+        position: relative;
+      }
+
+      .story-avatar {
+        width: 68px;
+        height: 68px;
+        border-radius: 22px;
+        margin: 0 auto 10px auto;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.12), rgba(15, 23, 42, 0.04));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      .story-card[data-type="new"] .story-avatar {
+        background: rgba(245, 96, 64, 0.1);
+        color: #f56040;
+        border: 2px dashed rgba(245, 96, 64, 0.36);
+      }
+
+      .feed-post-list {
+        display: grid;
+        gap: 18px;
+      }
+
+      .feed-post {
+        border-radius: 20px;
+        background: #f8fafc;
+        padding: 18px 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .feed-post header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.08);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+
+      .post-meta {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .post-image {
+        height: 160px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.02));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: rgba(15, 23, 42, 0.36);
+      }
+
+      .post-actions {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 16px;
+      }
+
+      .stat-card {
+        background: var(--accent-soft);
+        border-radius: 20px;
+        padding: 18px;
+        color: #0f172a;
+      }
+
+      .stat-card strong {
+        display: block;
+        font-size: 24px;
+        margin-bottom: 6px;
+      }
+
+      .stat-card span {
+        font-size: 13px;
+        color: rgba(15, 23, 42, 0.66);
+      }
+
+      .grid-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .grid-card {
+        border-radius: 20px;
+        padding: 20px;
+        background: #f8fafc;
+        display: grid;
+        gap: 12px;
+      }
+
+      .grid-card h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .grid-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .badge {
+        display: inline-flex;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: rgba(15, 23, 42, 0.06);
+        color: rgba(15, 23, 42, 0.72);
+      }
+
+      .dual-pane {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .pane-card {
+        background: #f8fafc;
+        border-radius: 18px;
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+        height: 100%;
+      }
+
+      .conversation-item {
+        border-radius: 14px;
+        padding: 10px 12px;
+        background: rgba(148, 163, 184, 0.12);
+        display: grid;
+        gap: 4px;
+        font-size: 13px;
+      }
+
+      .conversation-item[data-active="true"] {
+        background: rgba(245, 96, 64, 0.14);
+        border: 1px solid rgba(245, 96, 64, 0.38);
+      }
+
+      .message-thread {
+        display: grid;
+        gap: 12px;
+      }
+
+      .message-bubble {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .message-bubble[data-role="me"] {
+        margin-left: auto;
+        background: rgba(245, 96, 64, 0.16);
+      }
+
+      .message-bubble[data-role="partner"] {
+        background: rgba(15, 23, 42, 0.06);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        padding: 10px 8px;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        text-align: left;
+      }
+
+      th {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: rgba(15, 23, 42, 0.6);
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+      }
+
+      .kanban-column {
+        background: rgba(148, 163, 184, 0.12);
+        border-radius: 18px;
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .kanban-card {
+        border-radius: 14px;
+        padding: 12px;
+        background: #fff;
+        display: grid;
+        gap: 8px;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+      }
+
+      .timeline {
+        position: relative;
+        padding-left: 18px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .timeline::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        bottom: 6px;
+        width: 2px;
+        background: rgba(15, 23, 42, 0.08);
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 18px;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+        left: -4px;
+        top: 4px;
+      }
+
+      .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .tag {
+        padding: 6px 14px;
+        border-radius: 14px;
+        background: rgba(15, 23, 42, 0.06);
+        font-size: 12px;
+      }
+
+      .insight-board {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+      }
+
+      .insight-tile {
+        background: rgba(15, 23, 42, 0.06);
+        border-radius: 18px;
+        padding: 16px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .profile-header {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 20px;
+        align-items: center;
+      }
+
+      .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 38px;
+        background: linear-gradient(135deg, rgba(245, 96, 64, 0.12), rgba(245, 96, 64, 0.06));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        font-weight: 600;
+        color: #f56040;
+      }
+
+      .profile-meta {
+        display: grid;
+        gap: 10px;
+      }
+
+      .profile-meta h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .profile-meta p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .list-item {
+        background: rgba(15, 23, 42, 0.04);
+        padding: 12px 14px;
+        border-radius: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+      }
+
+      .status-pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        background: rgba(15, 23, 42, 0.08);
+      }
+
+      .accent-pill {
+        background: rgba(245, 96, 64, 0.18);
+        color: #b91c1c;
+      }
+
+      .positive {
+        color: #059669;
+      }
+
+      .negative {
+        color: #dc2626;
+      }
+
+      .neutral {
+        color: #475569;
+      }
+
+      @media (max-width: 1100px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: relative;
+          top: 0;
+          height: auto;
+        }
+
+        .dual-pane {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Instagram 社交平台 原型</h1>
-      <p class="tagline">图片与短视频驱动的生活方式分享社区。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>生活方式创作者、年轻消费者、品牌营销者</p>
-        <p><strong>核心痛点：</strong>用户需要表达自我与获取灵感，品牌需要触达目标人群</p>
-        <p><strong>价值主张：</strong>通过视觉内容与社交关系链，打造高参与度的发现与购物体验</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>用户浏览好友动态并互动点赞评论</li><li>创作者发布 Reels 与故事，管理粉丝互动</li><li>品牌经营商店并通过广告推广新品</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>内容发布与互动</h3>
-              <p class="goal">功能目标：支撑多样化的内容创作形式并提升互动率</p>
-              <ul>
-                <li>图片、视频、Reels、故事等多格式上传</li><li>滤镜、剪辑、音乐与贴纸增强创作体验</li><li>点赞、评论、私信与收藏夹管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>发现与推荐</h3>
-              <p class="goal">功能目标：帮助用户发现新的创作者与兴趣内容</p>
-              <ul>
-                <li>探索页算法推荐与话题标签导航</li><li>地理位置探索与附近热门</li><li>关注建议与好友活动提示</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商业化与购物</h3>
-              <p class="goal">功能目标：让品牌与创作者在平台内完成种草到转化</p>
-              <ul>
-                <li>店铺主页、商品上架与库存管理</li><li>购物标签、结账与订单追踪</li><li>广告管理、目标受众与绩效报表</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>安全与治理</h3>
-              <p class="goal">功能目标：构建可信的社交环境并保护用户隐私</p>
-              <ul>
-                <li>敏感内容过滤与滥用举报流程</li><li>隐私控制、分组好友与家长监管</li><li>账号安全、两步验证与登录保护</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>日均发布量与互动率（点赞/评论/分享）</li><li>Reels 播放完成率与粉丝增长</li><li>平台 GMV 与广告转化成本</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-icon">📸</span>
+          <div>
+            <div>Instagram OS</div>
+            <small style="opacity: 0.8">多角色体验工作台</small>
+          </div>
+        </div>
+        <div class="role-switcher" id="roleSwitcher"></div>
+        <nav>
+          <ul class="menu-list" id="menuList"></ul>
+        </nav>
+        <div class="sidebar-footer">
+          <div>切换不同角色以预览相应的导航与页面布局。</div>
+          <div>所有菜单均为互动原型，可直接点击体验。</div>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="workspace-header">
+          <div>
+            <div class="role-badge" id="roleBadge">ROLE</div>
+            <h1 id="workspaceTitle">标题</h1>
+            <p id="workspaceSubtitle">描述</p>
+          </div>
+          <div class="workspace-actions" id="workspaceActions"></div>
+        </header>
+        <section class="workspace-content" id="workspaceContent"></section>
+      </main>
+    </div>
+    <script>
+      const sectionHeading = (title, cta) => `
+        <div class="section-heading">
+          <h2>${title}</h2>
+          ${cta ? `<button class="text-link">${cta}</button>` : ''}
+        </div>
+      `;
+
+      const helpers = {
+        storyStrip: ({ title, cta, items }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="story-strip">
+              ${items
+                .map(
+                  (item) => `
+                    <div class="story-card" data-type="${item.type || 'default'}">
+                      <div class="story-avatar">${item.avatar}</div>
+                      <div>${item.label}</div>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+        feed: ({ title, posts }) => `
+          <section class="panel">
+            ${title ? sectionHeading(title, '快速筛选') : ''}
+            <div class="feed-post-list">
+              ${posts
+                .map(
+                  (post) => `
+                    <article class="feed-post">
+                      <header>
+                        <div class="avatar">${post.initials}</div>
+                        <div class="post-meta">
+                          <strong>${post.author}</strong>
+                          <span>${post.time} · ${post.location}</span>
+                        </div>
+                      </header>
+                      <div class="post-image">${post.imageLabel}</div>
+                      <div>${post.caption}</div>
+                      <div class="post-actions">
+                        <span>❤️ ${post.likes} · 💬 ${post.comments}</span>
+                        <span>🔖 保存 · ↗️ 分享</span>
+                      </div>
+                    </article>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+        statGrid: ({ title, cta, stats }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="stat-grid">
+              ${stats
+                .map(
+                  (stat) => `
+                    <div class="stat-card">
+                      <strong>${stat.value}</strong>
+                      <span>${stat.label}</span>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+        gridCards: ({ title, cta, cards }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="grid-cards">
+              ${cards
+                .map(
+                  (card) => `
+                    <div class="grid-card">
+                      <span class="badge">${card.badge}</span>
+                      <h3>${card.title}</h3>
+                      <p>${card.subtitle}</p>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+        dualPane: ({ title, cta, leftTitle, rightTitle, conversations, messages }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="dual-pane">
+              <div class="pane-card">
+                <strong>${leftTitle}</strong>
+                ${conversations
+                  .map(
+                    (item) => `
+                      <div class="conversation-item" data-active="${item.active}">
+                        <div><strong>${item.name}</strong> · ${item.state}</div>
+                        <div class="neutral">${item.preview}</div>
+                      </div>
+                    `
+                  )
+                  .join('')}
+              </div>
+              <div class="pane-card">
+                <strong>${rightTitle}</strong>
+                <div class="message-thread">
+                  ${messages
+                    .map(
+                      (msg) => `
+                        <div class="message-bubble" data-role="${msg.role}">
+                          <div>${msg.content}</div>
+                          <small class="neutral">${msg.time}</small>
+                        </div>
+                      `
+                    )
+                    .join('')}
+                </div>
+              </div>
+            </div>
+          </section>
+        `,
+        table: ({ title, cta, columns, rows }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    ${columns.map((col) => `<th>${col}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows
+                    .map(
+                      (row) => `
+                        <tr>
+                          ${row.map((cell) => `<td>${cell}</td>`).join('')}
+                        </tr>
+                      `
+                    )
+                    .join('')}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        `,
+        kanban: ({ title, cta, columns }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="kanban">
+              ${columns
+                .map(
+                  (column) => `
+                    <div class="kanban-column">
+                      <h4>${column.title}</h4>
+                      ${column.cards
+                        .map(
+                          (card) => `
+                            <div class="kanban-card">
+                              <strong>${card.title}</strong>
+                              <span class="neutral">${card.meta}</span>
+                              <span class="badge">${card.badge}</span>
+                            </div>
+                          `
+                        )
+                        .join('')}
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+        timeline: ({ title, cta, items }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="timeline">
+              ${items
+                .map(
+                  (item) => `
+                    <div class="timeline-item">
+                      <strong>${item.time}</strong>
+                      <div>${item.title}</div>
+                      <div class="neutral">${item.meta}</div>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+        list: ({ title, cta, items }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="list">
+              ${items
+                .map(
+                  (item) => `
+                    <div class="list-item">
+                      <span>${item.label}</span>
+                      <span class="status-pill ${item.style || ''}">${item.badge}</span>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+        profile: ({ title, cta, profile, stats, highlights }) => `
+          <section class="panel">
+            ${sectionHeading(title, cta)}
+            <div class="profile-header">
+              <div class="profile-avatar">${profile.avatar}</div>
+              <div class="profile-meta">
+                <h2>${profile.name}</h2>
+                <p>${profile.bio}</p>
+                <div class="tag-cloud">
+                  ${profile.tags.map((tag) => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+            <div class="stat-grid" style="margin-top: 24px;">
+              ${stats
+                .map(
+                  (stat) => `
+                    <div class="stat-card" style="background: rgba(15, 23, 42, 0.06);">
+                      <strong>${stat.value}</strong>
+                      <span>${stat.label}</span>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+            <div class="grid-cards" style="margin-top: 24px;">
+              ${highlights
+                .map(
+                  (card) => `
+                    <div class="grid-card">
+                      <span class="badge">${card.badge}</span>
+                      <h3>${card.title}</h3>
+                      <p>${card.subtitle}</p>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </section>
+        `,
+      };
+
+      const combine = (sections) => sections.join('');
+
+      const ROLE_DATA = {
+        user: {
+          id: 'user',
+          name: '用户端',
+          badge: 'Creator / User',
+          tagline: '创作、探索与社交互动的一体化体验',
+          accent: '#f56040',
+          accentSoft: 'rgba(245, 96, 64, 0.16)',
+          gradient: 'linear-gradient(135deg, #f56040, #f77737)',
+          menus: [
+            {
+              id: 'feed',
+              label: '动态首页',
+              icon: '🏠',
+              overview: '关注动态与 AI 推荐即时呈现',
+              actions: ['发布动态', '开启直播'],
+              content: () => {
+                const stories = [
+                  { avatar: '+', label: '创建故事', type: 'new' },
+                  { avatar: 'ME', label: '我的故事' },
+                  { avatar: 'LY', label: 'Lily · 12 分钟' },
+                  { avatar: 'AD', label: 'Adrian · 25 分钟' },
+                  { avatar: 'JS', label: 'Jessie · 1 小时' },
+                  { avatar: 'MK', label: 'Mark · 2 小时' },
+                  { avatar: 'EM', label: 'Emma · 3 小时' },
+                ];
+                const posts = [
+                  {
+                    initials: 'LY',
+                    author: 'Lily Collins',
+                    time: '15 分钟前',
+                    location: '伦敦',
+                    imageLabel: '旅行胶片 · 山城日落',
+                    caption: '记录伦敦的傍晚，街角咖啡和橙色天空。',
+                    likes: '12.4K',
+                    comments: '842',
+                  },
+                  {
+                    initials: 'EM',
+                    author: 'Emma Studio',
+                    time: '32 分钟前',
+                    location: '纽约 SoHo',
+                    imageLabel: '新品预览 · 春季系列',
+                    caption: '试衣间里的春日色彩，哪一套更适合周末出行？',
+                    likes: '9.8K',
+                    comments: '415',
+                  },
+                ];
+                const cards = [
+                  { badge: '热门话题', title: '#城市慢行', subtitle: '312k 人正在讨论 · 摄影 / 旅拍' },
+                  { badge: '好友推荐', title: 'Noah Kim', subtitle: '与你共同关注 24 位创作者' },
+                  { badge: '精选 Reels', title: '街头爵士舞', subtitle: '播放 1.9M · 热门音乐“Neon Night”' },
+                  { badge: '附近活动', title: '周末创作者市集', subtitle: '07.24 · 上海前滩艺术中心' },
+                ];
+                return combine([
+                  helpers.storyStrip({ title: 'Stories', cta: '管理收藏', items: stories }),
+                  helpers.feed({ title: '为你精选动态', posts }),
+                  helpers.gridCards({ title: '今日推荐', cta: '换一批', cards }),
+                ]);
+              },
+            },
+            {
+              id: 'explore',
+              label: '探索发现',
+              icon: '🔍',
+              overview: '全局搜索热门趋势与地点',
+              actions: ['筛选主题', '保存板块'],
+              content: () => {
+                const stats = [
+                  { value: '36', label: '实时热门话题' },
+                  { value: '12', label: '附近活动' },
+                  { value: '5.2K', label: '创作者投稿' },
+                  { value: '92%', label: '兴趣匹配度' },
+                ];
+                const cards = [
+                  { badge: '趋势', title: '夜色霓虹', subtitle: '夜间街拍 · 23K 帖子' },
+                  { badge: '城市', title: '首尔 弘大', subtitle: '沉浸式咖啡体验' },
+                  { badge: '音乐', title: 'Indie Chill', subtitle: '舒缓电子播放列表' },
+                  { badge: '美食', title: '零糖甜品', subtitle: '5 家好评甜点房' },
+                  { badge: '旅行', title: '山系露营', subtitle: '37 条路线 · 初学友好' },
+                  { badge: '运动', title: '晨间瑜伽', subtitle: 'Reels 连播 · 12 分钟方案' },
+                ];
+                const listItems = [
+                  { label: '#夏夜散步', badge: '火热', style: 'accent-pill' },
+                  { label: '#模特日常', badge: '关注中', style: '' },
+                  { label: '#夜读计划', badge: '新增', style: '' },
+                  { label: '#手绘练习', badge: '推荐', style: 'accent-pill' },
+                  { label: '#绿色生活', badge: '趋势', style: '' },
+                ];
+                return combine([
+                  helpers.statGrid({ title: '探索焦点', cta: '定制偏好', stats }),
+                  helpers.gridCards({ title: '视觉灵感墙', cta: '全部合集', cards }),
+                  helpers.list({ title: '热门标签榜', cta: '创建提醒', items: listItems }),
+                ]);
+              },
+            },
+            {
+              id: 'reels',
+              label: 'Reels 短视频',
+              icon: '🎬',
+              overview: '高互动短视频矩阵',
+              actions: ['录制短片', '批量排程'],
+              content: () => {
+                const stats = [
+                  { value: '24', label: '排队待发' },
+                  { value: '3.6M', label: '本周播放' },
+                  { value: '128K', label: '新增点赞' },
+                  { value: '5.8%', label: '关注转化率' },
+                ];
+                const cards = [
+                  { badge: '热门音频', title: 'Neon Wave', subtitle: '被 12.4k 创作者使用' },
+                  { badge: '挑战赛', title: '#夏夜舞动', subtitle: '参赛作品 8.9k · 热度飙升' },
+                  { badge: '系列片段', title: '日落 10 秒课', subtitle: '连续发布 · 完播率 92%' },
+                  { badge: '品牌合作', title: 'CityLife', subtitle: '邀请联名 · CPM ¥36' },
+                ];
+                const reelsBoard = `
+                  <section class="panel">
+                    ${sectionHeading('实时 Reels 面板', '查看更多数据')}
+                    <div class="grid-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                      ${[
+                        { badge: '热门', title: '街头舞步', subtitle: '播放 1.2M · 收藏 34k' },
+                        { badge: '上新', title: '夜景摄影', subtitle: '播放 820k · 评论 2.4k' },
+                        { badge: '推荐', title: '十秒健身', subtitle: '播放 650k · 收藏 12k' },
+                        { badge: '互动', title: '旅行快闪', subtitle: '播放 540k · 分享 4.1k' },
+                      ]
+                        .map(
+                          (card) => `
+                            <div class="grid-card">
+                              <span class="badge">${card.badge}</span>
+                              <h3>${card.title}</h3>
+                              <p>${card.subtitle}</p>
+                              <div class="post-image" style="height: 140px;">9:16 预览框</div>
+                            </div>
+                          `
+                        )
+                        .join('')}
+                    </div>
+                  </section>
+                `;
+                return combine([
+                  helpers.statGrid({ title: '创作状态', cta: '导出报表', stats }),
+                  helpers.gridCards({ title: '灵感推荐', cta: '同步灵感板', cards }),
+                  reelsBoard,
+                ]);
+              },
+            },
+            {
+              id: 'messages',
+              label: '消息中心',
+              icon: '💬',
+              overview: '创作者与粉丝沟通枢纽',
+              actions: ['创建自动回复', '开启直播预约'],
+              content: () => {
+                const conversations = [
+                  { name: '品牌合作 · AURA', state: '待反馈', preview: '期待确认合作套餐方案～', active: true },
+                  { name: '粉丝群 · 日出摄影', state: '活跃', preview: '明早拍摄集合点在哪？', active: false },
+                  { name: '私信 · Mia', state: '新消息', preview: '喜欢你最新的滤镜！', active: false },
+                  { name: '创作者互推 · Duo', state: '排期', preview: '这周想一起拍 Vlog 吗？', active: false },
+                ];
+                const messages = [
+                  { role: 'partner', content: 'Hi，我们很喜欢你的城市夜景系列，想合作一组联名内容。', time: '今天 · 14:12' },
+                  { role: 'me', content: '感谢邀请！可以分享一下你们的排期与预算范围吗？', time: '今天 · 14:18' },
+                  { role: 'partner', content: '预计 8 月上线，预算 8-10w，想结合一条 Reels 与三张图文。', time: '今天 · 14:21' },
+                  { role: 'me', content: '没问题，我补充提案给你们确认。', time: '今天 · 14:24' },
+                ];
+                const quickCards = [
+                  { badge: '自动流程', title: '粉丝欢迎语', subtitle: '触达率 98% · 最近更新' },
+                  { badge: '活动', title: '线下见面会', subtitle: '报名 124 / 限额 200' },
+                  { badge: '工具', title: '消息分组标签', subtitle: '品牌 / 粉丝 / 合作' },
+                ];
+                return combine([
+                  helpers.dualPane({
+                    title: '对话工作台',
+                    cta: '新建分组',
+                    leftTitle: '消息列表',
+                    rightTitle: '实时对话',
+                    conversations,
+                    messages,
+                  }),
+                  helpers.gridCards({ title: '快捷操作', cta: '配置助手', cards: quickCards }),
+                ]);
+              },
+            },
+            {
+              id: 'commerce',
+              label: '购物标签',
+              icon: '🛍️',
+              overview: '商品管理与订单表现',
+              actions: ['发布商品', '查看订单'],
+              content: () => {
+                const stats = [
+                  { value: '¥186K', label: '本周销售额' },
+                  { value: '432', label: '完成订单' },
+                  { value: '18%', label: '购物标签点击率' },
+                  { value: '4.9★', label: '买家评分' },
+                ];
+                const featured = [
+                  { badge: '新品', title: '夜景调色预设包', subtitle: '销量 1.2k · 转化率 12%' },
+                  { badge: '组合', title: '摄影师入门套装', subtitle: '库存 78 · 收藏 3.1k' },
+                  { badge: '限时', title: '城市漫游课程', subtitle: '报名 264 · 开课 07.30' },
+                  { badge: '热卖', title: '旅行背包联名', subtitle: '售罄 · 到货倒计时' },
+                ];
+                const orders = [
+                  ['#10324', '夜景调色预设包', '¥129', '完成 · 1 小时前'],
+                  ['#10312', '摄影师入门套装', '¥899', '发货中'],
+                  ['#10298', '城市漫游课程', '¥699', '待确认'],
+                  ['#10287', '旅行背包联名', '¥599', '退款处理中'],
+                ];
+                return combine([
+                  helpers.statGrid({ title: '电商总览', cta: '导出财务', stats }),
+                  helpers.gridCards({ title: '精选商品位', cta: '编辑陈列', cards: featured }),
+                  helpers.table({ title: '订单流水', cta: '查看全部', columns: ['订单号', '商品', '金额', '状态'], rows: orders }),
+                ]);
+              },
+            },
+            {
+              id: 'profile',
+              label: '个人主页',
+              icon: '👤',
+              overview: '创作者品牌阵地',
+              actions: ['编辑主页', '查看洞察'],
+              content: () => {
+                const profile = {
+                  avatar: 'ME',
+                  name: 'Lena · 城市光影',
+                  bio: '记录全球城市的光影与生活方式。探索、分享、启发。',
+                  tags: ['摄影师', '旅行', '生活方式', 'Vlog'],
+                };
+                const stats = [
+                  { value: '2.45M', label: '关注者' },
+                  { value: '864', label: '发布内容' },
+                  { value: '328', label: '品牌合作' },
+                  { value: '98%', label: '互动正向反馈' },
+                ];
+                const highlights = [
+                  { badge: '精选故事', title: 'City Lights', subtitle: '24 小时播放 1.8M' },
+                  { badge: '合作案例', title: 'Nike Night Run', subtitle: '活动曝光 12M+' },
+                  { badge: '粉丝俱乐部', title: '光影 LAB', subtitle: '月度订阅 ¥39 · 6.2k 成员' },
+                  { badge: '灵感合集', title: '全球咖啡地图', subtitle: '收藏 42k · 近期更新' },
+                ];
+                return helpers.profile({ title: '主页概览', cta: '管理按钮', profile, stats, highlights });
+              },
+            },
+          ],
+        },
+        admin: {
+          id: 'admin',
+          name: '管理员端',
+          badge: 'Platform Admin',
+          tagline: '安全治理与平台秩序维护中心',
+          accent: '#2563eb',
+          accentSoft: 'rgba(37, 99, 235, 0.16)',
+          gradient: 'linear-gradient(135deg, #2563eb, #3b82f6)',
+          menus: [
+            {
+              id: 'overview',
+              label: '平台总览',
+              icon: '📊',
+              overview: '实时监控平台健康指标',
+              actions: ['刷新数据', '创建预警'],
+              content: () => {
+                const stats = [
+                  { value: '1.28B', label: '活跃用户' },
+                  { value: '98.4%', label: '服务可用性' },
+                  { value: '4.2M', label: '今日内容审核' },
+                  { value: '0.04%', label: '违规率' },
+                ];
+                const cards = [
+                  { badge: '警戒', title: '私信垃圾内容', subtitle: '本小时异常升高 · 触发自动管控' },
+                  { badge: '稳定', title: '媒体上传服务', subtitle: '平均延迟 126ms · 运行正常' },
+                  { badge: '观察', title: '举报响应速度', subtitle: '平均 11 分钟 · 比昨日慢 2 分钟' },
+                  { badge: '热点', title: '话题 #NeonWave', subtitle: '互动环比 +186%' },
+                ];
+                const timeline = [
+                  { time: '14:20', title: '内容识别模型更新完成', meta: '新版 NSFW 模型上线 · 准确率 +3.2%' },
+                  { time: '13:05', title: '北美边缘节点扩容', meta: '处理峰值带宽 2.8Tbps' },
+                  { time: '11:40', title: '自动化封禁回顾', meta: '异常登录封禁 1,248 个账号' },
+                  { time: '09:30', title: '社区安全日报推送', meta: '发送至 12 位责任人' },
+                ];
+                return combine([
+                  helpers.statGrid({ title: '核心运营指标', cta: '自定义看板', stats }),
+                  helpers.gridCards({ title: '即时告警', cta: '查看全部', cards }),
+                  helpers.timeline({ title: '系统变更日志', cta: '导出审计', items: timeline }),
+                ]);
+              },
+            },
+            {
+              id: 'moderation',
+              label: '内容审核',
+              icon: '🛡️',
+              overview: '多级审核管线视图',
+              actions: ['指派审核员', '同步策略'],
+              content: () => {
+                const columns = [
+                  {
+                    title: '待分发 (128)',
+                    cards: [
+                      { title: '图文 · 暴力识别', meta: '优先级 高 · 举报 42', badge: 'P0' },
+                      { title: 'Reels · 版权检测', meta: '系统拦截 · 需人工确认', badge: 'P1' },
+                    ],
+                  },
+                  {
+                    title: '人工复核 (64)',
+                    cards: [
+                      { title: '直播回放 · 违规背景', meta: '复核员：Yuki', badge: 'P0' },
+                      { title: '广告素材 · 文字违规', meta: '复核员：Chen', badge: 'P1' },
+                    ],
+                  },
+                  {
+                    title: '处理完成 (320)',
+                    cards: [
+                      { title: 'Stories · 未成年人保护', meta: '处罚：内容下架', badge: '完成' },
+                      { title: '私信 · 欺诈引导', meta: '处罚：账号冻结 7 天', badge: '完成' },
+                    ],
+                  },
+                ];
+                const rows = [
+                  ['#C10284', '图文帖子', '多次违规 · 永久封禁', '07-21 13:45'],
+                  ['#C10277', 'Reels', '版权争议 · 待品牌申诉', '07-21 12:28'],
+                  ['#C10266', '直播', '涉黄引导 · 账号冻结', '07-21 11:40'],
+                  ['#C10258', '评论', '仇恨言论 · 清理完成', '07-21 10:20'],
+                ];
+                return combine([
+                  helpers.kanban({ title: '审核任务流', cta: '调整优先级', columns }),
+                  helpers.table({ title: '最新处罚记录', cta: '查看详情', columns: ['工单号', '类型', '处理结果', '时间'], rows }),
+                ]);
+              },
+            },
+            {
+              id: 'accounts',
+              label: '账号管理',
+              icon: '👥',
+              overview: '账号生命周期与权限治理',
+              actions: ['批量操作', '生成报告'],
+              content: () => {
+                const rows = [
+                  ['@lena.city', '创作者', '正常', '上次登录 3 小时前'],
+                  ['@market_ops', '品牌账号', '观察中', '触发广告警示'],
+                  ['@fanclub777', '粉丝团', '限制', '短期封禁 2 天'],
+                  ['@bot_detected', '机器人', '冻结', '待安全复核'],
+                ];
+                const cards = [
+                  { badge: '权限', title: '双重认证覆盖率', subtitle: '87% 账号已启用 · 目标 95%' },
+                  { badge: '健康', title: '高风险账号池', subtitle: '124 个待人工复查' },
+                  { badge: '流程', title: '实名验证进度', subtitle: '完成 64% · 本周新增 38k' },
+                  { badge: '工具', title: '批处理策略', subtitle: '黑名单同步 · 支持自动降级' },
+                ];
+                return combine([
+                  helpers.table({ title: '账号状态盘点', cta: '高级筛选', columns: ['账号', '类型', '状态', '最新动态'], rows }),
+                  helpers.gridCards({ title: '运营工具箱', cta: '管理模板', cards }),
+                ]);
+              },
+            },
+            {
+              id: 'ads',
+              label: '广告审查',
+              icon: '📣',
+              overview: '广告素材准入与监测',
+              actions: ['创建检查点', '导出日志'],
+              content: () => {
+                const stats = [
+                  { value: '12,480', label: '今日投放素材' },
+                  { value: '3.2%', label: '拦截率' },
+                  { value: '420', label: '人工复核单' },
+                  { value: '98.9%', label: '合规通过率' },
+                ];
+                const cards = [
+                  { badge: '行业', title: '金融投放', subtitle: '警示：需补充资质文件' },
+                  { badge: '创意', title: '新模版 AB 测试', subtitle: '点击率 +18%' },
+                  { badge: '系统', title: '图像识别升级', subtitle: '本周上线 · 识别率 +4%' },
+                ];
+                const rows = [
+                  ['#AD5402', '化妆品新品', '合规', '展示中'],
+                  ['#AD5388', '虚拟货币', '拒绝', '涉及投资误导'],
+                  ['#AD5360', '线上教育', '待补充', '缺少备案文件'],
+                  ['#AD5314', '金融借贷', '下线', '超限利率描述'],
+                ];
+                return combine([
+                  helpers.statGrid({ title: '投放态势', cta: '查看 API', stats }),
+                  helpers.gridCards({ title: '策略提醒', cta: '调整规则', cards }),
+                  helpers.table({ title: '最新审核队列', cta: '全部素材', columns: ['工单号', '推广名称', '状态', '备注'], rows }),
+                ]);
+              },
+            },
+            {
+              id: 'security',
+              label: '安全风控',
+              icon: '🔐',
+              overview: '风控事件与风险态势',
+              actions: ['启动应急', '同步 SOP'],
+              content: () => {
+                const timeline = [
+                  { time: '14:45', title: '疑似爬虫流量', meta: 'IP 集中：巴西圣保罗 · 自动限流执行' },
+                  { time: '12:30', title: '批量登录失败', meta: '触发验证码 · 账号 324 个' },
+                  { time: '10:05', title: '暗网数据情报', meta: '发现疑似账号泄露 · 风险评估中' },
+                  { time: '08:40', title: '支付风控提醒', meta: '异常退款 · 已上报财务' },
+                ];
+                const cards = [
+                  { badge: '风险', title: '登录安全评分', subtitle: '78/100 · 待提升验证码策略' },
+                  { badge: '系统', title: '风控模型训练', subtitle: '下次迭代 07.26 · 数据准备中' },
+                  { badge: '协同', title: '安全应急演练', subtitle: '跨部门排期 · 八月第一周' },
+                ];
+                const alerts = [
+                  { label: '批量注册 · 东南亚 IP', badge: '监控中', style: 'accent-pill' },
+                  { label: '高危账号解绑', badge: '处理中', style: 'accent-pill' },
+                  { label: '社工欺诈脚本', badge: '情报追踪', style: '' },
+                  { label: '第三方登录异常', badge: '跟进', style: '' },
+                ];
+                return combine([
+                  helpers.timeline({ title: '风险事件时间线', cta: '查看应急手册', items: timeline }),
+                  helpers.gridCards({ title: '安全控制面板', cta: '调整策略', cards }),
+                  helpers.list({ title: '高优先级告警', cta: '同步安全组', items: alerts }),
+                ]);
+              },
+            },
+          ],
+        },
+        operations: {
+          id: 'operations',
+          name: '运营端',
+          badge: 'Growth Ops',
+          tagline: '增长、活动与商业化协同驾驶舱',
+          accent: '#10b981',
+          accentSoft: 'rgba(16, 185, 129, 0.18)',
+          gradient: 'linear-gradient(135deg, #10b981, #22d3a6)',
+          menus: [
+            {
+              id: 'campaigns',
+              label: '活动排期',
+              icon: '📅',
+              overview: '整合营销活动排布与执行状态',
+              actions: ['创建活动', '导入排期'],
+              content: () => {
+                const stats = [
+                  { value: '12', label: '进行中活动' },
+                  { value: '36%', label: '预算消耗' },
+                  { value: '4.8M', label: '触达用户' },
+                  { value: '128%', label: '目标完成率' },
+                ];
+                const columns = [
+                  {
+                    title: '规划中',
+                    cards: [
+                      { title: '开学季校园计划', meta: '预计 08.15 上线', badge: '预算 ¥1.2M' },
+                      { title: '夜经济直播季', meta: '等待创作者确认', badge: '合作 14 位' },
+                    ],
+                  },
+                  {
+                    title: '执行中',
+                    cards: [
+                      { title: '夏日街拍挑战赛', meta: '互动 2.1M · 完成 78%', badge: '目标 +20%' },
+                      { title: '品牌共创 · CityLife', meta: '曝光 640M', badge: '达成 92%' },
+                    ],
+                  },
+                  {
+                    title: '总结中',
+                    cards: [
+                      { title: 'Indie Music 周', meta: 'ROI 3.4 · 等待复盘', badge: '分析中' },
+                      { title: '创作者私享会', meta: '满意度 4.9/5', badge: '报告中' },
+                    ],
+                  },
+                ];
+                const timeline = [
+                  { time: '07.26', title: '校园计划海报定稿', meta: '设计提交 · 待法务审查' },
+                  { time: '07.24', title: '夜经济直播彩排', meta: '主持人 & 技术联调' },
+                  { time: '07.22', title: '创作者私享会', meta: '线下活动 · 120 人参会' },
+                  { time: '07.20', title: '夏日挑战赛复盘', meta: '投放数据同步 · 计划下一阶段' },
+                ];
+                return combine([
+                  helpers.statGrid({ title: '活动概览', cta: '下载报表', stats }),
+                  helpers.kanban({ title: '执行看板', cta: '分配负责人', columns }),
+                  helpers.timeline({ title: '里程碑日历', cta: '同步至日程', items: timeline }),
+                ]);
+              },
+            },
+            {
+              id: 'creators',
+              label: '创作者合作',
+              icon: '🤝',
+              overview: '创作者分层与合作管理',
+              actions: ['邀请创作者', '同步 CRM'],
+              content: () => {
+                const cards = [
+                  { badge: '旗舰', title: 'Lena · 城市光影', subtitle: '带货 GMV ¥3.2M · 活跃' },
+                  { badge: '潜力', title: 'Noah Visuals', subtitle: '粉丝增速 +124% · 待签约' },
+                  { badge: '垂类', title: 'Green Monday', subtitle: '环保生活 · 粉丝 680k' },
+                  { badge: '新秀', title: 'Night Runner', subtitle: '夜跑主题 · 完播率 98%' },
+                ];
+                const rows = [
+                  ['Lena 城市光影', '旗舰', '签约 · 2024-Q4', '负责人：Iris'],
+                  ['Noah Visuals', '潜力', '提案洽谈中', '负责人：Leo'],
+                  ['Green Monday', '垂类', '试合作阶段', '负责人：Chen'],
+                  ['Night Runner', '新秀', '待邀约', '负责人：Mia'],
+                ];
+                return combine([
+                  helpers.gridCards({ title: '合作池星图', cta: '筛选标签', cards }),
+                  helpers.table({ title: '合作进展表', cta: '导出合同', columns: ['创作者', '层级', '合作状态', '对接人'], rows }),
+                ]);
+              },
+            },
+            {
+              id: 'commerce',
+              label: '商业化表现',
+              icon: '💼',
+              overview: '广告与电商协同监控',
+              actions: ['配置漏斗', '查看素材'],
+              content: () => {
+                const stats = [
+                  { value: '¥18.6M', label: '总 GMV' },
+                  { value: '¥3.4M', label: '品牌广告收入' },
+                  { value: '2.8M', label: '直播带货 GMV' },
+                  { value: '32%', label: '私域复购贡献' },
+                ];
+                const rows = [
+                  ['品牌广告', '¥3.4M', '同比 +18%', 'ROI 3.2'],
+                  ['直播带货', '¥2.8M', '同比 +42%', '转化率 9.6%'],
+                  ['图文种草', '¥1.2M', '同比 +8%', '转化率 3.1%'],
+                  ['短视频导流', '¥4.6M', '同比 +25%', '转化率 5.4%'],
+                ];
+                const cards = [
+                  { badge: '漏斗', title: '人群定向优化', subtitle: '高意向人群覆盖率 64%' },
+                  { badge: '实验', title: '创意 AB 测试', subtitle: '实验 18 组 · 推荐 4 组上线' },
+                  { badge: '工具', title: '素材资产库', subtitle: '近 7 日新增 240 份' },
+                ];
+                return combine([
+                  helpers.statGrid({ title: '商业化指标', cta: '下载数据', stats }),
+                  helpers.table({ title: '渠道表现对比', cta: '展开全部', columns: ['渠道', 'GMV/收益', '同比', '效率'], rows }),
+                  helpers.gridCards({ title: '增长策略推荐', cta: '查看方案', cards }),
+                ]);
+              },
+            },
+            {
+              id: 'insights',
+              label: '数据洞察',
+              icon: '📈',
+              overview: '核心指标与趋势推送',
+              actions: ['自定义指标', '订阅周报'],
+              content: () => {
+                const stats = [
+                  { value: '68%', label: '核心人群覆盖率' },
+                  { value: '12.6%', label: '互动率', },
+                  { value: '4.3%', label: '转化率', },
+                  { value: '3.4天', label: '内容生命周期' },
+                ];
+                const cards = [
+                  { badge: '趋势', title: '夜间内容消费上涨', subtitle: '22:00-01:00 时段互动 +32%' },
+                  { badge: '洞察', title: '城市探索兴趣人群', subtitle: '北上广深渗透率最高' },
+                  { badge: '预警', title: '周末直播完播率下降', subtitle: '建议追加互动环节' },
+                ];
+                const listItems = [
+                  { label: '周度 MAU', badge: '4.2% ↑', style: 'positive' },
+                  { label: '平均观看时长', badge: '0.4s ↓', style: 'negative' },
+                  { label: '广告点击率', badge: '1.2% ↑', style: 'positive' },
+                  { label: '客服响应时效', badge: '6 分钟', style: 'neutral' },
+                ];
+                return combine([
+                  helpers.statGrid({ title: '关键指标追踪', cta: '配置告警', stats }),
+                  helpers.gridCards({ title: '洞察推送', cta: '添加订阅', cards }),
+                  helpers.list({ title: '即时指标变化', cta: '锁定范围', items: listItems }),
+                ]);
+              },
+            },
+            {
+              id: 'support',
+              label: '客服协同',
+              icon: '🎧',
+              overview: '用户与创作者服务工单',
+              actions: ['创建自动回复', '查看知识库'],
+              content: () => {
+                const conversations = [
+                  { name: '创作者优先队列', state: '等待 2', preview: '账号审核进度咨询', active: true },
+                  { name: '品牌合作支援', state: '处理中', preview: '广告投放白名单', active: false },
+                  { name: '支付纠纷', state: '排队 5', preview: '退款异常跟进', active: false },
+                  { name: '功能反馈', state: '活跃', preview: 'Reels 排程问题', active: false },
+                ];
+                const messages = [
+                  { role: 'partner', content: '您好，想确认一下我们提交的蓝 V 审核进度。', time: '09:12' },
+                  { role: 'me', content: '已查看，预计今晚 22:00 前完成审核，会短信通知。', time: '09:14' },
+                  { role: 'partner', content: '好的，非常感谢。', time: '09:15' },
+                  { role: 'me', content: '如有紧急合作需求可直接升级至专属顾问。', time: '09:16' },
+                ];
+                const cards = [
+                  { badge: '宏模板', title: '快速定位指引', subtitle: '常见问题建议话术' },
+                  { badge: '升级', title: 'VIP 绿色通道', subtitle: '平均处理 2.6 小时' },
+                  { badge: '质量', title: '满意度回访', subtitle: '近 7 日评分 4.8/5' },
+                ];
+                return combine([
+                  helpers.dualPane({
+                    title: '客服实时面板',
+                    cta: '分配工单',
+                    leftTitle: '会话队列',
+                    rightTitle: '互动详情',
+                    conversations,
+                    messages,
+                  }),
+                  helpers.gridCards({ title: '服务工具集', cta: '配置流程', cards }),
+                ]);
+              },
+            },
+          ],
+        },
+      };
+
+      const state = {
+        currentRole: 'user',
+        currentMenu: null,
+      };
+
+      const elements = {
+        roleSwitcher: document.getElementById('roleSwitcher'),
+        menuList: document.getElementById('menuList'),
+        roleBadge: document.getElementById('roleBadge'),
+        workspaceTitle: document.getElementById('workspaceTitle'),
+        workspaceSubtitle: document.getElementById('workspaceSubtitle'),
+        workspaceActions: document.getElementById('workspaceActions'),
+        workspaceContent: document.getElementById('workspaceContent'),
+      };
+
+      const setAccent = (role) => {
+        document.documentElement.style.setProperty('--accent', role.accent);
+        document.documentElement.style.setProperty('--accent-soft', role.accentSoft);
+        document.documentElement.style.setProperty('--accent-gradient', role.gradient);
+      };
+
+      const renderActions = (actions) => {
+        if (!actions || !actions.length) return '';
+        return actions
+          .map((action, index) =>
+            index === 0
+              ? `<button class="filled-btn">${action}</button>`
+              : `<button class="ghost-btn">${action}</button>`
+          )
+          .join('');
+      };
+
+      const renderMenu = (role) => {
+        elements.menuList.innerHTML = '';
+        role.menus.forEach((menu, index) => {
+          const item = document.createElement('li');
+          item.innerHTML = `
+            <a class="menu-item" data-menu="${menu.id}" data-active="${index === 0}">
+              <span class="menu-icon">${menu.icon}</span>
+              <span>${menu.label}</span>
+            </a>
+          `;
+          const link = item.querySelector('a');
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            activateMenu(menu.id);
+          });
+          elements.menuList.appendChild(item);
+        });
+      };
+
+      const activateMenu = (menuId) => {
+        const role = ROLE_DATA[state.currentRole];
+        const menu = role.menus.find((item) => item.id === menuId) || role.menus[0];
+        state.currentMenu = menu.id;
+
+        elements.roleBadge.textContent = role.badge;
+        elements.workspaceTitle.textContent = menu.label;
+        elements.workspaceSubtitle.textContent = menu.overview;
+        elements.workspaceActions.innerHTML = renderActions(menu.actions);
+        elements.workspaceContent.innerHTML = typeof menu.content === 'function' ? menu.content() : '';
+
+        elements.menuList.querySelectorAll('.menu-item').forEach((link) => {
+          const isActive = link.getAttribute('data-menu') === menu.id;
+          link.setAttribute('data-active', isActive);
+        });
+      };
+
+      const renderRole = (roleId) => {
+        const role = ROLE_DATA[roleId];
+        if (!role) return;
+        state.currentRole = roleId;
+        setAccent(role);
+        elements.roleBadge.textContent = role.badge;
+        elements.workspaceSubtitle.textContent = role.tagline;
+        elements.roleSwitcher.querySelectorAll('.role-chip').forEach((button) => {
+          const isActive = button.getAttribute('data-role') === roleId;
+          button.setAttribute('data-active', isActive);
+        });
+        renderMenu(role);
+        activateMenu(role.menus[0].id);
+      };
+
+      const renderRoleSwitcher = () => {
+        elements.roleSwitcher.innerHTML = '';
+        Object.values(ROLE_DATA).forEach((role) => {
+          const button = document.createElement('button');
+          button.className = 'role-chip';
+          button.type = 'button';
+          button.textContent = role.name;
+          button.setAttribute('data-role', role.id);
+          button.addEventListener('click', () => renderRole(role.id));
+          elements.roleSwitcher.appendChild(button);
+        });
+      };
+
+      renderRoleSwitcher();
+      renderRole(state.currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
