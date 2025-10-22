@@ -2,83 +2,1261 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Depop 潮流二手 原型概览</title>
+    <title>Depop 潮流二手 多角色原型演示</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: linear-gradient(135deg, #f4f6fb 0%, #f1f5ff 40%, #fef9ff 100%);
+        color: #1f2933;
+      }
+      .topbar {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid #e0e7ff;
+        padding: 24px 40px 16px 40px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .branding h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #27364b;
+      }
+      .branding span {
+        display: block;
+        margin-top: 6px;
+        font-size: 15px;
+        color: #556274;
+      }
+      .role-switcher {
+        display: inline-flex;
+        background: #f1f5ff;
+        padding: 6px;
+        border-radius: 999px;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        gap: 6px;
+      }
+      .role-button {
+        border: none;
+        padding: 10px 22px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        background: transparent;
+        color: #4b5563;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .role-button.active {
+        background: linear-gradient(120deg, #6366f1, #8b5cf6);
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
+      }
+      .app-shell {
+        display: flex;
+        min-height: calc(100vh - 96px);
+      }
+      .sidebar {
+        width: 260px;
+        background: rgba(17, 24, 39, 0.88);
+        color: #e5e7eb;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .sidebar-title {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: rgba(229, 231, 235, 0.72);
+      }
+      .menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+      }
+      .menu-item:hover {
+        border-color: rgba(129, 140, 248, 0.55);
+        background: rgba(99, 102, 241, 0.1);
+      }
+      .menu-item.active {
+        background: linear-gradient(120deg, rgba(129, 140, 248, 0.28), rgba(99, 102, 241, 0.6));
+        border-color: rgba(129, 140, 248, 0.8);
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(99, 102, 241, 0.35);
+      }
+      .menu-item span.icon {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 16px;
+      }
+      .content {
+        flex: 1;
+        padding: 40px;
+        overflow: auto;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 100%);
+      }
+      .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+      }
+      .content-header h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #1f2937;
+      }
+      .tag-pills {
+        display: inline-flex;
+        gap: 8px;
+      }
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(79, 70, 229, 0.12);
+        color: #4f46e5;
+        font-weight: 600;
+        font-size: 13px;
+      }
+      .grid {
+        display: grid;
+        gap: 20px;
+      }
+      .grid-cols-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .grid-cols-3 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(226, 232, 240, 0.7);
+      }
+      .card h3 {
+        margin: 0 0 12px 0;
+        font-size: 18px;
+        color: #1f2937;
+      }
+      .card p {
+        margin: 4px 0;
+        color: #4b5563;
+      }
+      .stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .stat strong {
+        font-size: 26px;
+        color: #4c1d95;
+      }
+      .stat span {
+        font-size: 13px;
+        color: #6b7280;
+      }
+      .chart-placeholder {
+        height: 160px;
+        border-radius: 16px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.15),
+          rgba(99, 102, 241, 0.15) 20px,
+          rgba(129, 140, 248, 0.25) 20px,
+          rgba(129, 140, 248, 0.25) 40px
+        );
+        position: relative;
+        overflow: hidden;
+      }
+      .chart-overlay {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.45), transparent 60%),
+          radial-gradient(circle at 80% 0%, rgba(196, 181, 253, 0.5), transparent 55%);
+      }
+      .badge-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .badge {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(15, 118, 110, 0.12);
+        color: #0f766e;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+      table th, table td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid rgba(203, 213, 225, 0.6);
+      }
+      table th {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #6b7280;
+      }
+      .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 12px;
+      }
+      .timeline-item {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .timeline-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        margin-top: 6px;
+      }
+      .timeline-content {
+        flex: 1;
+        background: rgba(244, 244, 255, 0.6);
+        border-radius: 12px;
+        padding: 12px 16px;
+      }
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .kanban-column {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.08);
+      }
+      .kanban-column h4 {
+        margin: 0 0 12px 0;
+        font-size: 14px;
+        color: #4338ca;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .kanban-card {
+        background: rgba(129, 140, 248, 0.14);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 10px;
+        color: #312e81;
+        font-weight: 600;
+      }
+      .section {
+        margin-bottom: 32px;
+      }
+      .flex-between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .list-item {
+        background: rgba(229, 231, 235, 0.45);
+        border-radius: 12px;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        color: #1f2937;
+      }
+      .list-item span {
+        color: #6b7280;
+        font-size: 13px;
+      }
+      .tag-stack {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .tag {
+        background: rgba(244, 114, 182, 0.2);
+        color: #be185d;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .progress-bar {
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(209, 213, 219, 0.7);
+        margin-top: 10px;
+        overflow: hidden;
+      }
+      .progress-bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+      }
+      .switch-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px dashed rgba(148, 163, 184, 0.6);
+      }
+      .switch {
+        width: 44px;
+        height: 24px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.45);
+        position: relative;
+      }
+      .switch::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(148, 163, 184, 0.5);
+      }
+      .switch.on {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      }
+      .switch.on::after {
+        left: 23px;
+      }
+      .hero-banner {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(236, 72, 153, 0.18));
+        border-radius: 24px;
+        padding: 26px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+      }
+      .hero-banner h3 {
+        margin: 0;
+        font-size: 22px;
+        color: #312e81;
+      }
+      .hero-banner p {
+        margin: 6px 0 0 0;
+        color: #4338ca;
+        font-weight: 600;
+      }
+      .hero-accent {
+        width: 180px;
+        height: 140px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.35), transparent 60%),
+          radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.35), transparent 55%);
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Depop 潮流二手 原型</h1>
-      <p class="tagline">面向年轻人的潮流二手交易与创意社区。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>年轻潮流买家、独立设计卖家、二手收藏者</p>
-        <p><strong>核心痛点：</strong>潮流商品更新快，需要便捷的移动端交易体验</p>
-        <p><strong>价值主张：</strong>通过社交化的店铺展示、搜索与支付，提供移动原生的二手交易平台</p>
+    <header class="topbar">
+      <div class="branding">
+        <h1>Depop 潮流二手 多角色原型系统</h1>
+        <span>演示用户端 / 管理端 / 运营端的差异化界面与功能流</span>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>卖家拍照上传潮流单品并定价</li><li>买家按风格或品牌搜索并下单</li><li>平台推送精选内容与趋势榜单</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>店铺与内容</h3>
-              <p class="goal">功能目标：强化卖家品牌感与视觉呈现</p>
-              <ul>
-                <li>个人主页、风格标签与故事</li><li>商品合集、Lookbook 与视频</li><li>收藏、关注与私信互动</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>搜索与推荐</h3>
-              <p class="goal">功能目标：帮助买家找到符合审美的商品</p>
-              <ul>
-                <li>按品牌、尺寸、价格过滤</li><li>基于浏览行为的推荐</li><li>趋势榜单与编辑精选</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>交易与支付</h3>
-              <p class="goal">功能目标：提供安全顺畅的移动支付体验</p>
-              <ul>
-                <li>应用内支付、PayPal 集成</li><li>运费模板、发货提醒与追踪</li><li>争议处理与退款保障</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>社区与增长</h3>
-              <p class="goal">功能目标：构建潮流文化社区</p>
-              <ul>
-                <li>话题挑战、潮流指南与博客</li><li>线下快闪与合作策展</li><li>创作者激励与等级体系</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>日均上新量与浏览转化率</li><li>移动端下单占比与支付成功率</li><li>社区活动参与度与复购率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+      <div class="role-switcher" id="roleSwitcher">
+        <button class="role-button active" data-role="user">用户端</button>
+        <button class="role-button" data-role="admin">管理员端</button>
+        <button class="role-button" data-role="ops">运营端</button>
+      </div>
+    </header>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-title" id="sidebarTitle">用户导航</div>
+        <ul class="menu" id="menuList"></ul>
+      </aside>
+      <main class="content">
+        <div id="contentArea"></div>
+      </main>
+    </div>
+    <script>
+      const roles = {
+        user: {
+          title: "用户导航",
+          menus: [
+            { id: "discover", label: "首页发现", icon: "✨" },
+            { id: "ranking", label: "潮流榜单", icon: "🔥" },
+            { id: "messages", label: "消息中心", icon: "💬" },
+            { id: "orders", label: "订单追踪", icon: "📦" },
+            { id: "studio", label: "我的店铺", icon: "🏪" },
+            { id: "wallet", label: "钱包福利", icon: "💎" },
+          ],
+          content: {
+            discover: `
+              <div class="hero-banner">
+                <div>
+                  <h3>今日精选潮流穿搭</h3>
+                  <p>来自 128 位创作者的 540 个新品 Look</p>
+                </div>
+                <div class="hero-accent"></div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <h3>限量胶囊系列</h3>
+                  <div class="tag-stack">
+                    <div class="tag">街头</div>
+                    <div class="tag">设计师联名</div>
+                  </div>
+                  <div class="progress-bar"><span style="width: 68%"></span></div>
+                  <p>剩余 32 件 · 热度 +128%</p>
+                </div>
+                <div class="card">
+                  <h3>二手球鞋展</h3>
+                  <div class="tag-stack">
+                    <div class="tag">球鞋</div>
+                    <div class="tag">限量</div>
+                  </div>
+                  <div class="progress-bar"><span style="width: 82%"></span></div>
+                  <p>成交 260 双 · 关注 3.1k</p>
+                </div>
+                <div class="card">
+                  <h3>编辑精选穿搭</h3>
+                  <div class="tag-stack">
+                    <div class="tag">复古</div>
+                    <div class="tag">Y2K</div>
+                  </div>
+                  <div class="progress-bar"><span style="width: 54%"></span></div>
+                  <p>收藏 980 · 互动 2.3k</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="card">
+                  <h3>实时直播橱窗</h3>
+                  <div class="chart-placeholder"><div class="chart-overlay"></div></div>
+                  <p>下一场直播：今晚 20:00 <strong>街头古着秀</strong></p>
+                </div>
+                <div class="card">
+                  <h3>个性推荐 Feed</h3>
+                  <div class="list">
+                    <div class="list-item">Y2K 亮片外套 <span>来自 @Nova</span></div>
+                    <div class="list-item">解构丹宁拼接 <span>来自 @Juno</span></div>
+                    <div class="list-item">朋克银饰合集 <span>来自 @Mercy</span></div>
+                  </div>
+                </div>
+              </div>
+            `,
+            ranking: `
+              <div class="content-header">
+                <h2>潮流热度榜单</h2>
+                <div class="tag-pills">
+                  <div class="pill">24h</div>
+                  <div class="pill">新品</div>
+                  <div class="pill">独立设计</div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="card">
+                  <h3>品牌热度 Top 5</h3>
+                  <table>
+                    <tr><th>排名</th><th>品牌</th><th>热度指数</th></tr>
+                    <tr><td>01</td><td>FUTUREPOP</td><td>9.8</td></tr>
+                    <tr><td>02</td><td>NEO STREET</td><td>9.3</td></tr>
+                    <tr><td>03</td><td>ARCHIVE 77</td><td>8.9</td></tr>
+                    <tr><td>04</td><td>STRATO</td><td>8.7</td></tr>
+                    <tr><td>05</td><td>URBANDIVE</td><td>8.4</td></tr>
+                  </table>
+                </div>
+                <div class="card">
+                  <h3>风格趋势雷达</h3>
+                  <div class="chart-placeholder"><div class="chart-overlay"></div></div>
+                  <p>本周关键词：赛博朋克 / 山系机能 / 糖果霓虹</p>
+                </div>
+              </div>
+              <div class="card section">
+                <h3>创作者影响力</h3>
+                <div class="badge-list">
+                  <div class="badge">@MARS 互动率 12.6%</div>
+                  <div class="badge">@LUNE 新品转化 8.9%</div>
+                  <div class="badge">@RAVEN 粉丝新增 4.3k</div>
+                  <div class="badge">@ONYX GMV 86w</div>
+                </div>
+              </div>
+            `,
+            messages: `
+              <div class="content-header">
+                <h2>消息中心</h2>
+                <div class="pill">会话 · 系统通知</div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="card">
+                  <h3>即时对话</h3>
+                  <div class="list">
+                    <div class="list-item">@LUNE STUDIO <span>新的试穿视频已上传</span></div>
+                    <div class="list-item">@Amber <span>议价 ¥420 → ¥398</span></div>
+                    <div class="list-item">@Dusty <span>想看背面细节照</span></div>
+                    <div class="list-item">系统助手 <span>订单 #DP2387 发货提醒</span></div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>互动追踪</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>新品预约成功</strong>
+                        <p>限量胶囊系列 · 3 位好友也加入预约</p>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>私信关注</strong>
+                        <p>@Nova 回复了你的穿搭提问</p>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>直播开播提醒</strong>
+                        <p>今晚 20:00 街头古着秀</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+            orders: `
+              <div class="content-header">
+                <h2>订单与物流</h2>
+                <div class="tag-pills">
+                  <div class="pill">待收货 2</div>
+                  <div class="pill">售后 1</div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="card">
+                  <h3>在途订单</h3>
+                  <table>
+                    <tr><th>订单号</th><th>进度</th><th>预计送达</th></tr>
+                    <tr><td>#DP2387</td><td>派送中</td><td>6 月 12 日</td></tr>
+                    <tr><td>#DP2415</td><td>已揽收</td><td>6 月 15 日</td></tr>
+                    <tr><td>#DP2330</td><td>待揽件</td><td>—</td></tr>
+                  </table>
+                </div>
+                <div class="card">
+                  <h3>售后进度</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>退款处理中</strong>
+                        <p>订单 #DP2209 · 预计 2 个工作日</p>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>补寄待确认</strong>
+                        <p>订单 #DP2198 · 卖家上传运单号</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card section">
+                <h3>我的常用地址</h3>
+                <div class="list">
+                  <div class="list-item">上海市 虹口区 创意园区 <span>默认</span></div>
+                  <div class="list-item">杭州 市中心 SOHO <span>备用</span></div>
+                </div>
+              </div>
+            `,
+            studio: `
+              <div class="content-header">
+                <h2>卖家工作台</h2>
+                <div class="pill">今日 GMV ¥18,320</div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <div class="stat"><strong>48</strong><span>上架商品</span></div>
+                  <div class="progress-bar"><span style="width: 72%"></span></div>
+                  <p>新品上架节奏良好</p>
+                </div>
+                <div class="card">
+                  <div class="stat"><strong>2.6k</strong><span>粉丝</span></div>
+                  <div class="progress-bar"><span style="width: 56%"></span></div>
+                  <p>本周新增 180</p>
+                </div>
+                <div class="card">
+                  <div class="stat"><strong>93%</strong><span>好评率</span></div>
+                  <div class="progress-bar"><span style="width: 93%"></span></div>
+                  <p>共 840 条评价</p>
+                </div>
+              </div>
+              <div class="kanban">
+                <div class="kanban-column">
+                  <h4>待处理</h4>
+                  <div class="kanban-card">补拍细节 · 解构拼接外套</div>
+                  <div class="kanban-card">确认报价 · 复古手作耳环</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>上新排期</h4>
+                  <div class="kanban-card">6/12 胶囊系列</div>
+                  <div class="kanban-card">6/16 联名款</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>已完成</h4>
+                  <div class="kanban-card">直播专场结算</div>
+                  <div class="kanban-card">买家秀返图合集</div>
+                </div>
+              </div>
+            `,
+            wallet: `
+              <div class="content-header">
+                <h2>钱包福利中心</h2>
+                <div class="pill">余额 ¥1,820</div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <h3>余额账户</h3>
+                  <p>可用：¥1,520</p>
+                  <p>冻结：¥300</p>
+                  <div class="progress-bar"><span style="width: 45%"></span></div>
+                  <p>本周提现进度</p>
+                </div>
+                <div class="card">
+                  <h3>优惠券</h3>
+                  <div class="badge-list">
+                    <div class="badge">运费券 ¥15</div>
+                    <div class="badge">直播间满减 ¥30</div>
+                    <div class="badge">会员折扣 9.2 折</div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>会员权益</h3>
+                  <p>黑胶会员 · 到期 2024/12/31</p>
+                  <div class="tag-stack">
+                    <div class="tag">免手续费</div>
+                    <div class="tag">专属客服</div>
+                    <div class="tag">提前购</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>账单记录</h3>
+                <table>
+                  <tr><th>时间</th><th>类型</th><th>金额</th><th>状态</th></tr>
+                  <tr><td>06/08</td><td>订单收入</td><td>+¥560</td><td>已入账</td></tr>
+                  <tr><td>06/07</td><td>提现</td><td>-¥800</td><td>处理中</td></tr>
+                  <tr><td>06/05</td><td>平台补贴</td><td>+¥120</td><td>已入账</td></tr>
+                </table>
+              </div>
+            `,
+          },
+        },
+        admin: {
+          title: "管理导航",
+          menus: [
+            { id: "dashboard", label: "数据总览", icon: "📊" },
+            { id: "users", label: "用户管理", icon: "🧑‍💻" },
+            { id: "catalog", label: "商品审核", icon: "🧾" },
+            { id: "complaints", label: "投诉处理", icon: "🚨" },
+            { id: "permission", label: "权限配置", icon: "🛡️" },
+            { id: "system", label: "系统设置", icon: "⚙️" },
+          ],
+          content: {
+            dashboard: `
+              <div class="content-header">
+                <h2>平台运行概览</h2>
+                <div class="tag-pills">
+                  <div class="pill">今日 GMV ¥1.28 亿</div>
+                  <div class="pill">在线用户 58,200</div>
+                </div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <div class="stat"><strong>96%</strong><span>支付成功率</span></div>
+                  <div class="chart-placeholder"><div class="chart-overlay"></div></div>
+                </div>
+                <div class="card">
+                  <div class="stat"><strong>3.1w</strong><span>活跃卖家</span></div>
+                  <p>新增入驻：420</p>
+                  <div class="progress-bar"><span style="width: 62%"></span></div>
+                </div>
+                <div class="card">
+                  <div class="stat"><strong>1.3w</strong><span>待办事项</span></div>
+                  <p>待审核商品 380 · 投诉 68</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="card">
+                  <h3>交易安全监控</h3>
+                  <div class="chart-placeholder"><div class="chart-overlay"></div></div>
+                  <p>可疑订单率 0.32% · 风控拦截 128 笔</p>
+                </div>
+                <div class="card">
+                  <h3>系统状态</h3>
+                  <div class="list">
+                    <div class="list-item">支付网关 <span>运行正常</span></div>
+                    <div class="list-item">消息服务 <span>延迟 280ms</span></div>
+                    <div class="list-item">推荐引擎 <span>重训练中</span></div>
+                  </div>
+                </div>
+              </div>
+            `,
+            users: `
+              <div class="content-header">
+                <h2>用户管理中心</h2>
+                <div class="pill">黑名单 124 · 监控名单 482</div>
+              </div>
+              <div class="card section">
+                <h3>用户列表</h3>
+                <table>
+                  <tr><th>ID</th><th>昵称</th><th>等级</th><th>状态</th><th>操作</th></tr>
+                  <tr><td>U92377</td><td>@VANTA</td><td>创作者 Lv5</td><td>正常</td><td>查看</td></tr>
+                  <tr><td>U83942</td><td>@MIST</td><td>买家 Lv3</td><td>冻结</td><td>解冻</td></tr>
+                  <tr><td>U77410</td><td>@EMBER</td><td>卖家 Lv4</td><td>风险预警</td><td>复核</td></tr>
+                  <tr><td>U66873</td><td>@LYRA</td><td>创作者 Lv2</td><td>正常</td><td>升级</td></tr>
+                </table>
+              </div>
+              <div class="card">
+                <h3>操作记录</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>批量禁售违规上架</strong>
+                      <p>处理人：Admin-03 · 12 分钟前</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>恢复卖家信用等级</strong>
+                      <p>处理人：Admin-07 · 38 分钟前</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+            catalog: `
+              <div class="content-header">
+                <h2>商品审核工作台</h2>
+                <div class="pill">待审核 386</div>
+              </div>
+              <div class="kanban">
+                <div class="kanban-column">
+                  <h4>待初审</h4>
+                  <div class="kanban-card">ID#A872 · 机能拼接外套</div>
+                  <div class="kanban-card">ID#A875 · 复古银饰套装</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>质检中</h4>
+                  <div class="kanban-card">ID#A861 · 限量球鞋</div>
+                  <div class="kanban-card">ID#A868 · 手作皮具</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>待复核</h4>
+                  <div class="kanban-card">ID#A854 · 艺术家联名帽衫</div>
+                  <div class="kanban-card">ID#A852 · 复古胶片相机</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>已发布</h4>
+                  <div class="kanban-card">ID#A840 · 手绘帆布包</div>
+                  <div class="kanban-card">ID#A835 · 重工牛仔裤</div>
+                </div>
+              </div>
+              <div class="card section">
+                <h3>审核维度</h3>
+                <div class="badge-list">
+                  <div class="badge">真伪校验</div>
+                  <div class="badge">类目规范</div>
+                  <div class="badge">高危词识别</div>
+                  <div class="badge">价格浮动</div>
+                </div>
+              </div>
+            `,
+            complaints: `
+              <div class="content-header">
+                <h2>投诉与客服处理</h2>
+                <div class="pill">今日新增 68</div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="card">
+                  <h3>工单队列</h3>
+                  <table>
+                    <tr><th>编号</th><th>类型</th><th>优先级</th><th>状态</th></tr>
+                    <tr><td>T20248</td><td>未发货</td><td>高</td><td>跟进中</td></tr>
+                    <tr><td>T20251</td><td>质量问题</td><td>中</td><td>待卖家响应</td></tr>
+                    <tr><td>T20260</td><td>虚假宣传</td><td>高</td><td>仲裁中</td></tr>
+                    <tr><td>T20263</td><td>售后退款</td><td>低</td><td>已解决</td></tr>
+                  </table>
+                </div>
+                <div class="card">
+                  <h3>处理流程</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>智能分流</strong>
+                        <p>AI 识别风险等级，匹配处理人</p>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>跨部门协作</strong>
+                        <p>风控 / 客服 / 法务 联动</p>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>回访满意度</strong>
+                        <p>系统自动触达并收集反馈</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+            permission: `
+              <div class="content-header">
+                <h2>权限矩阵</h2>
+                <div class="pill">角色 18 · 策略 42</div>
+              </div>
+              <div class="card section">
+                <h3>角色配置</h3>
+                <table>
+                  <tr><th>角色</th><th>模块</th><th>权限</th></tr>
+                  <tr><td>审核主管</td><td>商品 / 内容</td><td>审批、回溯、封禁</td></tr>
+                  <tr><td>客服专员</td><td>投诉 / 工单</td><td>跟进、回访</td></tr>
+                  <tr><td>风控观察员</td><td>交易 / 用户</td><td>只读、警报</td></tr>
+                </table>
+              </div>
+              <div class="card">
+                <h3>策略开关</h3>
+                <div class="switch-row">
+                  <span>高风险订单自动冻结</span>
+                  <div class="switch on"></div>
+                </div>
+                <div class="switch-row">
+                  <span>敏感词即刻下架</span>
+                  <div class="switch on"></div>
+                </div>
+                <div class="switch-row">
+                  <span>跨区登录校验</span>
+                  <div class="switch"></div>
+                </div>
+              </div>
+            `,
+            system: `
+              <div class="content-header">
+                <h2>系统配置中心</h2>
+                <div class="pill">版本 v5.3.1</div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <h3>服务状态</h3>
+                  <p>核心 API 延迟 120ms</p>
+                  <p>消息队列 峰值 32k/s</p>
+                </div>
+                <div class="card">
+                  <h3>发布进度</h3>
+                  <p>灰度节点：华东二区</p>
+                  <div class="progress-bar"><span style="width: 55%"></span></div>
+                  <p>预计完成：今晚 23:30</p>
+                </div>
+                <div class="card">
+                  <h3>预警信息</h3>
+                  <div class="list">
+                    <div class="list-item">库存同步延迟 <span>处理中</span></div>
+                    <div class="list-item">登录服务波动 <span>观察中</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>配置面板</h3>
+                <div class="switch-row">
+                  <span>夜间模式强制开启</span>
+                  <div class="switch"></div>
+                </div>
+                <div class="switch-row">
+                  <span>API 限流策略</span>
+                  <div class="switch on"></div>
+                </div>
+                <div class="switch-row">
+                  <span>数据脱敏导出</span>
+                  <div class="switch"></div>
+                </div>
+              </div>
+            `,
+          },
+        },
+        ops: {
+          title: "运营导航",
+          menus: [
+            { id: "campaign", label: "活动策划", icon: "🎯" },
+            { id: "content", label: "内容审核", icon: "📝" },
+            { id: "community", label: "社区洞察", icon: "🌐" },
+            { id: "push", label: "推送管理", icon: "📣" },
+            { id: "ads", label: "广告位配置", icon: "🪟" },
+            { id: "supply", label: "供应链协同", icon: "🤝" },
+          ],
+          content: {
+            campaign: `
+              <div class="content-header">
+                <h2>活动策划面板</h2>
+                <div class="pill">六月主推：街头复古季</div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <h3>活动排期</h3>
+                  <div class="list">
+                    <div class="list-item">6/12 街头快闪 <span>执行中</span></div>
+                    <div class="list-item">6/18 品牌联合秀 <span>策划中</span></div>
+                    <div class="list-item">6/24 创作者沙龙 <span>招募中</span></div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>预算使用</h3>
+                  <div class="progress-bar"><span style="width: 48%"></span></div>
+                  <p>已使用 ¥680,000 / 1,400,000</p>
+                  <p>ROI 预测 3.6</p>
+                </div>
+                <div class="card">
+                  <h3>核心指标</h3>
+                  <div class="stat"><strong>420k</strong><span>活动曝光</span></div>
+                  <div class="stat"><strong>38k</strong><span>报名用户</span></div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>创意素材墙</h3>
+                <div class="badge-list">
+                  <div class="badge">#城市夜游</div>
+                  <div class="badge">#复古金属</div>
+                  <div class="badge">#潮酷粉</div>
+                  <div class="badge">#赛博光影</div>
+                </div>
+              </div>
+            `,
+            content: `
+              <div class="content-header">
+                <h2>内容审核队列</h2>
+                <div class="pill">待审 214</div>
+              </div>
+              <div class="kanban">
+                <div class="kanban-column">
+                  <h4>图文</h4>
+                  <div class="kanban-card">#C881 · 复古街拍</div>
+                  <div class="kanban-card">#C889 · DIY 改造</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>视频</h4>
+                  <div class="kanban-card">#V320 · 赛博舞动</div>
+                  <div class="kanban-card">#V327 · 球鞋保养</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>直播</h4>
+                  <div class="kanban-card">#L128 · 夜间快闪</div>
+                  <div class="kanban-card">#L131 · 潮玩开箱</div>
+                </div>
+                <div class="kanban-column">
+                  <h4>社区话题</h4>
+                  <div class="kanban-card">#街头古着指南</div>
+                  <div class="kanban-card">#次元潮玩</div>
+                </div>
+              </div>
+              <div class="card section">
+                <h3>审核策略</h3>
+                <div class="switch-row">
+                  <span>敏感图像 AI 预判</span>
+                  <div class="switch on"></div>
+                </div>
+                <div class="switch-row">
+                  <span>达人优先通道</span>
+                  <div class="switch"></div>
+                </div>
+                <div class="switch-row">
+                  <span>违规内容自动通知</span>
+                  <div class="switch on"></div>
+                </div>
+              </div>
+            `,
+            community: `
+              <div class="content-header">
+                <h2>社区洞察仪表板</h2>
+                <div class="pill">周活跃度 +18%</div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <div class="stat"><strong>680k</strong><span>社区活跃</span></div>
+                  <div class="progress-bar"><span style="width: 72%"></span></div>
+                  <p>互动率 12.4%</p>
+                </div>
+                <div class="card">
+                  <div class="stat"><strong>52%</strong><span>原创占比</span></div>
+                  <p>UGC 文章 18,400</p>
+                </div>
+                <div class="card">
+                  <div class="stat"><strong>4.2</strong><span>满意度评分</span></div>
+                  <p>来自 3,200 份调研</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="card">
+                  <h3>热门话题</h3>
+                  <div class="list">
+                    <div class="list-item">#夜间市集巡游 <span>讨论 12.8k</span></div>
+                    <div class="list-item">#穿搭日记 48h 挑战 <span>互动 9.6k</span></div>
+                    <div class="list-item">#潮流回收计划 <span>投稿 3.4k</span></div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>用户旅程</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>新手引导完成率 82%</strong>
+                        <p>路径：注册 → 收藏 → 发帖</p>
+                      </div>
+                    </div>
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-content">
+                        <strong>社区转化</strong>
+                        <p>参与活动后 48 小时内下单率 +26%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+            push: `
+              <div class="content-header">
+                <h2>推送策略中心</h2>
+                <div class="pill">活跃触达 320k</div>
+              </div>
+              <div class="grid grid-cols-2 section">
+                <div class="card">
+                  <h3>人群分层</h3>
+                  <table>
+                    <tr><th>分组</th><th>人数</th><th>触达方式</th></tr>
+                    <tr><td>潜力买家</td><td>120k</td><td>App Push</td></tr>
+                    <tr><td>沉睡卖家</td><td>42k</td><td>短信</td></tr>
+                    <tr><td>VIP</td><td>18k</td><td>专属私信</td></tr>
+                  </table>
+                </div>
+                <div class="card">
+                  <h3>推送日历</h3>
+                  <div class="list">
+                    <div class="list-item">6/10 夜市开播提醒 <span>已发送</span></div>
+                    <div class="list-item">6/11 潮鞋抢先预告 <span>排队中</span></div>
+                    <div class="list-item">6/13 买家召回优惠 <span>待审核</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>A/B 测试</h3>
+                <div class="grid grid-cols-3">
+                  <div class="card">
+                    <h3>方案 A</h3>
+                    <p>点击率 12.8%</p>
+                    <p>转化率 6.2%</p>
+                  </div>
+                  <div class="card">
+                    <h3>方案 B</h3>
+                    <p>点击率 14.6%</p>
+                    <p>转化率 7.5%</p>
+                  </div>
+                  <div class="card">
+                    <h3>方案 C</h3>
+                    <p>点击率 11.2%</p>
+                    <p>转化率 5.8%</p>
+                  </div>
+                </div>
+              </div>
+            `,
+            ads: `
+              <div class="content-header">
+                <h2>广告位配置</h2>
+                <div class="pill">可售库存 32</div>
+              </div>
+              <div class="grid grid-cols-3 section">
+                <div class="card">
+                  <h3>首页 Banner</h3>
+                  <div class="progress-bar"><span style="width: 88%"></span></div>
+                  <p>投放占用 88% · 剩余 12%</p>
+                </div>
+                <div class="card">
+                  <h3>社区推荐位</h3>
+                  <div class="progress-bar"><span style="width: 56%"></span></div>
+                  <p>当前投放 18 个</p>
+                </div>
+                <div class="card">
+                  <h3>搜索关键词</h3>
+                  <div class="progress-bar"><span style="width: 64%"></span></div>
+                  <p>热门词：Y2K、机能、复古</p>
+                </div>
+              </div>
+              <div class="card">
+                <h3>资源位详情</h3>
+                <table>
+                  <tr><th>位置</th><th>曝光</th><th>点击</th><th>出价</th></tr>
+                  <tr><td>App 首页焦点</td><td>980k</td><td>128k</td><td>¥32 CPM</td></tr>
+                  <tr><td>频道卡片</td><td>540k</td><td>76k</td><td>¥18 CPM</td></tr>
+                  <tr><td>直播推荐</td><td>420k</td><td>54k</td><td>¥24 CPM</td></tr>
+                </table>
+              </div>
+            `,
+            supply: `
+              <div class="content-header">
+                <h2>供应链协同板</h2>
+                <div class="pill">备货进度 74%</div>
+              </div>
+              <div class="grid grid-cols-2 section">
+                <div class="card">
+                  <h3>合作品牌</h3>
+                  <div class="list">
+                    <div class="list-item">FUTUREPOP <span>到货 6/15</span></div>
+                    <div class="list-item">URBANDIVE <span>补货 6/18</span></div>
+                    <div class="list-item">ARCHIVE77 <span>在途</span></div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>仓储状态</h3>
+                  <div class="progress-bar"><span style="width: 68%"></span></div>
+                  <p>华东仓位利用 68%</p>
+                  <div class="progress-bar"><span style="width: 52%"></span></div>
+                  <p>华南仓位利用 52%</p>
+                </div>
+              </div>
+              <div class="card">
+                <h3>协同流程</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>选品会议</strong>
+                      <p>设计 / 采购 / 运营 联合确认 SKU</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>上新排期同步</strong>
+                      <p>运营排期对接仓储发货节奏</p>
+                    </div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                      <strong>履约监控</strong>
+                      <p>异常包裹 0.6% · 实时预警</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+          },
+        },
+      };
+
+      const roleSwitcher = document.getElementById("roleSwitcher");
+      const sidebarTitle = document.getElementById("sidebarTitle");
+      const menuList = document.getElementById("menuList");
+      const contentArea = document.getElementById("contentArea");
+
+      let currentRole = "user";
+      let currentMenu = roles[currentRole].menus[0].id;
+
+      const renderMenu = () => {
+        sidebarTitle.textContent = roles[currentRole].title;
+        menuList.innerHTML = roles[currentRole].menus
+          .map(
+            (item) => `
+              <li class="menu-item ${item.id === currentMenu ? "active" : ""}" data-menu="${item.id}">
+                <span class="icon">${item.icon}</span>
+                ${item.label}
+              </li>
+            `
+          )
+          .join("");
+      };
+
+      const renderContent = () => {
+        const roleContent = roles[currentRole].content[currentMenu];
+        contentArea.innerHTML = roleContent || "<p>即将上线</p>";
+      };
+
+      roleSwitcher.addEventListener("click", (event) => {
+        const button = event.target.closest(".role-button");
+        if (!button) return;
+        const role = button.dataset.role;
+        if (role === currentRole) return;
+        currentRole = role;
+        currentMenu = roles[currentRole].menus[0].id;
+        document.querySelectorAll(".role-button").forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        renderMenu();
+        renderContent();
+      });
+
+      menuList.addEventListener("click", (event) => {
+        const item = event.target.closest(".menu-item");
+        if (!item) return;
+        currentMenu = item.dataset.menu;
+        menuList.querySelectorAll(".menu-item").forEach((menu) => menu.classList.remove("active"));
+        item.classList.add("active");
+        renderContent();
+      });
+
+      renderMenu();
+      renderContent();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
