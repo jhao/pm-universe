@@ -2,83 +2,1170 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Medium 写作平台 原型概览</title>
+    <title>Medium 写作平台 多角色原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: #f5f7fb;
+        color: #0f172a;
+      }
+      header {
+        padding: 28px 36px 16px;
+        background: linear-gradient(135deg, #1f2937, #111827);
+        color: #f8fafc;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 30px;
+        letter-spacing: 0.4px;
+      }
+      header p {
+        margin: 8px 0 0;
+        color: rgba(241, 245, 249, 0.75);
+        font-size: 16px;
+      }
+      .app-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 0;
+        min-height: calc(100vh - 140px);
+        padding: 0 0 32px;
+      }
+      .role-switcher {
+        display: flex;
+        gap: 12px;
+        padding: 16px 36px;
+        background: #fff;
+        box-shadow: inset 0 -1px 0 rgba(15, 23, 42, 0.08);
+      }
+      .role-button {
+        border: none;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+      .role-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+      }
+      .role-button[aria-pressed="true"] {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #fff;
+        box-shadow: 0 14px 28px rgba(29, 78, 216, 0.25);
+      }
+      aside.sidebar {
+        background: #fff;
+        padding: 24px 20px;
+        border-right: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .role-meta h2 {
+        margin: 0;
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .role-meta p {
+        margin: 12px 0 20px;
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      nav li button {
+        width: 100%;
+        border: none;
+        text-align: left;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-size: 15px;
+        color: #1f2937;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+      nav li button span {
+        font-weight: 600;
+      }
+      nav li button small {
+        color: #64748b;
+        font-size: 12px;
+      }
+      nav li button:hover {
+        background: rgba(59, 130, 246, 0.12);
+        transform: translateX(2px);
+      }
+      nav li button[aria-current="true"] {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(37, 99, 235, 0.28));
+        box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.15);
+      }
+      main {
+        padding: 32px 40px;
+        overflow: auto;
+      }
+      .content-header {
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .content-header h3 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .content-header .pill {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.08);
+        color: #0f172a;
+        font-size: 13px;
+      }
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        margin-bottom: 24px;
+      }
+      .content-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .content-card h4 {
+        margin: 0;
+        font-size: 17px;
+      }
+      .content-card p {
+        margin: 0;
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .content-card .metric {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1d4ed8;
+      }
+      .content-section {
+        background: #fff;
+        border-radius: 22px;
+        padding: 22px;
+        margin-bottom: 24px;
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+      }
+      .content-section h4 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+      .table-view {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .table-view thead {
+        background: rgba(241, 245, 249, 0.8);
+      }
+      .table-view th,
+      .table-view td {
+        text-align: left;
+        padding: 12px 10px;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      }
+      .chip-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        background: rgba(14, 165, 233, 0.16);
+        color: #0369a1;
+        font-weight: 600;
+      }
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+      }
+      .kanban-column {
+        background: rgba(248, 250, 252, 0.85);
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .kanban-column h5 {
+        margin: 0;
+        font-size: 15px;
+        color: #0f172a;
+      }
+      .kanban-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+      }
+      .kanban-card strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      .tagline {
+        color: #64748b;
+        font-size: 14px;
+      }
+      @media (max-width: 960px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+        aside.sidebar {
+          border-right: none;
+          border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        main {
+          padding: 28px 24px;
+        }
+      }
     </style>
   </head>
   <body>
     <header>
-      <h1>Medium 写作平台 原型</h1>
-      <p class="tagline">面向创作者与思想领袖的长内容发布社区。</p>
+      <h1>Medium 写作平台 · 多角色运营原型</h1>
+      <p>模拟读者、作者、管理员、运营等角色在平台中的关键操作与界面布局。</p>
     </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>独立作者、出版团队、知识读者</p>
-        <p><strong>核心痛点：</strong>作者需要易用的写作与订阅工具，读者寻求优质长文内容</p>
-        <p><strong>价值主张：</strong>通过优雅的写作体验、会员付费与推荐机制，连接作者与高价值读者</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>作者创作文章并设置付费阅读</li><li>读者订阅主题、阅读推荐内容</li><li>出版团队创建出版物并管理作者</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>写作与发布</h3>
-              <p class="goal">功能目标：提供无干扰的写作体验与丰富的排版能力</p>
-              <ul>
-                <li>所见即所得编辑器与 Markdown 支持</li><li>多媒体嵌入、代码块与引用样式</li><li>草稿管理、版本对比与协同写作</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>阅读体验</h3>
-              <p class="goal">功能目标：让读者轻松发现、阅读并收藏内容</p>
-              <ul>
-                <li>主题订阅、标签与推荐算法</li><li>阅读进度同步与高亮标注</li><li>收藏、书签与离线阅读</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>会员与收益</h3>
-              <p class="goal">功能目标：帮助作者通过优质内容获取收入</p>
-              <ul>
-                <li>Medium Membership 订阅分享</li><li>付费墙控制与赠阅链接</li><li>收益仪表盘与读者支持</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>出版物与社区</h3>
-              <p class="goal">功能目标：支持团队运营与社区治理</p>
-              <ul>
-                <li>Publication 主页与投稿流程</li><li>编辑审核、排期与专题策划</li><li>内容举报、版权与社区规范</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>付费会员数与阅读时长</li><li>作者收益分成与文章互动</li><li>出版物投稿通过率与订阅增长</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="role-switcher" role="tablist" aria-label="角色切换">
+      <button class="role-button" data-role="reader" aria-pressed="true">读者端</button>
+      <button class="role-button" data-role="creator" aria-pressed="false">作者端</button>
+      <button class="role-button" data-role="admin" aria-pressed="false">管理员端</button>
+      <button class="role-button" data-role="operator" aria-pressed="false">运营端</button>
+    </div>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="role-meta">
+          <h2 id="roleHeading">👤 读者端</h2>
+          <p id="roleDescription">关注订阅、精选推荐与互动反馈，构建沉浸式阅读体验。</p>
+        </div>
+        <nav aria-labelledby="roleHeading">
+          <ul id="menuList"></ul>
+        </nav>
+      </aside>
+      <main>
+        <div id="content"></div>
+      </main>
+    </div>
+
+    <script>
+      const roleConfigs = {
+        reader: {
+          heading: "👤 读者端",
+          description: "关注订阅、精选推荐与互动反馈，构建沉浸式阅读体验。",
+          menus: [
+            {
+              id: "reader-feed",
+              label: "推荐阅读",
+              hint: "今日精选",
+              title: "个性化推荐内容",
+              badge: "基于兴趣模型更新",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>「人工智能趋势」</h4>
+                    <p>来自科技出版物 · 深度解析 AIGC 与创作者生态。</p>
+                    <div class="chip-group">
+                      <span class="chip">科技</span>
+                      <span class="chip">会员专享</span>
+                    </div>
+                  </div>
+                  <div class="content-card">
+                    <h4>「城市漫游记」</h4>
+                    <p>生活方式专栏 · 分享 5 个城市的慢旅行路线。</p>
+                    <div class="chip-group">
+                      <span class="chip">生活方式</span>
+                      <span class="chip">收藏 3.2k</span>
+                    </div>
+                  </div>
+                  <div class="content-card">
+                    <h4>「产品运营复盘」</h4>
+                    <p>互联网专栏 · 拆解最新的 A/B 测试增长案例。</p>
+                    <div class="chip-group">
+                      <span class="chip">商业</span>
+                      <span class="chip">长读 12'</span>
+                    </div>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>实时互动</h4>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h5>我的订阅</h5>
+                      <div class="kanban-card">
+                        <strong>Tech Insider</strong>
+                        最新发布 <strong>3</strong> 篇长文 · 新增 1 次直播回放
+                      </div>
+                      <div class="kanban-card">
+                        <strong>慢生活研究所</strong>
+                        今日推送主题《春日晨间仪式》
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>互动追踪</h5>
+                      <div class="kanban-card">
+                        <strong>收藏夹</strong>
+                        新增 5 篇内容，沉浸时长 +38%
+                      </div>
+                      <div class="kanban-card">
+                        <strong>讨论区</strong>
+                        关注话题中有 12 条新回复
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: "reader-collections",
+              label: "专题合集",
+              hint: "策划池",
+              title: "专题精选与进度",
+              badge: "编辑部热度排序",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>深度创作者访谈</h4>
+                    <p>更新频率：每周 · 最新一期聚焦 Web3 创作者。</p>
+                    <p class="tagline">累计订阅 42.3k</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>零基础写作训练营</h4>
+                    <p>15 天课程 · 今日第 9 天，平均完成率 86%。</p>
+                    <p class="tagline">互动任务已发布</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>城市生活地图</h4>
+                    <p>实地探访 + 专题文章 · 重点关注上海 & 深圳。</p>
+                    <p class="tagline">新增 2 位客座作者</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>正在追更</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>合集</th>
+                        <th>最新章节</th>
+                        <th>更新状态</th>
+                        <th>提醒</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>AI 产品经理训练营</td>
+                        <td>第 4 篇 · Prompt 工程</td>
+                        <td>今日 10:00 发布</td>
+                        <td>推送已发送</td>
+                      </tr>
+                      <tr>
+                        <td>Vlog 剪辑实战</td>
+                        <td>第 2 篇 · B-roll 收集</td>
+                        <td>明日 9:00 预告</td>
+                        <td>保持提醒</td>
+                      </tr>
+                      <tr>
+                        <td>可持续生活提案</td>
+                        <td>第 7 篇 · 无塑计划</td>
+                        <td>待作者确认</td>
+                        <td>提醒作者</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: "reader-membership",
+              label: "会员权益",
+              hint: "权益包",
+              title: "会员权益概览",
+              badge: "尊享 7 项特权",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <div class="metric">98%</div>
+                    <p>会员文章完读率（月环比 +6%）</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">1,248</div>
+                    <p>尊享会员 · 正在享用付费阅读</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">36</div>
+                    <p>专属作者专栏数量 · 每月持续增长</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>权益组件</h4>
+                  <div class="chip-group">
+                    <span class="chip">无限阅读</span>
+                    <span class="chip">高亮同步</span>
+                    <span class="chip">评论前排</span>
+                    <span class="chip">专属播客</span>
+                    <span class="chip">年度线下沙龙</span>
+                    <span class="chip">创作者见面会</span>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: "reader-community",
+              label: "社区互动",
+              hint: "讨论区",
+              title: "互动脉络",
+              badge: "精选话题 6 个",
+              content: `
+                <section class="content-section">
+                  <h4>活跃话题</h4>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h5># 写作灵感</h5>
+                      <div class="kanban-card">
+                        <strong>每日灵感挑战</strong>
+                        参与 238 人 · 精选 12 条高赞回复
+                      </div>
+                      <div class="kanban-card">
+                        <strong>灵感卡片墙</strong>
+                        追加 4 套模板，支持收藏
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5># 专题共创</h5>
+                      <div class="kanban-card">
+                        <strong>城市漫游记</strong>
+                        4 位作者协同写作 · 待审核 2 篇
+                      </div>
+                      <div class="kanban-card">
+                        <strong>科技洞察</strong>
+                        读者问题池开放，已收集 48 条</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+        creator: {
+          heading: "✍️ 作者端",
+          description: "聚焦创作效率、稿件管理、收益洞察与读者运营。",
+          menus: [
+            {
+              id: "creator-dashboard",
+              label: "创作面板",
+              hint: "实时数据",
+              title: "创作效率与动态",
+              badge: "今日写作目标 80%",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <div class="metric">1,950</div>
+                    <p>今日字数 · 连续写作 6 天</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">4</div>
+                    <p>待完成草稿 · 包含 1 个联合创作</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">92%</div>
+                    <p>读者满意度 · 基于 240 条反馈</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>创作流程</h4>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h5>灵感池</h5>
+                      <div class="kanban-card"><strong>AI 伦理系列</strong> 已整理大纲</div>
+                      <div class="kanban-card"><strong>远程工作手册</strong> 等待资料</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>草稿中</h5>
+                      <div class="kanban-card"><strong>生成式设计案例</strong> 初稿完成 60%</div>
+                      <div class="kanban-card"><strong>写作工具对比</strong> 待插图</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>排期发布</h5>
+                      <div class="kanban-card"><strong>AI 产品路线图</strong> 预约明日 10:00</div>
+                      <div class="kanban-card"><strong>读者问答合集</strong> 等待审核</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: "creator-content",
+              label: "稿件管理",
+              hint: "出版物",
+              title: "稿件生命周期",
+              badge: "近期 6 条草稿",
+              content: `
+                <section class="content-section">
+                  <h4>稿件队列</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>标题</th>
+                        <th>状态</th>
+                        <th>渠道</th>
+                        <th>协作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>洞察：AI 创意产业</td>
+                        <td>待编辑</td>
+                        <td>主站 · 会员专享</td>
+                        <td>编辑 @Shelly</td>
+                      </tr>
+                      <tr>
+                        <td>周报：产品运营精选</td>
+                        <td>排期中</td>
+                        <td>出版物 TechFlow</td>
+                        <td>联合作者 @Leo</td>
+                      </tr>
+                      <tr>
+                        <td>写作工具清单 2024</td>
+                        <td>审核中</td>
+                        <td>开放阅读</td>
+                        <td>协作邀请中</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>协作邀请</h4>
+                    <p>来自出版物《未来趋势》 · 主题：AIGC 行业观察。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>素材库</h4>
+                    <p>新增 28 份研究报告 · 可直接引用到草稿。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "creator-earnings",
+              label: "收益分析",
+              hint: "数据透视",
+              title: "收益渠道表现",
+              badge: "本月预估 $1,820",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <div class="metric">$820</div>
+                    <p>会员阅读收益 · 占比 45%</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">$560</div>
+                    <p>赞赏打赏 · 占比 31%</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">$440</div>
+                    <p>出版物分成 · 占比 24%</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>高价值文章</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>文章</th>
+                        <th>阅读时长</th>
+                        <th>转化率</th>
+                        <th>二次订阅</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>产品增长案例拆解</td>
+                        <td>8 分钟</td>
+                        <td>12%</td>
+                        <td>+38</td>
+                      </tr>
+                      <tr>
+                        <td>远程团队协作指南</td>
+                        <td>6 分钟</td>
+                        <td>9%</td>
+                        <td>+22</td>
+                      </tr>
+                      <tr>
+                        <td>AI 工具写作工作流</td>
+                        <td>10 分钟</td>
+                        <td>15%</td>
+                        <td>+44</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: "creator-readers",
+              label: "读者关系",
+              hint: "互动中心",
+              title: "读者运营看板",
+              badge: "新增 126 位关注者",
+              content: `
+                <section class="content-section">
+                  <h4>读者分组</h4>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h5>核心会员</h5>
+                      <div class="kanban-card"><strong>Top 20</strong> 参与付费问答</div>
+                      <div class="kanban-card"><strong>私享会</strong> 活动报名 12/20</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>活跃关注者</h5>
+                      <div class="kanban-card"><strong>互动任务</strong> 本周完成率 74%</div>
+                      <div class="kanban-card"><strong>内容偏好</strong> 偏爱长文与案例</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>新读者</h5>
+                      <div class="kanban-card"><strong>欢迎流程</strong> 自动发送 3 篇引导</div>
+                      <div class="kanban-card"><strong>成长曲线</strong> 完成新手任务 62%</div>
+                    </div>
+                  </div>
+                </section>
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>问答箱</h4>
+                    <p>今日待回复 4 条 · 已自动归类热门问题。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>读者画像</h4>
+                    <p>主要关注科技与商业 · 分布在北上广深。</p>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+        admin: {
+          heading: "🛡️ 管理员端",
+          description: "关注平台治理、账号安全与内容审核的整体效率。",
+          menus: [
+            {
+              id: "admin-overview",
+              label: "平台总览",
+              hint: "仪表盘",
+              title: "平台运行状态",
+              badge: "系统正常 · SLA 99.99%",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <div class="metric">1.2M</div>
+                    <p>活跃用户（近 30 天）</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">8,640</div>
+                    <p>日均发布文章 · 环比 +12%</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">312</div>
+                    <p>系统告警 · 均在处理 SLA 范围内</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>服务运行</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>模块</th>
+                        <th>状态</th>
+                        <th>延迟</th>
+                        <th>负责人</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>写作编辑器</td>
+                        <td>正常</td>
+                        <td>120ms</td>
+                        <td>前端组</td>
+                      </tr>
+                      <tr>
+                        <td>推荐引擎</td>
+                        <td>观察</td>
+                        <td>260ms</td>
+                        <td>算法组</td>
+                      </tr>
+                      <tr>
+                        <td>会员支付</td>
+                        <td>正常</td>
+                        <td>95ms</td>
+                        <td>支付组</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: "admin-review",
+              label: "审核中心",
+              hint: "待处理",
+              title: "内容审核流程",
+              badge: "待处理 36 项",
+              content: `
+                <section class="content-section">
+                  <h4>审核队列</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>项目</th>
+                        <th>类型</th>
+                        <th>状态</th>
+                        <th>SLA</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>文章：AI 投资指南</td>
+                        <td>人工复核</td>
+                        <td>待分配</td>
+                        <td>剩余 40 分钟</td>
+                      </tr>
+                      <tr>
+                        <td>评论：社区规范提醒</td>
+                        <td>自动判定</td>
+                        <td>待确认</td>
+                        <td>剩余 12 分钟</td>
+                      </tr>
+                      <tr>
+                        <td>出版物：行业洞察</td>
+                        <td>资质审核</td>
+                        <td>进行中</td>
+                        <td>剩余 1.5 小时</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>策略开关</h4>
+                    <p>已启用自动拦截敏感词库 · 规则版本 3.14。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>人审排班</h4>
+                    <p>今日值班共 12 人 · 高峰时段 18:00-24:00。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "admin-users",
+              label: "用户管理",
+              hint: "权限集",
+              title: "账号与权限管理",
+              badge: "新注册 4,520",
+              content: `
+                <section class="content-section">
+                  <h4>账号分层</h4>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h5>普通用户</h5>
+                      <div class="kanban-card"><strong>活跃度</strong> 分组：高 / 中 / 潜水</div>
+                      <div class="kanban-card"><strong>处罚记录</strong> 0.3%</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>创作者</h5>
+                      <div class="kanban-card"><strong>入驻审核</strong> 通过率 76%</div>
+                      <div class="kanban-card"><strong>权益</strong> 会员分成、联合出版</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>机构出版物</h5>
+                      <div class="kanban-card"><strong>账号数</strong> 236</div>
+                      <div class="kanban-card"><strong>团队成员</strong> 支持多角色协作</div>
+                    </div>
+                  </div>
+                </section>
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>权限包</h4>
+                    <p>新增「客服观察员」角色 · 拥有查看权限。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>风险控制</h4>
+                    <p>异常登录提醒 6 条 · 自动要求二次验证。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "admin-settings",
+              label: "系统配置",
+              hint: "策略面板",
+              title: "系统参数与策略",
+              badge: "近期更新 4 项",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>推荐权重</h4>
+                    <p>近期上调新作者曝光权重 +12%。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>安全基线</h4>
+                    <p>登录保护策略更新 · 支持 WebAuthn。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>系统公告</h4>
+                    <p>计划本周发布 3.6 版本，关注编辑器迭代。</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>配置快照</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>配置项</th>
+                        <th>当前版本</th>
+                        <th>最近操作人</th>
+                        <th>更新时间</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>会员价格</td>
+                        <td>v2.3</td>
+                        <td>@Olivia</td>
+                        <td>2024-03-12</td>
+                      </tr>
+                      <tr>
+                        <td>举报规则</td>
+                        <td>v5.1</td>
+                        <td>@Nico</td>
+                        <td>2024-03-09</td>
+                      </tr>
+                      <tr>
+                        <td>推荐算法策略</td>
+                        <td>v8.7</td>
+                        <td>@Alan</td>
+                        <td>2024-03-10</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+          ],
+        },
+        operator: {
+          heading: "🚀 运营端",
+          description: "推进增长实验、活动策划、数据洞察与服务联动。",
+          menus: [
+            {
+              id: "operator-growth",
+              label: "增长实验",
+              hint: "实验室",
+              title: "实验池管理",
+              badge: "进行中 5 个",
+              content: `
+                <section class="content-section">
+                  <h4>A/B 实验列表</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>实验名称</th>
+                        <th>目标</th>
+                        <th>状态</th>
+                        <th>显著性</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>新人引导流程 v3</td>
+                        <td>提升 7 日留存</td>
+                        <td>运行中</td>
+                        <td>87%</td>
+                      </tr>
+                      <tr>
+                        <td>会员权益展示升级</td>
+                        <td>提高付费转化</td>
+                        <td>运行中</td>
+                        <td>92%</td>
+                      </tr>
+                      <tr>
+                        <td>社区互动提醒优化</td>
+                        <td>增加评论互动</td>
+                        <td>分析中</td>
+                        <td>76%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>待上线</h4>
+                    <p>稿件投稿流程优化 · 预计下周灰度。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>复盘任务</h4>
+                    <p>完成 2 个实验复盘 · 输出增长手册。</p>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "operator-campaign",
+              label: "活动运营",
+              hint: "策划中",
+              title: "活动排期与执行",
+              badge: "本月 4 个重点活动",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>春季创作者大会</h4>
+                    <p>联合 12 位头部作者 · 直播场次 3 场。</p>
+                    <p class="tagline">预热阶段</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>会员续订关怀</h4>
+                    <p>触达 6,200 人 · 自动化流程上线。</p>
+                    <p class="tagline">进行中</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>城市主题共创</h4>
+                    <p>北京站 · 邀请 4 位生活方式作者。</p>
+                    <p class="tagline">报名开放</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>排期表</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>日期</th>
+                        <th>节点</th>
+                        <th>负责人</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>03-15</td>
+                        <td>大会宣传物料上线</td>
+                        <td>@Mia</td>
+                        <td>已完成</td>
+                      </tr>
+                      <tr>
+                        <td>03-18</td>
+                        <td>会员福利推送</td>
+                        <td>@Hans</td>
+                        <td>待执行</td>
+                      </tr>
+                      <tr>
+                        <td>03-22</td>
+                        <td>线下城市沙龙</td>
+                        <td>@Suki</td>
+                        <td>准备中</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              `,
+            },
+            {
+              id: "operator-analytics",
+              label: "数据洞察",
+              hint: "BI 面板",
+              title: "关键指标监控",
+              badge: "全局刷新 15 秒前",
+              content: `
+                <div class="content-grid">
+                  <div class="content-card">
+                    <div class="metric">42.8%</div>
+                    <p>新用户 7 日留存 · 较昨日 +2.1%</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">18.4%</div>
+                    <p>会员转化率 · 活动期提升明显</p>
+                  </div>
+                  <div class="content-card">
+                    <div class="metric">6.2%</div>
+                    <p>社区互动率 · 较上周 +0.8%</p>
+                  </div>
+                </div>
+                <section class="content-section">
+                  <h4>指标监控面板</h4>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h5>用户增长</h5>
+                      <div class="kanban-card"><strong>拉新渠道</strong> 投放 ROI 2.3</div>
+                      <div class="kanban-card"><strong>激活流程</strong> 新手任务完成率 68%</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>内容消费</h5>
+                      <div class="kanban-card"><strong>完读率</strong> 会员内容 72%</div>
+                      <div class="kanban-card"><strong>热门话题</strong> AI、职场、旅行</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h5>付费转化</h5>
+                      <div class="kanban-card"><strong>漏斗</strong> 试读 → 付费 18%</div>
+                      <div class="kanban-card"><strong>唤醒</strong> 回流用户 3.2k</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: "operator-support",
+              label: "客服中心",
+              hint: "处理台",
+              title: "用户声音与服务",
+              badge: "待解决 12 条",
+              content: `
+                <section class="content-section">
+                  <h4>服务工单</h4>
+                  <table class="table-view">
+                    <thead>
+                      <tr>
+                        <th>工单</th>
+                        <th>类型</th>
+                        <th>优先级</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#4532</td>
+                        <td>付费失败</td>
+                        <td>高</td>
+                        <td>处理中</td>
+                      </tr>
+                      <tr>
+                        <td>#4526</td>
+                        <td>内容举报</td>
+                        <td>中</td>
+                        <td>待审核</td>
+                      </tr>
+                      <tr>
+                        <td>#4519</td>
+                        <td>功能咨询</td>
+                        <td>低</td>
+                        <td>已解决</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <div class="content-grid">
+                  <div class="content-card">
+                    <h4>满意度</h4>
+                    <p>本周 CSAT 评分 4.8 / 5 · 目标 4.6。</p>
+                  </div>
+                  <div class="content-card">
+                    <h4>知识库</h4>
+                    <p>新增 14 篇自助指南 · 支持多语言。</p>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+      };
+
+      const roleButtons = document.querySelectorAll(".role-button");
+      const menuList = document.getElementById("menuList");
+      const content = document.getElementById("content");
+      const roleHeading = document.getElementById("roleHeading");
+      const roleDescription = document.getElementById("roleDescription");
+
+      let activeRole = "reader";
+      let activeMenuId = null;
+
+      function renderContent(menu) {
+        content.innerHTML = `
+          <div class="content-header">
+            <h3>${menu.title}</h3>
+            <span class="pill">${menu.badge}</span>
+          </div>
+          ${menu.content}
+        `;
+      }
+
+      function renderMenu(roleKey) {
+        const role = roleConfigs[roleKey];
+        roleHeading.textContent = role.heading;
+        roleDescription.textContent = role.description;
+        menuList.innerHTML = "";
+        activeMenuId = role.menus[0]?.id ?? null;
+
+        role.menus.forEach((menu) => {
+          const li = document.createElement("li");
+          const button = document.createElement("button");
+          button.type = "button";
+          button.dataset.menuId = menu.id;
+          button.innerHTML = `<span>${menu.label}</span><small>${menu.hint}</small>`;
+          if (menu.id === activeMenuId) {
+            button.setAttribute("aria-current", "true");
+            renderContent(menu);
+          }
+          button.addEventListener("click", () => {
+            if (activeMenuId === menu.id) return;
+            const currentActive = menuList.querySelector("button[aria-current='true']");
+            if (currentActive) {
+              currentActive.removeAttribute("aria-current");
+            }
+            button.setAttribute("aria-current", "true");
+            activeMenuId = menu.id;
+            renderContent(menu);
+          });
+          li.appendChild(button);
+          menuList.appendChild(li);
+        });
+      }
+
+      roleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const role = btn.dataset.role;
+          if (role === activeRole) return;
+          roleButtons.forEach((b) => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+          activeRole = role;
+          renderMenu(role);
+        });
+      });
+
+      renderMenu(activeRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
