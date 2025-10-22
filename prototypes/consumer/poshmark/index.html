@@ -2,83 +2,798 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Poshmark 时尚转售 原型概览</title>
+    <title>Poshmark 多角色原型演示</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f3f4f8;
+        --panel: #ffffff;
+        --primary: #ff3366;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --radius: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      header.app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 32px;
+        background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(240, 98, 146, 0.08));
+        border-bottom: 1px solid rgba(255, 51, 102, 0.15);
+      }
+      header.app-header .title {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 0;
+      }
+      header.app-header .subtitle {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .app-shell {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: calc(100vh - 96px);
+      }
+      aside.sidebar {
+        background: #111827;
+        color: #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 16px 32px;
+        gap: 24px;
+        position: relative;
+      }
+      .brand {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .role-switch {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .role-switch button {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        color: inherit;
+        padding: 10px 16px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: left;
+      }
+      .role-switch button.active {
+        background: rgba(255, 51, 102, 0.2);
+        border-color: rgba(255, 255, 255, 0.35);
+        color: #fff;
+        box-shadow: 0 12px 30px rgba(255, 51, 102, 0.28);
+      }
+      nav.menu {
+        display: grid;
+        gap: 6px;
+      }
+      nav.menu button {
+        background: transparent;
+        border: none;
+        color: #c7cad4;
+        font-size: 15px;
+        text-align: left;
+        padding: 12px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, transform 0.2s;
+      }
+      nav.menu button:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        transform: translateX(4px);
+      }
+      nav.menu button.active {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        font-weight: 600;
+      }
+      main.content {
+        padding: 32px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .content-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .content-header .breadcrumb {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .content-header h2 {
+        margin: 4px 0 0;
+        font-size: 24px;
+      }
+      .content-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+      }
+      .panel {
+        background: var(--panel);
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .panel h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+      }
+      .metric {
+        background: rgba(255, 51, 102, 0.08);
+        padding: 16px;
+        border-radius: 14px;
+      }
+      .metric span {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .metric strong {
+        font-size: 20px;
+      }
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+      .list-item {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 12px 14px;
+      }
+      .list-item strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .kanban-column {
+        background: #f9fafb;
+        border-radius: 12px;
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      .kanban-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 12px 14px;
+        box-shadow: inset 0 0 0 1px #eef2f7;
+      }
+      .two-column {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+      }
+      .table {
+        width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+      .table thead {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .table th,
+      .table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      .action-bar {
+        display: flex;
+        gap: 12px;
+      }
+      .action-bar button {
+        border: none;
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px 16px;
+        cursor: pointer;
+        box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+        transition: transform 0.2s ease;
+      }
+      .action-bar button:hover {
+        transform: translateY(-2px);
+      }
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+      .timeline-item {
+        background: #fff;
+        border-left: 3px solid var(--primary);
+        padding: 12px 16px;
+        border-radius: 10px;
+      }
+      footer {
+        text-align: center;
+        padding: 24px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      @media (max-width: 1024px) {
+        .app-shell {
+          grid-template-columns: 240px 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        header.app-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+        aside.sidebar {
+          flex-direction: row;
+          overflow-x: auto;
+          padding: 16px;
+        }
+        .role-switch {
+          flex-direction: row;
+          align-items: center;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Poshmark 时尚转售 原型</h1>
-      <p class="tagline">以社交互动驱动的二手时尚社区。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>二手时尚卖家、潮流消费者、社交达人</p>
-        <p><strong>核心痛点：</strong>二手交易缺少信任与流量，卖家需要社区运营能力</p>
-        <p><strong>价值主张：</strong>通过社交分享、直播和衣橱管理，提升二手商品流转效率</p>
+    <header class="app-header">
+      <div>
+        <p class="title">Poshmark 角色型操作台</p>
+        <p class="subtitle">演示用户端 / 管理员端 / 运营端在同一产品中的差异化体验</p>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>卖家上架二手服饰并参加分享会</li><li>买家浏览衣橱、参加直播购物</li><li>平台举办虚拟派对提升曝光</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>衣橱管理</h3>
-              <p class="goal">功能目标：帮助卖家快速整理与发布商品</p>
-              <ul>
-                <li>商品拍照、描述模板与分类</li><li>价格建议、打包优惠与促销</li><li>库存状态与发货提醒</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>社交互动</h3>
-              <p class="goal">功能目标：增强社区氛围并促进转售</p>
-              <ul>
-                <li>分享会、虚拟派对与直播购物</li><li>评论、私信与捆绑优惠</li><li>达人推荐与社交关注</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>交易保障</h3>
-              <p class="goal">功能目标：提高买卖双方信任度</p>
-              <ul>
-                <li>平台担保支付与物流标签</li><li>验货服务与争议仲裁</li><li>评分体系与退货政策</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>增长工具</h3>
-              <p class="goal">功能目标：帮助卖家提升销售</p>
-              <ul>
-                <li>促销日程、自动分享与再上架</li><li>数据分析、畅销榜与定价建议</li><li>社区挑战与奖励计划</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>衣橱活跃度与商品上新量</li><li>分享带来的浏览转化率</li><li>订单完成率与客户满意度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+      <div class="action-bar">
+        <button>发布新品</button>
+        <button>启动直播</button>
+        <button>创建活动</button>
+      </div>
+    </header>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">PM Universe · Poshmark</div>
+        <div class="role-switch" id="role-switch"></div>
+        <nav class="menu" id="menu"></nav>
+      </aside>
+      <main class="content">
+        <div class="content-header">
+          <div>
+            <div class="breadcrumb" id="breadcrumb"></div>
+            <h2 id="view-title"></h2>
+          </div>
+          <div class="metric-grid" id="quick-metrics"></div>
+        </div>
+        <div id="view-content" class="content-layout"></div>
+      </main>
+    </div>
+    <footer>基于虚拟数据的动态原型，用于内部演示不同角色能力。</footer>
+
+    <script>
+      const roles = {
+        consumer: {
+          name: '用户端',
+          description: '浏览衣橱、参与社交互动、完成下单',
+          menu: [
+            {
+              id: 'consumer-feed',
+              label: '今日衣橱精选',
+              title: '今日衣橱精选',
+              metrics: [
+                { label: '关注衣橱', value: '128' },
+                { label: '待付款', value: '3' },
+                { label: '捆绑优惠', value: '5 个' }
+              ],
+              content: `
+                <div class="panel">
+                  <h3>实时推荐</h3>
+                  <div class="list">
+                    <div class="list-item"><strong>Olsen 的夏日极简衣橱</strong>开放限时 9 折 + 免费邮寄</div>
+                    <div class="list-item"><strong>Ava 的复古派对系列</strong>新增 4 件稀有连衣裙，直播抽免单</div>
+                    <div class="list-item"><strong>Top Rated 鞋履榜</strong>今日热卖：粉色 Mary Jane + 厚底运动鞋</div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>直播广场</h3>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>预告</h4>
+                      <div class="kanban-card"><strong>今晚 20:00</strong><br/>少女系衣橱限时折扣专场</div>
+                      <div class="kanban-card"><strong>周五 21:30</strong><br/>职场精选一口价 Free Shipping</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>进行中</h4>
+                      <div class="kanban-card"><strong>Fiona Closet</strong><br/>互动抽奖中 · 890 人在线</div>
+                      <div class="kanban-card"><strong>Vintage Vault</strong><br/>主播正试穿 Levi's 复刻系列</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>回放</h4>
+                      <div class="kanban-card"><strong>日常穿搭指南</strong><br/>收藏 220 · 下单 64</div>
+                      <div class="kanban-card"><strong>运动风专场</strong><br/>热卖榜第一：Nike Tech 套装</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>订单进度</h3>
+                  <table class="table">
+                    <thead>
+                      <tr><th>订单号</th><th>状态</th><th>更新时间</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>#PM-8721</td><td>卖家已发货</td><td>10 分钟前</td></tr>
+                      <tr><td>#PM-8650</td><td>等待买家收货</td><td>2 小时前</td></tr>
+                      <tr><td>#PM-8612</td><td>交易完成</td><td>昨天</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              `
+            },
+            {
+              id: 'consumer-closet',
+              label: '我的衣橱',
+              title: '衣橱管理中心',
+              metrics: [
+                { label: '上架中', value: '42 件' },
+                { label: '推广中', value: '5 个活动' },
+                { label: '库存提醒', value: '2' }
+              ],
+              content: `
+                <div class="two-column">
+                  <div class="panel">
+                    <h3>本周新增商品</h3>
+                    <div class="list">
+                      <div class="list-item"><strong>奶油色风衣</strong>预计曝光 +230 · 自动分享开启</div>
+                      <div class="list-item"><strong>针织开衫套装</strong>建议搭配：百褶裙 · 捆绑优惠 20%</div>
+                      <div class="list-item"><strong>厚底运动鞋</strong>自动降价机制运行 · 关注 36</div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h3>促销控件</h3>
+                    <div class="timeline">
+                      <div class="timeline-item"><strong>限时折扣</strong><br/>激活 24 小时 · 折扣 85 折</div>
+                      <div class="timeline-item"><strong>直播报名</strong><br/>确认档期：本周六 18:00</div>
+                      <div class="timeline-item"><strong>社群抽奖</strong><br/>奖品：香水小样礼包 · 剩余 30 个名额</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>自动分享排期</h3>
+                  <div class="kanban">
+                    <div class="kanban-card"><strong>上午 10:00</strong><br/>同步到「早午茶穿搭圈」</div>
+                    <div class="kanban-card"><strong>下午 15:00</strong><br/>推送至「运动女孩精选」</div>
+                    <div class="kanban-card"><strong>晚上 21:00</strong><br/>发布直播预告 · 赠送优惠券</div>
+                  </div>
+                </div>
+              `
+            },
+            {
+              id: 'consumer-wallet',
+              label: '资产与权益',
+              title: '钱包 · 优惠 · 会员',
+              metrics: [
+                { label: '余额', value: '¥1,280' },
+                { label: '优惠券', value: '8 张' },
+                { label: '会员等级', value: '星耀卖家' }
+              ],
+              content: `
+                <div class="panel">
+                  <h3>余额账户</h3>
+                  <div class="list">
+                    <div class="list-item"><strong>昨日销售入账</strong>¥640 · 预计可提现时间 12:00</div>
+                    <div class="list-item"><strong>退货押金返还</strong>¥120 · 已转入可用余额</div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>会员特权中心</h3>
+                  <div class="metric-grid">
+                    <div class="metric"><span>成长值</span><strong>1,560</strong></div>
+                    <div class="metric"><span>包邮权益</span><strong>每月 6 单</strong></div>
+                    <div class="metric"><span>客服优先</span><strong>专属通道</strong></div>
+                  </div>
+                  <div class="list">
+                    <div class="list-item"><strong>热卖榜单加权曝光</strong>使用次数：1/3</div>
+                    <div class="list-item"><strong>粉丝裂变海报</strong>今日新增粉丝 45</div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>优惠券仓库</h3>
+                  <table class="table">
+                    <thead>
+                      <tr><th>名称</th><th>折扣</th><th>有效期</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>直播专享券</td><td>满 ¥200 减 ¥60</td><td>3 天内</td></tr>
+                      <tr><td>回购感谢券</td><td>9 折</td><td>7 天内</td></tr>
+                      <tr><td>粉丝团福利券</td><td>免邮</td><td>随时</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              `
+            }
+          ]
+        },
+        admin: {
+          name: '管理员端',
+          description: '治理安全、保证交易合规、支撑平台运营',
+          menu: [
+            {
+              id: 'admin-dashboard',
+              label: '治理总览',
+              title: '平台治理中枢',
+              metrics: [
+                { label: '在线卖家', value: '9,430' },
+                { label: '风险警报', value: '12' },
+                { label: '待处理申诉', value: '7' }
+              ],
+              content: `
+                <div class="panel">
+                  <h3>核心指标监控</h3>
+                  <div class="metric-grid">
+                    <div class="metric"><span>今日 GMV</span><strong>¥3.6M</strong></div>
+                    <div class="metric"><span>成交转化</span><strong>7.8%</strong></div>
+                    <div class="metric"><span>工单 SLA</span><strong>92%</strong></div>
+                    <div class="metric"><span>风控拦截</span><strong>98 起</strong></div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>跨部门行动版</h3>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>监控</h4>
+                      <div class="kanban-card"><strong>高频退货账号巡检</strong>自动化脚本运行中</div>
+                      <div class="kanban-card"><strong>假货举报回流</strong>已同步品牌法务</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>执行</h4>
+                      <div class="kanban-card"><strong>下架整改</strong>批量通知 56 个衣橱更新资质</div>
+                      <div class="kanban-card"><strong>物流稽核</strong>加急处理 18 个超时订单</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>复盘</h4>
+                      <div class="kanban-card"><strong>高客单直播专项</strong>准备复盘报告</div>
+                      <div class="kanban-card"><strong>新手卖家培训</strong>收集问卷，待汇报</div>
+                    </div>
+                  </div>
+                </div>
+              `
+            },
+            {
+              id: 'admin-risk',
+              label: '风险控制',
+              title: '风险巡检控制台',
+              metrics: [
+                { label: '新告警', value: '34' },
+                { label: '处理进度', value: '68%' },
+                { label: '冻结账户', value: '5' }
+              ],
+              content: `
+                <div class="panel">
+                  <h3>风险概览</h3>
+                  <table class="table">
+                    <thead><tr><th>类型</th><th>影响</th><th>状态</th></tr></thead>
+                    <tbody>
+                      <tr><td>高仿品牌</td><td>16 单涉案</td><td>已升级</td></tr>
+                      <tr><td>售后纠纷</td><td>12 单协商中</td><td>处理中</td></tr>
+                      <tr><td>异常退款</td><td>8 单待复核</td><td>新</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="two-column">
+                  <div class="panel">
+                    <h3>风控剧本</h3>
+                    <div class="list">
+                      <div class="list-item"><strong>高价奢侈品一口价</strong>自动触发人工复核</div>
+                      <div class="list-item"><strong>新账号 24h 爆单</strong>进入强制身份验证</div>
+                      <div class="list-item"><strong>跨境发货超时</strong>同步物流团队介入</div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h3>核查进度</h3>
+                    <div class="timeline">
+                      <div class="timeline-item"><strong>10:30</strong> 风控机器人冻结 2 个异常账户</div>
+                      <div class="timeline-item"><strong>11:10</strong> 品牌方提交凭证，待确认</div>
+                      <div class="timeline-item"><strong>14:00</strong> 客服升级投诉，指派法务</div>
+                    </div>
+                  </div>
+                </div>
+              `
+            },
+            {
+              id: 'admin-service',
+              label: '客服申诉',
+              title: '客服申诉工作台',
+              metrics: [
+                { label: '待分配', value: '18 单' },
+                { label: '平均处理', value: '42 分钟' },
+                { label: '满意度', value: '4.8/5' }
+              ],
+              content: `
+                <div class="panel">
+                  <h3>渠道队列</h3>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>待分配</h4>
+                      <div class="kanban-card"><strong>直播未发货投诉</strong>买家申请退款</div>
+                      <div class="kanban-card"><strong>尺码不符争议</strong>需协调退货</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>处理中</h4>
+                      <div class="kanban-card"><strong>品质验货补偿</strong>等待仓库反馈</div>
+                      <div class="kanban-card"><strong>物流延迟赔付</strong>客服跟进物流商</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>完成</h4>
+                      <div class="kanban-card"><strong>免邮券延长</strong>用户满意度 5 星</div>
+                      <div class="kanban-card"><strong>误封账号解禁</strong>复核通过</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>智能回复建议</h3>
+                  <div class="list">
+                    <div class="list-item"><strong>物流延迟模板</strong>插入实时跟踪号与补偿券</div>
+                    <div class="list-item"><strong>尺码退货模板</strong>触发「平台代退」流程</div>
+                    <div class="list-item"><strong>直播争议模板</strong>附带直播回放链接</div>
+                  </div>
+                </div>
+              `
+            }
+          ]
+        },
+        ops: {
+          name: '运营端',
+          description: '策划活动、驱动增长、统筹达人与内容生态',
+          menu: [
+            {
+              id: 'ops-campaign',
+              label: '活动策划室',
+              title: '活动策划驾驶舱',
+              metrics: [
+                { label: '进行中', value: '4 个活动' },
+                { label: '报名达人', value: '68' },
+                { label: '曝光目标', value: '2600 万' }
+              ],
+              content: `
+                <div class="two-column">
+                  <div class="panel">
+                    <h3>活动排期</h3>
+                    <div class="timeline">
+                      <div class="timeline-item"><strong>本周·夏日断舍离</strong>曝光进度 86%</div>
+                      <div class="timeline-item"><strong>下周·开学焕新</strong>达人报名 32/50</div>
+                      <div class="timeline-item"><strong>直播·奢品夜场</strong>物料校对完成</div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h3>素材看板</h3>
+                    <div class="kanban">
+                      <div class="kanban-card"><strong>主视觉 Banner</strong>待确认 slogan</div>
+                      <div class="kanban-card"><strong>达人脚本</strong>完成 70%，安排彩排</div>
+                      <div class="kanban-card"><strong>Push 文案</strong>已排队 · 发送窗口 18:00</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>预算分配</h3>
+                  <table class="table">
+                    <thead><tr><th>渠道</th><th>预算</th><th>预估曝光</th></tr></thead>
+                    <tbody>
+                      <tr><td>站内 Feed 推荐</td><td>¥180,000</td><td>1200 万</td></tr>
+                      <tr><td>达人直播激励</td><td>¥90,000</td><td>800 万</td></tr>
+                      <tr><td>社群裂变</td><td>¥30,000</td><td>600 万</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              `
+            },
+            {
+              id: 'ops-growth',
+              label: '增长引擎',
+              title: '用户增长控制台',
+              metrics: [
+                { label: '新增注册', value: '+18% WoW' },
+                { label: '裂变转化', value: '12.6%' },
+                { label: '留存率', value: '38%' }
+              ],
+              content: `
+                <div class="panel">
+                  <h3>漏斗表现</h3>
+                  <div class="metric-grid">
+                    <div class="metric"><span>曝光 → 点击</span><strong>24%</strong></div>
+                    <div class="metric"><span>点击 → 注册</span><strong>32%</strong></div>
+                    <div class="metric"><span>注册 → 首单</span><strong>18%</strong></div>
+                    <div class="metric"><span>首单 → 回购</span><strong>42%</strong></div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>策略分组</h3>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>待实验</h4>
+                      <div class="kanban-card"><strong>沉睡用户唤醒推送</strong>动态折扣券</div>
+                      <div class="kanban-card"><strong>新人任务积分</strong>引导开播</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>测试中</h4>
+                      <div class="kanban-card"><strong>达人推荐卡片</strong>首页 AB 测试</div>
+                      <div class="kanban-card"><strong>限时秒杀场</strong>提升下单紧迫感</div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>已放量</h4>
+                      <div class="kanban-card"><strong>社群拼团</strong>ROI 3.2</div>
+                      <div class="kanban-card"><strong>直播连麦 PK</strong>首日下单 1.4 万</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>渠道概况</h3>
+                  <table class="table">
+                    <thead><tr><th>渠道</th><th>成本</th><th>转化</th><th>状态</th></tr></thead>
+                    <tbody>
+                      <tr><td>站内推荐</td><td>¥0.8 CPA</td><td>18%</td><td>稳定</td></tr>
+                      <tr><td>达人分销</td><td>¥1.5 CPS</td><td>42%</td><td>增长</td></tr>
+                      <tr><td>社媒广告</td><td>¥2.2 CPA</td><td>9%</td><td>优化中</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              `
+            },
+            {
+              id: 'ops-community',
+              label: '内容与达人',
+              title: '社区内容运营台',
+              metrics: [
+                { label: '内容活跃', value: '5200 篇/日' },
+                { label: '达人活跃', value: '340 人' },
+                { label: '社群健康', value: '97%' }
+              ],
+              content: `
+                <div class="panel">
+                  <h3>达人分层</h3>
+                  <table class="table">
+                    <thead><tr><th>分层</th><th>代表达人</th><th>本周 GMV</th><th>策略</th></tr></thead>
+                    <tbody>
+                      <tr><td>头部</td><td>Livy · Layla</td><td>¥620k</td><td>签约定制扶持</td></tr>
+                      <tr><td>腰部</td><td>Mia · Zoe</td><td>¥210k</td><td>加速权益解锁</td></tr>
+                      <tr><td>长尾</td><td>新锐 120+</td><td>¥95k</td><td>任务赛激励</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="panel">
+                  <h3>内容日历</h3>
+                  <div class="timeline">
+                    <div class="timeline-item"><strong>周一</strong>「衣橱大改造」话题上线</div>
+                    <div class="timeline-item"><strong>周三</strong>「明星同款日」UGC 集合</div>
+                    <div class="timeline-item"><strong>周五</strong>「夜猫子直播」连麦策划</div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h3>社群雷达</h3>
+                  <div class="list">
+                    <div class="list-item"><strong>Posh Girls Club</strong>社群热度 93/100 · 互动任务未完成</div>
+                    <div class="list-item"><strong>复古迷你圈</strong>新增 3 位达人主持周末 Live</div>
+                    <div class="list-item"><strong>运动燃脂季</strong>用户投稿 420 条，待精选</div>
+                  </div>
+                </div>
+              `
+            }
+          ]
+        }
+      };
+
+      const roleSwitch = document.getElementById('role-switch');
+      const menu = document.getElementById('menu');
+      const breadcrumb = document.getElementById('breadcrumb');
+      const viewTitle = document.getElementById('view-title');
+      const quickMetrics = document.getElementById('quick-metrics');
+      const viewContent = document.getElementById('view-content');
+
+      let currentRole = 'consumer';
+      let currentView = roles[currentRole].menu[0].id;
+
+      function renderRoleSwitch() {
+        roleSwitch.innerHTML = '';
+        Object.entries(roles).forEach(([key, role]) => {
+          const btn = document.createElement('button');
+          btn.textContent = role.name;
+          btn.dataset.role = key;
+          if (key === currentRole) {
+            btn.classList.add('active');
+          }
+          btn.addEventListener('click', () => {
+            if (currentRole === key) return;
+            currentRole = key;
+            currentView = roles[currentRole].menu[0].id;
+            renderRoleSwitch();
+            renderMenu();
+            renderContent();
+          });
+          roleSwitch.appendChild(btn);
+        });
+      }
+
+      function renderMenu() {
+        menu.innerHTML = '';
+        roles[currentRole].menu.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.textContent = item.label;
+          btn.dataset.view = item.id;
+          if (item.id === currentView) {
+            btn.classList.add('active');
+          }
+          btn.addEventListener('click', () => {
+            currentView = item.id;
+            renderMenu();
+            renderContent();
+          });
+          menu.appendChild(btn);
+        });
+      }
+
+      function renderContent() {
+        const role = roles[currentRole];
+        const view = role.menu.find((item) => item.id === currentView);
+        breadcrumb.textContent = `${role.name} · ${view.label}`;
+        viewTitle.textContent = view.title;
+        quickMetrics.innerHTML = view.metrics
+          .map((metric) => `
+            <div class="metric">
+              <span>${metric.label}</span>
+              <strong>${metric.value}</strong>
+            </div>
+          `)
+          .join('');
+        viewContent.innerHTML = view.content;
+      }
+
+      renderRoleSwitch();
+      renderMenu();
+      renderContent();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
