@@ -641,6 +641,7 @@
           <button type="button" data-role-target="maintenanceSupervisor" data-view-target="workorder-center">维护战情室</button>
           <button type="button" data-role-target="fieldTechnician" data-view-target="tech-tasks">移动现场</button>
           <button type="button" data-role-target="inventoryPlanner" data-view-target="inventory-overview">备件保障</button>
+          <button type="button" data-role-target="analyticsOfficer" data-view-target="analytics-overview">分析与安全</button>
         </nav>
         <div class="role-switcher">
           <label for="roleSelect">角色视角</label>
@@ -649,6 +650,7 @@
             <option value="maintenanceSupervisor">维护主管</option>
             <option value="fieldTechnician">现场技师</option>
             <option value="inventoryPlanner">库存与采购专员</option>
+            <option value="analyticsOfficer">分析与安全官</option>
           </select>
         </div>
       </header>
@@ -2772,6 +2774,516 @@
             },
           ],
         },
+        analyticsOfficer: {
+          name: '分析与安全官',
+          description: '聚焦资产健康、风险与合规，推动跨团队的数据驱动决策。',
+          highlights: [
+            '资产健康与风险指数统一监控',
+            'IoT 预测模型驱动告警闭环',
+            '安全、环境、合规一体化治理',
+          ],
+          menus: [
+            {
+              id: 'analytics-overview',
+              icon: '📡',
+              label: '分析与安全总览',
+              caption: '资产健康、风险事件与合规状态',
+              title: '分析与安全总览',
+              subtitle: '统一视角掌握资产健康、风险等级与合规态势',
+              summary:
+                '分析与安全总览聚合资产健康指数、风险事件与合规通过率，帮助分析与安全官快速识别隐患、协调资源并驱动整改。',
+              highlights: [
+                '资产健康指数与风险事件实时更新',
+                '合规通过率与审计进度一屏掌握',
+                '跨部门行动提醒防止隐患积压',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">资产健康指数</div>
+                    <div class="metric-value">88</div>
+                    <div class="metric-trend positive">↑ 较上月 +3</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">合规通过率</div>
+                    <div class="metric-value">96%</div>
+                    <div class="metric-trend">安全稽核完成 12 / 14</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">风险事件</div>
+                    <div class="metric-value">4</div>
+                    <div class="metric-trend warning">2 起待闭环</div>
+                  </div>
+                  <div class="metric-card accent-rose">
+                    <div class="metric-label">预测节省</div>
+                    <div class="metric-value">¥4.1M</div>
+                    <div class="metric-trend positive">AI 预警贡献 58%</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>关键指标监控</h3>
+                      <p>对比目标阈值，识别需关注的指标与责任人。</p>
+                    </div>
+                    <button class="ghost" data-view-target="kpi-trend" data-return-view="analytics-overview">查看趋势</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>指标</th>
+                        <th>当前值</th>
+                        <th>目标值</th>
+                        <th>负责人</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>资产可用率</td>
+                        <td>97.2%</td>
+                        <td>≥ 96%</td>
+                        <td>资产经理</td>
+                      </tr>
+                      <tr>
+                        <td>工单准时率</td>
+                        <td>93%</td>
+                        <td>≥ 92%</td>
+                        <td>维护主管</td>
+                      </tr>
+                      <tr>
+                        <td>许可合规率</td>
+                        <td>94%</td>
+                        <td>≥ 98%</td>
+                        <td>安全专员</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>风险雷达</h3>
+                      <p>显示不同厂区与资产的风险热度与影响范围。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="risk-detail" data-return-view="analytics-overview">查看事件</button>
+                  </div>
+                  <div class="map-mock">
+                    <strong>风险热力分布</strong>
+                    <div class="map-legend">
+                      <span class="legend-item"><span class="status-pill success">西厂区</span> 稳定</span>
+                      <span class="legend-item"><span class="status-pill warning">东厂区</span> 提醒</span>
+                      <span class="legend-item"><span class="status-pill danger">北厂区</span> 高风险</span>
+                    </div>
+                    <div>北厂区压缩机与输电线路风险指数 ≥ 0.6，建议优先处理。</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>协同提醒</h3>
+                      <p>自动收集跨部门待办，确保隐患整改不过期。</p>
+                    </div>
+                    <button class="ghost" data-view-target="incident-brief" data-return-view="analytics-overview">进入战情板</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>维护</h4>
+                      <div class="board-card">
+                        <span>WO-5897 轴承更换 · 预计完成 18:30</span>
+                        <span>需要确认追加技师</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>安全</h4>
+                      <div class="board-card">
+                        <span>PTW-4312 待复核照片</span>
+                        <button class="link" data-view-target="compliance-report" data-return-view="analytics-overview">立即复核</button>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>供应链</h4>
+                      <div class="board-card">
+                        <span>PO-240315 延迟 2 天待确认</span>
+                        <span>建议同步替代备件</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'predictive-analytics',
+              icon: '🤖',
+              label: '预测分析中心',
+              caption: 'IoT 数据、预测模型与异常识别',
+              title: '预测分析与 IoT 中心',
+              subtitle: '融合 IoT 实时数据与 AI 模型，提前洞察风险并评估收益',
+              summary:
+                '预测分析中心收集传感器数据、模型输出与异常告警，帮助团队提前计划停机窗口、优化资源并评估策略收益。',
+              highlights: [
+                'IoT 数据流实时可视化与回放',
+                '预测模型贡献度与准确率追踪',
+                '异常告警联动维护与库存模块',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">模型准确率</div>
+                    <div class="metric-value">92%</div>
+                    <div class="metric-trend positive">↑ 较上周 +2%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">提前预警工单</div>
+                    <div class="metric-value">18</div>
+                    <div class="metric-trend">72% 已完成</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">IoT 在线率</div>
+                    <div class="metric-value">97%</div>
+                    <div class="metric-trend warning">北厂区 2 台离线</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>模型输出对比</h3>
+                      <p>比较不同模型版本的准确率、召回率与剩余寿命预测。</p>
+                    </div>
+                    <button class="ghost" data-view-target="iot-stream" data-return-view="predictive-analytics">查看数据流</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>模型版本</th>
+                        <th>准确率</th>
+                        <th>召回率</th>
+                        <th>建议动作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>v3.2</td>
+                        <td>92%</td>
+                        <td>88%</td>
+                        <td><span class="status-pill success">部署中</span></td>
+                      </tr>
+                      <tr>
+                        <td>v3.1</td>
+                        <td>88%</td>
+                        <td>83%</td>
+                        <td>保留为回退方案</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>异常告警队列</h3>
+                      <p>结合置信度与影响分级，优先处理关键告警。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="asset-health-model" data-return-view="predictive-analytics">查看模型解释</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>告警</th>
+                        <th>置信度</th>
+                        <th>影响</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>MX-204 温度偏高</td>
+                        <td>0.84</td>
+                        <td><span class="status-pill danger">高</span></td>
+                        <td><button class="link" data-view-target="incident-report" data-return-view="predictive-analytics">查看现场</button></td>
+                      </tr>
+                      <tr>
+                        <td>TX-118 震动异常</td>
+                        <td>0.73</td>
+                        <td><span class="status-pill warning">中</span></td>
+                        <td><button class="link" data-view-target="workorder-detail" data-return-view="predictive-analytics">追踪工单</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>模型维护日志</h3>
+                      <p>记录训练数据、漂移监测与版本发布。</p>
+                    </div>
+                    <button class="ghost" data-view-target="knowledge-support" data-return-view="predictive-analytics">同步经验</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>03-22</strong>
+                      <div>完成 v3.2 模型训练，新增环境参数特征。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>03-18</strong>
+                      <div>触发温度数据漂移预警，已增补历史样本。</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>03-11</strong>
+                      <div>上线 IoT 边缘网关升级，提升采样频率。</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'safety-governance',
+              icon: '🛡️',
+              label: '安全与合规治理',
+              caption: '许可、环境监测与整改闭环',
+              title: '安全与合规治理中心',
+              subtitle: '全流程掌握安全许可、环境指标与整改执行',
+              summary:
+                '安全与合规治理中心整合许可审批、环境监测与整改闭环，确保合规风险透明可控，满足监管与审计需求。',
+              highlights: [
+                '许可审批与整改状态实时追踪',
+                '环境监测超标自动预警并派单',
+                '支持导出合规稽核报告',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">许可合规率</div>
+                    <div class="metric-value">94%</div>
+                    <div class="metric-trend warning">目标 98%</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">环境指标达标</div>
+                    <div class="metric-value">92%</div>
+                    <div class="metric-trend">VOC 警报 1 起</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">整改闭环率</div>
+                    <div class="metric-value">87%</div>
+                    <div class="metric-trend positive">↑ 本月 +5%</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>许可审批状态</h3>
+                      <p>重点关注即将到期与资料缺失的许可。</p>
+                    </div>
+                    <button class="ghost" data-view-target="compliance-report" data-return-view="safety-governance">审批详情</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>许可</th>
+                        <th>类型</th>
+                        <th>状态</th>
+                        <th>截止时间</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>PTW-4312</td>
+                        <td>动火作业</td>
+                        <td><span class="status-pill warning">待复核</span></td>
+                        <td>今日 17:00</td>
+                      </tr>
+                      <tr>
+                        <td>PTW-4308</td>
+                        <td>受限空间</td>
+                        <td><span class="status-pill success">有效</span></td>
+                        <td>2024-04-04</td>
+                      </tr>
+                      <tr>
+                        <td>ENV-204</td>
+                        <td>排放许可</td>
+                        <td><span class="status-pill warning">资料补充</span></td>
+                        <td>2024-04-06</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>环境监测</h3>
+                      <p>展示 VOC、噪声与排水指标，超标自动联动工单。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="iot-stream" data-return-view="safety-governance">查看传感器</button>
+                  </div>
+                  <div class="map-mock">
+                    <strong>实时指标</strong>
+                    <div>VOC：0.32 ppm · 阈值 0.35</div>
+                    <div>噪声：68 dB · 阈值 75</div>
+                    <div>排水 COD：46 mg/L · 阈值 50</div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>整改跟踪</h3>
+                      <p>督办未闭环的安全与环保整改任务。</p>
+                    </div>
+                    <button class="ghost" data-view-target="incident-root-cause" data-return-view="safety-governance">查看根因</button>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <strong>整改中</strong>
+                      <div>蒸汽管线保温隐患 · 完成度 60% · 责任人 陈飞</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>待复查</strong>
+                      <div>化学品仓库通风改造 · 预计 03-28 复查</div>
+                    </div>
+                    <div class="timeline-item">
+                      <strong>已闭环</strong>
+                      <div>输电线路巡检缺陷 · 经验归档完成</div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'reporting-center',
+              icon: '📑',
+              label: '报告与告警中心',
+              caption: 'KPI 报告、预警订阅与数据质量',
+              title: '报告与告警中心',
+              subtitle: '统一管理 KPI 报告模板、预警策略与数据质量',
+              summary:
+                '报告与告警中心让分析与安全官快速生成管理层报告、维护预警订阅并监督数据质量，确保信息传达及时准确。',
+              highlights: [
+                '内置多种 KPI 报告模板一键生成',
+                '预警订阅支持多渠道推送',
+                '数据质量评分帮助定位治理重点',
+              ],
+              core: `
+                <div class="metrics-grid">
+                  <div class="metric-card accent-blue">
+                    <div class="metric-label">本月已生成报告</div>
+                    <div class="metric-value">28</div>
+                    <div class="metric-trend positive">↑ 较上月 +6</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">预警订阅</div>
+                    <div class="metric-value">42</div>
+                    <div class="metric-trend">活跃预警 18</div>
+                  </div>
+                  <div class="metric-card accent-amber">
+                    <div class="metric-label">数据质量评分</div>
+                    <div class="metric-value">89</div>
+                    <div class="metric-trend warning">传感器缺失 3%</div>
+                  </div>
+                </div>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>报告模板</h3>
+                      <p>根据受众快速生成资产、安全、预算报告。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="executive-briefing" data-return-view="reporting-center">生成简报</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>管理层</h4>
+                      <div class="board-card">
+                        <span>资产健康 + 预算概览</span>
+                        <span>频率：每周一 09:00</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>维护团队</h4>
+                      <div class="board-card">
+                        <span>预测告警与工单执行</span>
+                        <span>频率：每日 07:30</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>安全委员会</h4>
+                      <div class="board-card">
+                        <span>许可与事故闭环</span>
+                        <span>频率：每月 1 日</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>预警订阅</h3>
+                      <p>维护不同渠道的预警规则与订阅者。</p>
+                    </div>
+                    <button class="ghost" data-view-target="alert-center" data-return-view="reporting-center">管理规则</button>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>预警主题</th>
+                        <th>触发条件</th>
+                        <th>推送渠道</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>资产健康跌破 70</td>
+                        <td>连续 3 次评分 &lt; 70</td>
+                        <td>邮件 / Teams</td>
+                        <td><span class="status-pill success">启用</span></td>
+                      </tr>
+                      <tr>
+                        <td>许可到期提醒</td>
+                        <td>到期前 48 小时</td>
+                        <td>短信</td>
+                        <td><span class="status-pill warning">待确认</span></td>
+                      </tr>
+                      <tr>
+                        <td>IoT 离线 15 分钟</td>
+                        <td>采集失败率 ≥ 5%</td>
+                        <td>Webhook</td>
+                        <td><span class="status-pill success">启用</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h3>数据质量任务</h3>
+                      <p>定位数据缺失与异常值，推动责任人整改。</p>
+                    </div>
+                    <button class="pill-button" data-view-target="kpi-trend" data-return-view="reporting-center">查看影响</button>
+                  </div>
+                  <div class="board">
+                    <div class="board-column">
+                      <h4>传感器</h4>
+                      <div class="board-card">
+                        <span>北厂区震动传感器离线 2 台</span>
+                        <span>负责人：IoT 工程师 郑凯</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>工单数据</h4>
+                      <div class="board-card">
+                        <span>巡检照片缺失率 8%</span>
+                        <span>行动：加强移动端必填校验</span>
+                      </div>
+                    </div>
+                    <div class="board-column">
+                      <h4>财务数据</h4>
+                      <div class="board-card">
+                        <span>OPEX 分类字段缺失 4 条</span>
+                        <span>行动：提醒财务补录</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
 
       const extraViews = {
         'workorder-detail': {
@@ -2924,6 +3436,164 @@
                     <span>推荐：今日 13:30-16:30</span>
                     <span>生产影响：产能下降 12%</span>
                   </div>
+                </div>
+              </div>
+            </section>
+          `,
+        },
+        'kpi-trend': {
+          title: '关键指标趋势分析',
+          subtitle: '对比资产健康、合规率与执行效率走势',
+          summary:
+            '关键指标趋势分析展示核心 KPI 的月度变化、异常波动与责任人备注，帮助分析与安全官及时调整策略。',
+          highlights: [
+            '资产健康、许可合规、工单准时率趋势对比',
+            '高亮异常波动并给出解释',
+            '支持导出图表用于管理汇报',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>KPI 趋势</h3>
+                  <p>最近 6 个月的资产健康、许可合规与工单准时率走势。</p>
+                </div>
+                <button class="ghost" data-view-target="analytics-overview" data-from-menu="true">返回分析总览</button>
+              </div>
+              <div class="map-mock">
+                <strong>指标走势</strong>
+                <div>资产健康：82 → 88 → 90</div>
+                <div>许可合规：91% → 94% → 96%</div>
+                <div>工单准时率：88% → 90% → 93%</div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>异常说明</h3>
+                  <p>梳理波动原因、责任人与跟进计划。</p>
+                </div>
+                <button class="pill-button" data-view-target="reporting-center" data-from-menu="true">同步到报告</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>指标</th>
+                    <th>波动</th>
+                    <th>原因</th>
+                    <th>跟进</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2024-02</td>
+                    <td>许可合规</td>
+                    <td>-4%</td>
+                    <td>动火许可资料缺失</td>
+                    <td><button class="link" data-view-target="compliance-report" data-return-view="kpi-trend">补齐资料</button></td>
+                  </tr>
+                  <tr>
+                    <td>2024-01</td>
+                    <td>工单准时率</td>
+                    <td>-3%</td>
+                    <td>寒潮导致户外作业延误</td>
+                    <td><button class="link" data-view-target="incident-brief" data-return-view="kpi-trend">记录经验</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+        },
+        'iot-stream': {
+          title: 'IoT 数据流监控',
+          subtitle: '查看实时传感器数据与异常检测',
+          summary:
+            'IoT 数据流监控展示关键传感器的实时曲线、异常阈值与离线状态，支持快速排查网络与设备问题。',
+          highlights: [
+            '多指标实时曲线与阈值对比',
+            '自动标记异常点并生成告警',
+            '跟踪传感器在线率与维护记录',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>实时数据</h3>
+                  <p>温度、振动与压力三类传感器的实时波形。</p>
+                </div>
+                <button class="ghost" data-view-target="predictive-analytics" data-from-menu="true">返回预测中心</button>
+              </div>
+              <div class="map-mock">
+                <strong>实时波形</strong>
+                <div>温度：72℃ → 79℃ (阈值 80℃)</div>
+                <div>振动：2.6 → 3.9 mm/s (阈值 4.2 mm/s)</div>
+                <div>压力：1.8 → 1.9 MPa (阈值 2.1 MPa)</div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>设备状态</h3>
+                  <p>跟踪传感器在线率、最近维护与数据质量。</p>
+                </div>
+                <button class="pill-button" data-view-target="resource-calendar" data-return-view="iot-stream">安排现场检修</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>传感器</th>
+                    <th>位置</th>
+                    <th>在线率</th>
+                    <th>上次维护</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>VT-09 振动</td>
+                    <td>北厂区 B1</td>
+                    <td>98%</td>
+                    <td>2024-03-10</td>
+                    <td><span class="status-pill success">稳定</span></td>
+                  </tr>
+                  <tr>
+                    <td>TP-21 温度</td>
+                    <td>北厂区 B1</td>
+                    <td>94%</td>
+                    <td>2024-02-28</td>
+                    <td><span class="status-pill warning">需校准</span></td>
+                  </tr>
+                  <tr>
+                    <td>PR-08 压力</td>
+                    <td>东厂区 A3</td>
+                    <td>100%</td>
+                    <td>2024-03-05</td>
+                    <td><span class="status-pill success">正常</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>异常记录</h3>
+                  <p>标记异常点并联动相关工单与告警。</p>
+                </div>
+                <button class="ghost" data-view-target="incident-report" data-return-view="iot-stream">创建异常报告</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>09:20</strong>
+                  <div>VT-09 振动波形超阈值 · 已触发 WO-5897。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>07:45</strong>
+                  <div>TP-21 温度传感器短暂离线 12 分钟 · 自动恢复。</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>昨日</strong>
+                  <div>PR-08 压力波动，关联排水阀门调整。</div>
                 </div>
               </div>
             </section>
@@ -3821,6 +4491,117 @@
                 <div>交付准时率：96% → 98%</div>
                 <div>质量合格率：99% → 99%</div>
                 <div>成本偏差：-3%</div>
+              </div>
+            </section>
+          `,
+        },
+        'alert-center': {
+          title: '预警策略管理',
+          subtitle: '统一配置预警规则与通知渠道',
+          summary:
+            '预警策略管理集中维护不同场景的预警规则、订阅者与触发历史，保障风险信息及时触达相关方。',
+          highlights: [
+            '可视化预警规则与触发频率',
+            '支持多渠道通知配置与测试',
+            '记录预警处理状态与责任人',
+          ],
+          core: `
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>预警规则</h3>
+                  <p>按业务场景分组展示预警规则与启用状态。</p>
+                </div>
+                <button class="ghost" data-view-target="reporting-center" data-from-menu="true">返回报告中心</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>名称</th>
+                    <th>场景</th>
+                    <th>阈值</th>
+                    <th>通知渠道</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>资产健康跌破 70</td>
+                    <td>资产健康</td>
+                    <td>评分 &lt; 70 连续 3 次</td>
+                    <td>邮件 + Teams</td>
+                    <td><span class="status-pill success">启用</span></td>
+                  </tr>
+                  <tr>
+                    <td>许可到期 48 小时</td>
+                    <td>安全合规</td>
+                    <td>截止前 48 小时</td>
+                    <td>短信</td>
+                    <td><span class="status-pill warning">待确认</span></td>
+                  </tr>
+                  <tr>
+                    <td>IoT 离线 15 分钟</td>
+                    <td>IoT 监控</td>
+                    <td>离线时长 ≥ 15 分钟</td>
+                    <td>Webhook</td>
+                    <td><span class="status-pill success">启用</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>通知订阅者</h3>
+                  <p>维护不同角色订阅的告警主题与渠道。</p>
+                </div>
+                <button class="pill-button" data-view-target="executive-briefing" data-return-view="alert-center">共享报告</button>
+              </div>
+              <div class="board">
+                <div class="board-column">
+                  <h4>管理层</h4>
+                  <div class="board-card">
+                    <span>渠道：邮件、移动端推送</span>
+                    <span>主题：资产健康、资本项目</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>维护团队</h4>
+                  <div class="board-card">
+                    <span>渠道：移动端应用</span>
+                    <span>主题：预测告警、工单延误</span>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <h4>安全专员</h4>
+                  <div class="board-card">
+                    <span>渠道：短信、Teams</span>
+                    <span>主题：许可到期、安全事件</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>触发历史</h3>
+                  <p>记录预警触发时间、处理人及结果。</p>
+                </div>
+                <button class="ghost" data-view-target="incident-brief" data-return-view="alert-center">查看现场响应</button>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>今日 09:20</strong>
+                  <div>资产健康跌破 70 · 负责人：资产经理 · 状态：处理中</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>昨日 15:40</strong>
+                  <div>许可到期预警 · 安全专员已完成复核</div>
+                </div>
+                <div class="timeline-item">
+                  <strong>本周一</strong>
+                  <div>IoT 离线告警 · IoT 工程师完成重启</div>
+                </div>
               </div>
             </section>
           `,
