@@ -4,6 +4,7 @@ const ROLE_CONFIG = {
     defaultPage: 'index.html',
     menu: [
       { id: 'executive-dashboard', label: '执行仪表盘', href: 'index.html' },
+      { id: 'cockpit-settings', label: '驾驶舱设置', href: 'cockpit-settings.html' },
       { id: 'dataset-explorer', label: '数据集浏览', href: 'dataset-explorer.html' },
       { id: 'report-builder', label: '报表创作中心', href: 'report-builder.html' }
     ]
