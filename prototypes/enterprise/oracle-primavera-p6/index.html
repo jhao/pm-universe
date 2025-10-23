@@ -2,83 +2,3220 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Oracle Primavera P6 原型概览</title>
+    <title>Oracle Primavera P6 角色原型演示</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: radial-gradient(circle at 0% 0%, #eef2ff 0%, #f7f9ff 45%, #f2f4fb 100%);
+        color: #0f172a;
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 292px;
+        background: linear-gradient(185deg, #0f1f49 0%, #122c77 45%, #1d4ed8 100%);
+        color: #f8fafc;
+        padding: 36px 26px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        position: relative;
+        box-shadow: 16px 0 38px rgba(15, 23, 42, 0.18);
+        z-index: 2;
+      }
+
+      .sidebar::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 24% 20%, rgba(255, 255, 255, 0.24), transparent 62%);
+        pointer-events: none;
+      }
+
+      .sidebar-header {
+        position: relative;
+        z-index: 1;
+      }
+
+      .system-name {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+      }
+
+      .system-subtitle {
+        margin-top: 10px;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.76);
+        line-height: 1.5;
+      }
+
+      .menu-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .menu-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: none;
+        background: rgba(15, 23, 42, 0.16);
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .menu-item span.icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.18);
+        font-size: 18px;
+      }
+
+      .menu-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .menu-text strong {
+        font-size: 15px;
+        letter-spacing: 0.3px;
+      }
+
+      .menu-text span {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.78);
+      }
+
+      .menu-item:hover {
+        transform: translateX(6px);
+        background: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.28);
+      }
+
+      .menu-item.active {
+        background: #f8fafc;
+        color: #0f1f49;
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.28);
+      }
+
+      .menu-item.active span.icon {
+        background: rgba(30, 64, 175, 0.12);
+        color: #1d4ed8;
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        position: relative;
+        z-index: 1;
+        background: rgba(15, 23, 42, 0.18);
+        border-radius: 20px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .sidebar-footer h4 {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: 0.4px;
+      }
+
+      .sidebar-footer ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+      }
+
+      .sidebar-footer li {
+        color: rgba(226, 232, 240, 0.86);
+      }
+
+      .main-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(18px);
+        position: relative;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 36px 20px;
+        background: rgba(255, 255, 255, 0.92);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.26);
+        position: sticky;
+        top: 0;
+        z-index: 8;
+        backdrop-filter: blur(22px);
+      }
+
+      .topbar-title h1 {
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        color: #0f172a;
+        letter-spacing: 0.4px;
+      }
+
+      .role-description {
+        margin: 0 0 12px 0;
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: #475569;
+        flex-wrap: wrap;
+      }
+
+      .breadcrumb span.divider::before {
+        content: '/';
+        opacity: 0.4;
+      }
+
+      .crumb-root {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.14);
+        color: #1d4ed8;
+        font-weight: 600;
+      }
+
+      .role-switch {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 16px;
+        background: rgba(226, 232, 240, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+      }
+
+      .role-switch label {
+        font-size: 13px;
+        color: #475569;
+        letter-spacing: 0.2px;
+      }
+
+      .role-switch select {
+        padding: 8px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        background: #ffffff;
+        font-size: 14px;
+        color: #0f172a;
+        min-width: 200px;
+      }
+
+      .page-container {
+        flex: 1;
+        padding: 36px 40px 48px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 18px;
+      }
+
+      .page-header h2 {
+        margin: 0;
+        font-size: 28px;
+        color: #1f2937;
+      }
+
+      .page-header p {
+        margin: 10px 0 0 0;
+        color: #64748b;
+        max-width: 560px;
+        line-height: 1.6;
+      }
+
+      .page-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .primary-button,
+      .ghost-button,
+      .soft-button,
+      .inline-link {
+        border: none;
+        border-radius: 14px;
+        padding: 10px 18px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        font-weight: 600;
+      }
+
+      .primary-button {
+        background: linear-gradient(120deg, #2563eb 0%, #4f46e5 100%);
+        color: #ffffff;
+        box-shadow: 0 12px 22px rgba(37, 99, 235, 0.32);
+      }
+
+      .primary-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 28px rgba(37, 99, 235, 0.38);
+      }
+
+      .ghost-button {
+        background: rgba(148, 163, 184, 0.12);
+        color: #1f2937;
+        border: 1px solid rgba(148, 163, 184, 0.34);
+      }
+
+      .ghost-button:hover {
+        background: rgba(148, 163, 184, 0.2);
+      }
+
+      .soft-button {
+        background: rgba(79, 70, 229, 0.16);
+        color: #4338ca;
+      }
+
+      .inline-link {
+        padding: 0;
+        background: none;
+        color: #1d4ed8;
+        border-radius: 0;
+        font-size: 13px;
+        box-shadow: none;
+      }
+
+      .inline-link:hover {
+        text-decoration: underline;
+        transform: none;
+      }
+
+      .status-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .status-positive {
+        background: rgba(34, 197, 94, 0.12);
+        color: #047857;
+      }
+
+      .status-warning {
+        background: rgba(251, 191, 36, 0.16);
+        color: #b45309;
+      }
+
+      .status-critical {
+        background: rgba(248, 113, 113, 0.18);
+        color: #b91c1c;
+      }
+
+      .status-info {
+        background: rgba(96, 165, 250, 0.18);
+        color: #1d4ed8;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: currentColor;
+        display: inline-block;
+      }
+
+      .page-body {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 18px;
+      }
+
+      .section-card {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 20px;
+        padding: 22px;
+        box-shadow: 0 24px 44px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .section-card.highlight-card {
+        background: radial-gradient(circle at 30% 20%, rgba(96, 165, 250, 0.18), rgba(59, 130, 246, 0.06));
+        border: 1px solid rgba(59, 130, 246, 0.2);
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .section-header h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .badge-info {
+        background: rgba(59, 130, 246, 0.14);
+        color: #1d4ed8;
+      }
+
+      .badge-critical {
+        background: rgba(248, 113, 113, 0.18);
+        color: #b91c1c;
+      }
+
+      .badge-success {
+        background: rgba(34, 197, 94, 0.14);
+        color: #047857;
+      }
+
+      .metric-xl {
+        font-size: 34px;
+        font-weight: 700;
+        color: #1f2937;
+      }
+
+      .metric-xl.positive {
+        color: #047857;
+      }
+
+      .metric-xl.warning {
+        color: #b45309;
+      }
+
+      .metric-sub {
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .sparkline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: 'Fira Code', 'JetBrains Mono', monospace;
+        font-size: 13px;
+        color: rgba(37, 99, 235, 0.7);
+      }
+
+      .spark-value {
+        font-weight: 600;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+        text-align: left;
+      }
+
+      .data-table th {
+        color: #475569;
+        font-weight: 600;
+        background: rgba(148, 163, 184, 0.08);
+      }
+
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .status-chip.green {
+        background: rgba(34, 197, 94, 0.14);
+        color: #047857;
+      }
+
+      .status-chip.yellow {
+        background: rgba(251, 191, 36, 0.14);
+        color: #b45309;
+      }
+
+      .status-chip.red {
+        background: rgba(248, 113, 113, 0.2);
+        color: #b91c1c;
+      }
+
+      .status-chip.blue {
+        background: rgba(129, 140, 248, 0.18);
+        color: #4338ca;
+      }
+
+      .pill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+        font-size: 12px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 160px 1fr 90px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .chart-placeholder {
+        height: 180px;
+        border-radius: 16px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.12),
+          rgba(59, 130, 246, 0.12) 12px,
+          rgba(29, 78, 216, 0.08) 12px,
+          rgba(29, 78, 216, 0.08) 24px
+        );
+        display: grid;
+        place-items: center;
+        color: rgba(37, 99, 235, 0.7);
+        font-weight: 600;
+        text-align: center;
+        padding: 0 12px;
+      }
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .kanban-column {
+        background: rgba(248, 250, 252, 0.92);
+        border-radius: 16px;
+        padding: 14px;
+        border: 1px solid rgba(203, 213, 225, 0.8);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 14px;
+        color: #1e293b;
+      }
+
+      .kanban-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 10px 12px;
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+      }
+
+      .kanban-card strong {
+        font-size: 13px;
+        color: #111827;
+      }
+
+      .muted {
+        color: #64748b;
+        font-size: 12px;
+      }
+
+      .trend-positive {
+        color: #16a34a;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .trend-negative {
+        color: #dc2626;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .chip-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(100, 116, 139, 0.12);
+        font-size: 12px;
+        color: #475569;
+      }
+
+      .page-summary {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 18px;
+        padding: 20px 24px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .page-summary h3 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+        color: #1f2937;
+      }
+
+      .summary-list {
+        margin: 0;
+        padding-left: 20px;
+        color: #475569;
+        display: grid;
+        gap: 6px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.14);
+        color: #0284c7;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .list-flex {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+      }
+
+      .list-flex li {
+        list-style: none;
+        background: rgba(248, 250, 252, 0.96);
+        border-radius: 14px;
+        padding: 10px 12px;
+        border: 1px solid rgba(226, 232, 240, 0.7);
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .table-actions {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .link-button {
+        border: none;
+        background: none;
+        color: #2563eb;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .link-button:hover {
+        text-decoration: underline;
+      }
+
+      .grid-stat {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .stat-card {
+        background: rgba(248, 250, 252, 0.95);
+        border-radius: 14px;
+        padding: 12px 14px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        display: grid;
+        gap: 6px;
+      }
+
+      .stat-card span.label {
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      .stat-card span.value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .gantt-placeholder {
+        height: 220px;
+        border-radius: 16px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(15, 23, 42, 0.04),
+          rgba(15, 23, 42, 0.04) 14px,
+          rgba(59, 130, 246, 0.08) 14px,
+          rgba(59, 130, 246, 0.08) 28px
+        );
+        display: grid;
+        place-items: center;
+        color: rgba(30, 64, 175, 0.6);
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .risk-matrix {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .risk-cell {
+        border-radius: 12px;
+        padding: 10px 12px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        display: grid;
+        gap: 6px;
+      }
+
+      .risk-low {
+        background: linear-gradient(135deg, #16a34a, #22c55e);
+      }
+
+      .risk-medium {
+        background: linear-gradient(135deg, #f97316, #f59e0b);
+      }
+
+      .risk-high {
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: rgba(226, 232, 240, 0.8);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .progress-bar span {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #22d3ee 0%, #2563eb 100%);
+      }
+
+      .avatar-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1d4ed8, #60a5fa);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .legend-list {
+        display: grid;
+        gap: 8px;
+        font-size: 12px;
+        color: #475569;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .info-banner {
+        background: linear-gradient(120deg, rgba(37, 99, 235, 0.12), rgba(59, 130, 246, 0.06));
+        border-radius: 16px;
+        padding: 16px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        color: #1d4ed8;
+      }
+
+      .info-banner strong {
+        font-size: 14px;
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .mini-card {
+        background: rgba(248, 250, 252, 0.96);
+        border-radius: 16px;
+        padding: 16px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        display: grid;
+        gap: 10px;
+      }
+
+      .mini-card h4 {
+        margin: 0;
+        font-size: 15px;
+        color: #1f2937;
+      }
+
+      .mini-card p {
+        margin: 0;
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .milestone-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .milestone-item {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 14px;
+        padding: 12px 14px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        display: grid;
+        grid-template-columns: 160px 1fr 100px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .milestone-item strong {
+        font-size: 13px;
+        color: #1e293b;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+
+      .detail-grid .section-card {
+        gap: 12px;
+      }
+
+      @media (max-width: 1100px) {
+        .app-shell {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 18px;
+          justify-content: space-between;
+        }
+
+        .menu-list {
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .menu-item {
+          flex: 1 1 220px;
+        }
+
+        .main-area {
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Oracle Primavera P6 原型</h1>
-      <p class="tagline">大型工程与建设项目的进度与资源管理平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>项目经理、工程公司、业主单位</p>
-        <p><strong>核心痛点：</strong>工程项目复杂、参与方众多、进度与成本控制难</p>
-        <p><strong>价值主张：</strong>提供多项目计划、资源优化与风险分析能力</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>项目制定进度计划与基线</li><li>现场更新实际进展与资源消耗</li><li>管理层监控关键路径与风险</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>项目计划</h3>
-              <p class="goal">功能目标：构建详细的进度与成本计划</p>
-              <ul>
-                <li>WBS 与活动分解</li><li>关键路径法 (CPM)</li><li>成本加载与现金流预测</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>资源管理</h3>
-              <p class="goal">功能目标：平衡人力与设备资源</p>
-              <ul>
-                <li>资源分配、平衡与优化</li><li>资源日历与产能分析</li><li>承包商与团队协同</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>进度控制</h3>
-              <p class="goal">功能目标：跟踪项目执行情况</p>
-              <ul>
-                <li>实际进度更新与偏差分析</li><li>Earned Value 管理</li><li>风险登记与情景模拟</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>报告与协作</h3>
-              <p class="goal">功能目标：提高项目透明度</p>
-              <ul>
-                <li>仪表盘、报告与 BI 集成</li><li>团队协作、文档管理</li><li>移动端现场更新</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>关键路径偏差与里程碑准时率</li><li>资源利用率与成本偏差</li><li>变更响应时间与风险关闭率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="system-name">Primavera P6 云控制塔</div>
+          <p class="system-subtitle">面向大型工程项目的计划、资源、风险与成本协同中枢。</p>
+        </div>
+        <nav>
+          <ul class="menu-list" id="menuList"></ul>
+        </nav>
+        <div class="sidebar-footer">
+          <h4>当前角色关注</h4>
+          <ul id="roleHighlights"></ul>
+        </div>
+      </aside>
+      <main class="main-area">
+        <header class="topbar">
+          <div class="topbar-title">
+            <h1>Oracle Primavera P6 原型演示</h1>
+            <p class="role-description" id="roleDescription"></p>
+            <div class="breadcrumb" id="breadcrumb"></div>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <section class="page-container" id="pageContainer"></section>
+      </main>
+    </div>
+    <script>
+      const roleConfigs = {
+        director: {
+          name: '项目总监',
+          description: '关注多项目执行健康、投资组合收益与战略优先级。',
+          highlights: ['本月审批 4 个变更单', '关键路径健康 87%', '预算执行率 82%'],
+          menu: [
+            { id: 'portfolio-dashboard', label: '项目组合仪表盘', icon: '📊', desc: '跨项目健康与投资回报' },
+            { id: 'strategic-roadmap', label: '战略路线图', icon: '🧭', desc: '阶段门与资本规划' },
+            { id: 'executive-reporting', label: '高层报告中心', icon: '📈', desc: '可交互 KPI 报告' }
+          ]
+        },
+        planner: {
+          name: '计划工程师',
+          description: '负责建立计划基线、维护网络关系并开展情景模拟。',
+          highlights: ['维护 8 个项目基线', '本周更新 126 条活动', '关键里程碑准时率 92%'],
+          menu: [
+            { id: 'baseline-planning', label: '基线计划', icon: '🗂️', desc: '版本对比与审批' },
+            { id: 'activity-network', label: '活动网络', icon: '🕸️', desc: '依赖关系与关键路径' },
+            { id: 'what-if-analysis', label: '情景模拟', icon: '🔀', desc: '多方案评估' }
+          ]
+        },
+        site: {
+          name: '现场经理',
+          description: '跟进现场进展、问题闭环与班组资源调度。',
+          highlights: ['每日上报准时率 95%', '待处理问题 6 项', '关键作业完成率 78%'],
+          menu: [
+            { id: 'progress-update', label: '进度填报', icon: '📅', desc: '每日实绩回传' },
+            { id: 'issue-tracking', label: '问题与风险', icon: '🚧', desc: '阻碍闭环跟踪' },
+            { id: 'field-resourcing', label: '现场资源', icon: '👷', desc: '班组与设备调度' }
+          ]
+        },
+        resource: {
+          name: '资源协调员',
+          description: '平衡跨项目的人力、承包商与成本执行效率。',
+          highlights: ['资源利用率 86%', '承包商履约评分 4.3', '成本偏差控制 ±3%'],
+          menu: [
+            { id: 'resource-allocation', label: '资源排程', icon: '🗓️', desc: '产能负荷平衡' },
+            { id: 'contractor-performance', label: '承包商绩效', icon: '🤝', desc: '考核与合约' },
+            { id: 'cost-control', label: '成本控制', icon: '💰', desc: 'EVA 与费用' }
+          ]
+        }
+      };
+
+      const pages = {
+        'portfolio-dashboard': {
+          title: '项目组合仪表盘',
+          subtitle: '汇总当前资本项目的执行健康度、资金进度与风险态势。',
+          build: () => ({
+            status: { tone: 'positive', text: '整体偏差控制在 ±3 天，预算执行率 82%。' },
+            actions: [
+              { label: '项目 G120 延伸详情', target: 'project-detail', variant: 'primary' },
+              { label: '跳转高层报告', target: 'executive-reporting', variant: 'ghost' }
+            ],
+            body: `
+              <section class="hero-grid">
+                <div class="section-card highlight-card">
+                  <div class="section-header">
+                    <h3>关键路径健康</h3>
+                    <span class="badge badge-info">实时同步</span>
+                  </div>
+                  <div class="metric-xl positive">87%</div>
+                  <p class="metric-sub">7 个项目保持在基线以内</p>
+                  <div class="sparkline">
+                    <span>▁▂▅▆▇</span>
+                    <span class="spark-value">+4.3%</span>
+                  </div>
+                  <button class="inline-link" data-nav-target="project-detail">查看 G120 延伸 →</button>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>资金执行率</h3>
+                    <span class="badge badge-info">月度快照</span>
+                  </div>
+                  <div class="metric-xl">82%</div>
+                  <p class="metric-sub">本月支出 4.6 亿元 / 预算 5.6 亿元</p>
+                  <div class="progress-bar"><span style="width: 82%"></span></div>
+                  <div class="chip-list">
+                    <span class="chip">变更准备金余量 18%</span>
+                    <span class="chip">现金流预测正常</span>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>风险热度</h3>
+                    <span class="badge badge-critical">需关注</span>
+                  </div>
+                  <div class="risk-matrix">
+                    <div class="risk-cell risk-high">高 - 2<br /><span class="muted">隧道渗水 · 钢筋供应</span></div>
+                    <div class="risk-cell risk-medium">中 - 5<br /><span class="muted">审批延迟 · 土方外运</span></div>
+                    <div class="risk-cell risk-low">低 - 11<br /><span class="muted">劳务交接 · 仓储</span></div>
+                  </div>
+                  <button class="inline-link" data-nav-target="issue-detail">打开风险登记 →</button>
+                </div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>重点项目热力矩阵</h3>
+                    <span class="badge badge-info">组合优先级</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>项目</th>
+                        <th>阶段</th>
+                        <th>偏差</th>
+                        <th>状态</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>G120 地铁延伸</td>
+                        <td>主体施工</td>
+                        <td>-2 天</td>
+                        <td><span class="status-chip yellow">需干预</span></td>
+                        <td><button class="link-button" data-nav-target="project-detail">查看</button></td>
+                      </tr>
+                      <tr>
+                        <td>港区 LNG 罐区</td>
+                        <td>设备安装</td>
+                        <td>+4 天</td>
+                        <td><span class="status-chip green">按计划</span></td>
+                        <td><button class="link-button" data-nav-target="project-detail">概览</button></td>
+                      </tr>
+                      <tr>
+                        <td>智慧厂房二期</td>
+                        <td>设计收尾</td>
+                        <td>-6 天</td>
+                        <td><span class="status-chip red">严重</span></td>
+                        <td><button class="link-button" data-nav-target="change-order">变更</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>干预行动列表</h3>
+                    <span class="badge badge-info">下一步</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>批复 <strong>G120 盾构加班</strong></span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待审批</span>
+                        <button class="link-button" data-nav-target="change-order">查看变更</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>协调 <strong>智慧厂房钢结构供应</strong></span>
+                      <div class="table-actions">
+                        <span class="status-chip red">紧急</span>
+                        <button class="link-button" data-nav-target="contractor-detail">联系承包商</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>确认 <strong>LNG 调试试运行窗口</strong></span>
+                      <div class="table-actions">
+                        <span class="status-chip green">已安排</span>
+                        <button class="link-button" data-nav-target="resource-availability">查看资源</button>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="chart-placeholder">管理层干预看板（可筛选项目、责任人、截止）</div>
+                </div>
+              </section>
+            `,
+            summary: [
+              '为管理层提供跨项目 KPI 与资源冲突预警，支撑组合层决策会议。',
+              '通过行动列表驱动干预闭环，快速跳转至变更、风险与资源页面。'
+            ]
+          })
+        },
+        'strategic-roadmap': {
+          title: '战略路线图',
+          subtitle: '串联年度资本计划与关键阶段门，确保里程碑对齐。',
+          build: () => ({
+            status: { tone: 'info', text: 'Q3 目标：确保 5 个里程碑如期通过阶段门。' },
+            actions: [
+              { label: '查看阶段门详情', target: 'milestone-detail', variant: 'primary' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>年度路线图</h3>
+                  <span class="badge badge-info">滚动 18 个月</span>
+                </div>
+                <div class="chart-placeholder">可交互路线图视图（项目群、阶段门、依赖箭头）</div>
+                <div class="legend-list">
+                  <div class="legend-item"><span class="legend-dot" style="background:#2563eb"></span> 项目群 - 交通基建</div>
+                  <div class="legend-item"><span class="legend-dot" style="background:#f97316"></span> 项目群 - 工业厂房</div>
+                  <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span> 战略举措</div>
+                </div>
+              </section>
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>阶段门准备度</h3>
+                  <span class="badge badge-info">近 90 天</span>
+                </div>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>G120 一期 - 投产评审</strong>
+                    <div>
+                      <div class="progress-bar"><span style="width: 68%"></span></div>
+                      <p class="metric-sub">交付件完成度 68%</p>
+                    </div>
+                    <button class="link-button" data-nav-target="milestone-detail">详情</button>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>智慧厂房 - 设计冻结</strong>
+                    <div>
+                      <div class="progress-bar"><span style="width: 54%"></span></div>
+                      <p class="metric-sub">待补：消防审图、设备清单</p>
+                    </div>
+                    <button class="link-button" data-nav-target="milestone-detail">准备清单</button>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>LNG 罐区 - 调试完成</strong>
+                    <div>
+                      <div class="progress-bar"><span style="width: 82%"></span></div>
+                      <p class="metric-sub">试运行团队已就位</p>
+                    </div>
+                    <button class="link-button" data-nav-target="resource-availability">调试资源</button>
+                  </div>
+                </div>
+              </section>
+            `,
+            summary: [
+              '统一管理多项目阶段门准备情况，突出关键交付物缺口。',
+              '支持战略层在路线图上快速钻取至阶段门详情、资源与风险。'
+            ]
+          })
+        },
+        'executive-reporting': {
+          title: '高层报告中心',
+          subtitle: '为管理委员会提供交互式 KPI、资金与风险报表。',
+          build: () => ({
+            status: { tone: 'info', text: '最新季度经营分析已同步，支持导出 PPT。' },
+            actions: [
+              { label: '导出管理层简报', target: 'cost-variance-detail', variant: 'ghost' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>组合 KPI 仪表盘</h3>
+                  <span class="badge badge-info">可筛选区域 / 项目群</span>
+                </div>
+                <div class="chart-placeholder">KPI 组合仪表盘（资金执行、里程碑准时率、EVA、风险指数）</div>
+                <div class="info-banner">
+                  <div><strong>提示：</strong>点击任意 KPI 块可切换趋势、对比与明细视图。</div>
+                  <button class="inline-link" data-nav-target="portfolio-dashboard">回到仪表盘</button>
+                </div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>资金偏差分解</h3>
+                    <span class="badge badge-info">Earned Value</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>项目</th>
+                        <th>SPI</th>
+                        <th>CPI</th>
+                        <th>偏差</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>G120 地铁延伸</td>
+                        <td>0.94</td>
+                        <td>0.89</td>
+                        <td><span class="status-chip red">-8.3%</span></td>
+                        <td><button class="link-button" data-nav-target="cost-variance-detail">分析</button></td>
+                      </tr>
+                      <tr>
+                        <td>智慧厂房二期</td>
+                        <td>0.98</td>
+                        <td>1.02</td>
+                        <td><span class="status-chip green">+3.1%</span></td>
+                        <td><button class="link-button" data-nav-target="cost-variance-detail">查看</button></td>
+                      </tr>
+                      <tr>
+                        <td>港区 LNG 罐区</td>
+                        <td>1.01</td>
+                        <td>0.97</td>
+                        <td><span class="status-chip yellow">-1.8%</span></td>
+                        <td><button class="link-button" data-nav-target="project-detail">钻取</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>会议包</h3>
+                    <span class="badge badge-success">自动生成</span>
+                  </div>
+                  <div class="card-grid">
+                    <div class="mini-card">
+                      <h4>季度例会包</h4>
+                      <p>包含 KPI 概览、风险矩阵、资源冲突。</p>
+                      <button class="inline-link" data-nav-target="portfolio-dashboard">预览</button>
+                    </div>
+                    <div class="mini-card">
+                      <h4>资本支出包</h4>
+                      <p>整合预算 vs 实际、现金流预测与合同执行率。</p>
+                      <button class="inline-link" data-nav-target="cost-control">跳转成本控制</button>
+                    </div>
+                    <div class="mini-card">
+                      <h4>项目深度包</h4>
+                      <p>面向专项审查，包含进度网络、风险、承包商表现。</p>
+                      <button class="inline-link" data-nav-target="project-detail">打开项目包</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            `,
+            summary: [
+              '可视化展示组合 KPI，支持点击钻取到成本、风险与项目层视图。',
+              '会议包模板自动组合相关视图，帮助高层快速掌握关键议题。'
+            ]
+          })
+        },
+        'baseline-planning': {
+          title: '基线计划',
+          subtitle: '维护计划版本、审批流程与偏差对比。',
+          build: () => ({
+            status: { tone: 'warning', text: 'G120 基线 v4 待审批，存在 6 天工期延伸。' },
+            actions: [
+              { label: '打开基线版本', target: 'baseline-detail', variant: 'primary' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>G120 地铁延伸 - 基线网络</h3>
+                  <span class="badge badge-info">多版本对比</span>
+                </div>
+                <div class="gantt-placeholder">甘特图对比（当前基线 vs 提交版本，显示关键路径与浮动）</div>
+                <div class="chip-list">
+                  <span class="chip">关键路径活动 142</span>
+                  <span class="chip">总浮动平均 6.2 天</span>
+                  <span class="chip">资源冲突 3 处</span>
+                </div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>基线版本列表</h3>
+                    <span class="badge badge-info">最近 6 个月</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>版本</th>
+                        <th>提交人</th>
+                        <th>偏差</th>
+                        <th>状态</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>V4 - 结构优化</td>
+                        <td>林彬</td>
+                        <td><span class="status-chip red">+6 天</span></td>
+                        <td><span class="status-chip yellow">审批中</span></td>
+                        <td><button class="link-button" data-nav-target="baseline-detail">评审</button></td>
+                      </tr>
+                      <tr>
+                        <td>V3 - 设备集成</td>
+                        <td>宋洁</td>
+                        <td><span class="status-chip yellow">+2 天</span></td>
+                        <td><span class="status-chip green">已生效</span></td>
+                        <td><button class="link-button" data-nav-target="baseline-detail">对比</button></td>
+                      </tr>
+                      <tr>
+                        <td>V2 - 调整资源</td>
+                        <td>刘航</td>
+                        <td><span class="status-chip blue">-1 天</span></td>
+                        <td><span class="status-chip green">归档</span></td>
+                        <td><button class="link-button" data-nav-target="baseline-detail">查看</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>审批动作</h3>
+                    <span class="badge badge-info">流程状态</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>业主代表 <strong>魏宁</strong> - 技术评审</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待完成</span>
+                        <button class="link-button" data-nav-target="baseline-detail">打开清单</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>计划经理 <strong>林彬</strong> - 风险评估</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">完成</span>
+                        <button class="link-button" data-nav-target="issue-detail">查看风险</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>财务控制 <strong>赵倩</strong> - 预算校核</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待签署</span>
+                        <button class="link-button" data-nav-target="cost-control">跳转</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '集中管理计划基线版本及审批状态，明确偏差来源。',
+              '与风险、成本页面联动，帮助计划工程师快速补齐评审材料。'
+            ]
+          })
+        },
+        'activity-network': {
+          title: '活动网络',
+          subtitle: '维护活动依赖、关键路径与缓冲浮动。',
+          build: () => ({
+            status: { tone: 'info', text: '最新更新：新增隧道通风设备交付节点，需复核浮动。' },
+            actions: [
+              { label: '打开活动详情', target: 'activity-detail', variant: 'primary' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>网络图总览</h3>
+                  <span class="badge badge-info">CPM</span>
+                </div>
+                <div class="chart-placeholder">网络图交互视图（节点显示关键活动、工期、总浮动）</div>
+                <div class="chip-list">
+                  <span class="chip">关键活动 142</span>
+                  <span class="chip">平均浮动 6.2 天</span>
+                  <span class="chip">需检查逻辑 9 条</span>
+                </div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>关键活动列表</h3>
+                    <span class="badge badge-info">排序：总浮动</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>活动</th>
+                        <th>工期</th>
+                        <th>总浮动</th>
+                        <th>责任人</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>盾构区段土建完工</td>
+                        <td>18 天</td>
+                        <td><span class="status-chip red">0</span></td>
+                        <td>赵峰</td>
+                        <td><button class="link-button" data-nav-target="activity-detail">查看</button></td>
+                      </tr>
+                      <tr>
+                        <td>通风设备到货</td>
+                        <td>7 天</td>
+                        <td><span class="status-chip yellow">2</span></td>
+                        <td>王倩</td>
+                        <td><button class="link-button" data-nav-target="activity-detail">调整</button></td>
+                      </tr>
+                      <tr>
+                        <td>车站装修施工</td>
+                        <td>24 天</td>
+                        <td><span class="status-chip yellow">3</span></td>
+                        <td>黄立</td>
+                        <td><button class="link-button" data-nav-target="resource-availability">资源</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>逻辑校核提示</h3>
+                    <span class="badge badge-info">系统扫描</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>活动 <strong>通风设备到货</strong> 缺少完工-完工逻辑</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">建议</span>
+                        <button class="link-button" data-nav-target="activity-detail">补充关系</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>活动 <strong>电缆敷设</strong> 总浮动 > 15 天</span>
+                      <div class="table-actions">
+                        <span class="status-chip blue">关注</span>
+                        <button class="link-button" data-nav-target="scenario-detail">模拟</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>活动 <strong>站厅装修</strong> 与 <strong>消防验收</strong> 存在资源冲突</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">冲突</span>
+                        <button class="link-button" data-nav-target="resource-availability">调整</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '展示关键活动的逻辑与浮动，快速定位零浮动路径。',
+              '结合系统校核提示，直接跳转到活动详情或资源页面进行调整。'
+            ]
+          })
+        },
+        'what-if-analysis': {
+          title: '情景模拟',
+          subtitle: '通过多情景对比评估工期与资源影响。',
+          build: () => ({
+            status: { tone: 'info', text: '当前启用「夜间加班」与「分阶段投产」两组情景对比。' },
+            actions: [
+              { label: '查看模拟详情', target: 'scenario-detail', variant: 'primary' }
+            ],
+            body: `
+              <section class="hero-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>情景对比</h3>
+                    <span class="badge badge-info">关键指标</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>指标</th>
+                        <th>基准计划</th>
+                        <th>夜间加班</th>
+                        <th>分阶段投产</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>总工期</td>
+                        <td>540 天</td>
+                        <td><span class="status-chip green">-18 天</span></td>
+                        <td><span class="status-chip yellow">-6 天</span></td>
+                      </tr>
+                      <tr>
+                        <td>峰值资源需求</td>
+                        <td>420 人</td>
+                        <td><span class="status-chip red">+68 人</span></td>
+                        <td><span class="status-chip yellow">+12 人</span></td>
+                      </tr>
+                      <tr>
+                        <td>成本增量</td>
+                        <td>--</td>
+                        <td><span class="status-chip red">+3.6%</span></td>
+                        <td><span class="status-chip green">+1.2%</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>关键路径变化</h3>
+                    <span class="badge badge-info">差异</span>
+                  </div>
+                  <div class="chart-placeholder">关键路径对比图（红色表示延长，绿色表示缩短）</div>
+                  <button class="inline-link" data-nav-target="activity-detail">查看受影响活动 →</button>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>执行建议</h3>
+                    <span class="badge badge-success">系统生成</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>采用 <strong>夜间加班</strong> 需优先锁定混凝土班组</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="resource-availability">查看班组</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>组合 <strong>分阶段投产</strong> 可缩短调试窗口 6 天</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="scenario-detail">查看方案</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>建议与 <strong>财务控制</strong> 协调额外 3.6% 预算</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="cost-control">跳转成本</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '对比不同情景的工期、资源与成本影响，辅助计划决策。',
+              '执行建议直接链接资源与成本页面，加速跨团队协调。'
+            ]
+          })
+        },
+        'progress-update': {
+          title: '进度填报',
+          subtitle: '同步现场实际产量、完成百分比与照片记录。',
+          build: () => ({
+            status: { tone: 'warning', text: '今日仍有 2 个工区未提交日进度，请督促更新。' },
+            actions: [
+              { label: '打开日报详情', target: 'daily-progress-detail', variant: 'primary' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>关键作业进展</h3>
+                  <span class="badge badge-info">今日 06:00 更新</span>
+                </div>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>作业</th>
+                      <th>计划%</th>
+                      <th>实际%</th>
+                      <th>偏差</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>盾构推进 - 区段 3</td>
+                      <td>48%</td>
+                      <td>44%</td>
+                      <td><span class="status-chip red">-4%</span></td>
+                      <td><button class="link-button" data-nav-target="daily-progress-detail">查看日报</button></td>
+                    </tr>
+                    <tr>
+                      <td>轨道铺设 - 区段 1</td>
+                      <td>62%</td>
+                      <td>65%</td>
+                      <td><span class="status-chip green">+3%</span></td>
+                      <td><button class="link-button" data-nav-target="daily-progress-detail">照片</button></td>
+                    </tr>
+                    <tr>
+                      <td>站厅装修 - C 出口</td>
+                      <td>35%</td>
+                      <td>28%</td>
+                      <td><span class="status-chip red">-7%</span></td>
+                      <td><button class="link-button" data-nav-target="issue-detail">登记问题</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>班组签到</h3>
+                    <span class="badge badge-info">移动端同步</span>
+                  </div>
+                  <div class="grid-stat">
+                    <div class="stat-card">
+                      <span class="label">在岗人数</span>
+                      <span class="value">386</span>
+                      <span class="muted">较昨日 +12</span>
+                    </div>
+                    <div class="stat-card">
+                      <span class="label">关键工种</span>
+                      <span class="value">28 班组</span>
+                      <span class="muted">打卡率 94%</span>
+                    </div>
+                    <div class="stat-card">
+                      <span class="label">设备完好率</span>
+                      <span class="value">96%</span>
+                      <span class="muted">本周 2 台检修</span>
+                    </div>
+                  </div>
+                  <button class="inline-link" data-nav-target="resource-availability">查看资源日历 →</button>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>现场事项</h3>
+                    <span class="badge badge-info">待跟进</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>地连墙钢筋安装偏差 - 需复测</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">处理中</span>
+                        <button class="link-button" data-nav-target="issue-detail">查看详情</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>轨道车轨距检查 - 待 QA 确认</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待确认</span>
+                        <button class="link-button" data-nav-target="daily-progress-detail">补充资料</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>站厅装修材料验收 - 需拍照留档</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">进行中</span>
+                        <button class="link-button" data-nav-target="daily-progress-detail">上传</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '现场进度与班组数据集中在一个视图中，便于每日碰头会。',
+              '问题与日报之间互相跳转，保障问题快速闭环。'
+            ]
+          })
+        },
+        'issue-tracking': {
+          title: '问题与风险',
+          subtitle: '管理现场问题、风险登记与整改闭环。',
+          build: () => ({
+            status: { tone: 'warning', text: '本周新增 3 个高风险事项，请关注整改进度。' },
+            actions: [
+              { label: '打开问题详情', target: 'issue-detail', variant: 'primary' }
+            ],
+            body: `
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>问题看板</h3>
+                    <span class="badge badge-info">现场同步</span>
+                  </div>
+                  <div class="kanban">
+                    <div class="kanban-column">
+                      <h4>待确认</h4>
+                      <div class="kanban-card">
+                        <strong>盾构渣土含水率偏高</strong>
+                        <span class="muted">提报：李强 · 截止 7/18</span>
+                        <span class="status-chip yellow">处理中</span>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>站厅吊顶材料色差</strong>
+                        <span class="muted">提报：王琪 · 截止 7/20</span>
+                        <span class="status-chip yellow">待复检</span>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>整改中</h4>
+                      <div class="kanban-card">
+                        <strong>盾构刀盘更换进度</strong>
+                        <span class="muted">责任：设备部 · 进行度 60%</span>
+                        <span class="status-chip red">高优先</span>
+                      </div>
+                      <div class="kanban-card">
+                        <strong>消防喷淋图纸签字</strong>
+                        <span class="muted">责任：设计院 · 进行度 30%</span>
+                        <span class="status-chip yellow">等待资料</span>
+                      </div>
+                    </div>
+                    <div class="kanban-column">
+                      <h4>已关闭</h4>
+                      <div class="kanban-card">
+                        <strong>轨道车司机培训</strong>
+                        <span class="muted">完成：7/12</span>
+                        <span class="status-chip green">关闭</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>风险矩阵</h3>
+                    <span class="badge badge-info">自动评分</span>
+                  </div>
+                  <div class="risk-matrix">
+                    <div class="risk-cell risk-high">渗水风险<br /><span class="muted">影响：工期 / 成本</span></div>
+                    <div class="risk-cell risk-medium">审批延迟<br /><span class="muted">影响：关键路径</span></div>
+                    <div class="risk-cell risk-low">劳务交接<br /><span class="muted">影响：资源</span></div>
+                  </div>
+                  <button class="inline-link" data-nav-target="issue-detail">查看风险登记表 →</button>
+                </div>
+              </section>
+            `,
+            summary: [
+              '以看板呈现问题生命周期，区分待确认、整改与关闭。',
+              '与风险登记联动，可直接跳转查看详情或新增整改措施。'
+            ]
+          })
+        },
+        'field-resourcing': {
+          title: '现场资源',
+          subtitle: '掌握班组、设备与材料在现场的实时分布。',
+          build: () => ({
+            status: { tone: 'info', text: '明日夜班需补充混凝土班组与一台泵车。' },
+            actions: [
+              { label: '查看资源日历', target: 'resource-availability', variant: 'primary' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>班组排班</h3>
+                  <span class="badge badge-info">按工区</span>
+                </div>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>工区</th>
+                      <th>班组</th>
+                      <th>班次</th>
+                      <th>负责人</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>盾构 3 区</td>
+                      <td>土建一班</td>
+                      <td>夜班</td>
+                      <td>朱强</td>
+                      <td><button class="link-button" data-nav-target="resource-availability">调整</button></td>
+                    </tr>
+                    <tr>
+                      <td>车站 B 区</td>
+                      <td>装修二班</td>
+                      <td>白班</td>
+                      <td>林倩</td>
+                      <td><button class="link-button" data-nav-target="daily-progress-detail">签到</button></td>
+                    </tr>
+                    <tr>
+                      <td>轨道 1 区</td>
+                      <td>轨道铺设</td>
+                      <td>夜班</td>
+                      <td>王磊</td>
+                      <td><button class="link-button" data-nav-target="resource-availability">查看</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="two-column">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>设备状态</h3>
+                    <span class="badge badge-info">关键设备</span>
+                  </div>
+                  <div class="grid-stat">
+                    <div class="stat-card"><span class="label">盾构机</span><span class="value">2 台</span><span class="muted">运行正常</span></div>
+                    <div class="stat-card"><span class="label">混凝土泵车</span><span class="value">3 台</span><span class="muted">1 台检修</span></div>
+                    <div class="stat-card"><span class="label">塔吊</span><span class="value">6 台</span><span class="muted">稼动率 88%</span></div>
+                  </div>
+                  <button class="inline-link" data-nav-target="resource-availability">打开设备日历 →</button>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>材料到货</h3>
+                    <span class="badge badge-info">未来 7 天</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>钢筋笼（批次 42） - 7/18</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待验收</span>
+                        <button class="link-button" data-nav-target="daily-progress-detail">现场确认</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>通风设备 - 7/22</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">在途</span>
+                        <button class="link-button" data-nav-target="activity-detail">更新计划</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>智能控制柜 - 7/25</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">供应风险</span>
+                        <button class="link-button" data-nav-target="contractor-detail">联系供应商</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '汇总班组、设备与材料信息，确保现场资源充足且透明。',
+              '资源短缺直接跳转到资源日历或承包商详情，便于快速协调。'
+            ]
+          })
+        },
+        'resource-allocation': {
+          title: '资源排程',
+          subtitle: '平衡跨项目的资源负荷与能力。',
+          build: () => ({
+            status: { tone: 'info', text: '下一周钢筋工超配 12%，建议调剂或外包。' },
+            actions: [
+              { label: '打开资源日历', target: 'resource-availability', variant: 'primary' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>能力 vs 需求</h3>
+                  <span class="badge badge-info">按周</span>
+                </div>
+                <div class="chart-placeholder">资源负荷图（折线表示能力，柱状表示需求，可钻取至班组）</div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>资源平衡建议</h3>
+                    <span class="badge badge-info">系统推荐</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>钢筋工 12% 超配 - 建议调至 <strong>智慧厂房二期</strong></span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="resource-availability">执行</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>土建班组缺口 8 人 - 推荐外包商 <strong>中建土建队</strong></span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="contractor-detail">查看承包商</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>调试工程师将在 8 月出现空档</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="scenario-detail">纳入情景</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>资源分布</h3>
+                    <span class="badge badge-info">按项目</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>项目</th>
+                        <th>关键工种</th>
+                        <th>需求</th>
+                        <th>已分配</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>G120 地铁延伸</td>
+                        <td>钢筋工</td>
+                        <td>168</td>
+                        <td>188</td>
+                        <td><button class="link-button" data-nav-target="resource-availability">平衡</button></td>
+                      </tr>
+                      <tr>
+                        <td>智慧厂房二期</td>
+                        <td>安装工</td>
+                        <td>96</td>
+                        <td>88</td>
+                        <td><button class="link-button" data-nav-target="field-resourcing">现场</button></td>
+                      </tr>
+                      <tr>
+                        <td>港区 LNG 罐区</td>
+                        <td>调试工程师</td>
+                        <td>24</td>
+                        <td>24</td>
+                        <td><button class="link-button" data-nav-target="scenario-detail">模拟</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            `,
+            summary: [
+              '以能力与需求对比图识别资源超配或短缺。',
+              '结合推荐措施快速跳转到资源日历或承包商管理页面完成调度。'
+            ]
+          })
+        },
+        'contractor-performance': {
+          title: '承包商绩效',
+          subtitle: '监控承包商履约情况、质量得分与合约执行。',
+          build: () => ({
+            status: { tone: 'warning', text: '两家承包商评分低于 80，请安排复盘会议。' },
+            actions: [
+              { label: '查看承包商详情', target: 'contractor-detail', variant: 'primary' }
+            ],
+            body: `
+              <section class="hero-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>评分概览</h3>
+                    <span class="badge badge-info">季度评估</span>
+                  </div>
+                  <div class="grid-stat">
+                    <div class="stat-card"><span class="label">平均评分</span><span class="value">85</span><span class="muted">同比 +3</span></div>
+                    <div class="stat-card"><span class="label">质量得分</span><span class="value">88</span><span class="muted">缺陷率 1.2%</span></div>
+                    <div class="stat-card"><span class="label">安全得分</span><span class="value">82</span><span class="muted">安全事件 2 起</span></div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>履约提醒</h3>
+                    <span class="badge badge-info">需关注</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span><strong>城建安装</strong> - 质量评分 74</span>
+                      <div class="table-actions">
+                        <span class="status-chip red">偏低</span>
+                        <button class="link-button" data-nav-target="contractor-detail">复盘</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span><strong>宏泰钢构</strong> - 合同执行率 92%</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">跟进</span>
+                        <button class="link-button" data-nav-target="change-order">查看变更</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span><strong>顺达土建</strong> - 安全事故 1 起</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">需整改</span>
+                        <button class="link-button" data-nav-target="issue-detail">整改计划</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>合同执行</h3>
+                    <span class="badge badge-info">金额</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>承包商</th>
+                        <th>合同额</th>
+                        <th>支付比例</th>
+                        <th>状态</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>城建安装</td>
+                        <td>1.2 亿</td>
+                        <td>68%</td>
+                        <td><span class="status-chip yellow">扣留质保金</span></td>
+                        <td><button class="link-button" data-nav-target="contractor-detail">详情</button></td>
+                      </tr>
+                      <tr>
+                        <td>宏泰钢构</td>
+                        <td>0.8 亿</td>
+                        <td>74%</td>
+                        <td><span class="status-chip yellow">待整改</span></td>
+                        <td><button class="link-button" data-nav-target="contractor-detail">措施</button></td>
+                      </tr>
+                      <tr>
+                        <td>中建土建队</td>
+                        <td>0.6 亿</td>
+                        <td>81%</td>
+                        <td><span class="status-chip green">正常</span></td>
+                        <td><button class="link-button" data-nav-target="resource-allocation">分配</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            `,
+            summary: [
+              '集中呈现承包商评分、履约提醒与合同执行情况。',
+              '支持直接跳转至承包商详情、变更与资源排程进行协同。'
+            ]
+          })
+        },
+        'cost-control': {
+          title: '成本控制',
+          subtitle: '跟踪项目成本、Earned Value 与变更单影响。',
+          build: () => ({
+            status: { tone: 'warning', text: 'G120 出现 8% 成本偏差，需审核近期变更单。' },
+            actions: [
+              { label: '查看成本偏差', target: 'cost-variance-detail', variant: 'primary' },
+              { label: '查看变更单', target: 'change-order', variant: 'ghost' }
+            ],
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>Earned Value 概览</h3>
+                  <span class="badge badge-info">本月</span>
+                </div>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>项目</th>
+                      <th>PV</th>
+                      <th>EV</th>
+                      <th>AC</th>
+                      <th>SPI</th>
+                      <th>CPI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>G120 地铁延伸</td>
+                      <td>3.6 亿</td>
+                      <td>3.3 亿</td>
+                      <td>3.7 亿</td>
+                      <td>0.92</td>
+                      <td>0.89</td>
+                    </tr>
+                    <tr>
+                      <td>智慧厂房二期</td>
+                      <td>2.1 亿</td>
+                      <td>2.2 亿</td>
+                      <td>2.15 亿</td>
+                      <td>1.05</td>
+                      <td>1.02</td>
+                    </tr>
+                    <tr>
+                      <td>港区 LNG 罐区</td>
+                      <td>1.4 亿</td>
+                      <td>1.36 亿</td>
+                      <td>1.39 亿</td>
+                      <td>0.97</td>
+                      <td>0.98</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>成本组成</h3>
+                    <span class="badge badge-info">可钻取</span>
+                  </div>
+                  <div class="chart-placeholder">成本组成图（人工、材料、设备、分包、管理费）</div>
+                  <button class="inline-link" data-nav-target="cost-variance-detail">查看趋势 →</button>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>变更单概览</h3>
+                    <span class="badge badge-info">最近 10 条</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>CO-204 盾构夜班补贴 - +320 万</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待审批</span>
+                        <button class="link-button" data-nav-target="change-order">查看</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>CO-205 钢筋规格调整 - +180 万</span>
+                      <div class="table-actions">
+                        <span class="status-chip red">高影响</span>
+                        <button class="link-button" data-nav-target="change-order">详情</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>CO-198 智能控制柜升级 - +95 万</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">已执行</span>
+                        <button class="link-button" data-nav-target="project-detail">项目</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '展示 Earned Value 与成本组成，快速识别偏差。',
+              '与变更单、项目详情联动，支撑成本控制决策。'
+            ]
+          })
+        },
+        'project-detail': {
+          title: '项目详情 - G120 地铁延伸',
+          subtitle: '展示项目概览、里程碑、风险与干预行动。',
+          breadcrumbLabel: 'G120 项目',
+          build: () => ({
+            status: { tone: 'warning', text: '关键路径延误 6 天，已触发联合干预。' },
+            actions: [
+              { label: '查看变更单', target: 'change-order', variant: 'ghost' }
+            ],
+            body: `
+              <section class="hero-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>项目指标</h3>
+                    <span class="badge badge-info">本月</span>
+                  </div>
+                  <div class="grid-stat">
+                    <div class="stat-card"><span class="label">完成度</span><span class="value">62%</span><span class="muted">计划 65%</span></div>
+                    <div class="stat-card"><span class="label">成本偏差</span><span class="value">-8.3%</span><span class="muted">含变更 4 条</span></div>
+                    <div class="stat-card"><span class="label">风险指数</span><span class="value">3.4</span><span class="muted">高风险 2 项</span></div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>核心团队</h3>
+                    <span class="badge badge-info">项目组织</span>
+                  </div>
+                  <div class="avatar-group">
+                    <div class="avatar">林</div>
+                    <div class="avatar">魏</div>
+                    <div class="avatar">赵</div>
+                    <div class="avatar">张</div>
+                  </div>
+                  <p class="muted">项目经理：林彬 · 计划负责人：魏宁 · 现场经理：赵峰 · 财务控制：张敏</p>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>执行摘要</h3>
+                    <span class="badge badge-info">今日</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>隧道渗水风险已派驻专家组，预计 3 天完成处理</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="issue-detail">跟踪</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>夜班加班变更待总监批复</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="change-order">审批</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>里程碑</h3>
+                    <span class="badge badge-info">关键节点</span>
+                  </div>
+                  <div class="milestone-list">
+                    <div class="milestone-item">
+                      <strong>区间贯通</strong>
+                      <div class="progress-bar"><span style="width: 74%"></span></div>
+                      <button class="link-button" data-nav-target="milestone-detail">详情</button>
+                    </div>
+                    <div class="milestone-item">
+                      <strong>设备安装完成</strong>
+                      <div class="progress-bar"><span style="width: 52%"></span></div>
+                      <button class="link-button" data-nav-target="activity-detail">关键活动</button>
+                    </div>
+                    <div class="milestone-item">
+                      <strong>试运行通过</strong>
+                      <div class="progress-bar"><span style="width: 36%"></span></div>
+                      <button class="link-button" data-nav-target="scenario-detail">情景</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>风险与行动</h3>
+                    <span class="badge badge-info">责任人</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>隧道渗水 - <strong>赵峰</strong></span>
+                      <div class="table-actions">
+                        <span class="status-chip red">处理中</span>
+                        <button class="link-button" data-nav-target="issue-detail">详情</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>钢筋供应 - <strong>林倩</strong></span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">跟进</span>
+                        <button class="link-button" data-nav-target="contractor-detail">供应商</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>夜班成本 - <strong>张敏</strong></span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待批复</span>
+                        <button class="link-button" data-nav-target="change-order">变更</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '整合项目 KPI、里程碑与风险行动，支持专项调度会。',
+              '与变更、风险、情景页面联动，实现上下钻取。'
+            ]
+          })
+        },
+        'milestone-detail': {
+          title: '阶段门详情',
+          subtitle: '列出阶段门所需交付件与责任人，确保顺利通过审批。',
+          build: () => ({
+            status: { tone: 'info', text: '阶段门预计 8 月 12 日评审，缺少 2 项资料。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>阶段门准备清单</h3>
+                  <span class="badge badge-info">投产评审</span>
+                </div>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>交付件</th>
+                      <th>责任人</th>
+                      <th>状态</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>运营维护方案</td>
+                      <td>赵峰</td>
+                      <td><span class="status-chip green">完成</span></td>
+                      <td><button class="link-button" data-nav-target="project-detail">返回项目</button></td>
+                    </tr>
+                    <tr>
+                      <td>安全验收报告</td>
+                      <td>王蕾</td>
+                      <td><span class="status-chip yellow">进行中</span></td>
+                      <td><button class="link-button" data-nav-target="daily-progress-detail">查看现场</button></td>
+                    </tr>
+                    <tr>
+                      <td>财务预测更新</td>
+                      <td>张敏</td>
+                      <td><span class="status-chip red">未提交</span></td>
+                      <td><button class="link-button" data-nav-target="cost-control">进入成本</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>阶段门时间线</h3>
+                  <span class="badge badge-info">关键节点</span>
+                </div>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>资料准备</strong>
+                    <span class="muted">至 7/30</span>
+                    <span class="status-chip yellow">跟进</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>预审会议</strong>
+                    <span class="muted">8/3</span>
+                    <span class="status-chip blue">排期</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>正式评审</strong>
+                    <span class="muted">8/12</span>
+                    <span class="status-chip red">重点</span>
+                  </div>
+                </div>
+              </section>
+            `,
+            summary: [
+              '明确阶段门交付件与责任人状态，保障评审顺利。',
+              '时间线视图帮助提前安排预审与正式评审。'
+            ]
+          })
+        },
+        'baseline-detail': {
+          title: '基线版本详情',
+          subtitle: '查看提交版本的差异、审批流程与备注。',
+          build: () => ({
+            status: { tone: 'warning', text: '当前版本延长 6 天，需管理层审批。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>版本差异</h3>
+                  <span class="badge badge-info">V4 vs 当前</span>
+                </div>
+                <div class="chart-placeholder">差异分析（总工期、关键活动、资源冲突）</div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>审批流程</h3>
+                    <span class="badge badge-info">状态</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>计划经理 - 评审意见</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">通过</span>
+                        <button class="link-button" data-nav-target="baseline-planning">返回</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>业主代表 - 关键路径评估</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待补资料</span>
+                        <button class="link-button" data-nav-target="activity-detail">补充活动</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>财务控制 - 成本影响</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待确认</span>
+                        <button class="link-button" data-nav-target="cost-control">查看成本</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>备注</h3>
+                    <span class="badge badge-info">提交人：林彬</span>
+                  </div>
+                  <p class="muted">由于新增夜班策略，需要延长 6 天以完成安全验收；同步申请额外预算与人员调剂。</p>
+                </div>
+              </section>
+            `,
+            summary: [
+              '集中展示版本差异与审批状态，便于快速批复。',
+              '支持返回计划、活动与成本页面补充材料。'
+            ]
+          })
+        },
+        'activity-detail': {
+          title: '活动详情',
+          subtitle: '查看单个活动的工期、依赖、资源与进度情况。',
+          build: () => ({
+            status: { tone: 'warning', text: '活动「通风设备到货」浮动仅剩 2 天，需关注。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>基础信息</h3>
+                  <span class="badge badge-info">活动 ID：A-245</span>
+                </div>
+                <div class="detail-grid">
+                  <div class="section-card">
+                    <strong>计划工期</strong>
+                    <span class="metric-xl">7 天</span>
+                    <span class="muted">总浮动 2 天</span>
+                  </div>
+                  <div class="section-card">
+                    <strong>责任人</strong>
+                    <span class="metric-xl">王倩</span>
+                    <span class="muted">供应商：宏泰钢构</span>
+                  </div>
+                  <div class="section-card">
+                    <strong>完成情况</strong>
+                    <span class="metric-xl">45%</span>
+                    <span class="muted">实际开始：7/10</span>
+                  </div>
+                </div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>逻辑关系</h3>
+                    <span class="badge badge-info">前置 / 后续</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>前置：盾构区段土建完工</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="activity-network">查看网络</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>后续：通风系统安装</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="baseline-planning">基线对比</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>资源：安装工 12 人 · 夜班 2 次</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="resource-availability">资源调整</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>风险与备注</h3>
+                    <span class="badge badge-info">跟踪</span>
+                  </div>
+                  <p class="muted">供应商反馈运输延迟 1 天，已协调夜班加速安装。</p>
+                  <button class="inline-link" data-nav-target="contractor-detail">查看供应商绩效 →</button>
+                </div>
+              </section>
+            `,
+            summary: [
+              '聚合活动的工期、资源与依赖信息，便于快速判断影响。',
+              '直接跳转至网络、基线与资源视图进行调整。'
+            ]
+          })
+        },
+        'scenario-detail': {
+          title: '情景方案详情',
+          subtitle: '比对不同执行方案的影响与批准状态。',
+          build: () => ({
+            status: { tone: 'info', text: '方案「夜间加班」待总监批复，预计缩短 18 天。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>方案对比</h3>
+                  <span class="badge badge-info">关键指标</span>
+                </div>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>指标</th>
+                      <th>基准</th>
+                      <th>夜间加班</th>
+                      <th>分阶段投产</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>总工期</td>
+                      <td>540 天</td>
+                      <td>522 天</td>
+                      <td>534 天</td>
+                    </tr>
+                    <tr>
+                      <td>资源成本</td>
+                      <td>+0%</td>
+                      <td>+3.6%</td>
+                      <td>+1.2%</td>
+                    </tr>
+                    <tr>
+                      <td>关键活动</td>
+                      <td>142</td>
+                      <td>150</td>
+                      <td>138</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>审批流程</h3>
+                    <span class="badge badge-info">状态</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>计划工程师 - 方案建模</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">完成</span>
+                      </div>
+                    </li>
+                    <li>
+                      <span>项目经理 - 成本评估</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待审核</span>
+                        <button class="link-button" data-nav-target="cost-control">查看成本</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>项目总监 - 批准</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待批</span>
+                        <button class="link-button" data-nav-target="portfolio-dashboard">提交</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>执行建议</h3>
+                    <span class="badge badge-info">系统提示</span>
+                  </div>
+                  <p class="muted">若采用夜间加班，请同步调整安全巡检频次与劳务补贴预算。</p>
+                  <button class="inline-link" data-nav-target="change-order">生成变更单 →</button>
+                </div>
+              </section>
+            `,
+            summary: [
+              '比较情景方案指标与审批流程，确保决策透明。',
+              '快速跳转至成本与变更页面，完成批复闭环。'
+            ]
+          })
+        },
+        'daily-progress-detail': {
+          title: '现场日报',
+          subtitle: '查看当天的任务完成、照片与问题记录。',
+          build: () => ({
+            status: { tone: 'info', text: '日报已提交，等待项目经理审核。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>作业完成情况</h3>
+                  <span class="badge badge-info">7/15</span>
+                </div>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>作业</th>
+                      <th>计划量</th>
+                      <th>实际量</th>
+                      <th>偏差</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>盾构推进</td>
+                      <td>12 环</td>
+                      <td>11 环</td>
+                      <td><span class="status-chip red">-1</span></td>
+                    </tr>
+                    <tr>
+                      <td>轨道铺设</td>
+                      <td>120 米</td>
+                      <td>122 米</td>
+                      <td><span class="status-chip green">+2</span></td>
+                    </tr>
+                    <tr>
+                      <td>站厅装修</td>
+                      <td>180 平</td>
+                      <td>160 平</td>
+                      <td><span class="status-chip red">-20</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>现场照片</h3>
+                    <span class="badge badge-info">自动归档</span>
+                  </div>
+                  <div class="chart-placeholder">照片预览墙（支持放大、标注）</div>
+                  <button class="inline-link" data-nav-target="progress-update">返回进度 →</button>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>待办事项</h3>
+                    <span class="badge badge-info">现场跟踪</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>盾构推进偏差 - 已提醒夜班加速</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="issue-detail">登记</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>站厅材料短缺 - 需采购确认</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="field-resourcing">跳转资源</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>轨道超量完成 - 更新基线计划</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="baseline-planning">更新</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '集中展示日报数据、照片与待办，便于审核与跟进。',
+              '与问题、资源、计划页面互通，形成闭环。'
+            ]
+          })
+        },
+        'issue-detail': {
+          title: '问题 / 风险详情',
+          subtitle: '跟踪问题的状态、责任人、整改措施与历史记录。',
+          build: () => ({
+            status: { tone: 'warning', text: '风险等级：高 · 预计影响工期 3 天。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>基本信息</h3>
+                  <span class="badge badge-info">编号：R-129</span>
+                </div>
+                <ul class="list-flex">
+                  <li>
+                    <span>问题描述：盾构渗水导致推进停滞</span>
+                    <div class="table-actions">
+                      <span class="status-chip red">高风险</span>
+                    </div>
+                  </li>
+                  <li>
+                    <span>责任人：赵峰 · 支持团队：专家组</span>
+                    <div class="table-actions">
+                      <button class="link-button" data-nav-target="project-detail">项目</button>
+                    </div>
+                  </li>
+                  <li>
+                    <span>目标关闭日期：7/19</span>
+                    <div class="table-actions">
+                      <button class="link-button" data-nav-target="daily-progress-detail">查看现场</button>
+                    </div>
+                  </li>
+                </ul>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>整改计划</h3>
+                    <span class="badge badge-info">执行中</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>抽排积水，检修密封</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">进行中</span>
+                      </div>
+                    </li>
+                    <li>
+                      <span>夜班增加巡检频次</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">待执行</span>
+                      </div>
+                    </li>
+                    <li>
+                      <span>补充防水材料</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">完成</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>历史记录</h3>
+                    <span class="badge badge-info">时间线</span>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-item"><strong>7/10</strong><span class="muted">发现渗水</span><span class="status-chip yellow">记录</span></div>
+                    <div class="timeline-item"><strong>7/12</strong><span class="muted">提交整改方案</span><span class="status-chip blue">审批</span></div>
+                    <div class="timeline-item"><strong>7/14</strong><span class="muted">专家进场</span><span class="status-chip green">进行中</span></div>
+                  </div>
+                  <button class="inline-link" data-nav-target="issue-tracking">返回问题列表 →</button>
+                </div>
+              </section>
+            `,
+            summary: [
+              '提供问题的完整上下文与整改计划，方便跟踪。',
+              '历史记录与相关页面链接帮助快速回溯。'
+            ]
+          })
+        },
+        'resource-availability': {
+          title: '资源日历',
+          subtitle: '查看人力与设备的可用性、加班与冲突情况。',
+          build: () => ({
+            status: { tone: 'info', text: '未来两周夜班资源紧张，建议提前锁定班组。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>资源日历</h3>
+                  <span class="badge badge-info">按周视图</span>
+                </div>
+                <div class="chart-placeholder">资源日历（颜色区分利用率，支持选择工种 / 设备）</div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>资源冲突</h3>
+                    <span class="badge badge-info">系统检测</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>钢筋工 - 7/18 夜班 超配 12%</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="resource-allocation">平衡</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>混凝土泵车 - 7/20 维护窗口</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="field-resourcing">现场调配</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>调试工程师 - 8 月空档</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="scenario-detail">纳入情景</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>加班与成本</h3>
+                    <span class="badge badge-info">近 30 天</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>夜班加班费用 +320 万</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="cost-control">查看成本</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>班组调剂共 12 次</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="resource-allocation">记录</button>
+                      </div>
+                    </li>
+                    <li>
+                      <span>外包合同启用 2 次</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="contractor-detail">承包商</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '资源日历展示利用率与冲突，帮助及时调度。',
+              '与成本、承包商和情景模块联动，形成资源决策闭环。'
+            ]
+          })
+        },
+        'contractor-detail': {
+          title: '承包商详情 - 宏泰钢构',
+          subtitle: '查看承包商绩效、合同执行与整改计划。',
+          build: () => ({
+            status: { tone: 'warning', text: '当前质量评分偏低，请安排现场复盘。' },
+            body: `
+              <section class="hero-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>绩效评分</h3>
+                    <span class="badge badge-info">季度</span>
+                  </div>
+                  <div class="grid-stat">
+                    <div class="stat-card"><span class="label">综合评分</span><span class="value">78</span><span class="muted">目标 85</span></div>
+                    <div class="stat-card"><span class="label">质量得分</span><span class="value">74</span><span class="muted">缺陷率 2.6%</span></div>
+                    <div class="stat-card"><span class="label">安全得分</span><span class="value">82</span><span class="muted">事件 1 起</span></div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>合同执行</h3>
+                    <span class="badge badge-info">合约编号 C-203</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>里程碑</th>
+                        <th>金额</th>
+                        <th>支付比例</th>
+                        <th>状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>钢结构供货</td>
+                        <td>3,200 万</td>
+                        <td>70%</td>
+                        <td><span class="status-chip yellow">质检中</span></td>
+                      </tr>
+                      <tr>
+                        <td>安装施工</td>
+                        <td>2,100 万</td>
+                        <td>60%</td>
+                        <td><span class="status-chip yellow">待整改</span></td>
+                      </tr>
+                      <tr>
+                        <td>收尾验收</td>
+                        <td>800 万</td>
+                        <td>0%</td>
+                        <td><span class="status-chip blue">未开始</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>整改行动</h3>
+                    <span class="badge badge-info">跟进</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>完成焊缝超声探伤复检</span>
+                      <div class="table-actions">
+                        <span class="status-chip yellow">进行中</span>
+                      </div>
+                    </li>
+                    <li>
+                      <span>派驻质量代表驻场 2 周</span>
+                      <div class="table-actions">
+                        <span class="status-chip green">执行</span>
+                      </div>
+                    </li>
+                    <li>
+                      <span>更新质量奖惩条款</span>
+                      <div class="table-actions">
+                        <button class="link-button" data-nav-target="change-order">合同变更</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '呈现承包商绩效、合同执行与整改行动，支持复盘。',
+              '与变更、资源、问题模块联动，形成闭环管理。'
+            ]
+          })
+        },
+        'change-order': {
+          title: '变更单详情',
+          subtitle: '展示变更背景、影响评估与审批流。',
+          build: () => ({
+            status: { tone: 'warning', text: '变更单 CO-204 待总监批复，影响成本 +320 万。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>变更摘要</h3>
+                  <span class="badge badge-info">CO-204</span>
+                </div>
+                <p class="muted">夜间加班以加速盾构推进，需要增加人工成本与补贴，预计缩短工期 18 天。</p>
+                <div class="chip-list">
+                  <span class="chip">影响工期 -18 天</span>
+                  <span class="chip">成本 +320 万</span>
+                  <span class="chip">涉及班组 6 个</span>
+                </div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>影响评估</h3>
+                    <span class="badge badge-info">多维度</span>
+                  </div>
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>维度</th>
+                        <th>结论</th>
+                        <th>备注</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>进度</td>
+                        <td><span class="status-chip green">可缩短</span></td>
+                        <td>关键路径活动 12 条受益</td>
+                      </tr>
+                      <tr>
+                        <td>成本</td>
+                        <td><span class="status-chip red">增加</span></td>
+                        <td>人工、夜班补贴</td>
+                      </tr>
+                      <tr>
+                        <td>风险</td>
+                        <td><span class="status-chip yellow">需控制</span></td>
+                        <td>夜间安全巡检</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>审批流</h3>
+                    <span class="badge badge-info">状态</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>计划工程师 - 已提交</span>
+                      <div class="table-actions"><span class="status-chip green">完成</span></div>
+                    </li>
+                    <li>
+                      <span>成本控制 - 评估中</span>
+                      <div class="table-actions"><span class="status-chip yellow">进行中</span></div>
+                    </li>
+                    <li>
+                      <span>项目总监 - 待批复</span>
+                      <div class="table-actions"><span class="status-chip yellow">待处理</span></div>
+                    </li>
+                  </ul>
+                  <button class="inline-link" data-nav-target="cost-control">查看成本影响 →</button>
+                </div>
+              </section>
+            `,
+            summary: [
+              '记录变更单的影响分析与审批状态，支持快速批复。',
+              '关联进度、成本、风险信息，确保变更闭环。'
+            ]
+          })
+        },
+        'cost-variance-detail': {
+          title: '成本偏差分析',
+          subtitle: '深入查看成本偏差来源、趋势与整改措施。',
+          build: () => ({
+            status: { tone: 'warning', text: '成本偏差主要来自夜间加班与材料调价。' },
+            body: `
+              <section class="section-card">
+                <div class="section-header">
+                  <h3>偏差趋势</h3>
+                  <span class="badge badge-info">近 6 月</span>
+                </div>
+                <div class="chart-placeholder">成本偏差趋势图（PV/EV/AC 曲线）</div>
+              </section>
+              <section class="section-grid">
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>偏差来源</h3>
+                    <span class="badge badge-info">Top 5</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>夜班加班补贴</span>
+                      <div class="table-actions"><span class="status-chip red">+180 万</span></div>
+                    </li>
+                    <li>
+                      <span>钢筋材料涨价</span>
+                      <div class="table-actions"><span class="status-chip red">+120 万</span></div>
+                    </li>
+                    <li>
+                      <span>设备维护延迟</span>
+                      <div class="table-actions"><span class="status-chip yellow">+60 万</span></div>
+                    </li>
+                    <li>
+                      <span>合同索赔</span>
+                      <div class="table-actions"><span class="status-chip yellow">+45 万</span></div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="section-card">
+                  <div class="section-header">
+                    <h3>整改措施</h3>
+                    <span class="badge badge-info">执行中</span>
+                  </div>
+                  <ul class="list-flex">
+                    <li>
+                      <span>优化夜班排班，减少 2 组加班</span>
+                      <div class="table-actions"><button class="link-button" data-nav-target="resource-availability">调整</button></div>
+                    </li>
+                    <li>
+                      <span>与供应商谈判锁价</span>
+                      <div class="table-actions"><button class="link-button" data-nav-target="contractor-detail">执行</button></div>
+                    </li>
+                    <li>
+                      <span>重新评估设备维护计划</span>
+                      <div class="table-actions"><button class="link-button" data-nav-target="field-resourcing">协调</button></div>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+            `,
+            summary: [
+              '提供成本偏差趋势与来源，定位重点问题。',
+              '对应整改措施可直接跳转至资源与承包商模块，推动执行。'
+            ]
+          })
+        }
+      };
+      let currentRole = 'director';
+      let currentPage = null;
+      let currentMenuPage = null;
+      const historyStack = [];
+
+      const menuListEl = document.getElementById('menuList');
+      const roleSelectEl = document.getElementById('roleSelect');
+      const roleHighlightsEl = document.getElementById('roleHighlights');
+      const roleDescriptionEl = document.getElementById('roleDescription');
+      const breadcrumbEl = document.getElementById('breadcrumb');
+      const pageContainer = document.getElementById('pageContainer');
+
+      function renderRoleOptions() {
+        roleSelectEl.innerHTML = Object.entries(roleConfigs)
+          .map(([value, cfg]) => `<option value="${value}">${cfg.name}</option>`)
+          .join('');
+      }
+
+      function renderSidebar(roleId) {
+        const role = roleConfigs[roleId];
+        menuListEl.innerHTML = role.menu
+          .map(
+            (item) => `
+              <li>
+                <button class="menu-item" data-page-id="${item.id}">
+                  <span class="icon">${item.icon}</span>
+                  <span class="menu-text">
+                    <strong>${item.label}</strong>
+                    <span>${item.desc}</span>
+                  </span>
+                </button>
+              </li>
+            `
+          )
+          .join('');
+        roleHighlightsEl.innerHTML = role.highlights.map((text) => `<li>${text}</li>`).join('');
+        roleDescriptionEl.textContent = role.description;
+      }
+
+      function updateActiveMenu() {
+        const buttons = menuListEl.querySelectorAll('.menu-item');
+        buttons.forEach((button) => {
+          if (button.dataset.pageId === currentMenuPage) {
+            button.classList.add('active');
+          } else {
+            button.classList.remove('active');
+          }
+        });
+      }
+
+      function updateBreadcrumb() {
+        const role = roleConfigs[currentRole];
+        const crumbs = [`<span class="crumb-root">${role.name}</span>`];
+        const ids = historyStack.concat(currentPage || []);
+        ids.forEach((id) => {
+          const page = pages[id];
+          if (!page) return;
+          crumbs.push('<span class="divider"></span>');
+          crumbs.push(`<span>${page.breadcrumbLabel || page.title}</span>`);
+        });
+        breadcrumbEl.innerHTML = crumbs.join('');
+      }
+
+      function renderPage() {
+        if (!currentPage) return;
+        const pageDef = pages[currentPage];
+        if (!pageDef) return;
+        const view = pageDef.build(currentRole) || {};
+        const actions = view.actions || [];
+        const summary = view.summary || [];
+        const actionsHtml = actions
+          .map((action) => {
+            const className = action.variant === 'ghost' ? 'ghost-button' : 'primary-button';
+            return `<button class="${className}" data-nav-target="${action.target}">${action.label}</button>`;
+          })
+          .join('');
+        const backButton = historyStack.length
+          ? '<button class="ghost-button" data-back-button="true">← 返回上一页</button>'
+          : '';
+        const status = view.status
+          ? `<div class="status-bar status-${view.status.tone || 'info'}"><span class="status-dot"></span>${view.status.text}</div>`
+          : '';
+
+        pageContainer.innerHTML = `
+          <div class="page">
+            <div class="page-header">
+              <div>
+                <h2>${view.title || pageDef.title}</h2>
+                ${view.subtitle || pageDef.subtitle ? `<p>${view.subtitle || pageDef.subtitle}</p>` : ''}
+              </div>
+              <div class="page-actions">
+                ${backButton}
+                ${actionsHtml}
+              </div>
+            </div>
+            ${status}
+            <div class="page-body">${view.body || ''}</div>
+            ${summary.length
+              ? `<section class="page-summary">
+                  <h3>本页面支持的关键业务</h3>
+                  <ul class="summary-list">
+                    ${summary.map((item) => `<li>${item}</li>`).join('')}
+                  </ul>
+                </section>`
+              : ''}
+          </div>
+        `;
+
+        const backBtn = pageContainer.querySelector('[data-back-button]');
+        if (backBtn) {
+          backBtn.addEventListener('click', () => {
+            goBack();
+          });
+        }
+        updateBreadcrumb();
+      }
+
+      function navigateTo(pageId, { fromMenu = false, pushHistory = true } = {}) {
+        if (!pages[pageId]) return;
+        if (fromMenu) {
+          historyStack.length = 0;
+          currentMenuPage = pageId;
+          pushHistory = false;
+        } else if (pushHistory && currentPage) {
+          historyStack.push(currentPage);
+        }
+        currentPage = pageId;
+        renderPage();
+        updateActiveMenu();
+      }
+
+      function goBack() {
+        const prev = historyStack.pop();
+        if (!prev) return;
+        navigateTo(prev, { pushHistory: false });
+      }
+
+      roleSelectEl.addEventListener('change', (event) => {
+        const selectedRole = event.target.value;
+        if (!roleConfigs[selectedRole]) return;
+        currentRole = selectedRole;
+        renderSidebar(currentRole);
+        currentMenuPage = roleConfigs[currentRole].menu[0].id;
+        navigateTo(currentMenuPage, { fromMenu: true });
+        updateActiveMenu();
+      });
+
+      menuListEl.addEventListener('click', (event) => {
+        const button = event.target.closest('.menu-item');
+        if (!button) return;
+        const pageId = button.dataset.pageId;
+        if (!pageId) return;
+        navigateTo(pageId, { fromMenu: true });
+      });
+
+      pageContainer.addEventListener('click', (event) => {
+        const navTarget = event.target.closest('[data-nav-target]');
+        if (!navTarget) return;
+        const pageId = navTarget.dataset.navTarget;
+        if (!pageId || !pages[pageId]) return;
+        navigateTo(pageId, { pushHistory: true });
+      });
+
+      function init() {
+        renderRoleOptions();
+        renderSidebar(currentRole);
+        roleSelectEl.value = currentRole;
+        const defaultPage = roleConfigs[currentRole].menu[0].id;
+        currentMenuPage = defaultPage;
+        navigateTo(defaultPage, { fromMenu: true });
+      }
+
+      init();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
