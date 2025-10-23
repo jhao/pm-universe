@@ -2,83 +2,2282 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>SAP Public Sector 原型概览</title>
+    <title>SAP Public Sector — 政务数字化管控原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --sidebar: #0f172a;
+        --sidebar-accent: #1d4ed8;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text: #1f2937;
+        --muted: #64748b;
+        --accent: #2563eb;
+        --success: #059669;
+        --warning: #f59e0b;
+        --danger: #dc2626;
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .app-sidebar {
+        width: 268px;
+        background: var(--sidebar);
+        color: #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        padding: 28px 24px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+
+      .brand {
+        margin-bottom: 32px;
+      }
+
+      .brand h1 {
+        font-size: 18px;
+        margin: 0;
+        color: #fff;
+      }
+
+      .brand p {
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.72);
+      }
+
+      .sidebar-section + .sidebar-section {
+        margin-top: 28px;
+      }
+
+      .sidebar-section h2 {
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin: 0 0 12px;
+        color: rgba(226, 232, 240, 0.6);
+      }
+
+      .menu-list {
+        display: grid;
+        gap: 6px;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        background: transparent;
+        padding: 10px 12px;
+        border-radius: 12px;
+        color: inherit;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+        text-align: left;
+      }
+
+      .menu-item .icon {
+        font-size: 18px;
+      }
+
+      .menu-item .label {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .menu-item small {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.6);
+      }
+
+      .menu-item:hover {
+        background: rgba(37, 99, 235, 0.16);
+        transform: translateX(4px);
+      }
+
+      .menu-item.active {
+        background: rgba(37, 99, 235, 0.28);
+        color: #fff;
+      }
+
+      .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.14);
+        color: #bfdbfe;
+        font-size: 13px;
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding-top: 24px;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.6);
+        line-height: 1.6;
+      }
+
+      .app-main {
+        flex: 1;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .app-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .header-left h2 {
+        margin: 0 0 8px;
+        font-size: 26px;
+      }
+
+      .header-left p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .role-switcher {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .role-switcher label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .role-switcher select {
+        min-width: 220px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        font-size: 14px;
+        background: #fff;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      }
+
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 18px 20px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .stat-card h3 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .stat-value {
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .stat-trend {
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .stat-trend.up {
+        color: var(--success);
+      }
+
+      .stat-trend.down {
+        color: var(--danger);
+      }
+
+      .section {
+        background: var(--card-bg);
+        border-radius: 24px;
+        padding: 24px 28px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .section-header h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .section-header .actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.16);
+        color: var(--accent);
+        font-size: 12px;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 12px;
+        padding: 9px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #fff;
+        box-shadow: 0 12px 22px rgba(37, 99, 235, 0.28);
+      }
+
+      .btn-secondary {
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--accent);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--muted);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .grid-two {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      th {
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 13px;
+      }
+
+      tr:hover td {
+        background: rgba(37, 99, 235, 0.06);
+      }
+      .chart-placeholder {
+        height: 220px;
+        border-radius: 18px;
+        border: 1px dashed rgba(148, 163, 184, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(71, 85, 105, 0.7);
+        font-size: 14px;
+        text-align: center;
+        padding: 12px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 14px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 14px;
+        align-items: start;
+      }
+
+      .timeline-item .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-top: 6px;
+      }
+
+      .timeline-item .content {
+        background: rgba(37, 99, 235, 0.08);
+        border-radius: 14px;
+        padding: 12px 14px;
+        color: #1e293b;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(71, 85, 105, 0.12);
+        color: #475569;
+        font-size: 12px;
+      }
+
+      .page {
+        display: none;
+        flex-direction: column;
+        gap: 24px;
+        animation: fade 0.2s ease;
+      }
+
+      .page.active {
+        display: flex;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .page-insight {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 18px;
+        padding: 18px 20px;
+        font-size: 14px;
+        color: #1e293b;
+        line-height: 1.8;
+      }
+
+      .badge-success {
+        background: rgba(16, 185, 129, 0.14);
+        color: #047857;
+      }
+
+      .badge-warning {
+        background: rgba(251, 191, 36, 0.18);
+        color: #b45309;
+      }
+
+      .badge-danger {
+        background: rgba(248, 113, 113, 0.2);
+        color: #b91c1c;
+      }
+
+      .badge-info {
+        background: rgba(96, 165, 250, 0.2);
+        color: #1d4ed8;
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .kanban-column {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 18px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      .kanban-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 12px;
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .progress-bar {
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.3);
+        overflow: hidden;
+        margin-top: 4px;
+      }
+
+      .progress-bar span {
+        display: block;
+        height: 100%;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      }
+
+      .tab-bar {
+        display: inline-flex;
+        background: rgba(15, 23, 42, 0.06);
+        border-radius: 14px;
+        padding: 4px;
+        gap: 6px;
+      }
+
+      .tab-bar button {
+        border: none;
+        background: transparent;
+        padding: 8px 14px;
+        border-radius: 10px;
+        font-size: 13px;
+        cursor: pointer;
+        color: var(--muted);
+      }
+
+      .tab-bar button.active {
+        background: #fff;
+        color: var(--text);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+      }
+
+      .callout {
+        background: rgba(37, 99, 235, 0.08);
+        border-left: 4px solid var(--accent);
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-size: 14px;
+        color: #1d4ed8;
+      }
+
+      .list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .list-item {
+        background: #fff;
+        border-radius: 16px;
+        padding: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .list-item .meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .list-item strong {
+        font-size: 15px;
+      }
+
+      .list-item span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .empty-state {
+        border: 2px dashed rgba(148, 163, 184, 0.4);
+        border-radius: 18px;
+        padding: 32px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .layout-split {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 20px;
+      }
+
+      .mini-chart {
+        height: 160px;
+        border-radius: 14px;
+        background: rgba(37, 99, 235, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(15, 23, 42, 0.6);
+        font-size: 13px;
+        text-align: center;
+        padding: 10px;
+      }
+
+      @media (max-width: 1080px) {
+        .app-shell {
+          flex-direction: column;
+        }
+
+        .app-sidebar {
+          width: 100%;
+          flex-direction: row;
+          gap: 24px;
+          align-items: flex-start;
+          padding: 20px;
+          overflow-x: auto;
+          height: auto;
+        }
+
+        .sidebar-section {
+          min-width: 200px;
+        }
+
+        .sidebar-footer {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>SAP Public Sector 原型</h1>
-      <p class="tagline">面向政府机构的公共财政与政务管理解决方案。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>财政部门、公共服务机构、政务运营团队</p>
-        <p><strong>核心痛点：</strong>预算执行透明度低、跨部门协同不足、合规要求严苛</p>
-        <p><strong>价值主张：</strong>提供从预算规划、征收到公共服务的一体化数字平台</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>财政部门制定预算并跟踪执行</li><li>税务征收与收入管理</li><li>公共服务项目监控绩效</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>公共财务管理</h3>
-              <p class="goal">功能目标：提升预算与资金管理透明度</p>
-              <ul>
-                <li>预算编制、审批与执行监控</li><li>资金管理与现金预测</li><li>财务报表与合规报送</li>
-              </ul>
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="brand">
+          <h1>SAP Public Sector</h1>
+          <p>政务数据驱动的公共财政与服务平台</p>
+        </div>
+        <div class="sidebar-section">
+          <span class="role-badge" id="sidebar-role">财政司管理员</span>
+        </div>
+        <div class="sidebar-section">
+          <h2>系统功能导航</h2>
+          <div class="menu-list" id="side-menu"></div>
+        </div>
+        <div class="sidebar-footer">
+          支持财政、税务、公共服务、审计多角色协同，所有模块均可从此处快速演示。
+        </div>
+      </aside>
+      <main class="app-main">
+        <header class="app-header">
+          <div class="header-left">
+            <h2 id="role-headline">财政资金总控中心</h2>
+            <p id="role-description">统筹预算执行、现金流与专项资金，确保财政透明合规。</p>
+          </div>
+          <div class="header-right">
+            <div class="role-switcher">
+              <label for="role-selector">快速切换演示角色</label>
+              <select id="role-selector">
+                <option value="treasury">财政司管理员</option>
+                <option value="tax">税务征收主管</option>
+                <option value="project">公共服务项目经理</option>
+                <option value="audit">监察审计官</option>
+              </select>
+            </div>
+            <button class="btn btn-secondary" id="role-home-button" data-target-page="treasury-dashboard">回到当前角色首页</button>
+          </div>
+        </header>
+
+        <section class="page" data-page="treasury-dashboard" data-role="treasury">
+          <div class="quick-stats">
+            <article class="stat-card">
+              <h3>年度预算执行率</h3>
+              <div class="stat-value">78.6%</div>
+              <span class="stat-trend up">▲ 较上周 +4.2%</span>
+            </article>
+            <article class="stat-card">
+              <h3>财政收入完成率</h3>
+              <div class="stat-value">92.1%</div>
+              <span class="stat-trend">本月目标 95%</span>
+            </article>
+            <article class="stat-card">
+              <h3>专项资金风险预警</h3>
+              <div class="stat-value">3 个</div>
+              <span class="stat-trend down">▼ 已化解 1 个风险点</span>
+            </article>
+            <article class="stat-card">
+              <h3>待办审批</h3>
+              <div class="stat-value">12 项</div>
+              <span class="stat-trend">平均处理时长 1.8 天</span>
+            </article>
+          </div>
+
+          <div class="grid-two">
+            <section class="section">
+              <div class="section-header">
+                <h3>预算执行热力图</h3>
+                <div class="actions">
+                  <span class="tag">实时刷新</span>
+                  <button class="btn btn-secondary" data-target-page="treasury-budget">查看预算详情</button>
+                </div>
+              </div>
+              <div class="chart-placeholder">按部门、项目维度的预算执行度热力图</div>
             </section>
-            
-            <section class="module">
-              <h3>税费征收</h3>
-              <p class="goal">功能目标：提升征收效率与纳税人体验</p>
-              <ul>
-                <li>纳税人档案与申报管理</li><li>催缴与欠税管理</li><li>在线服务与自助门户</li>
-              </ul>
+            <section class="section">
+              <div class="section-header">
+                <h3>现金流预测</h3>
+                <div class="actions">
+                  <button class="btn btn-secondary" data-target-page="treasury-cashflow">打开预测模型</button>
+                </div>
+              </div>
+              <div class="chart-placeholder">未来 26 周的收入与支出区间预测图</div>
             </section>
-            
-            <section class="module">
-              <h3>公共服务项目</h3>
-              <p class="goal">功能目标：跟踪公共项目绩效</p>
-              <ul>
-                <li>项目规划、合同与采购</li><li>绩效指标与成果评估</li><li>项目资金与合规管理</li>
-              </ul>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>高优先级决策提醒</h3>
+              <div class="actions">
+                <div class="tab-bar">
+                  <button class="active">全部</button>
+                  <button>预算</button>
+                  <button>资金</button>
+                  <button>预警</button>
+                </div>
+              </div>
+            </div>
+            <div class="list">
+              <div class="list-item">
+                <div class="meta">
+                  <strong>教育厅专项补助执行率偏低</strong>
+                  <span>当前执行率 52%，低于阈值 65%，需督导整改方案。</span>
+                </div>
+                <button class="btn btn-primary" data-target-page="treasury-funds">跟进专项资金</button>
+              </div>
+              <div class="list-item">
+                <div class="meta">
+                  <strong>养老服务数字化项目申请追加 1200 万</strong>
+                  <span>项目绩效良好，需在 8 月 12 日前完成预算调整流程。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="treasury-procurement">进入合同与采购</button>
+              </div>
+              <div class="list-item">
+                <div class="meta">
+                  <strong>灾后应急资金兑付进度待确认</strong>
+                  <span>待核实 3 笔资金拨付材料，涉及 2 个县区，建议加急。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="treasury-funds">查看拨付进度</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            本页面用于财政司管理员获取全局态势：从预算执行热力图、现金流预测到跨部门的决策提醒，确保核心指标在首屏即可洞察。
+          </div>
+        </section>
+
+        <section class="page" data-page="treasury-budget" data-role="treasury">
+          <div class="section">
+            <div class="section-header">
+              <h3>预算执行监控</h3>
+              <div class="actions">
+                <button class="btn btn-primary">生成执行对比报告</button>
+                <button class="btn btn-secondary" data-target-page="treasury-dashboard">返回总览</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>部门</th>
+                  <th>年度预算 (亿)</th>
+                  <th>已执行</th>
+                  <th>执行率</th>
+                  <th>偏差</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>教育厅</td>
+                  <td>215</td>
+                  <td>112</td>
+                  <td><span class="pill badge-warning">52%</span></td>
+                  <td>-18%</td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-funds">督导专项</button></td>
+                </tr>
+                <tr>
+                  <td>卫生健康委</td>
+                  <td>186</td>
+                  <td>154</td>
+                  <td><span class="pill badge-success">83%</span></td>
+                  <td>+5%</td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-procurement">查看采购</button></td>
+                </tr>
+                <tr>
+                  <td>民政厅</td>
+                  <td>132</td>
+                  <td>96</td>
+                  <td><span class="pill">73%</span></td>
+                  <td>-6%</td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-funds">资金拨付</button></td>
+                </tr>
+                <tr>
+                  <td>交通运输厅</td>
+                  <td>168</td>
+                  <td>142</td>
+                  <td><span class="pill badge-success">85%</span></td>
+                  <td>+8%</td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-procurement">查看合同</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid-two">
+            <section class="section">
+              <div class="section-header">
+                <h3>预算执行趋势</h3>
+                <div class="actions">
+                  <span class="tag">同比对比</span>
+                </div>
+              </div>
+              <div class="chart-placeholder">预算执行率趋势折线图，包含上年同期对比</div>
             </section>
-            
-            <section class="module">
-              <h3>公民服务与互动</h3>
-              <p class="goal">功能目标：提升公众参与与服务质量</p>
-              <ul>
-                <li>多渠道服务请求与工单</li><li>公民门户与移动应用</li><li>反馈收集与满意度分析</li>
-              </ul>
+            <section class="section">
+              <div class="section-header">
+                <h3>偏差原因分析</h3>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="dot"></div>
+                  <div class="content">
+                    <strong>教育厅 - 校园安全改造项目延迟</strong>
+                    <p>施工招标延期 45 天，建议启用快速审批流程。</p>
+                    <button class="btn btn-secondary" data-target-page="treasury-procurement">查看招标进度</button>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="dot"></div>
+                  <div class="content">
+                    <strong>民政厅 - 社区养老服务覆盖不足</strong>
+                    <p>第三方评估得分 68/100，建议追加培训预算。</p>
+                    <button class="btn btn-secondary" data-target-page="treasury-funds">打开专项资金分配</button>
+                  </div>
+                </div>
+              </div>
             </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>预算执行率与偏差</li><li>税收征管效率与欠税率</li><li>公共项目准时率与公众满意度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+          </div>
+
+          <div class="page-insight">
+            预算执行监控提供部门级 KPI、偏差诊断、追溯原因与快速纠偏入口，支撑财政司在例会中直接展示执行状态。
+          </div>
+        </section>
+
+        <section class="page" data-page="treasury-cashflow" data-role="treasury">
+          <div class="section">
+            <div class="section-header">
+              <h3>现金流预测模型</h3>
+              <div class="actions">
+                <button class="btn btn-primary">导出预测结果</button>
+                <button class="btn btn-secondary" data-target-page="treasury-dashboard">返回总览</button>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div>
+                <div class="chart-placeholder">未来 180 天资金流入/流出区间带</div>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>短期流动性保障</strong>
+                    <span>可动用财政资金 268 亿，满足 3.4 个月日常支出。</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="treasury-funds">分配流动性</button>
+                </div>
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>债务兑付提醒</strong>
+                    <span>9 月需偿付地方债 34.6 亿，建议提前锁定资金。</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="treasury-procurement">查看合同付款节点</button>
+                </div>
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>上缴国库节点</strong>
+                    <span>财政结转资金 12.8 亿将于 10 月 15 日上缴。</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="treasury-budget">调整计划</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>预测参数配置</h3>
+              <div class="actions">
+                <button class="btn btn-primary">应用参数</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>参数</th>
+                  <th>当前值</th>
+                  <th>区间</th>
+                  <th>灵敏度</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>税收入库增长率</td>
+                  <td>5.2%</td>
+                  <td>3% - 6%</td>
+                  <td>高</td>
+                  <td>基于过去 24 个月趋势预测</td>
+                </tr>
+                <tr>
+                  <td>重点项目拨付节奏</td>
+                  <td>季度</td>
+                  <td>月度/季度</td>
+                  <td>中</td>
+                  <td>可在专项资金页面自定义</td>
+                </tr>
+                <tr>
+                  <td>应急预备金比例</td>
+                  <td>4%</td>
+                  <td>3% - 6%</td>
+                  <td>高</td>
+                  <td>满足财政部管理办法最低要求</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="page-insight">
+            现金流预测模型使用多场景参数模拟未来资金缺口，行政管理者可直接通过操作按钮调用专项资金或调整预算节奏。
+          </div>
+        </section>
+
+        <section class="page" data-page="treasury-procurement" data-role="treasury">
+          <div class="section">
+            <div class="section-header">
+              <h3>合同与采购中心</h3>
+              <div class="actions">
+                <button class="btn btn-primary">发起新采购</button>
+                <button class="btn btn-secondary" data-target-page="treasury-dashboard">返回总览</button>
+              </div>
+            </div>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h4>待招标</h4>
+                <div class="kanban-card">
+                  <strong>数字化校园安防</strong>
+                  <p>预算 1.2 亿 · 教育厅</p>
+                  <div class="progress-bar"><span style="width: 20%"></span></div>
+                  <button class="btn btn-secondary" data-target-page="treasury-budget">查看预算</button>
+                </div>
+                <div class="kanban-card">
+                  <strong>社会救助服务平台迭代</strong>
+                  <p>预算 4800 万 · 民政厅</p>
+                  <div class="progress-bar"><span style="width: 35%"></span></div>
+                  <button class="btn btn-secondary" data-target-page="treasury-funds">专项匹配</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>评标中</h4>
+                <div class="kanban-card">
+                  <strong>智慧交通信号升级</strong>
+                  <p>预算 2.6 亿 · 交通厅</p>
+                  <div class="progress-bar"><span style="width: 58%"></span></div>
+                  <button class="btn btn-secondary" data-target-page="treasury-budget">审批材料</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>执行中</h4>
+                <div class="kanban-card">
+                  <strong>养老服务数字化</strong>
+                  <p>合同 1.1 亿 · 民政厅</p>
+                  <div class="progress-bar"><span style="width: 68%"></span></div>
+                  <button class="btn btn-secondary" data-target-page="treasury-funds">拨付进度</button>
+                </div>
+                <div class="kanban-card">
+                  <strong>政务云扩容项目</strong>
+                  <p>合同 2.8 亿 · 大数据局</p>
+                  <div class="progress-bar"><span style="width: 45%"></span></div>
+                  <button class="btn btn-secondary" data-target-page="treasury-cashflow">锁定付款计划</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>待验收</h4>
+                <div class="kanban-card">
+                  <strong>区县档案数字化</strong>
+                  <p>合同 7600 万 · 档案局</p>
+                  <div class="progress-bar"><span style="width: 82%"></span></div>
+                  <button class="btn btn-secondary" data-target-page="treasury-funds">安排验收</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>付款节点甘特</h3>
+            </div>
+            <div class="chart-placeholder">合同付款节点与现金流出时间轴甘特图</div>
+          </section>
+
+          <div class="page-insight">
+            合同与采购中心展示全流程状态，支持切换至预算、专项资金、现金流页面进行联动处理，实现财政采购一体化管理。
+          </div>
+        </section>
+
+        <section class="page" data-page="treasury-funds" data-role="treasury">
+          <div class="section">
+            <div class="section-header">
+              <h3>专项资金调度</h3>
+              <div class="actions">
+                <button class="btn btn-primary">发起拨付指令</button>
+                <button class="btn btn-secondary" data-target-page="treasury-dashboard">返回总览</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>专项名称</th>
+                  <th>主管部门</th>
+                  <th>年度预算 (亿)</th>
+                  <th>拨付进度</th>
+                  <th>绩效目标</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>教育均衡发展补助</td>
+                  <td>教育厅</td>
+                  <td>36</td>
+                  <td><span class="pill badge-warning">拨付 54%</span></td>
+                  <td>县域课均支出提升 10%</td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-budget">调整预算</button></td>
+                </tr>
+                <tr>
+                  <td>养老服务提升计划</td>
+                  <td>民政厅</td>
+                  <td>18</td>
+                  <td><span class="pill badge-success">拨付 82%</span></td>
+                  <td>老年人满意度 ≥90%</td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-procurement">查看合同</button></td>
+                </tr>
+                <tr>
+                  <td>灾后恢复专项</td>
+                  <td>应急厅</td>
+                  <td>42</td>
+                  <td><span class="pill badge-warning">拨付 47%</span></td>
+                  <td>恢复率 70%</td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-cashflow">锁定资金</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid-two">
+            <section class="section">
+              <div class="section-header">
+                <h3>地区拨付分布</h3>
+              </div>
+              <div class="chart-placeholder">地图 + 条形图，展示各区县专项资金拨付比例</div>
+            </section>
+            <section class="section">
+              <div class="section-header">
+                <h3>绩效评估里程碑</h3>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="dot"></div>
+                  <div class="content">
+                    <strong>Q3 - 关键绩效评估</strong>
+                    <p>完成第三方评估并上传成果文档。</p>
+                    <button class="btn btn-secondary" data-target-page="treasury-procurement">查看合同指标</button>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="dot"></div>
+                  <div class="content">
+                    <strong>Q4 - 项目绩效复盘</strong>
+                    <p>结合财政决算报告，生成专项绩效复盘报告。</p>
+                    <button class="btn btn-primary">生成复盘模板</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="page-insight">
+            专项资金页面聚焦拨付进度、绩效目标、地区分布，可直接发起拨付或生成绩效材料，满足财政部门联动需求。
+          </div>
+        </section>
+
+        <section class="page" data-page="tax-dashboard" data-role="tax">
+          <div class="quick-stats">
+            <article class="stat-card">
+              <h3>本月入库税款</h3>
+              <div class="stat-value">128.3 亿</div>
+              <span class="stat-trend up">▲ 较上月 +12%</span>
+            </article>
+            <article class="stat-card">
+              <h3>欠税总额</h3>
+              <div class="stat-value">6.4 亿</div>
+              <span class="stat-trend">重点关注 38 户</span>
+            </article>
+            <article class="stat-card">
+              <h3>高风险预警</h3>
+              <div class="stat-value">5 起</div>
+              <span class="stat-trend down">▼ 本周下降 2 起</span>
+            </article>
+            <article class="stat-card">
+              <h3>自助服务满意度</h3>
+              <div class="stat-value">94%</div>
+              <span class="stat-trend">目标 ≥ 92%</span>
+            </article>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>税收结构与风险</h3>
+              <div class="actions">
+                <button class="btn btn-secondary" data-target-page="tax-compliance">查看稽核详情</button>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="chart-placeholder">行业税收结构堆叠柱状图</div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>重点企业税负异常</strong>
+                    <span>制造业龙头 2 家税负率低于行业均值 8%。</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="tax-compliance">发起稽核</button>
+                </div>
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>数字经济平台集中申报</strong>
+                    <span>本周新增 4300 份申报，需优化审核资源。</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="tax-service">派单客服</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>区域征收完成率</h3>
+              <div class="actions">
+                <button class="btn btn-primary">导出区域报表</button>
+              </div>
+            </div>
+            <div class="chart-placeholder">地图热力图 + 区域完成率折线</div>
+          </section>
+
+          <div class="page-insight">
+            税务主管在此掌握征收态势、行业风险与区域表现，通过按钮快速跳转至稽核、客服等功能处理具体事务。
+          </div>
+        </section>
+
+        <section class="page" data-page="tax-service" data-role="tax">
+          <div class="section">
+            <div class="section-header">
+              <h3>纳税人服务工单</h3>
+              <div class="actions">
+                <button class="btn btn-primary">新建服务任务</button>
+                <button class="btn btn-secondary" data-target-page="tax-dashboard">返回总览</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>工单编号</th>
+                  <th>企业名称</th>
+                  <th>类型</th>
+                  <th>状态</th>
+                  <th>最后更新</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SV-20240801</td>
+                  <td>星辰制造有限公司</td>
+                  <td>增值税发票异常</td>
+                  <td><span class="pill badge-warning">待跟进</span></td>
+                  <td>8 月 12 日</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-field">派发外勤</button></td>
+                </tr>
+                <tr>
+                  <td>SV-20240812</td>
+                  <td>联汇电商平台</td>
+                  <td>税收政策咨询</td>
+                  <td><span class="pill badge-success">已解决</span></td>
+                  <td>8 月 10 日</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-dashboard">查看满意度</button></td>
+                </tr>
+                <tr>
+                  <td>SV-20240821</td>
+                  <td>启航科技</td>
+                  <td>出口退税申请</td>
+                  <td><span class="pill">处理中</span></td>
+                  <td>8 月 11 日</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-compliance">稽核材料</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>渠道满意度趋势</h3>
+              <div class="actions">
+                <span class="tag">自助/热线/线下</span>
+              </div>
+            </div>
+            <div class="chart-placeholder">多渠道满意度折线图</div>
+          </section>
+
+          <div class="page-insight">
+            服务工单页面直接对接热线、自助渠道，税务主管可派发外勤或转入稽核，保障企业问题闭环处理。
+          </div>
+        </section>
+
+        <section class="page" data-page="tax-compliance" data-role="tax">
+          <div class="section">
+            <div class="section-header">
+              <h3>欠税稽核中心</h3>
+              <div class="actions">
+                <button class="btn btn-primary">发起专项稽核</button>
+                <button class="btn btn-secondary" data-target-page="tax-dashboard">返回总览</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>企业</th>
+                  <th>欠税金额 (万)</th>
+                  <th>逾期天数</th>
+                  <th>风险等级</th>
+                  <th>最近动作</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>荣光能源集团</td>
+                  <td>8600</td>
+                  <td>45</td>
+                  <td><span class="pill badge-danger">高</span></td>
+                  <td>已下发整改函</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-field">安排检查</button></td>
+                </tr>
+                <tr>
+                  <td>宏泽制造</td>
+                  <td>4300</td>
+                  <td>26</td>
+                  <td><span class="pill badge-warning">中</span></td>
+                  <td>预约稽核 8 月 18 日</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-service">回访客服</button></td>
+                </tr>
+                <tr>
+                  <td>恒越跨境电商</td>
+                  <td>2100</td>
+                  <td>12</td>
+                  <td><span class="pill">低</span></td>
+                  <td>提交缓缴申请</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-dashboard">查看决策</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>稽核流程跟踪</h3>
+            </div>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h4>立案</h4>
+                <div class="kanban-card">
+                  <strong>数字平台避税线索</strong>
+                  <p>线索来源：大数据风控</p>
+                  <button class="btn btn-secondary" data-target-page="tax-field">派外勤核查</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>调查</h4>
+                <div class="kanban-card">
+                  <strong>荣光能源调账</strong>
+                  <p>核对 6 月份发票流向</p>
+                  <button class="btn btn-secondary" data-target-page="tax-dashboard">查看指标</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>处理</h4>
+                <div class="kanban-card">
+                  <strong>宏泽制造约谈</strong>
+                  <p>预估补税 2100 万</p>
+                  <button class="btn btn-secondary" data-target-page="tax-service">更新记录</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>结案</h4>
+                <div class="kanban-card">
+                  <strong>恒越跨境缓缴</strong>
+                  <p>审批完成 · 监管中</p>
+                  <button class="btn btn-secondary" data-target-page="tax-dashboard">回总览</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            欠税稽核中心聚焦风险企业清册，串联立案、调查、处理、结案全链路，支持跨功能页面协作。
+          </div>
+        </section>
+
+        <section class="page" data-page="tax-field" data-role="tax">
+          <div class="section">
+            <div class="section-header">
+              <h3>外勤任务派发</h3>
+              <div class="actions">
+                <button class="btn btn-primary">生成外勤路线</button>
+                <button class="btn btn-secondary" data-target-page="tax-dashboard">返回总览</button>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="section" style="gap:12px; padding:18px;">
+                <div class="section-header" style="padding:0;">
+                  <h3>今日任务</h3>
+                </div>
+                <div class="list">
+                  <div class="list-item">
+                    <div class="meta">
+                      <strong>荣光能源现场核查</strong>
+                      <span>核查团队 A · 8:30 出发</span>
+                    </div>
+                    <button class="btn btn-secondary" data-target-page="tax-compliance">查看稽核单</button>
+                  </div>
+                  <div class="list-item">
+                    <div class="meta">
+                      <strong>星辰制造访谈</strong>
+                      <span>服务专员 B · 14:00</span>
+                    </div>
+                    <button class="btn btn-secondary" data-target-page="tax-service">同步客服</button>
+                  </div>
+                </div>
+              </div>
+              <div class="section" style="gap:12px; padding:18px;">
+                <div class="section-header" style="padding:0;">
+                  <h3>地图调度</h3>
+                </div>
+                <div class="chart-placeholder">外勤人员实时位置与任务地图</div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>任务反馈</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>任务</th>
+                  <th>执行人</th>
+                  <th>状态</th>
+                  <th>反馈纪要</th>
+                  <th>下一步</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>恒越跨境复核</td>
+                  <td>检查员 张伟</td>
+                  <td><span class="pill badge-success">完成</span></td>
+                  <td>现场账簿已补录</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-compliance">关闭稽核</button></td>
+                </tr>
+                <tr>
+                  <td>数字平台走访</td>
+                  <td>服务员 李婷</td>
+                  <td><span class="pill">进行中</span></td>
+                  <td>等待企业提供合同</td>
+                  <td><button class="btn btn-ghost" data-target-page="tax-service">跟踪工单</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="page-insight">
+            外勤任务派发页面突出任务清单、地图调度与反馈闭环，协助税务主管优化现场执行效率。
+          </div>
+        </section>
+
+        <section class="page" data-page="project-portfolio" data-role="project">
+          <div class="quick-stats">
+            <article class="stat-card">
+              <h3>在管项目</h3>
+              <div class="stat-value">68 个</div>
+              <span class="stat-trend">重点监管 12 个</span>
+            </article>
+            <article class="stat-card">
+              <h3>年度预算</h3>
+              <div class="stat-value">328 亿</div>
+              <span class="stat-trend">执行率 71%</span>
+            </article>
+            <article class="stat-card">
+              <h3>公众满意度</h3>
+              <div class="stat-value">89%</div>
+              <span class="stat-trend up">▲ 较上季 +3%</span>
+            </article>
+            <article class="stat-card">
+              <h3>风险项目</h3>
+              <div class="stat-value">4 个</div>
+              <span class="stat-trend down">▼ 较上月 -2 个</span>
+            </article>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>项目组合地图</h3>
+              <div class="actions">
+                <button class="btn btn-secondary" data-target-page="project-progress">查看执行进度</button>
+              </div>
+            </div>
+            <div class="chart-placeholder">项目地理分布 + 资金投入热力图</div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>重点项目</h3>
+              <div class="actions">
+                <button class="btn btn-primary">新增重点项目</button>
+              </div>
+            </div>
+            <div class="list">
+              <div class="list-item">
+                <div class="meta">
+                  <strong>城市养老服务综合体</strong>
+                  <span>投资 26.4 亿 · 计划竣工：2025 Q1</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="project-progress">查看里程碑</button>
+              </div>
+              <div class="list-item">
+                <div class="meta">
+                  <strong>绿色交通一体化工程</strong>
+                  <span>投资 48.1 亿 · 计划竣工：2026 Q2</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="project-funding">查看资金拨付</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            公共服务项目经理在此掌握项目组合全景，并可进入进度、资金、绩效页面开展专项管理。
+          </div>
+        </section>
+
+        <section class="page" data-page="project-progress" data-role="project">
+          <div class="section">
+            <div class="section-header">
+              <h3>项目执行进度</h3>
+              <div class="actions">
+                <button class="btn btn-primary">导出进度报表</button>
+                <button class="btn btn-secondary" data-target-page="project-portfolio">返回组合</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>项目</th>
+                  <th>阶段</th>
+                  <th>完成度</th>
+                  <th>关键里程碑</th>
+                  <th>负责人</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>城市养老服务综合体</td>
+                  <td>主体施工</td>
+                  <td><span class="pill">65%</span></td>
+                  <td>9 月 完成主体封顶</td>
+                  <td>张敏</td>
+                  <td><button class="btn btn-ghost" data-target-page="project-performance">绩效评估</button></td>
+                </tr>
+                <tr>
+                  <td>绿色交通一体化工程</td>
+                  <td>设计深化</td>
+                  <td><span class="pill badge-warning">42%</span></td>
+                  <td>8 月 完成线路审批</td>
+                  <td>李峰</td>
+                  <td><button class="btn btn-ghost" data-target-page="project-funding">资金拨付</button></td>
+                </tr>
+                <tr>
+                  <td>社区医疗数字化提升</td>
+                  <td>上线验收</td>
+                  <td><span class="pill badge-success">88%</span></td>
+                  <td>8 月 完成试运行</td>
+                  <td>赵琳</td>
+                  <td><button class="btn btn-ghost" data-target-page="project-vendor">供应商协同</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid-two">
+            <section class="section">
+              <div class="section-header">
+                <h3>里程碑燃尽图</h3>
+              </div>
+              <div class="chart-placeholder">项目里程碑完成情况燃尽图</div>
+            </section>
+            <section class="section">
+              <div class="section-header">
+                <h3>风险与缓解措施</h3>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>绿色交通 - 土地批复延期</strong>
+                    <span>预计影响工期 20 天，需协调规划局。</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="project-vendor">召集联合会议</button>
+                </div>
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>养老综合体 - 设备交付风险</strong>
+                    <span>主设备供应商交付延迟，需准备备用方案。</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="project-vendor">查看供应商状态</button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="page-insight">
+            项目执行进度页聚合关键里程碑、风险应对与绩效入口，项目经理可直接跳转至资金或供应商模块协同处理。
+          </div>
+        </section>
+
+        <section class="page" data-page="project-funding" data-role="project">
+          <div class="section">
+            <div class="section-header">
+              <h3>资金拨付中心</h3>
+              <div class="actions">
+                <button class="btn btn-primary">创建拨付计划</button>
+                <button class="btn btn-secondary" data-target-page="project-portfolio">返回组合</button>
+              </div>
+            </div>
+            <div class="layout-split">
+              <div>
+                <div class="chart-placeholder">项目拨付节奏与资金消耗对比曲线</div>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>绿色交通一体化</strong>
+                    <span>本月需拨付 6.8 亿 · 已审批 5.2 亿</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="treasury-funds">协调财政</button>
+                </div>
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>养老服务综合体</strong>
+                    <span>本周待拨付 1.4 亿 · 绩效良好</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="treasury-procurement">查看合同</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>拨付计划清单</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>拨付批次</th>
+                  <th>项目</th>
+                  <th>金额 (万)</th>
+                  <th>计划时间</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024-08-A</td>
+                  <td>绿色交通一体化</td>
+                  <td>68000</td>
+                  <td>8 月 20 日</td>
+                  <td><span class="pill">待财政复核</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="treasury-funds">查看复核</button></td>
+                </tr>
+                <tr>
+                  <td>2024-08-B</td>
+                  <td>养老服务综合体</td>
+                  <td>14000</td>
+                  <td>8 月 15 日</td>
+                  <td><span class="pill badge-success">已拨付</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="project-performance">关联绩效</button></td>
+                </tr>
+                <tr>
+                  <td>2024-08-C</td>
+                  <td>社区医疗提升</td>
+                  <td>6200</td>
+                  <td>8 月 28 日</td>
+                  <td><span class="pill badge-warning">待资料</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="project-vendor">催办供应商</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="page-insight">
+            资金拨付中心将项目需求与财政资源对齐，可一键联动财政侧复核、合同执行和绩效跟踪，实现跨部门对账。
+          </div>
+        </section>
+
+        <section class="page" data-page="project-performance" data-role="project">
+          <div class="section">
+            <div class="section-header">
+              <h3>绩效与满意度监控</h3>
+              <div class="actions">
+                <button class="btn btn-primary">生成绩效报告</button>
+                <button class="btn btn-secondary" data-target-page="project-portfolio">返回组合</button>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="chart-placeholder">绩效指标雷达图（成本、质量、进度、满意度）</div>
+              <div class="chart-placeholder">公众满意度趋势及投诉量对比</div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>绩效指标明细</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>项目</th>
+                  <th>绩效得分</th>
+                  <th>考核指标</th>
+                  <th>预警</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>养老服务综合体</td>
+                  <td>92</td>
+                  <td>入住率、满意度、成本控制</td>
+                  <td><span class="pill badge-success">良好</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="project-funding">追加拨付</button></td>
+                </tr>
+                <tr>
+                  <td>绿色交通一体化</td>
+                  <td>78</td>
+                  <td>准时开工率、碳减排量</td>
+                  <td><span class="pill badge-warning">关注</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="project-progress">加速进度</button></td>
+                </tr>
+                <tr>
+                  <td>社区医疗提升</td>
+                  <td>88</td>
+                  <td>上线率、公众满意度</td>
+                  <td><span class="pill">稳定</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="project-vendor">优化培训</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="page-insight">
+            绩效页面聚焦指标雷达、满意度趋势与考核明细，提供与资金、进度、供应商模块的联动操作按钮，方便快速调整策略。
+          </div>
+        </section>
+
+        <section class="page" data-page="project-vendor" data-role="project">
+          <div class="section">
+            <div class="section-header">
+              <h3>供应商协同中心</h3>
+              <div class="actions">
+                <button class="btn btn-primary">发起联合会议</button>
+                <button class="btn btn-secondary" data-target-page="project-portfolio">返回组合</button>
+              </div>
+            </div>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h4>待进场</h4>
+                <div class="kanban-card">
+                  <strong>建工集团</strong>
+                  <p>养老综合体 · 土建施工</p>
+                  <button class="btn btn-secondary" data-target-page="project-progress">确认进度</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>执行中</h4>
+                <div class="kanban-card">
+                  <strong>智城科技</strong>
+                  <p>智慧交通系统集成</p>
+                  <button class="btn btn-secondary" data-target-page="project-progress">里程碑</button>
+                </div>
+                <div class="kanban-card">
+                  <strong>安宁医疗</strong>
+                  <p>社区医疗设备供货</p>
+                  <button class="btn btn-secondary" data-target-page="project-performance">查看绩效</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>待验收</h4>
+                <div class="kanban-card">
+                  <strong>慧联数据</strong>
+                  <p>养老综合体信息化平台</p>
+                  <button class="btn btn-secondary" data-target-page="project-performance">验收指标</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>供应商考核评分</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>供应商</th>
+                  <th>当前评分</th>
+                  <th>合规状态</th>
+                  <th>最近沟通</th>
+                  <th>下一步</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>智城科技</td>
+                  <td>87</td>
+                  <td><span class="pill">良好</span></td>
+                  <td>7 月 30 日</td>
+                  <td><button class="btn btn-ghost" data-target-page="project-progress">跟进里程碑</button></td>
+                </tr>
+                <tr>
+                  <td>安宁医疗</td>
+                  <td>74</td>
+                  <td><span class="pill badge-warning">关注</span></td>
+                  <td>8 月 08 日</td>
+                  <td><button class="btn btn-ghost" data-target-page="project-funding">调整付款</button></td>
+                </tr>
+                <tr>
+                  <td>慧联数据</td>
+                  <td>91</td>
+                  <td><span class="pill badge-success">优秀</span></td>
+                  <td>8 月 05 日</td>
+                  <td><button class="btn btn-ghost" data-target-page="project-performance">评估绩效</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="page-insight">
+            供应商协同中心串联进场、执行、验收与考核流程，项目经理可以依据考核结果联动进度与资金模块，确保履约质量。
+          </div>
+        </section>
+
+        <section class="page" data-page="audit-risk" data-role="audit">
+          <div class="quick-stats">
+            <article class="stat-card">
+              <h3>风险事件</h3>
+              <div class="stat-value">27 起</div>
+              <span class="stat-trend down">▼ 较上周 -3 起</span>
+            </article>
+            <article class="stat-card">
+              <h3>整改完成率</h3>
+              <div class="stat-value">68%</div>
+              <span class="stat-trend">目标 ≥ 75%</span>
+            </article>
+            <article class="stat-card">
+              <h3>重点关注资金</h3>
+              <div class="stat-value">12.6 亿</div>
+              <span class="stat-trend">覆盖 18 个项目</span>
+            </article>
+            <article class="stat-card">
+              <h3>待分派案件</h3>
+              <div class="stat-value">9 件</div>
+              <span class="stat-trend up">▲ 新增 3 件</span>
+            </article>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>风险预警雷达</h3>
+              <div class="actions">
+                <button class="btn btn-secondary" data-target-page="audit-workbench">进入审计作业台</button>
+              </div>
+            </div>
+            <div class="chart-placeholder">预算、合同、资金、服务、合规五维风险雷达图</div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>高风险清单</h3>
+            </div>
+            <div class="list">
+              <div class="list-item">
+                <div class="meta">
+                  <strong>绿色交通项目 - 合同付款超期</strong>
+                  <span>超过合同约定时间 45 天，涉及金额 1.6 亿。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="audit-workbench">发起专项审计</button>
+              </div>
+              <div class="list-item">
+                <div class="meta">
+                  <strong>教育厅专项资金 - 绩效未达标</strong>
+                  <span>执行率 52%，存在资金沉淀风险。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="audit-case">生成整改单</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            风险雷达页面快速聚焦风险分布和高危事项，监察审计官可一键进入作业台或生成整改任务。
+          </div>
+        </section>
+
+        <section class="page" data-page="audit-workbench" data-role="audit">
+          <div class="section">
+            <div class="section-header">
+              <h3>审计作业台</h3>
+              <div class="actions">
+                <button class="btn btn-primary">创建审计计划</button>
+                <button class="btn btn-secondary" data-target-page="audit-risk">返回风险雷达</button>
+              </div>
+            </div>
+            <div class="kanban">
+              <div class="kanban-column">
+                <h4>待立项</h4>
+                <div class="kanban-card">
+                  <strong>专项资金绩效审计</strong>
+                  <p>教育厅 · 预算执行</p>
+                  <button class="btn btn-secondary" data-target-page="audit-case">生成整改单</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>现场审计</h4>
+                <div class="kanban-card">
+                  <strong>绿色交通合同审计</strong>
+                  <p>重点检查付款节点</p>
+                  <button class="btn btn-secondary" data-target-page="audit-case">登记问题</button>
+                </div>
+                <div class="kanban-card">
+                  <strong>公共服务满意度抽查</strong>
+                  <p>抽样 12 个站点</p>
+                  <button class="btn btn-secondary" data-target-page="audit-reports">生成工作底稿</button>
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h4>报告撰写</h4>
+                <div class="kanban-card">
+                  <strong>养老综合体绩效审计</strong>
+                  <p>报告草稿待审批</p>
+                  <button class="btn btn-secondary" data-target-page="audit-reports">查看报告</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>审计样本与证据</h3>
+            </div>
+            <div class="grid-two">
+              <div class="mini-chart">样本分层分布图</div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>绿色交通 - 付款凭证</strong>
+                    <span>已上传 12 份 · 待复核 3 份</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="audit-reports">审阅底稿</button>
+                </div>
+                <div class="list-item">
+                  <div class="meta">
+                    <strong>养老综合体 - 绩效调查问卷</strong>
+                    <span>已回收 620 份 · 满意度 92%</span>
+                  </div>
+                  <button class="btn btn-secondary" data-target-page="audit-case">提炼问题</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            审计作业台提供从计划、现场到报告的看板视图，同时汇集样本与证据，便于快速生成整改任务或报告文档。
+          </div>
+        </section>
+
+        <section class="page" data-page="audit-reports" data-role="audit">
+          <div class="section">
+            <div class="section-header">
+              <h3>合规报告库</h3>
+              <div class="actions">
+                <button class="btn btn-primary">新建报告</button>
+                <button class="btn btn-secondary" data-target-page="audit-workbench">返回作业台</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>报告名称</th>
+                  <th>类型</th>
+                  <th>状态</th>
+                  <th>发布日期</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2024 年 Q2 财政专项审计</td>
+                  <td>专项审计</td>
+                  <td><span class="pill badge-success">已发布</span></td>
+                  <td>2024-07-08</td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-case">查看整改</button></td>
+                </tr>
+                <tr>
+                  <td>绿色交通项目合同合规性报告</td>
+                  <td>合同审计</td>
+                  <td><span class="pill">草稿</span></td>
+                  <td>2024-08-09</td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-risk">回到雷达</button></td>
+                </tr>
+                <tr>
+                  <td>公共服务满意度抽查报告</td>
+                  <td>绩效审计</td>
+                  <td><span class="pill badge-warning">待审核</span></td>
+                  <td>2024-08-11</td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-case">分派整改</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>报告模板与知识库</h3>
+            </div>
+            <div class="list">
+              <div class="list-item">
+                <div class="meta">
+                  <strong>财政专项整改模板</strong>
+                  <span>适用于专项资金与绩效问题整改。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="audit-case">套用模板</button>
+              </div>
+              <div class="list-item">
+                <div class="meta">
+                  <strong>合同合规检查清单</strong>
+                  <span>覆盖招投标、签约、付款等 32 项指标。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="audit-workbench">加入作业台</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            报告库集中管理已发布和草稿状态的审计成果，便于复用模板、分派整改及回溯风险雷达。
+          </div>
+        </section>
+
+        <section class="page" data-page="audit-case" data-role="audit">
+          <div class="section">
+            <div class="section-header">
+              <h3>案件追踪中心</h3>
+              <div class="actions">
+                <button class="btn btn-primary">分派新案件</button>
+                <button class="btn btn-secondary" data-target-page="audit-risk">返回风险雷达</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>案件编号</th>
+                  <th>来源</th>
+                  <th>责任单位</th>
+                  <th>整改期限</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>AC-202408-01</td>
+                  <td>专项资金审计</td>
+                  <td>教育厅</td>
+                  <td>2024-09-15</td>
+                  <td><span class="pill badge-warning">整改中</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-remediation">跟进整改</button></td>
+                </tr>
+                <tr>
+                  <td>AC-202408-05</td>
+                  <td>合同合规检查</td>
+                  <td>交通厅</td>
+                  <td>2024-09-01</td>
+                  <td><span class="pill">待确认</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-workbench">回作业台</button></td>
+                </tr>
+                <tr>
+                  <td>AC-202408-09</td>
+                  <td>投诉举报</td>
+                  <td>民政厅</td>
+                  <td>2024-08-28</td>
+                  <td><span class="pill badge-success">完成</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-reports">归档报告</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>整改进度时间轴</h3>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="dot"></div>
+                <div class="content">
+                  <strong>8 月 12 日</strong>
+                  <p>教育厅提交整改计划草案，等待审核。</p>
+                  <button class="btn btn-secondary" data-target-page="audit-remediation">审核计划</button>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="dot"></div>
+                <div class="content">
+                  <strong>8 月 15 日</strong>
+                  <p>交通厅组织专项协调会，需上传会议纪要。</p>
+                  <button class="btn btn-secondary" data-target-page="audit-workbench">上传证据</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            案件追踪中心用于统一分派与跟踪整改任务，可同步到整改台账、作业台与报告库形成闭环。
+          </div>
+        </section>
+
+        <section class="page" data-page="audit-remediation" data-role="audit">
+          <div class="section">
+            <div class="section-header">
+              <h3>监督整改台账</h3>
+              <div class="actions">
+                <button class="btn btn-primary">导入整改计划</button>
+                <button class="btn btn-secondary" data-target-page="audit-case">返回案件追踪</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>整改事项</th>
+                  <th>责任单位</th>
+                  <th>计划完成</th>
+                  <th>实际进度</th>
+                  <th>风险等级</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>教育厅专项绩效整改</td>
+                  <td>教育厅</td>
+                  <td>2024-09-10</td>
+                  <td><span class="pill badge-warning">完成 45%</span></td>
+                  <td><span class="pill badge-warning">中</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-case">催办反馈</button></td>
+                </tr>
+                <tr>
+                  <td>绿色交通合同合规整改</td>
+                  <td>交通厅</td>
+                  <td>2024-08-30</td>
+                  <td><span class="pill">完成 70%</span></td>
+                  <td><span class="pill">中</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-workbench">复核证据</button></td>
+                </tr>
+                <tr>
+                  <td>民政厅投诉整改</td>
+                  <td>民政厅</td>
+                  <td>2024-08-18</td>
+                  <td><span class="pill badge-success">完成 100%</span></td>
+                  <td><span class="pill badge-success">低</span></td>
+                  <td><button class="btn btn-ghost" data-target-page="audit-reports">更新报告</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <section class="section">
+            <div class="section-header">
+              <h3>整改验证任务</h3>
+            </div>
+            <div class="list">
+              <div class="list-item">
+                <div class="meta">
+                  <strong>教育厅整改现场核查</strong>
+                  <span>需在 8 月 20 日前完成现场回访并上传照片。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="audit-workbench">安排核查</button>
+              </div>
+              <div class="list-item">
+                <div class="meta">
+                  <strong>交通厅整改材料复核</strong>
+                  <span>待提交付款凭证及会议纪要。</span>
+                </div>
+                <button class="btn btn-secondary" data-target-page="audit-case">发送提醒</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="page-insight">
+            整改台账聚合责任单位执行情况与验证任务，监察官可随时联动案件、作业台与报告库完成闭环监督。
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const roleConfigs = {
+        treasury: {
+          name: "财政司管理员",
+          headline: "财政资金总控中心",
+          description: "统筹预算执行、现金流与专项资金，确保财政透明合规。",
+          homePage: "treasury-dashboard",
+          menu: [
+            { icon: "📊", label: "财政总览", sub: "预算态势", page: "treasury-dashboard" },
+            { icon: "📈", label: "预算执行监控", sub: "部门对比", page: "treasury-budget" },
+            { icon: "💧", label: "现金流预测", sub: "收支场景", page: "treasury-cashflow" },
+            { icon: "🧾", label: "合同与采购", sub: "履约进度", page: "treasury-procurement" },
+            { icon: "🎯", label: "专项资金调度", sub: "绩效目标", page: "treasury-funds" }
+          ]
+        },
+        tax: {
+          name: "税务征收主管",
+          headline: "税费征收态势指挥台",
+          description: "掌握征收进度、纳税服务与稽核联动，保障税源安全。",
+          homePage: "tax-dashboard",
+          menu: [
+            { icon: "📊", label: "征收态势总览", sub: "行业/区域", page: "tax-dashboard" },
+            { icon: "🤝", label: "纳税人服务", sub: "多渠道工单", page: "tax-service" },
+            { icon: "🛡️", label: "欠税稽核中心", sub: "风险企业", page: "tax-compliance" },
+            { icon: "🚓", label: "外勤任务派发", sub: "调度路线", page: "tax-field" }
+          ]
+        },
+        project: {
+          name: "公共服务项目经理",
+          headline: "公共项目协同驾驶舱",
+          description: "跟踪项目进度、资金拨付与绩效表现，保障民生服务交付。",
+          homePage: "project-portfolio",
+          menu: [
+            { icon: "🗺️", label: "项目组合总览", sub: "重点工程", page: "project-portfolio" },
+            { icon: "📆", label: "执行进度", sub: "里程碑", page: "project-progress" },
+            { icon: "💵", label: "资金拨付中心", sub: "计划对账", page: "project-funding" },
+            { icon: "⭐", label: "绩效与满意度", sub: "公众反馈", page: "project-performance" },
+            { icon: "🤝", label: "供应商协同", sub: "履约考核", page: "project-vendor" }
+          ]
+        },
+        audit: {
+          name: "监察审计官",
+          headline: "风险监察与整改监督台",
+          description: "识别财政风险、统筹审计任务与整改闭环，守住合规底线。",
+          homePage: "audit-risk",
+          menu: [
+            { icon: "🚨", label: "风险预警雷达", sub: "重点风险", page: "audit-risk" },
+            { icon: "🧰", label: "审计作业台", sub: "项目看板", page: "audit-workbench" },
+            { icon: "📄", label: "合规报告库", sub: "成果沉淀", page: "audit-reports" },
+            { icon: "📂", label: "案件追踪", sub: "整改闭环", page: "audit-case" },
+            { icon: "📋", label: "整改台账", sub: "进度验证", page: "audit-remediation" }
+          ]
+        }
+      };
+
+      const roleSelector = document.getElementById("role-selector");
+      const sideMenu = document.getElementById("side-menu");
+      const sidebarRole = document.getElementById("sidebar-role");
+      const roleHeadline = document.getElementById("role-headline");
+      const roleDescription = document.getElementById("role-description");
+      const pages = Array.from(document.querySelectorAll(".page"));
+      const homeButton = document.getElementById("role-home-button");
+      let currentRole = "treasury";
+      let currentPage = "treasury-dashboard";
+
+      const renderMenu = (roleKey) => {
+        const config = roleConfigs[roleKey];
+        sideMenu.innerHTML = "";
+        config.menu.forEach((item) => {
+          const button = document.createElement("button");
+          button.className = "menu-item";
+          button.dataset.page = item.page;
+          button.innerHTML = `
+            <span class="icon">${item.icon}</span>
+            <span class="label">
+              <span>${item.label}</span>
+              <small>${item.sub}</small>
+            </span>
+          `;
+          button.addEventListener("click", () => {
+            showPage(item.page);
+          });
+          sideMenu.appendChild(button);
+        });
+      };
+
+      const updateRoleVisuals = (roleKey) => {
+        const config = roleConfigs[roleKey];
+        sidebarRole.textContent = config.name;
+        roleHeadline.textContent = config.headline;
+        roleDescription.textContent = config.description;
+        homeButton.dataset.targetPage = config.homePage;
+        homeButton.textContent = "回到当前角色首页";
+      };
+
+      const setActiveMenu = (pageId) => {
+        Array.from(sideMenu.querySelectorAll(".menu-item")).forEach((item) => {
+          item.classList.toggle("active", item.dataset.page === pageId);
+        });
+      };
+
+      const showPage = (pageId) => {
+        const target = pages.find((page) => page.dataset.page === pageId);
+        if (!target) return;
+        if (target.dataset.role !== currentRole) {
+          roleSelector.value = target.dataset.role;
+          switchRole(target.dataset.role, target.dataset.page);
+          return;
+        }
+        currentPage = pageId;
+        pages.forEach((page) => {
+          page.classList.toggle(
+            "active",
+            page.dataset.page === pageId && page.dataset.role === currentRole
+          );
+        });
+        setActiveMenu(pageId);
+      };
+
+      const switchRole = (roleKey, initialPage) => {
+        currentRole = roleKey;
+        renderMenu(roleKey);
+        updateRoleVisuals(roleKey);
+        const pageToShow = initialPage || roleConfigs[roleKey].homePage;
+        showPage(pageToShow);
+      };
+
+      sideMenu.addEventListener("click", (event) => {
+        const target = event.target.closest(".menu-item");
+        if (target) {
+          event.preventDefault();
+          showPage(target.dataset.page);
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[data-target-page]");
+        if (trigger) {
+          event.preventDefault();
+          showPage(trigger.dataset.targetPage);
+        }
+      });
+
+      roleSelector.addEventListener("change", (event) => {
+        switchRole(event.target.value);
+      });
+
+      homeButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        const homePage = roleConfigs[currentRole].homePage;
+        showPage(homePage);
+      });
+
+      switchRole(currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>
