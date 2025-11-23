@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 客户 360 视图</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="customer-360" data-default-role="agent">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">角色切换后展示不同权限可见的客户信息模块。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">客户洞察 · 全渠道历史</div>
+            <h1 class="page-title">客户 360 视图</h1>
+            <p class="page-subtitle" data-role-summary>
+              聚合客户档案、互动历史、满意度与商业机会，帮助团队提供个性化服务。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">客户摘要</h2>
+                <p class="section-subtitle">显示基础信息、渠道偏好与健康指标，支持不同角色快速评估。</p>
+              </div>
+              <div class="button-bar">
+                <a class="button" href="agent-workspace.html">返回工作台处理工单</a>
+                <a class="button-secondary" href="automation-performance.html">查看自动化记录</a>
+              </div>
+            </div>
+            <div class="split-layout">
+              <div class="card" data-role-view="agent,supervisor,analyst">
+                <h3>基本信息</h3>
+                <p>
+                  <strong>客户：</strong>Eva Chen · 企业管理员<br />
+                  <strong>账户类型：</strong>Enterprise Plus · 12 座席<br />
+                  <strong>主要渠道：</strong>邮件、聊天、社区<br />
+                  <strong>满意度：</strong>4.8 / 5 · 最近 6 次均为「非常满意」
+                </p>
+              </div>
+              <div class="card" data-role-view="agent,supervisor">
+                <h3>当前状态</h3>
+                <p>
+                  <strong>活跃工单：</strong>2 个 · 平均等待 1.2 小时<br />
+                  <strong>最近互动：</strong>14:34 聊天对话已接入 · 技术支持协作中
+                </p>
+                <div class="highlight-list" style="margin-top: 14px;">
+                  <div class="highlight-item">🎯 推荐下一步：跟进表单报错并同步技术支持</div>
+                  <div class="highlight-item">🤝 推荐协作：添加财务团队以核对合同权益</div>
+                </div>
+              </div>
+              <div class="card" data-role-view="supervisor,analyst">
+                <h3>健康评分</h3>
+                <p>
+                  <strong>账户健康：</strong><span class="tag-pill success">低风险</span><br />
+                  <strong>流失预警：</strong>5% · 低于行业均值 12%
+                </p>
+                <p style="margin-top: 12px;">影响因素：响应及时、NPS 68、已启用自助服务。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">互动时间线</h2>
+                <p class="section-subtitle">按时间倒序展示关键工单、满意度与自动化触发记录。</p>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="timeline-entry" data-role-view="agent,supervisor">
+                <h4>今日 · 工单 #45821</h4>
+                <p>退款流程查询 · 由客服代表 Alice 处理，等待财务反馈。</p>
+              </div>
+              <div class="timeline-entry" data-role-view="agent,analyst">
+                <h4>本周 · Answer Bot</h4>
+                <p>自助命中「退款路径」文章 4 次，转人工率 22%。</p>
+              </div>
+              <div class="timeline-entry" data-role-view="analyst,supervisor">
+                <h4>上周 · 满意度调查</h4>
+                <p>CSAT 5/5，评论「支持团队响应速度很快」。</p>
+              </div>
+              <div class="timeline-entry" data-role-view="supervisor">
+                <h4>上月 · 升级工单</h4>
+                <p>权限异常升级至技术支持 · 解决耗时 18 小时。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">商业洞察</h2>
+                <p class="section-subtitle">运营分析师可查看交叉销售机会与合同数据。</p>
+              </div>
+              <a class="button" href="analytics-insights.html">回到运营分析仪表盘</a>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>增购机会</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">建议推广「语音席位包」 · 预计提升 18% 渠道满意度。</p>
+              </div>
+              <div class="chart-card">
+                <h3>服务消耗</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">季度服务工时 86h，主要集中在财务类咨询。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心视觉呈现后，总结该页面承载的业务要点。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              客户 360 视图展示跨角色可访问的数据层级，便于演示权限差异。通过时间线链接可跳转到“工单详情示例”，模拟深挖问题；或利用顶部按钮返回工作台继续处理，为演示不同场景提供串联。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

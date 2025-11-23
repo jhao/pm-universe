@@ -2,83 +2,1496 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>SAP SuccessFactors 原型概览</title>
+    <title>SAP SuccessFactors 企业原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --brand: #1f7ae0;
+        --brand-dark: #1558b0;
+        --bg: #f3f6fb;
+        --text: #1f2933;
+        --muted: #64748b;
+        --card: #ffffff;
+        --border: #d8e3f3;
+        --sidebar-width: 240px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 28px;
+        background: linear-gradient(90deg, rgba(31, 122, 224, 0.9), rgba(38, 198, 218, 0.85));
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.25);
+      }
+
+      .brand {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: 0.3px;
+      }
+
+      .brand span {
+        font-size: 13px;
+        opacity: 0.85;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switcher {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(15, 23, 42, 0.25);
+        padding: 8px 14px;
+        border-radius: 999px;
+        backdrop-filter: blur(6px);
+      }
+
+      .role-switcher label {
+        font-size: 13px;
+      }
+
+      .role-switcher select {
+        border: none;
+        background: transparent;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        appearance: none;
+        padding-right: 18px;
+        cursor: pointer;
+      }
+
+      .role-switcher select:focus {
+        outline: none;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) 1fr;
+        flex: 1;
+        position: relative;
+      }
+
+      .sidebar {
+        background: rgba(255, 255, 255, 0.92);
+        border-right: 1px solid var(--border);
+        padding: 24px 18px;
+        backdrop-filter: blur(12px);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: inset -1px 0 0 rgba(15, 23, 42, 0.05);
+      }
+
+      .sidebar h2 {
+        font-size: 16px;
+        margin: 0;
+        color: #0f172a;
+      }
+
+      .menu {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .menu button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+        transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+      }
+
+      .menu button:hover {
+        background: rgba(31, 122, 224, 0.08);
+        transform: translateX(2px);
+      }
+
+      .menu button.active {
+        background: #1f7ae0;
+        color: #fff;
+        box-shadow: 0 12px 20px rgba(31, 122, 224, 0.28);
+      }
+
+      .menu .menu-desc {
+        font-size: 12px;
+        color: var(--muted);
+        margin-left: 34px;
+        margin-top: -6px;
+        margin-bottom: 4px;
+      }
+
+      .content-area {
+        padding: 32px 40px 64px;
+        overflow: auto;
+      }
+
+      .page {
+        background: var(--card);
+        border-radius: 18px;
+        padding: 28px 32px 24px;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: 24px;
+        color: #0f172a;
+      }
+
+      .page-meta {
+        display: flex;
+        gap: 12px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .primary-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .primary-actions button,
+      .primary-actions a {
+        border-radius: 10px;
+        border: none;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        background: var(--brand);
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(31, 122, 224, 0.24);
+        text-decoration: none;
+      }
+
+      .primary-actions button.secondary,
+      .primary-actions a.secondary {
+        background: #fff;
+        color: var(--brand);
+        border: 1px solid rgba(31, 122, 224, 0.28);
+        box-shadow: none;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .card {
+        border-radius: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: #f8fbff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #0f172a;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .card strong {
+        color: #0f172a;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      table thead {
+        background: rgba(31, 122, 224, 0.08);
+      }
+
+      table th,
+      table td {
+        padding: 12px 14px;
+        text-align: left;
+        font-size: 13px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+      }
+
+      table tbody tr:hover {
+        background: rgba(31, 122, 224, 0.06);
+        cursor: pointer;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(34, 197, 94, 0.16);
+        color: #15803d;
+      }
+
+      .status.warn {
+        background: rgba(249, 115, 22, 0.18);
+        color: #c2410c;
+      }
+
+      .status.info {
+        background: rgba(59, 130, 246, 0.16);
+        color: #1d4ed8;
+      }
+
+      .page-footer {
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px dashed rgba(148, 163, 184, 0.4);
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .page-footer strong {
+        color: #0f172a;
+      }
+
+      .page-footer a {
+        color: var(--brand);
+        text-decoration: none;
+      }
+
+      .page-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        z-index: 20;
+      }
+
+      .modal-backdrop.active {
+        display: flex;
+      }
+
+      .modal {
+        width: min(760px, 90vw);
+        background: #fff;
+        border-radius: 18px;
+        padding: 24px 28px;
+        box-shadow: 0 24px 40px rgba(15, 23, 42, 0.28);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        position: relative;
+      }
+
+      .modal h3 {
+        margin: 0;
+        font-size: 20px;
+        color: #0f172a;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        border: none;
+        background: rgba(15, 23, 42, 0.08);
+        border-radius: 999px;
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      @media (max-width: 960px) {
+        :root {
+          --sidebar-width: 220px;
+        }
+
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: sticky;
+          top: 72px;
+          z-index: 5;
+          flex-direction: row;
+          overflow-x: auto;
+          gap: 12px;
+          padding: 16px;
+        }
+
+        .menu {
+          flex-direction: row;
+          gap: 10px;
+        }
+
+        .menu button {
+          min-width: 160px;
+        }
+
+        .menu .menu-desc {
+          display: none;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>SAP SuccessFactors 原型</h1>
-      <p class="tagline">端到端的云端人力体验管理平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>大型跨国企业 HR、业务主管、员工</p>
-        <p><strong>核心痛点：</strong>需兼顾本地化合规与全球统一管理</p>
-        <p><strong>价值主张：</strong>结合 SAP 生态与人力体验设计，实现全球化人才管理</p>
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="brand">
+          <h1>SAP SuccessFactors 智能人力平台</h1>
+          <span>企业级体验原型 · 角色敏捷切换</span>
+        </div>
+        <div class="top-actions">
+          <div class="role-switcher">
+            <label for="role">切换角色</label>
+            <select id="role">
+              <option value="hr">人力资源管理员</option>
+              <option value="manager">业务主管</option>
+              <option value="employee">员工自助</option>
+            </select>
+          </div>
+        </div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar">
+          <div>
+            <h2>系统菜单</h2>
+            <div class="menu" id="menu"></div>
+          </div>
+        </aside>
+        <main class="content-area" id="content"></main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>员工通过自助平台完成申请与反馈</li><li>HR 管理招聘、绩效与薪酬项目</li><li>业务负责人查看组织分析与继任计划</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>Employee Central</h3>
-              <p class="goal">功能目标：统一人事主数据与流程</p>
-              <ul>
-                <li>组织与岗位管理</li><li>员工自助、流程审批与移动端</li><li>本地化法规包与合规报表</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>人才招聘与入职</h3>
-              <p class="goal">功能目标：提升招聘效率与候选人体验</p>
-              <ul>
-                <li>职位发布与候选人跟踪</li><li>面试协同、Offer 审批与数字入职</li><li>雇主品牌网站与人才库管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>绩效与学习</h3>
-              <p class="goal">功能目标：驱动持续绩效与能力提升</p>
-              <ul>
-                <li>目标管理与绩效评估</li><li>SuccessFactors Learning 课程管理</li><li>持续反馈与员工体验调查</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>薪酬与分析</h3>
-              <p class="goal">功能目标：连接薪酬激励与数据洞察</p>
-              <ul>
-                <li>薪酬预算、调薪与激励计划</li><li>People Analytics 自助报表</li><li>体验管理（XM）集成</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>招聘周期与 Offer 接受率</li><li>绩效完成率与学习参与度</li><li>薪酬预算达成率与员工体验评分</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+
+    <div class="modal-backdrop" id="modal">
+      <div class="modal" role="dialog" aria-modal="true">
+        <button class="modal-close" type="button" aria-label="关闭">×</button>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+
+    <script>
+      const roles = {
+        hr: {
+          name: '人力资源管理员',
+          menu: [
+            {
+              id: 'hr-dashboard',
+              label: '企业人力概览',
+              icon: '📊',
+              desc: '实时掌握人力运营态势',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">企业人力概览</h2>
+                      <div class="page-meta">
+                        <span>实时刷新：2 分钟前</span>
+                        <span class="status info">OKR 对齐进度 86%</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="hr-dashboard-trend">查看趋势</button>
+                      <button class="secondary" data-target="hr-report">导出报告</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>全球员工分布</h3>
+                      <p>亚太 3,254 | 欧洲 2,108 | 北美 1,982</p>
+                      <div class="status">在编人数 7,344</div>
+                      <button data-modal="hr-dashboard-map">查看区域热力</button>
+                    </article>
+                    <article class="card">
+                      <h3>招聘健康度</h3>
+                      <p>开放职位 128 · Offer 接受率 <strong>78%</strong></p>
+                      <div class="status warn">关键岗位缺口 12</div>
+                      <button data-target="hr-recruiting" class="secondary">跳转招聘管理</button>
+                    </article>
+                    <article class="card">
+                      <h3>绩效提交率</h3>
+                      <p>当前周期完成率 72%，待审批 54 份</p>
+                      <button data-target="hr-performance">查看绩效校准</button>
+                    </article>
+                    <article class="card">
+                      <h3>薪酬预算执行</h3>
+                      <p>年度预算达成 91%，激励池剩余 2.4M</p>
+                      <button data-target="hr-compensation" class="secondary">进入调薪流程</button>
+                    </article>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    该页面展示企业人力核心指标，支持快速跳转至招聘、绩效、薪酬等模块，实现跨区域统一管理。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'hr-people',
+              label: '员工档案中心',
+              icon: '🧑‍💼',
+              desc: '集中维护组织与员工数据',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">员工档案中心</h2>
+                      <div class="page-meta">
+                        <span>数据版本：2024-Q2</span>
+                        <span class="status info">数据完整度 97%</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="hr-people-import">批量导入</button>
+                      <button class="secondary" data-modal="hr-people-rules">查看合规规则</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>员工列表</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>员工</th>
+                          <th>职位</th>
+                          <th>区域</th>
+                          <th>状态</th>
+                          <th>动作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-modal="hr-people-profile">
+                          <td>张晓宁</td>
+                          <td>高级 HRBP</td>
+                          <td>上海</td>
+                          <td><span class="status">在岗</span></td>
+                          <td><a href="#" data-modal="hr-people-profile">查看档案</a></td>
+                        </tr>
+                        <tr data-modal="hr-people-change">
+                          <td>Emily Clark</td>
+                          <td>产品总监</td>
+                          <td>伦敦</td>
+                          <td><span class="status info">调动中</span></td>
+                          <td><a href="#" data-modal="hr-people-change">审批调动</a></td>
+                        </tr>
+                        <tr data-modal="hr-people-offboarding">
+                          <td>李峻</td>
+                          <td>供应链经理</td>
+                          <td>深圳</td>
+                          <td><span class="status warn">离职流程</span></td>
+                          <td><a href="#" data-modal="hr-people-offboarding">查看离职单</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    员工档案中心整合组织、任职历史与合规信息，支持调动、离职等关键流程的触发与监控。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'hr-recruiting',
+              label: '招聘流程管理',
+              icon: '🎯',
+              desc: '覆盖职位发布到入职',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">招聘流程管理</h2>
+                      <div class="page-meta">
+                        <span>开放职位 128</span>
+                        <span class="status warn">关键岗位 12</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="hr-recruiting-publish">发布职位</button>
+                      <button class="secondary" data-modal="hr-recruiting-offer">Offer 模板</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>人才漏斗</h3>
+                      <p>候选人转化：投递 2,340 → 面试 560 → Offer 110</p>
+                      <button data-modal="hr-recruiting-funnel" class="secondary">查看详细数据</button>
+                    </article>
+                    <article class="card">
+                      <h3>待办事项</h3>
+                      <ul>
+                        <li>📌 技术经理职位三轮面试安排</li>
+                        <li>📌 校招批次 Offer 审批 8 份</li>
+                        <li>📌 新员工入职包发放确认</li>
+                      </ul>
+                    </article>
+                  </div>
+                  <div class="card">
+                    <h3>职位追踪</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>职位</th>
+                          <th>招聘经理</th>
+                          <th>候选人阶段</th>
+                          <th>预计到岗</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-modal="hr-recruiting-jobdetail">
+                          <td>高级算法工程师</td>
+                          <td>陈卓</td>
+                          <td>终面 3 / Offer 1</td>
+                          <td>5 月 18 日</td>
+                        </tr>
+                        <tr data-modal="hr-recruiting-jobdetail">
+                          <td>拉美销售总监</td>
+                          <td>Sophia Gomez</td>
+                          <td>面试 5 / Offer 0</td>
+                          <td>6 月 6 日</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    招聘模块帮助 HR 管控职位进展、协同面试与 Offer 审批，并串联数字化入职体验。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'hr-performance',
+              label: '绩效校准室',
+              icon: '⭐',
+              desc: '统一绩效评估标准',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">绩效校准室</h2>
+                      <div class="page-meta">
+                        <span>考核周期：2024 Q2</span>
+                        <span class="status info">提交率 72%</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="hr-performance-workshop">开启校准会议</button>
+                      <button class="secondary" data-modal="hr-performance-template">绩效模板</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>团队分布</h3>
+                      <p>A 15% · B 62% · C 20% · 需复议 3%</p>
+                      <button data-modal="hr-performance-heatmap">打开九宫格</button>
+                    </article>
+                    <article class="card">
+                      <h3>待处理事项</h3>
+                      <ul>
+                        <li>🔄 销售事业部提交率 58%</li>
+                        <li>🗂️ 复议候选名单 12 人</li>
+                        <li>🧩 行为面反馈缺失 9 份</li>
+                      </ul>
+                    </article>
+                  </div>
+                  <div class="card">
+                    <h3>绩效清单</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>员工</th>
+                          <th>直属主管</th>
+                          <th>建议评级</th>
+                          <th>状态</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-modal="hr-performance-detail">
+                          <td>王然</td>
+                          <td>刘玉</td>
+                          <td>A</td>
+                          <td><span class="status">待校准</span></td>
+                        </tr>
+                        <tr data-modal="hr-performance-detail">
+                          <td>Grace Lee</td>
+                          <td>Michael Chan</td>
+                          <td>B</td>
+                          <td><span class="status warn">主管未提交</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    绩效校准室整合九宫格、评估清单与复议流程，确保绩效标准一致、结果公平透明。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'hr-compensation',
+              label: '全球薪酬调薪',
+              icon: '💰',
+              desc: '预算与调薪一体化',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">全球薪酬调薪</h2>
+                      <div class="page-meta">
+                        <span>预算执行：91%</span>
+                        <span class="status warn">高风险职位 5</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="hr-compensation-cycle">配置调薪周期</button>
+                      <button class="secondary" data-modal="hr-compensation-policy">查看薪酬政策</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>预算池</h3>
+                      <p>北美 1.2M | 亚太 0.9M | 欧洲 0.8M</p>
+                      <button data-modal="hr-compensation-budget">预算分配详情</button>
+                    </article>
+                    <article class="card">
+                      <h3>激励计划</h3>
+                      <p>长期激励覆盖率 32%</p>
+                      <button class="secondary" data-modal="hr-compensation-lti">激励人群设置</button>
+                    </article>
+                  </div>
+                  <div class="card">
+                    <h3>调薪清单</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>员工</th>
+                          <th>当前薪酬</th>
+                          <th>建议调整</th>
+                          <th>审批状态</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-modal="hr-compensation-approval">
+                          <td>李晨</td>
+                          <td>¥320,000</td>
+                          <td><span class="status info">+8%</span></td>
+                          <td>待业务主管</td>
+                        </tr>
+                        <tr data-modal="hr-compensation-approval">
+                          <td>Marcus Hill</td>
+                          <td>$180,000</td>
+                          <td><span class="status">+5%</span></td>
+                          <td>已批准</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    薪酬页面提供预算池、调薪清单与审批流串联，支持全球政策落地与风险监控。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'hr-report',
+              label: 'People Analytics 报表',
+              icon: '📈',
+              desc: '高阶洞察与预测',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">People Analytics 报表</h2>
+                      <div class="page-meta">
+                        <span>自助报表 36 个</span>
+                        <span class="status info">预测模型更新</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="hr-report-builder">新建仪表板</button>
+                      <button class="secondary" data-modal="hr-report-subscribe">订阅推送</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>离职率预测</h3>
+                      <p>未来 90 天预测离职率 9.8%</p>
+                      <button data-modal="hr-report-attrition">查看驱动因素</button>
+                    </article>
+                    <article class="card">
+                      <h3>多样性洞察</h3>
+                      <p>女性领导占比 38%，新兴市场 44%</p>
+                      <button class="secondary" data-modal="hr-report-diversity">查看对比图</button>
+                    </article>
+                  </div>
+                  <div class="card">
+                    <h3>报表目录</h3>
+                    <ul>
+                      <li><a href="#" data-modal="hr-report-dashboard">组织健康度仪表板</a></li>
+                      <li><a href="#" data-modal="hr-report-succession">继任风险雷达</a></li>
+                      <li><a href="#" data-modal="hr-report-learning">学习投资回报</a></li>
+                    </ul>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    报表模块以自助分析与预测模型为核心，帮助 HR 发现趋势、推送洞察并支持业务决策。
+                  </footer>
+                </section>
+              `,
+            },
+          ],
+        },
+        manager: {
+          name: '业务主管',
+          menu: [
+            {
+              id: 'manager-team',
+              label: '团队绩效驾驶舱',
+              icon: '🚀',
+              desc: '团队 OKR 与绩效追踪',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">团队绩效驾驶舱</h2>
+                      <div class="page-meta">
+                        <span>季度 OKR 完成度 74%</span>
+                        <span class="status info">关键项目正常</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="manager-team-review">发起绩效评审</button>
+                      <button class="secondary" data-target="manager-feedback">查看反馈墙</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>OKR 进展</h3>
+                      <p>增长 OKR 80% · 运营效率 68% · 创新项目 72%</p>
+                      <button data-modal="manager-team-okr">打开 OKR 面板</button>
+                    </article>
+                    <article class="card">
+                      <h3>人才热力</h3>
+                      <p>高潜力 6 人 · 关键岗位风险 2</p>
+                      <button class="secondary" data-target="manager-succession">查看继任计划</button>
+                    </article>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    驾驶舱整合团队 OKR、人才热力等关键指标，帮助主管实时调整资源与绩效策略。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'manager-succession',
+              label: '继任与发展',
+              icon: '🌱',
+              desc: '关键岗位继任梯队',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">继任与发展</h2>
+                      <div class="page-meta">
+                        <span>关键岗位 24</span>
+                        <span class="status warn">缺失备份 3</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="manager-succession-plan">规划继任路线</button>
+                      <button class="secondary" data-modal="manager-succession-talent">人才档案</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>继任九宫格</h3>
+                    <p>高绩效高潜力 5 人 · 待培养 9 人</p>
+                    <button data-modal="manager-succession-grid">打开九宫格</button>
+                  </div>
+                  <div class="card">
+                    <h3>发展行动</h3>
+                    <ul>
+                      <li>🗓️ 为高潜力人才安排轮岗项目</li>
+                      <li>🎓 推荐参加领导力学院</li>
+                      <li>🤝 与 HR 协同制定继任时间线</li>
+                    </ul>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    继任模块助力主管识别关键岗位风险，规划发展行动并与 HR 协同落地。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'manager-hiring',
+              label: '招聘进展看板',
+              icon: '📅',
+              desc: '与 HR 协同引才',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">招聘进展看板</h2>
+                      <div class="page-meta">
+                        <span>本季度入职目标 18</span>
+                        <span class="status warn">缺口 5</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="manager-hiring-sync">与 HR 协作</button>
+                      <button class="secondary" data-modal="manager-hiring-referral">发布内推</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>候选人进程</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>候选人</th>
+                          <th>职位</th>
+                          <th>阶段</th>
+                          <th>下一步</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-modal="manager-hiring-candidate">
+                          <td>刘畅</td>
+                          <td>资深产品经理</td>
+                          <td>业务面试</td>
+                          <td>反馈评估</td>
+                        </tr>
+                        <tr data-modal="manager-hiring-candidate">
+                          <td>Arjun Patel</td>
+                          <td>区域销售总监</td>
+                          <td>Offer 审批</td>
+                          <td>确认预算</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    看板帮助主管掌握招聘进展、反馈候选人并与 HR 对齐招聘节奏。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'manager-budget',
+              label: '费用与薪酬预算',
+              icon: '💼',
+              desc: '掌控团队预算执行',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">费用与薪酬预算</h2>
+                      <div class="page-meta">
+                        <span>预算执行 88%</span>
+                        <span class="status warn">差旅支出偏高</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-target="manager-hiring" class="secondary">对齐招聘成本</button>
+                      <button data-modal="manager-budget-adjust">提交预算调整</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>薪酬预算</h3>
+                      <p>固定成本 6.8M · 变动激励 1.2M</p>
+                      <button data-modal="manager-budget-salary">查看薪酬结构</button>
+                    </article>
+                    <article class="card">
+                      <h3>运营支出</h3>
+                      <p>差旅 230k · 培训 120k · 团建 60k</p>
+                      <button class="secondary" data-modal="manager-budget-expense">审批明细</button>
+                    </article>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    预算页面集中展示薪酬与运营支出执行情况，可直接发起调整或联动招聘计划。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'manager-feedback',
+              label: '团队反馈墙',
+              icon: '💬',
+              desc: '持续员工体验洞察',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">团队反馈墙</h2>
+                      <div class="page-meta">
+                        <span>最新脉搏调查：本周</span>
+                        <span class="status info">敬业度 82</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="manager-feedback-survey">查看调查报告</button>
+                      <button class="secondary" data-modal="manager-feedback-action">制定行动</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>实时反馈流</h3>
+                    <ul>
+                      <li>✅ 客户成功团队赞扬快速交付</li>
+                      <li>⚠️ 研发反馈测试资源不足</li>
+                      <li>💡 建议建立跨部门分享会</li>
+                    </ul>
+                    <button data-target="manager-team" class="secondary">回到驾驶舱</button>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    反馈墙汇总脉搏调查与即时反馈，帮助主管快速洞察团队情绪并制定改善计划。
+                  </footer>
+                </section>
+              `,
+            },
+          ],
+        },
+        employee: {
+          name: '员工自助',
+          menu: [
+            {
+              id: 'employee-home',
+              label: '我的主页',
+              icon: '🏠',
+              desc: '一站式工作区',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">我的 SuccessFactors</h2>
+                      <div class="page-meta">
+                        <span>欢迎回来，陈可</span>
+                        <span class="status info">本周已完成 3 项任务</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-target="employee-leave">申请休假</button>
+                      <button class="secondary" data-target="employee-learning">打开学习</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>待办事项</h3>
+                      <ul>
+                        <li>🗓️ 补充绩效目标进展</li>
+                        <li>✅ 完成《敏捷领导力》课程测验</li>
+                        <li>📄 签署远程办公协议</li>
+                      </ul>
+                    </article>
+                    <article class="card">
+                      <h3>快速入口</h3>
+                      <button data-target="employee-benefits" class="secondary">福利计划</button>
+                      <button data-target="employee-support" class="secondary">提交工单</button>
+                      <button data-target="employee-goals" class="secondary">绩效目标</button>
+                    </article>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    首页整合待办、快捷入口与常用服务，帮助员工快速完成日常任务与自助操作。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'employee-leave',
+              label: '请假与出勤',
+              icon: '🗓️',
+              desc: '自助管理休假计划',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">请假与出勤</h2>
+                      <div class="page-meta">
+                        <span>年假余额 7 天</span>
+                        <span class="status info">审批人：王然</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="employee-leave-apply">发起请假</button>
+                      <button class="secondary" data-modal="employee-leave-history">查看历史</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>出勤概览</h3>
+                    <p>本月已出勤 18 天 · 远程 6 天</p>
+                    <button data-modal="employee-leave-calendar">打开出勤日历</button>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    员工可自助提交请假、查看审批进度并同步日历，减少人工沟通成本。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'employee-goals',
+              label: '绩效目标',
+              icon: '🎯',
+              desc: '同步个人与团队 OKR',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">绩效目标</h2>
+                      <div class="page-meta">
+                        <span>当前周期：2024 Q2</span>
+                        <span class="status info">进度 68%</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="employee-goals-update">更新进展</button>
+                      <button class="secondary" data-modal="employee-goals-align">对齐团队目标</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>关键成果 (KR)</h3>
+                    <ul>
+                      <li>KR1：推出新会员功能，目标完成度 70%</li>
+                      <li>KR2：NPS 提升至 50 分，目前 46 分</li>
+                      <li>KR3：完成 3 场客户访谈，已完成 2 场</li>
+                    </ul>
+                    <button data-target="employee-feedback" class="secondary">收集反馈</button>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    绩效目标页面展示个人 OKR，与团队目标联动，并可直接更新进展或拉取反馈。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'employee-learning',
+              label: '学习发展',
+              icon: '📚',
+              desc: '推荐课程与证书',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">学习发展中心</h2>
+                      <div class="page-meta">
+                        <span>推荐课程 6</span>
+                        <span class="status info">学习积分 480</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="employee-learning-plan">规划学习路径</button>
+                      <button class="secondary" data-modal="employee-learning-cert">上传证书</button>
+                    </div>
+                  </div>
+                  <div class="grid two">
+                    <article class="card">
+                      <h3>推荐课程</h3>
+                      <ul>
+                        <li>《客户成功实战》 · 进度 20%</li>
+                        <li>《数据驱动决策》 · 未开始</li>
+                        <li>《敏捷产品管理》 · 进度 60%</li>
+                      </ul>
+                      <button data-modal="employee-learning-detail">查看课程详情</button>
+                    </article>
+                    <article class="card">
+                      <h3>学习任务</h3>
+                      <p>今日需完成：入职培训测验</p>
+                      <button class="secondary" data-modal="employee-learning-calendar">同步学习日程</button>
+                    </article>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    学习中心聚合推荐课程、任务与认证管理，支持员工制定个性化成长计划。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'employee-benefits',
+              label: '福利选择',
+              icon: '🎁',
+              desc: '灵活福利与津贴',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">福利选择</h2>
+                      <div class="page-meta">
+                        <span>年度福利额度 ¥12,000</span>
+                        <span class="status info">剩余额度 ¥4,800</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="employee-benefits-choose">选择福利包</button>
+                      <button class="secondary" data-modal="employee-benefits-claim">报销津贴</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>已选择福利</h3>
+                    <ul>
+                      <li>🏥 商业医疗保险 · 已生效</li>
+                      <li>🏋️‍♀️ 健康补贴 · 月度 300</li>
+                      <li>🎓 子女教育金 · 待审批</li>
+                    </ul>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    福利模块支持灵活福利选择、津贴报销与审批跟进，打造员工福利体验。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'employee-support',
+              label: '智能服务台',
+              icon: '🛠️',
+              desc: '提交工单与机器人',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">智能服务台</h2>
+                      <div class="page-meta">
+                        <span>平均响应：2 小时</span>
+                        <span class="status info">在线机器人</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="employee-support-ticket">新建工单</button>
+                      <button class="secondary" data-modal="employee-support-chatbot">打开机器人</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>我的工单</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>主题</th>
+                          <th>类型</th>
+                          <th>状态</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-modal="employee-support-detail">
+                          <td>远程办公设备申请</td>
+                          <td>IT 支持</td>
+                          <td><span class="status">处理中</span></td>
+                        </tr>
+                        <tr data-modal="employee-support-detail">
+                          <td>差旅报销咨询</td>
+                          <td>财务</td>
+                          <td><span class="status info">已解决</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    服务台融合工单、知识库与智能机器人，帮助员工快速解决问题并追踪处理进度。
+                  </footer>
+                </section>
+              `,
+            },
+            {
+              id: 'employee-feedback',
+              label: '即时反馈',
+              icon: '💡',
+              desc: '与团队互相认可',
+              content: `
+                <section class="page" data-page>
+                  <div class="page-header">
+                    <div>
+                      <h2 class="page-title">即时反馈</h2>
+                      <div class="page-meta">
+                        <span>本月收到表扬 5 次</span>
+                        <span class="status info">反馈积分 320</span>
+                      </div>
+                    </div>
+                    <div class="primary-actions">
+                      <button data-modal="employee-feedback-send">发送感谢</button>
+                      <button class="secondary" data-modal="employee-feedback-insight">查看洞察</button>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>最新反馈</h3>
+                    <ul>
+                      <li>🎉 来自张晓宁：感谢推动客户上线</li>
+                      <li>🙏 来自王然：感谢支持绩效校准</li>
+                      <li>💬 来自 Grace：建议共享项目经验</li>
+                    </ul>
+                    <button data-target="employee-goals" class="secondary">回到绩效目标</button>
+                  </div>
+                  <footer class="page-footer">
+                    <strong>业务说明：</strong>
+                    即时反馈激发认可文化，员工可查看收发反馈、输出洞察并与绩效目标联动。
+                  </footer>
+                </section>
+              `,
+            },
+          ],
+        },
+      };
+
+      const modalContent = {
+        'hr-dashboard-trend': '<h3>人力指标趋势</h3><p>展示过去 12 个月的在岗人数、离职率与招聘成功率曲线，支持导出并设定阈值预警。</p>',
+        'hr-dashboard-map': '<h3>全球员工热力图</h3><p>可在地图中查看各国家/地区员工数量、关键岗位覆盖情况以及离职风险预估。</p>',
+        'hr-people-import': '<h3>批量导入向导</h3><p>支持 Excel/CSV 模板，自动校验字段并触发审批流程。</p>',
+        'hr-people-rules': '<h3>合规校验规则</h3><p>展示各国家法定字段及本地化要求，确保人事数据合规。</p>',
+        'hr-people-profile': '<h3>员工档案详情</h3><p>查看员工任职历史、合同、绩效记录与发展计划，可直接发起岗位调整。</p>',
+        'hr-people-change': '<h3>跨国调动审批</h3><p>包含成本估算、签证信息与搬迁补贴，支持主管与 HR 联合审批。</p>',
+        'hr-people-offboarding': '<h3>离职办理清单</h3><p>系统生成离职任务列表，自动通知 IT、财务与行政协同。</p>',
+        'hr-recruiting-publish': '<h3>发布职位</h3><p>一键同步到企业官网与各大招聘渠道，自动匹配推荐人才。</p>',
+        'hr-recruiting-offer': '<h3>Offer 模板中心</h3><p>维护多语言 Offer 模板与审批路径，确保合规与效率。</p>',
+        'hr-recruiting-funnel': '<h3>人才漏斗分析</h3><p>按渠道、岗位查看候选人转化率，发现瓶颈并优化策略。</p>',
+        'hr-recruiting-jobdetail': '<h3>职位详情</h3><p>展示岗位 JD、面试官、候选人排名与预算信息。</p>',
+        'hr-performance-workshop': '<h3>绩效校准会议</h3><p>实时协同打分、记录调整意见，自动同步至绩效结果。</p>',
+        'hr-performance-template': '<h3>绩效模板库</h3><p>提供不同岗位的绩效评估模板，可复制并定制。</p>',
+        'hr-performance-heatmap': '<h3>绩效九宫格</h3><p>矩阵展示绩效与潜力分布，支持拖拽调整与备注。</p>',
+        'hr-performance-detail': '<h3>绩效详情</h3><p>查看目标完成度、行为评估、360 反馈与历史评级。</p>',
+        'hr-compensation-cycle': '<h3>调薪周期设置</h3><p>设定调薪窗口、审批链路与政策提醒。</p>',
+        'hr-compensation-policy': '<h3>薪酬政策文档</h3><p>集中展示全球与本地政策，支持版本管理。</p>',
+        'hr-compensation-budget': '<h3>预算分配详情</h3><p>按地区、职位族查看预算池，支持模拟不同方案。</p>',
+        'hr-compensation-lti': '<h3>长期激励设置</h3><p>配置股权、现金激励与绩效条件。</p>',
+        'hr-compensation-approval': '<h3>调薪审批</h3><p>审批页面展示调薪理由、绩效评分与预算占用。</p>',
+        'hr-report-builder': '<h3>新建分析仪表板</h3><p>拖拽维度与指标构建图表，可共享给不同角色。</p>',
+        'hr-report-subscribe': '<h3>订阅推送</h3><p>设置邮件、Teams、钉钉等推送渠道，定期发送报告。</p>',
+        'hr-report-attrition': '<h3>离职率驱动因素</h3><p>识别关键影响因素如管理评分、薪酬竞争力等。</p>',
+        'hr-report-diversity': '<h3>多样性对比图</h3><p>比较不同部门的性别、年龄与国籍比例。</p>',
+        'hr-report-dashboard': '<h3>组织健康度仪表板</h3><p>综合查看组织氛围、效率与结构健康度。</p>',
+        'hr-report-succession': '<h3>继任风险雷达</h3><p>识别关键岗位风险等级与继任准备度。</p>',
+        'hr-report-learning': '<h3>学习投资回报</h3><p>评估培训项目对绩效、留任的影响。</p>',
+        'manager-team-review': '<h3>绩效评审会</h3><p>邀请 HR 与主管共同评估团队绩效并记录调整。</p>',
+        'manager-team-okr': '<h3>OKR 面板</h3><p>查看团队 OKR 依赖关系、进度与阻塞项。</p>',
+        'manager-succession-plan': '<h3>继任路线规划</h3><p>定义继任时间表、培养行动与导师。</p>',
+        'manager-succession-talent': '<h3>人才档案</h3><p>展示高潜人才评估、发展计划与流动记录。</p>',
+        'manager-succession-grid': '<h3>继任九宫格</h3><p>可筛选岗位与人才，查看继任覆盖率。</p>',
+        'manager-hiring-sync': '<h3>与 HR 协作</h3><p>同步招聘优先级、面试安排与 Offer 批准。</p>',
+        'manager-hiring-referral': '<h3>发布内推计划</h3><p>向团队推送内推需求并跟踪奖励。</p>',
+        'manager-hiring-candidate': '<h3>候选人详情</h3><p>查看面试反馈、薪酬预案与文化契合度。</p>',
+        'manager-budget-adjust': '<h3>预算调整申请</h3><p>填写调整原因、金额与影响范围，提交审批。</p>',
+        'manager-budget-salary': '<h3>薪酬结构分析</h3><p>比较团队薪酬分布、市场对标与公平性。</p>',
+        'manager-budget-expense': '<h3>运营支出审批</h3><p>逐项查看费用报销与预算使用情况。</p>',
+        'manager-feedback-survey': '<h3>脉搏调查报告</h3><p>展示参与率、敬业度指数与改善建议。</p>',
+        'manager-feedback-action': '<h3>改善行动计划</h3><p>分配负责人、时间节点与跟踪指标。</p>',
+        'employee-leave-apply': '<h3>请假申请</h3><p>填写开始与结束时间、假期类型与说明，自动通知审批人。</p>',
+        'employee-leave-history': '<h3>请假历史</h3><p>查看过去 12 个月的请假记录与审批结果。</p>',
+        'employee-leave-calendar': '<h3>出勤日历</h3><p>同步团队排班、节假日与个人休假。</p>',
+        'employee-goals-update': '<h3>更新目标进展</h3><p>填写最新成果、风险与所需支持。</p>',
+        'employee-goals-align': '<h3>目标对齐</h3><p>选择团队目标并对齐权重，确保上下游一致。</p>',
+        'employee-learning-plan': '<h3>学习路径规划</h3><p>系统推荐课程组合与能力模型。</p>',
+        'employee-learning-cert': '<h3>上传证书</h3><p>支持拍照上传，自动关联学习档案。</p>',
+        'employee-learning-detail': '<h3>课程详情</h3><p>查看课程大纲、讲师与同伴学习情况。</p>',
+        'employee-learning-calendar': '<h3>学习日程</h3><p>添加提醒并与企业日历同步。</p>',
+        'employee-benefits-choose': '<h3>福利包选择</h3><p>对比不同福利组合并查看费用。</p>',
+        'employee-benefits-claim': '<h3>津贴报销</h3><p>上传票据、填写金额并实时查看审批。</p>',
+        'employee-support-ticket': '<h3>新建工单</h3><p>分类问题、描述需求并附加附件。</p>',
+        'employee-support-chatbot': '<h3>智能机器人</h3><p>即时回答政策问题并推荐知识库。</p>',
+        'employee-support-detail': '<h3>工单详情</h3><p>追踪工单状态、处理人与沟通记录。</p>',
+        'employee-feedback-send': '<h3>发送感谢</h3><p>选择同事、写下感谢内容并附带徽章。</p>',
+        'employee-feedback-insight': '<h3>反馈洞察</h3><p>分析反馈趋势、热门话题与认可关系网。</p>'
+      };
+
+      const menuContainer = document.getElementById('menu');
+      const contentContainer = document.getElementById('content');
+      const roleSelect = document.getElementById('role');
+      const modal = document.getElementById('modal');
+      const modalBody = modal.querySelector('.modal-body');
+      const modalClose = modal.querySelector('.modal-close');
+
+      function renderRole(roleKey) {
+        const role = roles[roleKey];
+        if (!role) return;
+
+        menuContainer.innerHTML = '';
+        contentContainer.innerHTML = '';
+
+        role.menu.forEach((item, index) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.target = item.id;
+          btn.innerHTML = `<span>${item.icon}</span><span>${item.label}</span>`;
+
+          const desc = document.createElement('div');
+          desc.className = 'menu-desc';
+          desc.textContent = item.desc;
+
+          btn.addEventListener('click', () => openPage(item.id, roleKey));
+
+          menuContainer.appendChild(btn);
+          menuContainer.appendChild(desc);
+
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = item.content;
+          const page = wrapper.firstElementChild;
+          if (page) {
+            page.id = item.id;
+            contentContainer.appendChild(page);
+          }
+
+          if (index === 0) {
+            btn.classList.add('active');
+            if (page) page.classList.add('active');
+          }
+        });
+
+        bindPageInteractions();
+      }
+
+      function openPage(pageId, roleKey) {
+        const role = roles[roleKey];
+        if (!role) return;
+
+        menuContainer.querySelectorAll('button').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.target === pageId);
+        });
+
+        contentContainer.querySelectorAll('.page').forEach((page) => {
+          page.classList.toggle('active', page.id === pageId);
+        });
+      }
+
+      function bindPageInteractions() {
+        contentContainer.querySelectorAll('[data-target]').forEach((el) => {
+          el.addEventListener('click', (event) => {
+            event.preventDefault();
+            const target = el.dataset.target;
+            const page = contentContainer.querySelector(`#${target}`);
+            if (page) {
+              const roleKey = roleSelect.value;
+              openPage(target, roleKey);
+            }
+          });
+        });
+
+        contentContainer.querySelectorAll('[data-modal]').forEach((el) => {
+          el.addEventListener('click', (event) => {
+            event.preventDefault();
+            const key = el.dataset.modal;
+            const html = modalContent[key];
+            if (html) {
+              modalBody.innerHTML = html;
+              modal.classList.add('active');
+            }
+          });
+        });
+      }
+
+      modalClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+        modalBody.innerHTML = '';
+      });
+
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.classList.remove('active');
+          modalBody.innerHTML = '';
+        }
+      });
+
+      roleSelect.addEventListener('change', (event) => {
+        const roleKey = event.target.value;
+        renderRole(roleKey);
+      });
+
+      renderRole(roleSelect.value);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>影响因子分析 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+      .chart { border-radius: 16px; border: 1px dashed #bfdbfe; background: #f8fbff; padding: 16px; min-height: 220px; }
+      .list { display: flex; flex-direction: column; gap: 12px; }
+      .list-item { padding: 14px; border-radius: 12px; background: #f1f5f9; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .list-item strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #fff7ed; border: 1px solid #fed7aa; font-size: 13px; color: #92400e; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .chart-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); } .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>需求规划 / 因子分析</span>
+            <h1>影响因子分析</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">需求计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>贡献度分布</h2>
+                <p>解释预测偏差来源，支持针对性干预</p>
+              </div>
+              <a class="btn primary" href="demand-planning.html">返回需求工作台</a>
+            </header>
+            <div class="chart-grid">
+              <div class="chart">
+                <strong>因子贡献瀑布图</strong>
+                <p style="margin-top: 8px; color: var(--text-sub);">图表占位：展示促销、季节、价格、竞品等因子对预测的贡献</p>
+              </div>
+              <div class="chart">
+                <strong>误差热力图</strong>
+                <p style="margin-top: 8px; color: var(--text-sub);">图表占位：按渠道与周次显示预测误差</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>高影响 SKU / 渠道</h2>
+                <p>聚焦需要重点跟进的组合</p>
+              </div>
+              <a class="btn secondary" href="demand-forecast-sku.html">查看 SKU 详情</a>
+            </header>
+            <div class="list" id="focusList"></div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色提示</h2>
+                <p>不同角色在因子分析中的行动建议</p>
+              </div>
+              <a class="btn secondary" href="collaboration-workbench.html">派发改进任务</a>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>因子分析页面使用图表展示预测偏差的来源，帮助观众快速理解影响因素。重点 SKU 列表展示了需要干预的对象，角色提示则说明了各角色的行动方向，满足核心内容与说明结合的要求，并可通过按钮跳转至相关页面继续操作。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'demand';
+      document.querySelectorAll('.menu a').forEach((link) => { if (link.dataset.page === currentPage) link.classList.add('active'); });
+
+      const focusList = document.getElementById('focusList');
+      const focusItems = [
+        { title: 'SKU XG-200 · 北美电商', text: '促销因子贡献 18%，建议复核折扣力度。' },
+        { title: 'SKU LZ-410 · 欧洲线下', text: '竞品降价导致需求下滑 6%，需联合市场部应对。' },
+        { title: 'SKU AC-150 · 亚太分销', text: '季节性波动导致预测误差 5%，建议增加历史样本。' }
+      ];
+      focusList.innerHTML = focusItems
+        .map((item) => `<div class="list-item"><strong>${item.title}</strong>${item.text}</div>`)
+        .join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '模型调参', text: '针对高贡献因子调整特征权重，提升预测准确度。' },
+          { title: '数据清洗', text: '检查异常数据点，确保训练数据质量。' },
+          { title: '共识准备', text: '将分析结果带入下次共识会议，明确假设。' }
+        ],
+        'supply-planner': [
+          { title: '约束校验', text: '确认因子变化是否影响供应端的约束假设。' },
+          { title: '情景更新', text: '将高影响 SKU 纳入 S&OP 情景评估。' },
+          { title: '物料准备', text: '提前锁定关键零件采购，避免预测失真导致短缺。' }
+        ],
+        'logistics-manager': [
+          { title: '仓储预案', text: '根据因子变化调整仓储作业排班。' },
+          { title: '运输沟通', text: '与承运商分享需求波动预测，做好运力准备。' },
+          { title: '客户通知', text: '若服务水平受影响，提前发出客户沟通计划。' }
+        ],
+        executive: [
+          { title: '业务洞察', text: '评估影响因子背后的业务机会或风险。' },
+          { title: '投资决策', text: '针对贡献度高的因子考虑投入更多数据或自动化能力。' },
+          { title: '绩效跟踪', text: '将分析结果纳入季度业务回顾。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'demand-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const items = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = items
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+      <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

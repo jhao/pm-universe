@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>动态模拟监控 · Aspen HYSYS</title>
+    <link rel="stylesheet" href="style.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="app-menu">
+        <div class="menu-logo">
+          <span>Aspen HYSYS</span>
+          <strong>流程优化系统</strong>
+        </div>
+        <nav class="menu-nav">
+          <a class="menu-link" href="index.html">系统概览</a>
+          <a class="menu-link" href="role-dashboard.html">统一指挥舱<span class="menu-link-note">Dashboard</span></a>
+          <a class="menu-link" href="modeling-workspace.html">建模工作台<span class="menu-link-note">Modeling</span></a>
+          <a class="menu-link active" href="dynamic-simulation.html">动态模拟监控<span class="menu-link-note">Simulation</span></a>
+          <a class="menu-link" href="optimization-center.html">优化闭环中心<span class="menu-link-note">Optimization</span></a>
+          <a class="menu-link" href="collaboration-hub.html">协同控制塔<span class="menu-link-note">Collaboration</span></a>
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <header class="page-header">
+          <div class="header-top">
+            <div>
+              <nav class="breadcrumb">
+                <a href="index.html">Aspen HYSYS</a>
+                <span>/</span>
+                <span>动态模拟监控</span>
+              </nav>
+              <h1>动态模拟监控</h1>
+              <p class="subtitle">聚焦动态场景推演、变量趋势监测与控制策略验证，首屏展示时间轴与趋势面板的组合形态。</p>
+            </div>
+            <div class="header-role-switch">
+              <button class="active" data-role="engineer">流程工程师</button>
+              <button data-role="optimizer">运营优化师</button>
+              <button data-role="manager">项目经理</button>
+            </div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>模拟场景</strong>
+              <p>乙烯装置冷启动 · 时长 12 小时</p>
+            </div>
+            <div class="meta-card">
+              <strong>当前状态</strong>
+              <p>运行至第 4.2 小时，自动保存快照</p>
+            </div>
+            <div class="meta-card">
+              <strong>模型版本</strong>
+              <p>动态模型 v2.1 · 控制策略校核中</p>
+            </div>
+          </div>
+        </header>
+
+        <main class="page">
+          <section class="core-section">
+            <h2>动态监控核心界面</h2>
+            <div class="core-preview">
+              <div class="core-panel">
+                <strong>场景时间轴</strong>
+                <h3>冷启动阶段</h3>
+                <div class="core-canvas">
+                  <div class="core-lane">阶段标记与备注</div>
+                  <div class="core-lane">报警事件节点</div>
+                  <div class="core-lane">操作指令追踪</div>
+                </div>
+                <p>时间轴集中呈现关键事件、操作步骤与报警，便于复盘不同情景。</p>
+              </div>
+              <div class="core-panel">
+                <strong>趋势看板</strong>
+                <h3>关键变量叠加</h3>
+                <ul>
+                  <li>塔顶/塔釜温度、塔压趋势</li>
+                  <li>物流流量、成分浓度对比</li>
+                  <li>报警标记一键跳转至时间轴</li>
+                </ul>
+              </div>
+              <div class="core-panel">
+                <strong>角色切换</strong>
+                <h3>右上角关注点</h3>
+                <p>切换不同角色时，首屏展示其关注的变量、风险与下一步行动。</p>
+                <div class="core-lanes">
+                  <div class="core-lane">报警复盘</div>
+                  <div class="core-lane">节能 KPI</div>
+                  <div class="core-lane">风险通告</div>
+                </div>
+              </div>
+            </div>
+            <div class="core-description">
+              <h3>主要业务说明</h3>
+              <p>动态模拟监控用于演示模型在冷启动、工况切换与应急停车等场景下的运行状态。通过趋势与时间轴的组合，配合角色切换展示不同团队的关注点。可进一步前往优化闭环中心查看模型结果如何传递到执行端，或回到建模工作台调整参数。</p>
+              <div class="core-actions">
+                <a class="cta-link" href="optimization-center.html">连接优化闭环</a>
+                <a class="cta-link" href="modeling-workspace.html">回到建模工作台</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>情景时间轴</h2>
+            <div data-stage-container>
+              <div class="role-switch" data-stage-switch>
+                <button class="active" data-stage-target="dynamic-startup">冷启动</button>
+                <button data-stage-target="dynamic-switch">工况切换</button>
+                <button data-stage-target="dynamic-emergency">紧急停车</button>
+              </div>
+              <div class="stage-panel active" data-stage="dynamic-startup">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>0-2 小时</strong>
+                    <span>塔釜加热、蒸汽吹扫，关键变量保持在安全区间</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2-4 小时</strong>
+                    <span>进料逐步引入，监控温差与压差</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>4-6 小时</strong>
+                    <span>产物流达标，准备切换至稳定生产</span>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="dynamic-switch">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>调整目标</strong>
+                    <span>从常规负荷提升至 110% 高负荷</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>控制动作</strong>
+                    <span>自动调整再沸器热负荷、压缩机转速、冷却剂流量</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>监控指标</strong>
+                    <span>关键塔板温度波动 &lt; 2℃、产物流纯度 ≥ 99.5%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="dynamic-emergency">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>触发条件</strong>
+                    <span>压缩机出口温度超限、自动触发 ESD</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>联锁动作</strong>
+                    <span>切断进料、打开放空阀、启动应急冷却</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>恢复策略</strong>
+                    <span>评估安全排放量、生成事后分析报告</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>角色切换体验</h2>
+            <div data-role-container>
+              <div class="role-switch" data-role-switch>
+                <button class="active" data-role="engineer">流程工程师</button>
+                <button data-role="optimizer">运营优化师</button>
+                <button data-role="manager">项目经理</button>
+              </div>
+              <div class="role-panels">
+                <div class="role-panel active" data-role="engineer">
+                  <h3>工程师关注点</h3>
+                  <ul>
+                    <li>监控关键变量趋势、报警归因与模型参数校准</li>
+                    <li>通过快照对比不同假设下的动态响应</li>
+                    <li>记录需要更新的单元操作参数</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="optimizer">
+                  <h3>优化师关注点</h3>
+                  <ul>
+                    <li>评估能耗与产量平衡，识别潜在优化点</li>
+                    <li>为 APC 提供动态约束条件与策略调整建议</li>
+                    <li>跟踪节能 KPI、排放指标与执行差异</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="manager">
+                  <h3>经理关注点</h3>
+                  <ul>
+                    <li>掌握关键风险状态与预案执行情况</li>
+                    <li>协调跨团队沟通，触发审批与通知</li>
+                    <li>输出模拟结果的项目汇报材料</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>变量监测面板</h2>
+            <div class="layout-two-columns">
+              <div class="card">
+                <h3>趋势总览</h3>
+                <ul>
+                  <li>塔顶温度、塔釜温度、塔压趋势叠加显示</li>
+                  <li>物流流量、成分浓度支持选择变量对比</li>
+                  <li>关键报警在趋势上标记，提供跳转至时间轴</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>控制策略评估</h3>
+                <ul>
+                  <li>展示 PID 参数与调节动作，支持导出至 APC</li>
+                  <li>模拟前后偏差对比，自动生成建议</li>
+                  <li>可视化稳定性分析与裕度评估</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>风险与行动列表</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>类别</th>
+                  <th>描述</th>
+                  <th>优先级</th>
+                  <th>责任人</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>报警复盘</td>
+                  <td>4.1 小时压缩机温度超限，需验证模型参数</td>
+                  <td><span class="badge">高</span></td>
+                  <td>流程工程师</td>
+                </tr>
+                <tr>
+                  <td>优化机会</td>
+                  <td>蒸汽消耗偏高，建议评估换热网络调整</td>
+                  <td><span class="badge">中</span></td>
+                  <td>运营优化师</td>
+                </tr>
+                <tr>
+                  <td>沟通事项</td>
+                  <td>需要现场团队确认紧急预案响应时间</td>
+                  <td><span class="badge">中</span></td>
+                  <td>项目经理</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </main>
+
+        <footer>动态模拟监控原型强调场景推演、变量追踪与跨角色风险协同。</footer>
+      </div>
+    </div>
+
+    <script src="app.js" type="module"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

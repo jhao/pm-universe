@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 资源排期</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page-id="resources">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>资源管理</strong><br />
+          覆盖团队：产品/设计/前端/后端/QA<br />
+          更新频率：每周三
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">资源排期 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">投入</a>
+              <a class="system-link" href="#">冲突</a>
+              <a class="system-link" href="#">需求</a>
+              <a class="system-link" href="#">预算</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索团队或成员" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">资源盘点 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">跨团队人力与能力规划</h1>
+              <p class="page-hero__subtitle">聚合投入、空闲与需求缺口，支撑管理层决策。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">总体利用率</span>
+                  <span class="hero-stat__value">86%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">缺口岗位</span>
+                  <span class="hero-stat__value">3</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">外包比例</span>
+                  <span class="hero-stat__value">8%</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="portfolio-dashboard.html" data-keep-role>
+                🏢 查看组合资源
+              </a>
+              <a class="hero-actions__secondary" href="progress-report.html" data-keep-role>
+                📊 同步周报
+              </a>
+            </div>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">团队投入矩阵</h2>
+                <p class="surface-card__subtitle">按项目与角色分布人力</p>
+              </div>
+              <a class="action-link" href="roadmap.html" data-keep-role>对齐路线图</a>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>团队</th>
+                  <th>当前投入</th>
+                  <th>空闲</th>
+                  <th>缺口</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>产品</td>
+                  <td>95%</td>
+                  <td>1 人</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>前端</td>
+                  <td>82%</td>
+                  <td>2 人</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>后端</td>
+                  <td>88%</td>
+                  <td>1 人</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>QA</td>
+                  <td>76%</td>
+                  <td>3 人</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">冲突预警</h2>
+                  <p class="surface-card__subtitle">识别人力冲突与过载</p>
+                </div>
+                <a class="action-link" href="sprint-board.html" data-keep-role>调整 Sprint</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">后端组 7/22-7/26</p>
+                    <p class="list-item__desc">需求：4 人 · 可用：2 人 · 原因：维护任务</p>
+                  </div>
+                  <span class="tag">高</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">前端组 7/29-8/02</p>
+                    <p class="list-item__desc">需求：3 人 · 可用：2 人 · 原因：假期</p>
+                  </div>
+                  <span class="tag">中</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">外包与预算</h2>
+                  <p class="surface-card__subtitle">控制成本与外包比例</p>
+                </div>
+                <a class="action-link" href="progress-report.html" data-keep-role>纳入报告</a>
+              </div>
+              <div class="chart-placeholder"></div>
+              <div class="focus-banner">
+                <strong>提醒：</strong>
+                <span>外包预算使用 68%，建议优先补充核心后端资源。</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">招聘需求</h2>
+                <p class="surface-card__subtitle">关联 HR Pipeline</p>
+              </div>
+              <a class="action-link" href="portfolio-dashboard.html" data-keep-role>同步高层</a>
+            </div>
+            <div class="list">
+              <div class="list-item">
+                <div class="list-item__meta">
+                  <p class="list-item__title">高级后端工程师</p>
+                  <p class="list-item__desc">目标入职：8 月中 · 面试阶段：二面</p>
+                </div>
+                <span class="tag">优先</span>
+              </div>
+              <div class="list-item">
+                <div class="list-item__meta">
+                  <p class="list-item__title">自动化测试工程师</p>
+                  <p class="list-item__desc">目标入职：9 月初 · 面试阶段：简历筛选</p>
+                </div>
+                <span class="tag">进行中</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">资源排期帮助 <span data-role-name></span> 评估各团队的投入与缺口，支持发布节奏与招聘计划。可跳转至进度报告或组合视图，进一步协调跨项目资源。</p>
+            <div class="page-info__actions">
+              <a href="progress-report.html" data-keep-role>→ 同步周报</a>
+              <a href="portfolio-dashboard.html" data-keep-role>→ 查看组合资源</a>
+              <a href="roadmap.html" data-keep-role>→ 对齐路线图</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 测试执行视图</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="test-execution">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>分析人员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">SOP 步骤必须按顺序执行并记录关键数据。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">查看历史记录</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">测试执行 · SOP 指引</h1>
+              <p class="hero-subtitle">按照标准操作流程执行测试，记录关键参数并支持双人复核。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="result-entry.html?role=analyst">跳转结果录入</a>
+              <a class="secondary-btn" href="deviation-report.html?role=analyst">报告偏差</a>
+            </div>
+          </section>
+
+          <section class="split-layout">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">SOP 步骤</span>
+                <a class="link-btn" href="test-batch-detail.html?role=analyst">批次详情</a>
+              </div>
+              <div class="panel-body">
+                <div class="workflow">
+                  <div class="workflow-step">
+                    <span class="step-index">1</span>
+                    <div class="step-content">
+                      <span class="step-title">样品准备</span>
+                      <span class="step-desc">扫描条码并确认温控记录，登记配制信息。</span>
+                    </div>
+                  </div>
+                  <div class="workflow-step">
+                    <span class="step-index">2</span>
+                    <div class="step-content">
+                      <span class="step-title">仪器设定</span>
+                      <span class="step-desc">加载方法、记录校准状态。</span>
+                    </div>
+                  </div>
+                  <div class="workflow-step">
+                    <span class="step-index">3</span>
+                    <div class="step-content">
+                      <span class="step-title">数据采集</span>
+                      <span class="step-desc">实时显示采集曲线，标记异常点。</span>
+                    </div>
+                  </div>
+                  <div class="workflow-step">
+                    <span class="step-index">4</span>
+                    <div class="step-content">
+                      <span class="step-title">初步复核</span>
+                      <span class="step-desc">核对系统自动计算结果。</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">实时数据</span>
+                <a class="link-btn" href="result-entry.html?role=analyst">提交数据</a>
+              </div>
+              <div class="panel-body">
+                <div class="chart-placeholder">实时曲线 · 峰面积/时间（示意）</div>
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>当前样本</strong>
+                    <span>BT-230412-07-01</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>峰面积</strong>
+                    <span>125.6</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>系统适用性</strong>
+                    <span class="badge success">合格</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">执行记录</span>
+              <div class="segmented">
+                <button class="active">操作记录</button>
+                <button>审核日志</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="history">
+                <div class="history-item">
+                  <span>09:12</span>
+                  <span>完成样品准备 · 记录配制批号</span>
+                </div>
+                <div class="history-item">
+                  <span>09:45</span>
+                  <span>HPLC-02 校准通过 · 方法版本 V3.2</span>
+                </div>
+                <div class="history-item">
+                  <span>10:20</span>
+                  <span>数据采集完成 · 无异常峰</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>测试执行视图提供 SOP 指引、实时数据与操作记录，保障实验过程合规并可追溯。</p>
+            <ul class="clean">
+              <li>步骤执行需按顺序，关键节点强制拍照或电子签名。</li>
+              <li>实时数据可同步至仪器接口并自动计算结果。</li>
+              <li>偏差可一键跳转至偏差报告页面。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

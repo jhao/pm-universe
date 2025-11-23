@@ -2,83 +2,251 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Jira Software 原型概览</title>
-    <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
-    </style>
+    <title>Jira Software · 项目总览</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
-  <body>
-    <header>
-      <h1>Jira Software 原型</h1>
-      <p class="tagline">面向软件团队的敏捷项目管理工具。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>产品经理、研发团队、Scrum Master</p>
-        <p><strong>核心痛点：</strong>需求跟踪与开发协作割裂，缺乏透明度</p>
-        <p><strong>价值主张：</strong>通过看板、Scrum 与报表，统一需求、开发与发布流程</p>
+  <body data-page-id="overview">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>空间：Quantum Launch</strong><br />
+          当前版本：v3.4 Iteration<br />
+          更新时间：2024-07-18
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip" data-role-name></span>
+            <div class="system-links">
+              <a class="system-link" href="#">工作台</a>
+              <a class="system-link" href="#">报告中心</a>
+              <a class="system-link" href="#">自动化</a>
+              <a class="system-link" href="#">设置</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索需求、任务或成员" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">当前视图 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">Quantum Launch 项目健康总览</h1>
+              <p class="page-hero__subtitle">可视化最近两个 Sprint 的交付节奏、优先级变化与风险趋势，支撑跨团队同步。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">当前 Sprint 完成度</span>
+                  <span class="hero-stat__value">68%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">进行中需求</span>
+                  <span class="hero-stat__value">42</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">阻塞事项</span>
+                  <span class="hero-stat__value">5</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="backlog.html" data-keep-role>
+                📌 创建新的需求项
+              </a>
+              <a class="hero-actions__secondary" href="roadmap.html" data-keep-role>
+                🗺️ 查看路线图变更
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">版本进度追踪</h2>
+                  <p class="surface-card__subtitle">围绕 Q3 版本的里程碑状态与风险</p>
+                </div>
+                <a class="action-link" href="release-plan.html" data-keep-role>查看发布计划</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>里程碑</th>
+                    <th>截止</th>
+                    <th>完成度</th>
+                    <th>负责人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Beta 验收</td>
+                    <td>7月 24日</td>
+                    <td>
+                      <div class="progress-track"><span style="width: 72%"></span></div>
+                    </td>
+                    <td>王雪</td>
+                  </tr>
+                  <tr>
+                    <td>稳定性回归</td>
+                    <td>8月 02日</td>
+                    <td>
+                      <div class="progress-track"><span style="width: 54%"></span></div>
+                    </td>
+                    <td>李雷</td>
+                  </tr>
+                  <tr>
+                    <td>上线准备</td>
+                    <td>8月 18日</td>
+                    <td>
+                      <div class="progress-track"><span style="width: 31%"></span></div>
+                    </td>
+                    <td>张敏</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">关键指标</h2>
+                  <p class="surface-card__subtitle">合并自 Jira Velocity、Cycle Time 与满意度调查</p>
+                </div>
+                <div class="segmented-control">
+                  <button class="is-active">Sprint</button>
+                  <button>月度</button>
+                  <button>季度</button>
+                </div>
+              </div>
+              <div class="metric-group">
+                <div class="metric-card">
+                  <span class="metric-card__label">团队速度</span>
+                  <span class="metric-card__value">78 pt</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">平均周期</span>
+                  <span class="metric-card__value">6.2 d</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">交付承诺率</span>
+                  <span class="metric-card__value">92%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">满意度</span>
+                  <span class="metric-card__value">4.4</span>
+                </div>
+              </div>
+              <div class="chart-placeholder"></div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">高优需求列表</h2>
+                  <p class="surface-card__subtitle">按 WSJF 排序的前 6 个需求</p>
+                </div>
+                <a class="action-link" href="backlog.html" data-keep-role>打开需求池</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">QL-231 多渠道工单同步</p>
+                    <p class="list-item__desc">影响 3 个客户群，预计提升留存 8%</p>
+                  </div>
+                  <span class="tag">WSJF 32</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">QL-224 AI 智能优先级建议</p>
+                    <p class="list-item__desc">与 Insight 模块联动，减少手动评估</p>
+                  </div>
+                  <span class="tag">WSJF 27</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">QL-210 CI/CD 失败自动回滚</p>
+                    <p class="list-item__desc">关键发布风险缓解措施</p>
+                  </div>
+                  <span class="tag">WSJF 25</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">阻塞雷达</h2>
+                  <p class="surface-card__subtitle">当前 Sprint 中的阻塞链路</p>
+                </div>
+                <a class="action-link" href="risk-overview.html" data-keep-role>查看风险详情</a>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-item__marker"></div>
+                  <div class="timeline-item__content">
+                    <strong>后端性能测试等待环境</strong>
+                    <p class="list-item__desc">影响任务：QL-231，预计延迟 1.5 天，依赖 Infra 团队</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-item__marker"></div>
+                  <div class="timeline-item__content">
+                    <strong>审批流程配置更新</strong>
+                    <p class="list-item__desc">安全合规要求额外审计，需在上线前完成</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-item__marker"></div>
+                  <div class="timeline-item__content">
+                    <strong>大客户演示阻塞</strong>
+                    <p class="list-item__desc">等待 UX 提供 Demo 数据包，影响销售演示</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">项目总览聚合需求、Sprint、发布与风险数据，帮助 <span data-role-name></span> 在同一视图下做出优先级与资源判断。可从上方模块直接跳转至需求池、路线图与风险视图，维持跨职能团队对齐。</p>
+            <div class="page-info__actions">
+              <a href="roadmap.html" data-keep-role>→ 跳转路线图制定</a>
+              <a href="progress-report.html" data-keep-role>→ 查看执行报告</a>
+              <a href="automation-rules.html" data-keep-role>→ 设置自动化</a>
+            </div>
+          </section>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>产品团队创建 backlog 与 roadmap</li><li>开发团队在 Sprint 中处理任务</li><li>团队回顾分析燃尽图与发布表现</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>需求与计划</h3>
-              <p class="goal">功能目标：帮助团队管理需求优先级</p>
-              <ul>
-                <li>Epics、Stories 与任务结构</li><li>Backlog 排序与版本计划</li><li>跨团队路线图与依赖管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>敏捷执行</h3>
-              <p class="goal">功能目标：支撑 Scrum/Kanban 执行</p>
-              <ul>
-                <li>看板、Sprint 管理与任务分配</li><li>工作流自定义与自动化规则</li><li>集成代码仓与发布流水线</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>报告与洞察</h3>
-              <p class="goal">功能目标：提供团队绩效与质量洞察</p>
-              <ul>
-                <li>燃尽图、累积流图与速度报告</li><li>发布健康、缺陷趋势</li><li>自定义报表与数据导出</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>协作与集成</h3>
-              <p class="goal">功能目标：连接 Atlassian 生态与第三方工具</p>
-              <ul>
-                <li>与 Confluence、Bitbucket 集成</li><li>Marketplace 插件扩展</li><li>通知、自动化与权限模型</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>需求完成率与周期时间</li><li>缺陷密度与发布频率</li><li>团队速度与协作满意度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>

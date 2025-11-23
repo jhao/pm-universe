@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>时间与考勤 · 排班与异常</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="time">
+    <main class="layout">
+      <a class="back-link" href="index.html">← 返回 ADP Workforce Now</a>
+      <div class="top-bar" style="margin-bottom:24px;">
+        <div>
+          <div class="breadcrumbs">ADP Workforce Now · 时间与考勤</div>
+          <h1>出勤监控中心</h1>
+          <p class="subtitle">统一处理打卡异常、请假审批与排班需求，确保合规与效率。</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="secondary-button">导出周报</button>
+          <button class="primary-button">创建排班</button>
+        </div>
+      </div>
+
+      <section class="panel" style="gap:16px;">
+        <div class="panel-header">
+          <h2 class="section-title">视图切换</h2>
+          <div class="tab-bar" data-time-tabs>
+            <button class="active" data-tab="attendance">出勤异常</button>
+            <button data-tab="scheduling">排班洞察</button>
+            <button data-tab="requests">请假与调班</button>
+          </div>
+        </div>
+        <div data-time-panel></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">智能提醒</h2>
+        </div>
+        <ul class="feature-list">
+          <li>夜班有 2 个班次无人值守，系统建议从白班轮换</li>
+          <li>5 位员工连续 6 天排班，建议安排休息</li>
+          <li>移动端未打卡次数本周上升 12%，建议推送提醒</li>
+        </ul>
+      </section>
+    </main>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

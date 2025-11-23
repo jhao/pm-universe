@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>报表版本管理 | 业务分析师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="analyst" data-page="report-builder">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：业务分析师</span>
+            <strong>报表版本管理</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>销售绩效报表 - 发布记录</h1>
+                <p>追踪每次发布的内容摘要、审批状态与回滚选项。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="report-builder.html">返回编辑</a>
+                <a class="button secondary" href="insight-detail.html">查看使用洞察</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>发布历史</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>版本</th>
+                    <th>发布时间</th>
+                    <th>发布者</th>
+                    <th>变更摘要</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>v5.2</td>
+                    <td>2024-03-02</td>
+                    <td>张敏</td>
+                    <td>新增 ROI 卡片，优化筛选器布局。</td>
+                    <td><a href="report-builder.html">回滚</a></td>
+                  </tr>
+                  <tr>
+                    <td>v5.1</td>
+                    <td>2024-02-15</td>
+                    <td>李伟</td>
+                    <td>加入供应链指标，修复度量。</td>
+                    <td><a href="report-builder.html">回滚</a></td>
+                  </tr>
+                  <tr>
+                    <td>v5.0</td>
+                    <td>2024-01-30</td>
+                    <td>王倩</td>
+                    <td>发布年度版本，添加叙事书签。</td>
+                    <td><a href="report-builder.html">回滚</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>使用监控</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>周活跃查看</strong>
+                  <p>1,284 次</p>
+                </div>
+                <div class="status-tile">
+                  <strong>分享频道</strong>
+                  <p>销售应用、Teams 频道</p>
+                </div>
+                <div class="status-tile">
+                  <strong>数据警报</strong>
+                  <p>3 个阈值，联动邮件提醒</p>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>记录报表每次发布的详细信息，支持快速回滚历史版本。</li>
+                <li>与使用指标联动，帮助评估报表覆盖范围和影响力。</li>
+                <li>可回到报表创作继续迭代，或跳转至洞察页面查看反馈。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

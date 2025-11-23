@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - CAPA 闭环</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="capa-tracking">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>质量主管</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">CAPA 需跟踪根因、措施、验证及关闭状态。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导出 CAPA</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">CAPA 闭环</h1>
+              <p class="hero-subtitle">追踪偏差的纠正与预防措施，确保根因分析和验证步骤完整。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="release-detail.html?role=qa">查看批次</a>
+              <a class="secondary-btn" href="integration-log.html?role=admin">接口日志</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">CAPA 列表</span>
+              <div class="segmented">
+                <button class="active">进行中</button>
+                <button>已关闭</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>CAPA 编号</th>
+                    <th>关联偏差</th>
+                    <th>负责人</th>
+                    <th>截止</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CAPA-202305-01</td>
+                    <td>DV-20230518-01</td>
+                    <td>QA 王颖</td>
+                    <td>2023-05-30</td>
+                    <td><span class="badge warning">根因分析</span></td>
+                  </tr>
+                  <tr>
+                    <td>CAPA-202305-02</td>
+                    <td>DV-20230512-02</td>
+                    <td>QA 陈晓</td>
+                    <td>2023-05-25</td>
+                    <td><span class="badge info">验证中</span></td>
+                  </tr>
+                  <tr>
+                    <td>CAPA-202304-04</td>
+                    <td>DV-20230420-05</td>
+                    <td>QA 刘强</td>
+                    <td>2023-05-18</td>
+                    <td><span class="badge success">已关闭</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">根因分析</span>
+                <a class="link-btn" href="deviation-report.html?role=analyst">查看偏差</a>
+              </div>
+              <div class="panel-body">
+                <div class="form-grid">
+                  <div class="form-control">
+                    <label>问题陈述</label>
+                    <textarea placeholder="描述偏差问题"></textarea>
+                  </div>
+                  <div class="form-control">
+                    <label>根因类别</label>
+                    <select>
+                      <option>人员</option>
+                      <option>设备</option>
+                      <option>方法</option>
+                      <option>材料</option>
+                    </select>
+                  </div>
+                  <div class="form-control">
+                    <label>根因说明</label>
+                    <textarea placeholder="填写根因分析结论"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">措施与验证</span>
+                <a class="link-btn" href="integration-log.html?role=admin">查看接口</a>
+              </div>
+              <div class="panel-body">
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>纠正措施</strong>
+                    <span>更新 SOP 并培训</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>预防措施</strong>
+                    <span>增加仪器自检频次</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>验证结果</strong>
+                    <span>验证中 · 预计 05-28</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>CAPA 闭环页面帮助质量主管跟踪偏差整改进度，确保措施落实。</p>
+            <ul class="clean">
+              <li>CAPA 与偏差、报告、审计联动。</li>
+              <li>根因分析与措施记录支持导出。</li>
+              <li>验证完成后自动更新状态并通知相关人员。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

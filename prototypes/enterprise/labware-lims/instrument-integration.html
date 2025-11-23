@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 仪器与接口</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="instrument-integration">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>系统管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">监控仪器接口状态，保障数据自动采集。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">刷新接口</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">仪器与接口面板</h1>
+              <p class="hero-subtitle">查看仪器连接状态、接口成功率与数据同步情况，支持快速排查。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="integration-log.html?role=admin">查看日志</a>
+              <a class="secondary-btn" href="system-monitoring.html?role=admin">系统监控</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">接口概览</span>
+              <div class="segmented">
+                <button class="active">仪器</button>
+                <button>外部系统</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>接口</th>
+                    <th>类型</th>
+                    <th>状态</th>
+                    <th>成功率</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HPLC-02</td>
+                    <td>仪器驱动</td>
+                    <td><span class="badge success">在线</span></td>
+                    <td>99.8%</td>
+                    <td class="table-actions">
+                      <a href="integration-log.html?role=admin">日志</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>GC-MS-01</td>
+                    <td>仪器驱动</td>
+                    <td><span class="badge warning">重试</span></td>
+                    <td>92.1%</td>
+                    <td class="table-actions">
+                      <a href="integration-log.html?role=admin">排查</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ERP 同步</td>
+                    <td>外部系统</td>
+                    <td><span class="badge success">正常</span></td>
+                    <td>99.4%</td>
+                    <td class="table-actions">
+                      <a href="integration-log.html?role=admin">日志</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">仪器维护计划</span>
+                <a class="link-btn" href="system-monitoring.html?role=admin">查看监控</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>HPLC-02</span>
+                    <span>校准 05-25</span>
+                  </div>
+                  <div class="list-item">
+                    <span>GC-MS-01</span>
+                    <span>维护 05-22</span>
+                  </div>
+                  <div class="list-item">
+                    <span>ICP-OES</span>
+                    <span>换件 05-30</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">数据同步统计</span>
+                <a class="link-btn" href="integration-log.html?role=admin">查看详情</a>
+              </div>
+              <div class="panel-body">
+                <div class="chart-placeholder">近 7 日数据同步趋势图</div>
+                <div class="flex-table">
+                  <div class="flex-row">
+                    <strong>成功任务</strong>
+                    <span>1,204</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>失败任务</strong>
+                    <span>8</span>
+                  </div>
+                  <div class="flex-row">
+                    <strong>平均延迟</strong>
+                    <span>2.4 分钟</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>仪器与接口面板用于监控数据采集链路，及时发现并处理接口异常。</p>
+            <ul class="clean">
+              <li>显示仪器、外部系统接口状态与成功率。</li>
+              <li>维护计划与监控数据联动提醒。</li>
+              <li>接口日志支持追溯和排查。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

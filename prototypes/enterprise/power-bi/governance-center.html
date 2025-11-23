@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>治理与合规中心 | 租户管理员视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="admin" data-page="governance">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：租户管理员</span>
+            <strong>治理与合规中心</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>Power BI 合规概览</h1>
+                <p>跟踪敏感度标签、数据访问审计与政策执行情况。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="audit-detail.html">查看审计日志</a>
+                <a class="button secondary" href="alert-detail.html">配置告警</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>敏感度标签覆盖</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>已打标签数据集</strong>
+                  <p>28 / 36</p>
+                </div>
+                <div class="status-tile">
+                  <strong>高敏感报表</strong>
+                  <p>12 个，需要 MFA</p>
+                </div>
+                <div class="status-tile">
+                  <strong>数据泄露防护</strong>
+                  <p>启用 DLP 规则 5 条</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>策略执行</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>策略名称</th>
+                    <th>范围</th>
+                    <th>执行状态</th>
+                    <th>异常</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>外部共享审计</td>
+                    <td>全部工作区</td>
+                    <td>已启用</td>
+                    <td>2 起待处理</td>
+                  </tr>
+                  <tr>
+                    <td>敏感数据导出限制</td>
+                    <td>高敏感标签</td>
+                    <td>已启用</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td>RLS 角色审核</td>
+                    <td>季度</td>
+                    <td>进行中</td>
+                    <td>3 个角色逾期</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>治理任务</h2>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span>2024-03-02</span>
+                  <span>完成市场洞察工作区审计</span>
+                </div>
+                <div class="timeline-item">
+                  <span>2024-03-05</span>
+                  <span>启动敏感度标签培训</span>
+                </div>
+                <div class="timeline-item">
+                  <span>2024-03-10</span>
+                  <span>提交季度治理报告</span>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>提供企业级 Power BI 治理指标与策略执行情况。</li>
+                <li>连接审计日志与警报配置，确保合规事件可追踪。</li>
+                <li>展示治理任务时间线，方便管理员跟踪执行。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

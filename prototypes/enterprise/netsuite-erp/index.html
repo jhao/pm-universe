@@ -2,83 +2,2859 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Oracle NetSuite ERP 原型概览</title>
+    <title>Oracle NetSuite ERP 角色原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: linear-gradient(135deg, #f6f8fb 0%, #eef2f8 100%);
+        color: #0f172a;
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background: linear-gradient(180deg, #0f4c81 0%, #1d6bb2 55%, #3aa8d7 100%);
+        color: #f8fafc;
+        padding: 32px 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        box-shadow: 14px 0 28px rgba(15, 23, 42, 0.08);
+        z-index: 1;
+      }
+
+      .sidebar::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.22), transparent 70%);
+        pointer-events: none;
+      }
+
+      .sidebar-header {
+        position: relative;
+        z-index: 1;
+      }
+
+      .system-name {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+      }
+
+      .system-subtitle {
+        margin-top: 8px;
+        font-size: 14px;
+        color: rgba(226, 232, 240, 0.78);
+      }
+
+      .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        position: relative;
+        z-index: 1;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        color: #f8fafc;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+        text-align: left;
+      }
+
+      .menu-item span.icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.22);
+        font-size: 16px;
+      }
+
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(4px);
+      }
+
+      .menu-item.active {
+        background: #f8fafc;
+        color: #0f4c81;
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.16);
+      }
+
+      .menu-item.active span.icon {
+        background: rgba(15, 76, 129, 0.12);
+      }
+
+      .main-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(12px);
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 32px;
+        background: rgba(255, 255, 255, 0.96);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(18px);
+      }
+
+      .topbar-title h1 {
+        margin: 0 0 8px 0;
+        font-size: 22px;
+        color: #0f2940;
+      }
+
+      .breadcrumb {
+        font-size: 13px;
+        color: #64748b;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .breadcrumb span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .breadcrumb .divider::before {
+        content: '/';
+        opacity: 0.4;
+      }
+
+      .role-switch {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switch label {
+        font-size: 14px;
+        color: #475569;
+      }
+
+      .role-switch select {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(100, 116, 139, 0.28);
+        background: #ffffff;
+        font-size: 14px;
+        color: #0f172a;
+        min-width: 220px;
+      }
+
+      .page-container {
+        flex: 1;
+        padding: 32px;
+        overflow-y: auto;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .page-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #0f2940;
+      }
+
+      .page-header p {
+        margin: 8px 0 0 0;
+        color: #64748b;
+        font-size: 15px;
+        max-width: 580px;
+      }
+
+      .page-header .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(58, 168, 215, 0.15);
+        color: #0f4c81;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .page-body {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .widget-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+      }
+
+      .wide-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .flex-split {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 20px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .kpi-value {
+        font-size: 30px;
+        font-weight: 700;
+        color: #0f2940;
+      }
+
+      .kpi-trend {
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+
+      .trend-up {
+        background: rgba(34, 197, 94, 0.18);
+        color: #16a34a;
+      }
+
+      .trend-down {
+        background: rgba(239, 68, 68, 0.18);
+        color: #dc2626;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: left;
+      }
+
+      .data-table th {
+        color: #475569;
+        font-weight: 600;
+        background: rgba(15, 23, 42, 0.04);
+      }
+
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .status-positive {
+        background: rgba(16, 185, 129, 0.16);
+        color: #0f766e;
+      }
+
+      .status-warning {
+        background: rgba(245, 158, 11, 0.18);
+        color: #b45309;
+      }
+
+      .status-critical {
+        background: rgba(248, 113, 113, 0.2);
+        color: #b91c1c;
+      }
+
+      .chart-placeholder {
+        height: 160px;
+        border-radius: 12px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(15, 76, 129, 0.14),
+          rgba(15, 76, 129, 0.14) 12px,
+          rgba(58, 168, 215, 0.1) 12px,
+          rgba(58, 168, 215, 0.1) 24px
+        );
+        display: grid;
+        place-items: center;
+        color: rgba(15, 76, 129, 0.6);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .pill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(15, 76, 129, 0.12);
+        color: #0f4c81;
+        font-size: 13px;
+      }
+
+      .action-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .action-panel h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #0f2940;
+      }
+
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .action-button {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .action-button.primary {
+        background: linear-gradient(135deg, #0f4c81, #3aa8d7);
+        color: #fff;
+        box-shadow: 0 14px 28px rgba(15, 76, 129, 0.25);
+      }
+
+      .action-button.secondary {
+        background: rgba(15, 76, 129, 0.12);
+        color: #0f4c81;
+      }
+
+      .action-button.link {
+        background: transparent;
+        color: #0f4c81;
+        text-decoration: underline;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+
+      .action-button:hover {
+        transform: translateY(-2px);
+      }
+
+      .back-button {
+        border: none;
+        background: rgba(148, 163, 184, 0.16);
+        color: #1f2937;
+        padding: 8px 14px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .page-footer {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 14px;
+        padding: 18px 20px;
+        color: #475569;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .page-footer h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #0f2940;
+      }
+
+      .badge-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .badge {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(58, 168, 215, 0.16);
+        color: #0f4c81;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      @media (max-width: 1024px) {
+        .app-shell {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px;
+          box-shadow: none;
+        }
+
+        .menu-list {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .menu-item {
+          flex: 1 1 48%;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>Oracle NetSuite ERP 原型</h1>
-      <p class="tagline">面向成长型企业的云端 ERP 系统。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>财务、运营、电子商务团队</p>
-        <p><strong>核心痛点：</strong>多子公司、跨地区业务难以集中管理</p>
-        <p><strong>价值主张：</strong>提供统一的财务、库存、CRM 与电商平台，支持快速扩张</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>财务团队处理多账簿合并</li><li>运营管理库存、采购与生产</li><li>电商团队管理在线订单与客户</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>财务与会计</h3>
-              <p class="goal">功能目标：实现跨地区财务合规</p>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="system-name">NetSuite OneWorld</div>
+          <div class="system-subtitle">云端运营控制中心</div>
+        </div>
+        <nav>
+          <ul id="menuList" class="menu-list"></ul>
+        </nav>
+      </aside>
+      <main class="main-area">
+        <header class="topbar">
+          <div class="topbar-title">
+            <h1>企业统一业务平台</h1>
+            <div id="breadcrumb" class="breadcrumb"></div>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <section id="pageContainer" class="page-container"></section>
+      </main>
+    </div>
+    <script>
+      const roles = {
+        finance: {
+          name: '集团财务总监',
+          menu: [
+            { id: 'global-finance-dashboard', icon: '📊', label: '集团财务驾驶舱' },
+            { id: 'closing-orchestration', icon: '🧾', label: '月度结账编排' },
+            { id: 'cash-forecasting', icon: '💧', label: '现金预测与调度' },
+            { id: 'multi-entity-control', icon: '🌐', label: '多法人合规监控' }
+          ]
+        },
+        operations: {
+          name: '供应链运营总监',
+          menu: [
+            { id: 'inventory-command', icon: '🏬', label: '库存指挥中心' },
+            { id: 'procurement-workbench', icon: '🤝', label: '采购协同工作台' },
+            { id: 'production-status', icon: '🏭', label: '生产执行看板' },
+            { id: 'fulfillment-tracker', icon: '🚚', label: '订单履约追踪' }
+          ]
+        },
+        ecommerce: {
+          name: '电商运营负责人',
+          menu: [
+            { id: 'omnichannel-orders', icon: '🛒', label: '全渠道订单中心' },
+            { id: 'promotion-calendar', icon: '🎯', label: '营销活动日历' },
+            { id: 'customer-360', icon: '👤', label: '客户 360 视图' },
+            { id: 'returns-portal', icon: '♻️', label: '退换货服务门户' }
+          ]
+        },
+        people: {
+          name: '人力共享服务主管',
+          menu: [
+            { id: 'workforce-overview', icon: '🧑\u200d🤝\u200d🧑', label: '人力资源总览' },
+            { id: 'talent-hub', icon: '🌱', label: '人才发展中心' },
+            { id: 'time-expense', icon: '⏱️', label: '工时费用审批' },
+            { id: 'service-request', icon: '💬', label: '员工服务工单' }
+          ]
+        }
+      };
+
+      const pages = {
+        'global-finance-dashboard': {
+          title: '集团财务驾驶舱',
+          subtitle: '实时汇总多法人营收、利润与现金表现，支持钻取到地区与事业部',
+          status: '实时同步 · 5 分钟前更新',
+          breadcrumb: ['财务控制', '集团财务驾驶舱'],
+          content: `
+            <div class="widget-grid">
+              <div class="card">
+                <h3>季度营收</h3>
+                <div class="kpi-value">￥12.8B</div>
+                <div class="kpi-trend trend-up">↑ 8.6% 同比</div>
+                <div class="chart-placeholder">营收趋势预测</div>
+              </div>
+              <div class="card">
+                <h3>营业利润率</h3>
+                <div class="kpi-value">17.4%</div>
+                <div class="kpi-trend trend-down">↓ 1.2% 环比</div>
+                <div class="pill-list">
+                  <span class="pill">北美 19.8%</span>
+                  <span class="pill">亚太 14.2%</span>
+                  <span class="pill">EMEA 16.7%</span>
+                </div>
+              </div>
+              <div class="card">
+                <h3>自由现金流</h3>
+                <div class="kpi-value">￥2.1B</div>
+                <div class="kpi-trend trend-up">↑ 5.1% 预测</div>
+                <div class="chart-placeholder">现金流入/流出结构</div>
+              </div>
+            </div>
+            <div class="wide-grid">
+              <div class="card">
+                <h3>区域利润热力图</h3>
+                <div class="chart-placeholder">全球区域毛利分布</div>
+                <div class="action-panel">
+                  <span>聚焦异常区域并生成专题分析。</span>
+                  <div class="action-buttons">
+                    <button class="action-button primary" onclick="openPage('regional-performance')">打开区域盈利分析</button>
+                    <button class="action-button secondary" onclick="openPage('kpi-drill')">查看指标钻取</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>风险与预警</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>事项</th>
+                      <th>影响区域</th>
+                      <th>级别</th>
+                      <th>预计影响</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>拉美汇率波动</td>
+                      <td>拉美区域</td>
+                      <td><span class="status-chip status-warning">预警</span></td>
+                      <td>利润率 -1.6%</td>
+                    </tr>
+                    <tr>
+                      <td>北美大客户延期</td>
+                      <td>北美区域</td>
+                      <td><span class="status-chip status-critical">重点</span></td>
+                      <td>现金流 -￥180M</td>
+                    </tr>
+                    <tr>
+                      <td>亚太库存积压</td>
+                      <td>亚太区域</td>
+                      <td><span class="status-chip status-warning">预警</span></td>
+                      <td>库存周转 +12天</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="action-buttons">
+                  <button class="action-button link" onclick="openPage('risk-mitigation-plan')">查看缓解措施</button>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>页面聚合 NetSuite OneWorld 多子公司财务与业务 KPI，支持 CFO 快速定位异常并发起深入分析。</p>
+            <div class="badge-strip">
+              <span class="badge">实时 KPI</span>
+              <span class="badge">多账簿同步</span>
+              <span class="badge">钻取分析</span>
+            </div>
+          `
+        },
+        'regional-performance': {
+          title: '区域盈利能力分析',
+          subtitle: '对比各区域收入、成本与运营现金，定位提升空间并生成行动计划',
+          status: '分析模型：盈利提升 V3.2',
+          breadcrumb: ['财务控制', '集团财务驾驶舱', '区域盈利分析'],
+          content: `
+            <button class="back-button" onclick="openPage('global-finance-dashboard')">⬅ 返回集团财务驾驶舱</button>
+            <div class="flex-split">
+              <div class="card">
+                <h3>区域指标对比</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>区域</th>
+                      <th>营收</th>
+                      <th>毛利率</th>
+                      <th>回款周期</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>北美</td>
+                      <td>￥4.6B</td>
+                      <td>22.4%</td>
+                      <td>38 天</td>
+                    </tr>
+                    <tr>
+                      <td>亚太</td>
+                      <td>￥3.1B</td>
+                      <td>16.3%</td>
+                      <td>52 天</td>
+                    </tr>
+                    <tr>
+                      <td>EMEA</td>
+                      <td>￥2.8B</td>
+                      <td>18.7%</td>
+                      <td>42 天</td>
+                    </tr>
+                    <tr>
+                      <td>拉美</td>
+                      <td>￥1.5B</td>
+                      <td>14.1%</td>
+                      <td>65 天</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>改善举措看板</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>北美 · 渠道折扣优化</strong>
+                    <span>预计提升毛利 1.3%，负责人：销售运营</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>亚太 · 供应商议价</strong>
+                    <span>与核心代工重新签订协议，预计降本 4.8%</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>拉美 · 汇率对冲</strong>
+                    <span>已提交对冲策略审批，财务风险团队跟进</span>
+                  </div>
+                </div>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('initiative-detail')">查看举措详情</button>
+                  <button class="action-button secondary" onclick="openPage('cashflow-scenario')">模拟现金情景</button>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>区域盈利分析支持 CFO 针对区域团队制定改进目标，并与预算预测模型联动。</p>
+            <div class="badge-strip">
+              <span class="badge">区域对比</span>
+              <span class="badge">行动跟踪</span>
+              <span class="badge">情景模拟</span>
+            </div>
+          `
+        },
+        'initiative-detail': {
+          title: '盈利改善举措详情',
+          subtitle: '跟踪跨部门盈利提升项目的目标、负责人与收益衡量',
+          status: '举措整体达成：35%',
+          breadcrumb: ['财务控制', '集团财务驾驶舱', '区域盈利分析', '举措详情'],
+          content: `
+            <button class="back-button" onclick="openPage('regional-performance')">⬅ 返回区域分析</button>
+            <div class="card">
+              <h3>项目清单</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>举措</th>
+                    <th>区域</th>
+                    <th>目标收益</th>
+                    <th>进度</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>渠道折扣优化</td>
+                    <td>北美</td>
+                    <td>￥65M</td>
+                    <td><span class="status-chip status-warning">规划中</span></td>
+                  </tr>
+                  <tr>
+                    <td>代工成本谈判</td>
+                    <td>亚太</td>
+                    <td>￥48M</td>
+                    <td><span class="status-chip status-positive">执行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>汇率对冲</td>
+                    <td>拉美</td>
+                    <td>￥22M</td>
+                    <td><span class="status-chip status-critical">待批准</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>举措详情帮助 CFO 追踪收益实现路径，与预算控制、审批流程形成闭环。</p>
+          `
+        },
+        'kpi-drill': {
+          title: 'KPI 钻取分析',
+          subtitle: '对关键指标进行多维拆解，识别异常订单、成本及费用科目',
+          status: '钻取路径：营收 → 产品线 → 客户群',
+          breadcrumb: ['财务控制', '集团财务驾驶舱', 'KPI 钻取分析'],
+          content: `
+            <button class="back-button" onclick="openPage('global-finance-dashboard')">⬅ 返回集团财务驾驶舱</button>
+            <div class="wide-grid">
+              <div class="card">
+                <h3>指标拆解树</h3>
+                <div class="chart-placeholder">钻取树图：收入 → 区域 → 产品线</div>
+                <p>选中节点：北美 · 智能硬件 · 企业版</p>
+              </div>
+              <div class="card">
+                <h3>异常明细</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>客户</th>
+                      <th>订单号</th>
+                      <th>差异</th>
+                      <th>负责人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Telecom Co.</td>
+                      <td>SO-20240318</td>
+                      <td>-￥3.2M</td>
+                      <td>Key Account 团队</td>
+                    </tr>
+                    <tr>
+                      <td>SmartLife</td>
+                      <td>SO-20240326</td>
+                      <td>-￥1.1M</td>
+                      <td>渠道销售</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="action-panel">
+                  <h3>后续动作</h3>
+                  <div class="action-buttons">
+                    <button class="action-button primary" onclick="openPage('account-briefing')">生成客户经营摘要</button>
+                    <button class="action-button secondary" onclick="openPage('margin-adjustment')">发起毛利调整审批</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>钻取分析结合 NetSuite 分析工作簿与保存搜索，帮助财务团队快速定位问题订单并协同业务方解决。</p>
+            <div class="badge-strip">
+              <span class="badge">多维钻取</span>
+              <span class="badge">保存搜索</span>
+              <span class="badge">协同审批</span>
+            </div>
+          `
+        },
+        'account-briefing': {
+          title: '客户经营摘要',
+          subtitle: '整合客户的营收、毛利、回款与服务满意度，辅助商务决策',
+          status: '目标客户：Telecom Co.',
+          breadcrumb: ['财务控制', '集团财务驾驶舱', 'KPI 钻取分析', '客户经营摘要'],
+          content: `
+            <button class="back-button" onclick="openPage('kpi-drill')">⬅ 返回 KPI 钻取</button>
+            <div class="card">
+              <h3>关键指标</h3>
+              <div class="widget-grid">
+                <div class="card">
+                  <h3>年度营收</h3>
+                  <div class="kpi-value">￥620M</div>
+                </div>
+                <div class="card">
+                  <h3>毛利率</h3>
+                  <div class="kpi-value">14.6%</div>
+                </div>
+                <div class="card">
+                  <h3>回款周期</h3>
+                  <div class="kpi-value">64 天</div>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('collaboration-room')">与销售共享</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>客户经营摘要提供财务与销售统一视角，支持商务谈判与客户成功计划。</p>
+          `
+        },
+        'margin-adjustment': {
+          title: '毛利调整审批单',
+          subtitle: '提交特殊折扣或成本调整请求，自动流转至相关负责人审批',
+          status: '审批状态：待提交',
+          breadcrumb: ['财务控制', '集团财务驾驶舱', 'KPI 钻取分析', '毛利调整审批'],
+          content: `
+            <button class="back-button" onclick="openPage('kpi-drill')">⬅ 返回 KPI 钻取</button>
+            <div class="card">
+              <h3>调整明细</h3>
+              <p>客户：SmartLife · 项目：企业版续约 · 拟调整毛利率：-1.2%</p>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('approval-tracking')">提交审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>毛利调整审批依托 NetSuite SuiteFlow，自定义审批路径并保留审计轨迹。</p>
+          `
+        },
+        'approval-tracking': {
+          title: '审批流跟踪',
+          subtitle: '查看当前审批节点、处理人及预计完成时间',
+          status: '当前节点：财务经理复核',
+          breadcrumb: ['财务控制', '集团财务驾驶舱', '毛利调整审批', '审批流'],
+          content: `
+            <button class="back-button" onclick="openPage('margin-adjustment')">⬅ 返回审批单</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>节点</th>
+                    <th>处理人</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>销售总监</td>
+                    <td>Linda</td>
+                    <td><span class="status-chip status-positive">已通过</span></td>
+                  </tr>
+                  <tr>
+                    <td>财务经理</td>
+                    <td>Eric</td>
+                    <td><span class="status-chip status-warning">待处理</span></td>
+                  </tr>
+                  <tr>
+                    <td>CFO</td>
+                    <td>Grace</td>
+                    <td><span class="status-chip status-critical">排队中</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>审批流跟踪提供透明的审批状态，支持提醒和重新指派。</p>
+          `
+        },
+        'risk-mitigation-plan': {
+          title: '风险缓解方案库',
+          subtitle: '针对识别出的财务风险制定缓解计划并跟踪执行情况',
+          status: '风险状态：3 项待跟进',
+          breadcrumb: ['财务控制', '集团财务驾驶舱', '风险缓解方案'],
+          content: `
+            <button class="back-button" onclick="openPage('global-finance-dashboard')">⬅ 返回集团财务驾驶舱</button>
+            <div class="card">
+              <h3>重点风险处置</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>风险</th>
+                    <th>负责人</th>
+                    <th>完成度</th>
+                    <th>下一里程碑</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>拉美汇率波动</td>
+                    <td>风险管理组</td>
+                    <td><span class="status-chip status-warning">45%</span></td>
+                    <td>完成对冲合约签署</td>
+                  </tr>
+                  <tr>
+                    <td>北美回款延迟</td>
+                    <td>信用控制</td>
+                    <td><span class="status-chip status-critical">未启动</span></td>
+                    <td>客户融资方案审议</td>
+                  </tr>
+                  <tr>
+                    <td>亚太库存积压</td>
+                    <td>供应链运营</td>
+                    <td><span class="status-chip status-positive">进行中</span></td>
+                    <td>调拨计划确认</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="action-panel">
+              <h3>协同动作</h3>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('mitigation-detail')">制定行动清单</button>
+                <button class="action-button secondary" onclick="openPage('cashflow-scenario')">查看现金情景</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>风险缓解方案库联动项目任务与审批流，确保关键风险项有人跟、有进度、有反馈。</p>
+          `
+        },
+        'mitigation-detail': {
+          title: '风险行动清单',
+          subtitle: '拆解风险项具体行动与负责人，跟踪完成率',
+          status: '拉美汇率 · 行动完成度 20%',
+          breadcrumb: ['财务控制', '风险缓解方案', '行动清单'],
+          content: `
+            <button class="back-button" onclick="openPage('risk-mitigation-plan')">⬅ 返回风险方案</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>行动</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                    <th>截止</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>确定对冲额度</td>
+                    <td>财务风险</td>
+                    <td><span class="status-chip status-positive">完成</span></td>
+                    <td>3/20</td>
+                  </tr>
+                  <tr>
+                    <td>提交授信申请</td>
+                    <td>财资</td>
+                    <td><span class="status-chip status-warning">进行中</span></td>
+                    <td>3/28</td>
+                  </tr>
+                  <tr>
+                    <td>通知区域销售</td>
+                    <td>拉美销售</td>
+                    <td><span class="status-chip status-critical">未启动</span></td>
+                    <td>3/29</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>行动清单打通任务、提醒、附件，确保风险处置闭环。</p>
+          `
+        },
+        'closing-orchestration': {
+          title: '月度结账编排',
+          subtitle: '自动化监控关账流程节点，确保多法人在统一时间线内完成',
+          status: '结账周期目标：4 天 · 当前 Day 2',
+          breadcrumb: ['财务控制', '月度结账编排'],
+          content: `
+            <div class="flex-split">
+              <div class="card">
+                <h3>结账步骤进度</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>日记账锁定</strong>
+                    <span>已完成 · 责任人：总账团队</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>跨公司对账</strong>
+                    <span>进行中 · 预计完成：今日 18:00</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>税务合规检查</strong>
+                    <span>待启动 · 等待中国子公司上传附加资料</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>关键控制点</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>控制点</th>
+                      <th>状态</th>
+                      <th>负责人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>SuiteFlow 自动分录</td>
+                      <td><span class="status-chip status-positive">通过</span></td>
+                      <td>财务共享中心</td>
+                    </tr>
+                    <tr>
+                      <td>多账簿调整分录</td>
+                      <td><span class="status-chip status-warning">复核中</span></td>
+                      <td>集团财务</td>
+                    </tr>
+                    <tr>
+                      <td>跨公司结算</td>
+                      <td><span class="status-chip status-critical">阻塞</span></td>
+                      <td>新加坡子公司</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('closing-task-detail')">查看阻塞任务</button>
+                  <button class="action-button secondary" onclick="openPage('compliance-checklist')">启动合规检查</button>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>结账编排结合 NetSuite Close Management 模块，统一管控多子公司关账活动，自动触发提醒与审批。</p>
+          `
+        },
+        'closing-task-detail': {
+          title: '结账阻塞任务详情',
+          subtitle: '查看跨公司结算未完成任务并推动责任人处理',
+          status: '阻塞级别：高 · 已逾期 6 小时',
+          breadcrumb: ['财务控制', '月度结账编排', '阻塞任务'],
+          content: `
+            <button class="back-button" onclick="openPage('closing-orchestration')">⬅ 返回结账编排</button>
+            <div class="card">
+              <h3>任务摘要</h3>
+              <p>任务编号：CL-INT-2034 · 关联公司：SG-001 ↔ CN-003</p>
+              <div class="action-panel">
+                <h3>需要的操作</h3>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('intercompany-journal')">打开跨公司分录</button>
+                  <button class="action-button secondary" onclick="openPage('collaboration-room')">进入协同聊天室</button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>审批轨迹</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>步骤</th>
+                    <th>节点</th>
+                    <th>处理人</th>
+                    <th>时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>提交</td>
+                    <td>新加坡财务</td>
+                    <td>Chen Wei</td>
+                    <td>3/26 09:32</td>
+                  </tr>
+                  <tr>
+                    <td>复核</td>
+                    <td>集团财务</td>
+                    <td>Alex Li</td>
+                    <td>3/26 10:10</td>
+                  </tr>
+                  <tr>
+                    <td>审批</td>
+                    <td>中国子公司</td>
+                    <td>Pending</td>
+                    <td>—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>阻塞任务详情将工作流、审批轨迹、即时沟通集中呈现，确保跨公司结算快速闭环。</p>
+          `
+        },
+        'intercompany-journal': {
+          title: '跨公司分录',
+          subtitle: '查看并调整跨公司结算分录，确保借贷平衡',
+          status: '当前状态：待审批',
+          breadcrumb: ['财务控制', '月度结账编排', '跨公司分录'],
+          content: `
+            <button class="back-button" onclick="openPage('closing-task-detail')">⬅ 返回阻塞任务</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>科目</th>
+                    <th>借方</th>
+                    <th>贷方</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>应收关联公司</td>
+                    <td>￥12.6M</td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>应付关联公司</td>
+                    <td>—</td>
+                    <td>￥12.6M</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('approval-tracking')">提交审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>跨公司分录支持自动平衡与附件上传，确保结算透明可追踪。</p>
+          `
+        },
+        'collaboration-room': {
+          title: '跨部门协同聊天室',
+          subtitle: '围绕具体事项集中沟通、共享文档并同步状态',
+          status: '在线参与者：8 人',
+          breadcrumb: ['协同中心'],
+          content: `
+            <div class="card">
+              <h3>实时讨论</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>09:32 Alex</strong>
+                  <span>已上传更新后的发票副本，请确认</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>09:40 Chen</strong>
+                  <span>补充说明税码，请参考附件</span>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>协同聊天室打通 NetSuite 与沟通工具，保留上下文记录。</p>
+          `
+        },
+        'cash-forecasting': {
+          title: '现金预测与调度',
+          subtitle: '整合应收、应付、库存与融资计划，生成未来 13 周现金流预测',
+          status: '预测模型：AI Cashflow V1.8',
+          breadcrumb: ['财务控制', '现金预测与调度'],
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>现金流预测曲线</h3>
+                <div class="chart-placeholder">未来 13 周现金流趋势</div>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('cashflow-scenario')">情景模拟</button>
+                  <button class="action-button secondary" onclick="openPage('treasury-transfer')">发起资金调拨</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>关键驱动因素</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>来源</th>
+                      <th>金额</th>
+                      <th>波动</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>应收回款</td>
+                      <td>￥3.2B</td>
+                      <td><span class="status-chip status-positive">稳定</span></td>
+                    </tr>
+                    <tr>
+                      <td>库存采购</td>
+                      <td>￥1.1B</td>
+                      <td><span class="status-chip status-warning">上升</span></td>
+                    </tr>
+                    <tr>
+                      <td>资本开支</td>
+                      <td>￥0.6B</td>
+                      <td><span class="status-chip status-critical">新增</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>现金预测利用 NetSuite Cash 360 模块，结合实时交易与预算，提供多场景预测与资金调拨入口。</p>
+          `
+        },
+        'cashflow-scenario': {
+          title: '现金流情景模拟',
+          subtitle: '比较基准、乐观与压力情景，评估资金缺口与融资需求',
+          status: '当前情景：压力测试 · 汇率波动 8%',
+          breadcrumb: ['财务控制', '现金预测与调度', '现金流情景'],
+          content: `
+            <button class="back-button" onclick="openPage('cash-forecasting')">⬅ 返回现金预测</button>
+            <div class="card">
+              <h3>情景对比</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>情景</th>
+                    <th>期末余额</th>
+                    <th>缺口</th>
+                    <th>触发动作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>基准</td>
+                    <td>￥1.2B</td>
+                    <td>—</td>
+                    <td>保持现有计划</td>
+                  </tr>
+                  <tr>
+                    <td>乐观</td>
+                    <td>￥1.8B</td>
+                    <td>—</td>
+                    <td>提前偿还短期贷款</td>
+                  </tr>
+                  <tr>
+                    <td>压力</td>
+                    <td>￥0.4B</td>
+                    <td>￥0.3B</td>
+                    <td>触发备用授信</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="action-panel">
+              <h3>下一步</h3>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('treasury-transfer')">发起资金调拨</button>
+                <button class="action-button secondary" onclick="openPage('mitigation-detail')">同步风险计划</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>情景模拟联动财务与风控策略，帮助 CFO 快速制定融资与对冲方案。</p>
+          `
+        },
+        'treasury-transfer': {
+          title: '资金调拨指令',
+          subtitle: '集中管理集团内部资金调度，控制审批并生成凭证',
+          status: '待审批 · 金额 ￥150M',
+          breadcrumb: ['财务控制', '现金预测与调度', '资金调拨'],
+          content: `
+            <div class="card">
+              <h3>调拨详情</h3>
+              <p>调出公司：SG-001 · 调入公司：CN-003 · 币种：USD</p>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('approval-tracking')">提交审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>资金调拨指令提供标准审批与自动生成会计分录，保障资金安全。</p>
+          `
+        },
+        'multi-entity-control': {
+          title: '多法人合规监控',
+          subtitle: '统一跟踪各子公司的税务、法务与内部控制状态',
+          status: '合规指数：92 / 100',
+          breadcrumb: ['财务控制', '多法人合规监控'],
+          content: `
+            <div class="card">
+              <h3>合规健康度</h3>
+              <div class="chart-placeholder">地区合规雷达图</div>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('compliance-checklist')">查看合规清单</button>
+                <button class="action-button secondary" onclick="openPage('audit-schedule')">审计计划</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>预警事项</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>子公司</th>
+                    <th>事项</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CN-003</td>
+                    <td>增值税发票对账</td>
+                    <td>税务组</td>
+                    <td><span class="status-chip status-warning">即将到期</span></td>
+                  </tr>
+                  <tr>
+                    <td>DE-002</td>
+                    <td>GDPR 年度审查</td>
+                    <td>法务</td>
+                    <td><span class="status-chip status-positive">按计划</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>合规监控整合多法人税务、法务、审计数据，提供统一视图和自动化提醒。</p>
+          `
+        },
+        'compliance-checklist': {
+          title: '合规任务清单',
+          subtitle: '跨区域标准化合规任务模板与执行追踪',
+          status: '进行中任务：12 · 已逾期：1',
+          breadcrumb: ['财务控制', '多法人合规监控', '合规任务清单'],
+          content: `
+            <button class="back-button" onclick="openPage('multi-entity-control')">⬅ 返回合规监控</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>任务</th>
+                    <th>区域</th>
+                    <th>截止</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sox 内控测试</td>
+                    <td>北美</td>
+                    <td>3/30</td>
+                    <td><span class="status-chip status-warning">准备中</span></td>
+                  </tr>
+                  <tr>
+                    <td>出口退税申报</td>
+                    <td>中国</td>
+                    <td>3/28</td>
+                    <td><span class="status-chip status-critical">逾期</span></td>
+                  </tr>
+                  <tr>
+                    <td>隐私影响评估</td>
+                    <td>欧盟</td>
+                    <td>4/05</td>
+                    <td><span class="status-chip status-positive">按计划</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>合规任务清单支持模板化、提醒与证据上传，确保多地区一致的合规执行。</p>
+          `
+        },
+        'audit-schedule': {
+          title: '年度审计计划',
+          subtitle: '协调内外部审计资源，明确关键时间点与交付物',
+          status: '当前阶段：外部审计准备',
+          breadcrumb: ['财务控制', '多法人合规监控', '审计计划'],
+          content: `
+            <button class="back-button" onclick="openPage('multi-entity-control')">⬅ 返回合规监控</button>
+            <div class="card">
+              <h3>审计里程碑</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>4 月 · 预审资料提交</strong>
+                  <span>财务共享中心</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>5 月 · 外部实地审计</strong>
+                  <span>毕马威团队</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>6 月 · 管理层回应</strong>
+                  <span>集团 CFO 办公室</span>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>年度审计计划整合审计任务、资料清单与沟通渠道，提升跨部门协同效率。</p>
+          `
+        },
+        'inventory-command': {
+          title: '库存指挥中心',
+          subtitle: '实时监控全球仓储库存，自动标记缺货与积压风险',
+          status: '库存健康指数：87',
+          breadcrumb: ['供应链运营', '库存指挥中心'],
+          content: `
+            <div class="wide-grid">
+              <div class="card">
+                <h3>库存热力图</h3>
+                <div class="chart-placeholder">SKU / 仓库库存热力</div>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('inventory-replenishment')">生成补货计划</button>
+                  <button class="action-button secondary" onclick="openPage('transfer-plan')">查看调拨建议</button>
+                </div>
+              </div>
+              <div class="card">
+                <h3>预警 SKU</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>仓库</th>
+                      <th>风险</th>
+                      <th>天数</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>NX-1004</td>
+                      <td>上海中心仓</td>
+                      <td><span class="status-chip status-critical">缺货</span></td>
+                      <td>2 天</td>
+                    </tr>
+                    <tr>
+                      <td>NX-2301</td>
+                      <td>洛杉矶仓</td>
+                      <td><span class="status-chip status-warning">积压</span></td>
+                      <td>45 天</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>库存指挥中心连接 WMS、OMS 数据，提供智能补货与调拨建议，并自动通知负责仓储团队。</p>
+          `
+        },
+        'inventory-replenishment': {
+          title: '补货策略模拟',
+          subtitle: '基于需求预测生成多场景补货建议并可直接创建采购单',
+          status: '策略版本：AI Replenish 2.0',
+          breadcrumb: ['供应链运营', '库存指挥中心', '补货策略'],
+          content: `
+            <button class="back-button" onclick="openPage('inventory-command')">⬅ 返回库存指挥中心</button>
+            <div class="card">
+              <h3>建议列表</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>建议数量</th>
+                    <th>供应商</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>NX-1004</td>
+                    <td>1,200</td>
+                    <td>Foxtron</td>
+                    <td><button class="action-button primary" onclick="openPage('purchase-order-draft')">生成采购单</button></td>
+                  </tr>
+                  <tr>
+                    <td>NX-2301</td>
+                    <td>-800</td>
+                    <td>调拨 · 洛杉矶 → 达拉斯</td>
+                    <td><button class="action-button secondary" onclick="openPage('transfer-plan')">查看调拨</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>补货策略模拟结合 NetSuite Demand Planning 输出的预测与安全库存策略，可一键生成采购或调拨单据。</p>
+          `
+        },
+        'transfer-plan': {
+          title: '库存调拨计划',
+          subtitle: '平衡区域库存并降低物流成本的调拨建议',
+          status: '建议执行：3 单',
+          breadcrumb: ['供应链运营', '库存指挥中心', '调拨计划'],
+          content: `
+            <button class="back-button" onclick="openPage('inventory-command')">⬅ 返回库存指挥中心</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>来源仓</th>
+                    <th>目的仓</th>
+                    <th>SKU</th>
+                    <th>数量</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>洛杉矶</td>
+                    <td>达拉斯</td>
+                    <td>NX-2301</td>
+                    <td>800</td>
+                  </tr>
+                  <tr>
+                    <td>新加坡</td>
+                    <td>上海</td>
+                    <td>NX-1506</td>
+                    <td>460</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>调拨计划整合库存、运输与关务数据，支持一键创建转库单并跟踪执行。</p>
+          `
+        },
+        'purchase-order-draft': {
+          title: '采购订单草稿',
+          subtitle: '基于补货策略快速生成采购订单并分配审批路径',
+          status: '草稿状态 · 待提交',
+          breadcrumb: ['供应链运营', '库存指挥中心', '采购订单草稿'],
+          content: `
+            <button class="back-button" onclick="openPage('inventory-replenishment')">⬅ 返回补货策略</button>
+            <div class="card">
+              <h3>订单摘要</h3>
+              <p>供应商：Foxtron · 数量：1,200 · 交期：4/12</p>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('contract-workflow')">提交审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>采购订单草稿可直接触发审批流，并同步预算与财务控制。</p>
+          `
+        },
+        'procurement-workbench': {
+          title: '采购协同工作台',
+          subtitle: '统一查看供应商绩效、寻源项目与审批状态',
+          status: '供应商健康度：A-',
+          breadcrumb: ['供应链运营', '采购协同工作台'],
+          content: `
+            <div class="flex-split">
+              <div class="card">
+                <h3>寻源项目</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>项目</th>
+                      <th>阶段</th>
+                      <th>预算</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2024 智能硬件委外</td>
+                      <td>报价评估</td>
+                      <td>￥280M</td>
+                    </tr>
+                    <tr>
+                      <td>物流服务招标</td>
+                      <td>合同谈判</td>
+                      <td>￥68M</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>供应商绩效</h3>
+                <div class="chart-placeholder">供应商评分雷达</div>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('supplier-scorecard')">查看评分卡</button>
+                  <button class="action-button secondary" onclick="openPage('contract-workflow')">合同审批</button>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>采购工作台整合供应商管理、寻源与合同审批，实现端到端可视化与协同。</p>
+          `
+        },
+        'supplier-scorecard': {
+          title: '供应商评分卡',
+          subtitle: '跟踪交付、质量、成本与协同表现，支持自动预警',
+          status: '重点供应商：5 家',
+          breadcrumb: ['供应链运营', '采购协同工作台', '供应商评分卡'],
+          content: `
+            <button class="back-button" onclick="openPage('procurement-workbench')">⬅ 返回采购工作台</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>供应商</th>
+                    <th>评分</th>
+                    <th>延迟率</th>
+                    <th>措施</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Foxtron</td>
+                    <td>92</td>
+                    <td>1.2%</td>
+                    <td><button class="action-button secondary" onclick="openPage('collaboration-room')">协同改善</button></td>
+                  </tr>
+                  <tr>
+                    <td>BrightLog</td>
+                    <td>78</td>
+                    <td>5.6%</td>
+                    <td><button class="action-button primary" onclick="openPage('supplier-improvement-plan')">制定整改</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>供应商评分卡可与 NetSuite Vendor Performance 模块结合，实现分级管理与协同整改。</p>
+          `
+        },
+        'supplier-improvement-plan': {
+          title: '供应商整改计划',
+          subtitle: '针对低评分供应商制定整改行动与时间表',
+          status: '整改周期：30 天',
+          breadcrumb: ['供应链运营', '供应商评分卡', '整改计划'],
+          content: `
+            <button class="back-button" onclick="openPage('supplier-scorecard')">⬅ 返回评分卡</button>
+            <div class="card">
+              <h3>整改任务</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>任务</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>优化包装流程</td>
+                    <td>BrightLog</td>
+                    <td><span class="status-chip status-warning">进行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>提高准时率</td>
+                    <td>BrightLog</td>
+                    <td><span class="status-chip status-critical">未启动</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>整改计划支持供应商协同、附件与阶段验收，确保改进落地。</p>
+          `
+        },
+        'contract-workflow': {
+          title: '合同审批中心',
+          subtitle: '跟踪采购合同的审批进度、条款与附件',
+          status: '当前审批节点：法务复核',
+          breadcrumb: ['供应链运营', '采购协同工作台', '合同审批'],
+          content: `
+            <button class="back-button" onclick="openPage('procurement-workbench')">⬅ 返回采购工作台</button>
+            <div class="card">
+              <h3>审批进度</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>采购经理</strong>
+                  <span>已批准 · 3/25</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>法务复核</strong>
+                  <span>进行中 · 预计 3/27</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>财务签署</strong>
+                  <span>待启动</span>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>合同审批中心集成电子签署与条款库，确保采购合同合规执行。</p>
+          `
+        },
+        'production-status': {
+          title: '生产执行看板',
+          subtitle: '实时跟踪工单进度、良率与瓶颈工序，支持现场响应',
+          status: '平均达成率：96.2%',
+          breadcrumb: ['供应链运营', '生产执行看板'],
+          content: `
+            <div class="flex-split">
+              <div class="card">
+                <h3>工单状态</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>工单</th>
+                      <th>产品</th>
+                      <th>进度</th>
+                      <th>良率</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>WO-240318</td>
+                      <td>NX-1004</td>
+                      <td>82%</td>
+                      <td>98.4%</td>
+                    </tr>
+                    <tr>
+                      <td>WO-240322</td>
+                      <td>NX-2301</td>
+                      <td>45%</td>
+                      <td>95.2%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>瓶颈工序</h3>
+                <div class="chart-placeholder">产线瓶颈甘特图</div>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('work-order-detail')">打开工单详情</button>
+                  <button class="action-button secondary" onclick="openPage('capacity-plan')">查看产能计划</button>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>生产执行看板对接 NetSuite Manufacturing 模块，提供实时生产与产能信息，支持快速调整。</p>
+          `
+        },
+        'work-order-detail': {
+          title: '工单执行详情',
+          subtitle: '查看工单分步骤执行记录与质量检验数据',
+          status: '当前阶段：装配 · 预计完成 3/27',
+          breadcrumb: ['供应链运营', '生产执行看板', '工单详情'],
+          content: `
+            <button class="back-button" onclick="openPage('production-status')">⬅ 返回生产看板</button>
+            <div class="card">
+              <h3>步骤执行</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>步骤</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                    <th>完成时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>备料</td>
+                    <td>李杰</td>
+                    <td><span class="status-chip status-positive">完成</span></td>
+                    <td>3/24 09:15</td>
+                  </tr>
+                  <tr>
+                    <td>装配</td>
+                    <td>陈晓</td>
+                    <td><span class="status-chip status-warning">进行中</span></td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>测试</td>
+                    <td>待分配</td>
+                    <td><span class="status-chip status-critical">未启动</span></td>
+                    <td>—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>工单详情整合质量、文档与产线反馈，支持快速排查问题。</p>
+          `
+        },
+        'capacity-plan': {
+          title: '产能调度计划',
+          subtitle: '优化产线排产与资源利用，缓解瓶颈工序压力',
+          status: '更新于 2 小时前',
+          breadcrumb: ['供应链运营', '生产执行看板', '产能计划'],
+          content: `
+            <button class="back-button" onclick="openPage('production-status')">⬅ 返回生产看板</button>
+            <div class="card">
+              <div class="chart-placeholder">周排产甘特图</div>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('collaboration-room')">通知生产团队</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>产能计划结合需求预测与设备稼动率，提供动态排产建议。</p>
+          `
+        },
+        'fulfillment-tracker': {
+          title: '订单履约追踪',
+          subtitle: '监控订单从分配、拣货到发运的全流程状态',
+          status: '准时履约率：94.6%',
+          breadcrumb: ['供应链运营', '订单履约追踪'],
+          content: `
+            <div class="card">
+              <h3>履约队列</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>订单</th>
+                    <th>渠道</th>
+                    <th>当前状态</th>
+                    <th>承诺发货</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SO-20240328</td>
+                    <td>官方商城</td>
+                    <td>拣货中</td>
+                    <td>3/27</td>
+                  </tr>
+                  <tr>
+                    <td>SO-20240326</td>
+                    <td>Amazon</td>
+                    <td>已发运</td>
+                    <td>3/26</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('shipment-detail')">查看物流详情</button>
+                <button class="action-button secondary" onclick="openPage('customer-promise')">调整客户承诺</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>履约追踪结合 WMS、TMS 与客服系统，保证客户承诺可视化。</p>
+          `
+        },
+        'shipment-detail': {
+          title: '物流履约详情',
+          subtitle: '追踪包裹轨迹、运输节点与异常处理',
+          status: '当前节点：抵达转运中心',
+          breadcrumb: ['供应链运营', '订单履约追踪', '物流详情'],
+          content: `
+            <button class="back-button" onclick="openPage('fulfillment-tracker')">⬅ 返回履约追踪</button>
+            <div class="card">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>3/25 08:20</strong>
+                  <span>上海仓库完成装车</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>3/26 15:10</strong>
+                  <span>抵达南京转运中心</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>预计 3/27</strong>
+                  <span>派送至客户</span>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>物流详情联动承运商轨迹与客服通知，保障异常及时处理。</p>
+          `
+        },
+        'customer-promise': {
+          title: '客户承诺调整',
+          subtitle: '根据最新履约进度调整客户预计到货时间并通知',
+          status: '待通知客户：12',
+          breadcrumb: ['供应链运营', '订单履约追踪', '客户承诺调整'],
+          content: `
+            <button class="back-button" onclick="openPage('fulfillment-tracker')">⬅ 返回履约追踪</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>订单</th>
+                    <th>原承诺</th>
+                    <th>最新承诺</th>
+                    <th>通知状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SO-20240328</td>
+                    <td>3/27</td>
+                    <td>3/28</td>
+                    <td><span class="status-chip status-warning">待通知</span></td>
+                  </tr>
+                  <tr>
+                    <td>SO-20240326</td>
+                    <td>3/26</td>
+                    <td>3/26</td>
+                    <td><span class="status-chip status-positive">已通知</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>客户承诺调整与客服、营销自动化联动，提升客户满意度。</p>
+          `
+        },
+        'omnichannel-orders': {
+          title: '全渠道订单中心',
+          subtitle: '统一查看电商、自营、分销渠道订单状态与履约进度',
+          status: '今日新订单：3,216',
+          breadcrumb: ['电商运营', '全渠道订单中心'],
+          content: `
+            <div class="flex-split">
+              <div class="card">
+                <h3>渠道概览</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>渠道</th>
+                      <th>订单数</th>
+                      <th>平均客单价</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>官方商城</td>
+                      <td>1,420</td>
+                      <td>￥1,280</td>
+                    </tr>
+                    <tr>
+                      <td>天猫旗舰店</td>
+                      <td>980</td>
+                      <td>￥1,060</td>
+                    </tr>
+                    <tr>
+                      <td>Amazon</td>
+                      <td>520</td>
+                      <td>￥1,320</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <h3>异常订单</h3>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>订单号</th>
+                      <th>问题</th>
+                      <th>渠道</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>SO-EC-20348</td>
+                      <td>支付失败</td>
+                      <td>官方商城</td>
+                    </tr>
+                    <tr>
+                      <td>SO-TM-11890</td>
+                      <td>地址校验</td>
+                      <td>天猫旗舰店</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('order-detail')">进入订单详情</button>
+                  <button class="action-button secondary" onclick="openPage('split-shipment')">拆分发货</button>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>全渠道订单中心整合 OMS、支付与仓储系统，支持一键处理异常订单。</p>
+          `
+        },
+        'order-detail': {
+          title: '订单详情',
+          subtitle: '查看订单行项目、促销信息与履约节点',
+          status: '订单状态：待支付确认',
+          breadcrumb: ['电商运营', '全渠道订单中心', '订单详情'],
+          content: `
+            <button class="back-button" onclick="openPage('omnichannel-orders')">⬅ 返回订单中心</button>
+            <div class="card">
+              <h3>订单信息</h3>
+              <p>订单号：SO-EC-20348 · 客户：王珂 · 渠道：官方商城</p>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('fraud-review')">触发风控复核</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>订单详情联动支付、库存与客服，确保异常快速处理。</p>
+          `
+        },
+        'split-shipment': {
+          title: '拆分发货设置',
+          subtitle: '根据库存与承诺时间拆分订单并安排多批次发运',
+          status: '拆分方案：2 批次',
+          breadcrumb: ['电商运营', '全渠道订单中心', '拆分发货'],
+          content: `
+            <button class="back-button" onclick="openPage('omnichannel-orders')">⬅ 返回订单中心</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>批次</th>
+                    <th>SKU</th>
+                    <th>数量</th>
+                    <th>发货仓</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>第一批</td>
+                    <td>NX-1004</td>
+                    <td>2</td>
+                    <td>上海仓</td>
+                  </tr>
+                  <tr>
+                    <td>第二批</td>
+                    <td>NX-2301</td>
+                    <td>1</td>
+                    <td>深圳仓</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>拆分发货同步库存与物流计划，确保按期履约。</p>
+          `
+        },
+        'fraud-review': {
+          title: '风控复核中心',
+          subtitle: '针对高风险订单自动触发复核并决策',
+          status: '待处理订单：6',
+          breadcrumb: ['电商运营', '全渠道订单中心', '风控复核'],
+          content: `
+            <button class="back-button" onclick="openPage('order-detail')">⬅ 返回订单详情</button>
+            <div class="card">
+              <h3>风险因素</h3>
               <ul>
-                <li>多币种、多账簿与税务</li><li>自动化结账与审计追踪</li><li>应收应付、资产与预算</li>
+                <li>IP 地址异常</li>
+                <li>支付账号历史拒付</li>
+                <li>高价值订单</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>订单与库存</h3>
-              <p class="goal">功能目标：支持全渠道订单履约</p>
+            </div>
+          `,
+          business: `
+            <p>风控复核中心结合第三方风控评分与 NetSuite 审批流，降低损失风险。</p>
+          `
+        },
+        'promotion-calendar': {
+          title: '营销活动日历',
+          subtitle: '可视化查看每月营销活动并与库存、预算联动',
+          status: '本月活动：8',
+          breadcrumb: ['电商运营', '营销活动日历'],
+          content: `
+            <div class="card">
+              <div class="chart-placeholder">活动排期日历</div>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('campaign-brief')">查看活动简报</button>
+                <button class="action-button secondary" onclick="openPage('inventory-check')">活动备货检查</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>营销日历与销售预测、库存联动，避免活动期间缺货。</p>
+          `
+        },
+        'campaign-brief': {
+          title: '活动简报',
+          subtitle: '梳理活动目标、受众、优惠与测量指标',
+          status: '活动：418 春季焕新',
+          breadcrumb: ['电商运营', '营销活动日历', '活动简报'],
+          content: `
+            <button class="back-button" onclick="openPage('promotion-calendar')">⬅ 返回活动日历</button>
+            <div class="card">
+              <h3>活动要点</h3>
               <ul>
-                <li>订单管理、库存分配与补货</li><li>仓库管理、条码与批次</li><li>退换货与客户服务</li>
+                <li>目标 GMV：￥180M</li>
+                <li>重点渠道：官方商城、天猫</li>
+                <li>核心优惠：满 2000 减 200</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>生产与供应链</h3>
-              <p class="goal">功能目标：协同制造与供应商</p>
+            </div>
+          `,
+          business: `
+            <p>活动简报提供跨部门一致视图，支持快速落地。</p>
+          `
+        },
+        'inventory-check': {
+          title: '活动备货检查',
+          subtitle: '活动前核对关键 SKU 库存与供应计划',
+          status: '风险 SKU：3',
+          breadcrumb: ['电商运营', '营销活动日历', '备货检查'],
+          content: `
+            <button class="back-button" onclick="openPage('promotion-calendar')">⬅ 返回活动日历</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>活动需求</th>
+                    <th>可用库存</th>
+                    <th>差异</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>NX-1004</td>
+                    <td>3,500</td>
+                    <td>2,800</td>
+                    <td><span class="status-chip status-critical">-700</span></td>
+                  </tr>
+                  <tr>
+                    <td>NX-4502</td>
+                    <td>1,200</td>
+                    <td>1,450</td>
+                    <td><span class="status-chip status-positive">+250</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>备货检查快速联动供应链，保障活动货源。</p>
+          `
+        },
+        'customer-360': {
+          title: '客户 360 视图',
+          subtitle: '整合客户的订单、互动、服务与忠诚度信息',
+          status: '当前客户：李然 · 会员等级：铂金',
+          breadcrumb: ['电商运营', '客户 360 视图'],
+          content: `
+            <div class="flex-split">
+              <div class="card">
+                <h3>消费概览</h3>
+                <div class="widget-grid">
+                  <div class="card">
+                    <h3>年累计消费</h3>
+                    <div class="kpi-value">￥32,600</div>
+                  </div>
+                  <div class="card">
+                    <h3>平均客单价</h3>
+                    <div class="kpi-value">￥1,520</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <h3>近期互动</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>3/22</strong>
+                    <span>参加春季焕新活动</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>3/20</strong>
+                    <span>提交售后工单</span>
+                  </div>
+                </div>
+                <div class="action-buttons">
+                  <button class="action-button primary" onclick="openPage('service-timeline')">查看服务记录</button>
+                  <button class="action-button secondary" onclick="openPage('loyalty-adjust')">调整积分</button>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>客户 360 视图融合 CRM、服务与营销数据，支持精准运营。</p>
+          `
+        },
+        'service-timeline': {
+          title: '客户服务时间轴',
+          subtitle: '追踪客户服务请求、处理进度与满意度',
+          status: '开放工单：1',
+          breadcrumb: ['电商运营', '客户 360 视图', '服务时间轴'],
+          content: `
+            <button class="back-button" onclick="openPage('customer-360')">⬅ 返回客户 360</button>
+            <div class="card">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>3/20 售后工单</strong>
+                  <span>状态：处理中 · 负责人：客服 Aimee</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>3/18 在线咨询</strong>
+                  <span>已解决 · 评分 5 星</span>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>服务时间轴帮助客服了解客户历史，提升体验。</p>
+          `
+        },
+        'loyalty-adjust': {
+          title: '会员积分调整',
+          subtitle: '根据客户贡献度与活动表现手动或自动调整积分',
+          status: '积分余额：12,600',
+          breadcrumb: ['电商运营', '客户 360 视图', '积分调整'],
+          content: `
+            <button class="back-button" onclick="openPage('customer-360')">⬅ 返回客户 360</button>
+            <div class="card">
+              <p>本次调整建议：+800 积分（原因：售后体验补偿）</p>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('approval-tracking')">提交审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>积分调整与营销自动化连接，避免重复奖励或遗漏。</p>
+          `
+        },
+        'returns-portal': {
+          title: '退换货服务门户',
+          subtitle: '集中处理客户退换货请求并跟踪退款状态',
+          status: '待处理退货：24',
+          breadcrumb: ['电商运营', '退换货服务门户'],
+          content: `
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>工单</th>
+                    <th>类型</th>
+                    <th>状态</th>
+                    <th>客户</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>RMA-2038</td>
+                    <td>退货</td>
+                    <td>待质检</td>
+                    <td>李然</td>
+                  </tr>
+                  <tr>
+                    <td>RMA-2042</td>
+                    <td>换货</td>
+                    <td>处理中</td>
+                    <td>王珂</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('returns-detail')">查看详情</button>
+                <button class="action-button secondary" onclick="openPage('refund-approval')">退款审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>退换货门户衔接仓储、财务与客服，确保闭环处理。</p>
+          `
+        },
+        'returns-detail': {
+          title: '退货详情',
+          subtitle: '查看退货原因、质检结果与补偿方案',
+          status: '当前状态：待质检',
+          breadcrumb: ['电商运营', '退换货服务门户', '退货详情'],
+          content: `
+            <button class="back-button" onclick="openPage('returns-portal')">⬅ 返回退换货门户</button>
+            <div class="card">
+              <p>退货编号：RMA-2038 · 原因：颜色不符 · 退款金额：￥1,280</p>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('refund-approval')">进入退款审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>退货详情与质检、财务审批联动，确保客户体验。</p>
+          `
+        },
+        'refund-approval': {
+          title: '退款审批中心',
+          subtitle: '审批退货退款请求并生成财务凭证',
+          status: '待审批退款：5',
+          breadcrumb: ['电商运营', '退换货服务门户', '退款审批'],
+          content: `
+            <button class="back-button" onclick="openPage('returns-portal')">⬅ 返回退换货门户</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>工单</th>
+                    <th>金额</th>
+                    <th>原因</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>RMA-2038</td>
+                    <td>￥1,280</td>
+                    <td>颜色不符</td>
+                    <td><span class="status-chip status-warning">待审批</span></td>
+                  </tr>
+                  <tr>
+                    <td>RMA-2042</td>
+                    <td>￥980</td>
+                    <td>尺寸不合适</td>
+                    <td><span class="status-chip status-positive">已通过</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>退款审批生成财务凭证并通知客户，缩短处理周期。</p>
+          `
+        },
+        'workforce-overview': {
+          title: '人力资源总览',
+          subtitle: '实时掌握集团人力结构、流失与招聘进度',
+          status: '在岗员工：8,420',
+          breadcrumb: ['人力共享服务', '人力资源总览'],
+          content: `
+            <div class="widget-grid">
+              <div class="card">
+                <h3>本月入职</h3>
+                <div class="kpi-value">86</div>
+                <div class="kpi-trend trend-up">↑ 12% 环比</div>
+              </div>
+              <div class="card">
+                <h3>本月离职</h3>
+                <div class="kpi-value">34</div>
+                <div class="kpi-trend trend-down">↓ 5% 环比</div>
+              </div>
+              <div class="card">
+                <h3>关键岗位缺口</h3>
+                <div class="kpi-value">42</div>
+              </div>
+            </div>
+            <div class="action-buttons">
+              <button class="action-button primary" onclick="openPage('headcount-trend')">查看人力趋势</button>
+              <button class="action-button secondary" onclick="openPage('attrition-detail')">离职分析</button>
+            </div>
+          `,
+          business: `
+            <p>人力资源总览整合 NetSuite SuitePeople 数据，提供实时洞察。</p>
+          `
+        },
+        'headcount-trend': {
+          title: '人力趋势分析',
+          subtitle: '按地区、部门查看人力变化与招聘计划',
+          status: '更新于 1 小时前',
+          breadcrumb: ['人力共享服务', '人力资源总览', '人力趋势分析'],
+          content: `
+            <button class="back-button" onclick="openPage('workforce-overview')">⬅ 返回人力总览</button>
+            <div class="card">
+              <div class="chart-placeholder">地区人力趋势图</div>
+            </div>
+          `,
+          business: `
+            <p>趋势分析帮助 HRBP 制定招聘策略并与预算对齐。</p>
+          `
+        },
+        'attrition-detail': {
+          title: '离职分析',
+          subtitle: '拆解离职原因、风险岗位与保留计划',
+          status: '重点风险部门：客服中心',
+          breadcrumb: ['人力共享服务', '人力资源总览', '离职分析'],
+          content: `
+            <button class="back-button" onclick="openPage('workforce-overview')">⬅ 返回人力总览</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>部门</th>
+                    <th>离职率</th>
+                    <th>主要原因</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>客服中心</td>
+                    <td>16.4%</td>
+                    <td>薪酬竞争</td>
+                  </tr>
+                  <tr>
+                    <td>制造工厂</td>
+                    <td>9.8%</td>
+                    <td>工作强度</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('succession-plan')">制定保留计划</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>离职分析联动保留计划与补充招聘，降低风险。</p>
+          `
+        },
+        'talent-hub': {
+          title: '人才发展中心',
+          subtitle: '跟踪关键岗位人才梯队与继任计划',
+          status: '继任覆盖率：82%',
+          breadcrumb: ['人力共享服务', '人才发展中心'],
+          content: `
+            <div class="card">
+              <h3>关键岗位</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>岗位</th>
+                    <th>继任人</th>
+                    <th>准备度</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>供应链总监</td>
+                    <td>Emma</td>
+                    <td><span class="status-chip status-positive">已就绪</span></td>
+                  </tr>
+                  <tr>
+                    <td>电商负责人</td>
+                    <td>Jason</td>
+                    <td><span class="status-chip status-warning">6 个月</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('succession-plan')">查看继任计划</button>
+                <button class="action-button secondary" onclick="openPage('learning-program')">培训计划</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>人才发展中心支撑继任规划、培训与绩效联动。</p>
+          `
+        },
+        'succession-plan': {
+          title: '继任计划详情',
+          subtitle: '评估关键岗位继任人的准备度与发展动作',
+          status: '计划覆盖岗位：12',
+          breadcrumb: ['人力共享服务', '人才发展中心', '继任计划'],
+          content: `
+            <button class="back-button" onclick="openPage('talent-hub')">⬅ 返回人才中心</button>
+            <div class="card">
+              <h3>岗位继任列表</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>岗位</th>
+                    <th>继任人</th>
+                    <th>发展行动</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CFO</td>
+                    <td>Grace</td>
+                    <td>国际财务轮岗</td>
+                  </tr>
+                  <tr>
+                    <td>制造 VP</td>
+                    <td>Leo</td>
+                    <td>海外工厂实践</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>继任计划与绩效、培训数据联动，确保关键岗位有人接替。</p>
+          `
+        },
+        'learning-program': {
+          title: '培训计划排程',
+          subtitle: '查看人才发展课程与参与度',
+          status: '正在进行课程：5',
+          breadcrumb: ['人力共享服务', '人才发展中心', '培训计划'],
+          content: `
+            <button class="back-button" onclick="openPage('talent-hub')">⬅ 返回人才中心</button>
+            <div class="card">
+              <div class="chart-placeholder">培训课程进度表</div>
+            </div>
+          `,
+          business: `
+            <p>培训计划整合 LMS 与绩效指标，衡量学习效果。</p>
+          `
+        },
+        'time-expense': {
+          title: '工时费用审批',
+          subtitle: '统一处理工时提交与费用报销，保障合规',
+          status: '待审批项目：14',
+          breadcrumb: ['人力共享服务', '工时费用审批'],
+          content: `
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>类型</th>
+                    <th>提交人</th>
+                    <th>金额/小时</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>费用报销</td>
+                    <td>Aimee</td>
+                    <td>￥1,280</td>
+                    <td><span class="status-chip status-warning">待审批</span></td>
+                  </tr>
+                  <tr>
+                    <td>加班工时</td>
+                    <td>Kevin</td>
+                    <td>12 小时</td>
+                    <td><span class="status-chip status-positive">已通过</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('timesheet-review')">查看工时</button>
+                <button class="action-button secondary" onclick="openPage('expense-approval')">费用审批</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>工时费用审批打通财务、项目与 HR，确保合规及时。</p>
+          `
+        },
+        'timesheet-review': {
+          title: '工时审核',
+          subtitle: '审核项目工时提交并同步至薪资系统',
+          status: '当前周期：2024W13',
+          breadcrumb: ['人力共享服务', '工时费用审批', '工时审核'],
+          content: `
+            <button class="back-button" onclick="openPage('time-expense')">⬅ 返回工时费用</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>员工</th>
+                    <th>项目</th>
+                    <th>工时</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Kevin</td>
+                    <td>OMS 升级</td>
+                    <td>42</td>
+                    <td><span class="status-chip status-warning">待确认</span></td>
+                  </tr>
+                  <tr>
+                    <td>Emma</td>
+                    <td>供应链优化</td>
+                    <td>38</td>
+                    <td><span class="status-chip status-positive">已通过</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>工时审核与项目成本核算、薪资发放联动。</p>
+          `
+        },
+        'expense-approval': {
+          title: '费用报销审批',
+          subtitle: '审批员工费用报销并生成账务凭证',
+          status: '待审批费用：8',
+          breadcrumb: ['人力共享服务', '工时费用审批', '费用报销审批'],
+          content: `
+            <button class="back-button" onclick="openPage('time-expense')">⬅ 返回工时费用</button>
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>报销单</th>
+                    <th>金额</th>
+                    <th>类别</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>EXP-2032</td>
+                    <td>￥1,280</td>
+                    <td>差旅</td>
+                    <td><span class="status-chip status-warning">待审批</span></td>
+                  </tr>
+                  <tr>
+                    <td>EXP-2035</td>
+                    <td>￥860</td>
+                    <td>市场活动</td>
+                    <td><span class="status-chip status-positive">已通过</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          business: `
+            <p>费用审批生成会计凭证并自动匹配预算，降低手工操作。</p>
+          `
+        },
+        'service-request': {
+          title: '员工服务工单',
+          subtitle: '集中管理员工 HR 服务请求与 SLA',
+          status: '待处理：18',
+          breadcrumb: ['人力共享服务', '员工服务工单'],
+          content: `
+            <div class="card">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>工单</th>
+                    <th>类型</th>
+                    <th>优先级</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HR-2048</td>
+                    <td>入职问题</td>
+                    <td>高</td>
+                    <td><span class="status-chip status-warning">处理中</span></td>
+                  </tr>
+                  <tr>
+                    <td>HR-2052</td>
+                    <td>福利咨询</td>
+                    <td>中</td>
+                    <td><span class="status-chip status-positive">已关闭</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="action-buttons">
+                <button class="action-button primary" onclick="openPage('request-detail')">查看工单</button>
+                <button class="action-button secondary" onclick="openPage('knowledge-base')">知识库</button>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>员工服务工单实现 SLA 管理与知识库自助，提升体验。</p>
+          `
+        },
+        'request-detail': {
+          title: '工单详情',
+          subtitle: '查看员工请求内容、沟通记录与处理步骤',
+          status: 'SLA 剩余：6 小时',
+          breadcrumb: ['人力共享服务', '员工服务工单', '工单详情'],
+          content: `
+            <button class="back-button" onclick="openPage('service-request')">⬅ 返回工单列表</button>
+            <div class="card">
+              <h3>沟通记录</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>员工提交</strong>
+                  <span>3/25 09:12</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>HR 响应</strong>
+                  <span>3/25 09:30</span>
+                </div>
+              </div>
+            </div>
+          `,
+          business: `
+            <p>工单详情提供完整沟通记录与附件，便于复盘。</p>
+          `
+        },
+        'knowledge-base': {
+          title: 'HR 知识库',
+          subtitle: '提供员工自助查询的政策、流程与指南',
+          status: '热门文档：入职指南',
+          breadcrumb: ['人力共享服务', '员工服务工单', '知识库'],
+          content: `
+            <button class="back-button" onclick="openPage('service-request')">⬅ 返回工单列表</button>
+            <div class="card">
               <ul>
-                <li>生产 BOM、工单与排产</li><li>外协加工与质量管理</li><li>供应商门户与采购协同</li>
+                <li>入职流程与必备资料</li>
+                <li>差旅报销规范</li>
+                <li>福利计划常见问题</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>电商与 CRM</h3>
-              <p class="goal">功能目标：一体化支持客户与电商业务</p>
-              <ul>
-                <li>SuiteCommerce 店铺管理</li><li>客户关系、营销自动化</li><li>服务工单与客户满意度</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>财务结账效率与合规度</li><li>订单履约周期与库存准确率</li><li>线上转化率与客户满意度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+            </div>
+          `,
+          business: `
+            <p>HR 知识库降低重复咨询，支持员工自助服务。</p>
+          `
+        }
+      };
+
+      const roleSelect = document.getElementById('roleSelect');
+      const menuList = document.getElementById('menuList');
+      const breadcrumbEl = document.getElementById('breadcrumb');
+      const pageContainer = document.getElementById('pageContainer');
+
+      let currentRoleKey = null;
+      let lastMenuPageId = null;
+
+      Object.entries(roles).forEach(([key, role]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = role.name;
+        roleSelect.appendChild(option);
+      });
+
+      roleSelect.addEventListener('change', (event) => {
+        buildMenu(event.target.value);
+      });
+
+      function buildMenu(roleKey) {
+        const role = roles[roleKey];
+        if (!role) return;
+        currentRoleKey = roleKey;
+        menuList.innerHTML = '';
+        lastMenuPageId = null;
+
+        role.menu.forEach((item, index) => {
+          const li = document.createElement('li');
+          const button = document.createElement('button');
+          button.className = 'menu-item';
+          button.dataset.page = item.id;
+          button.innerHTML = `<span class="icon">${item.icon}</span><span>${item.label}</span>`;
+          button.addEventListener('click', () => {
+            openPage(item.id, true);
+          });
+          li.appendChild(button);
+          menuList.appendChild(li);
+
+          if (index === 0) {
+            lastMenuPageId = item.id;
+          }
+        });
+
+        if (role.menu.length > 0) {
+          openPage(role.menu[0].id, true);
+        } else {
+          pageContainer.innerHTML = '';
+        }
+      }
+
+      function updateBreadcrumb(page) {
+        breadcrumbEl.innerHTML = '';
+        const crumbs = Array.isArray(page.breadcrumb) && page.breadcrumb.length > 0
+          ? page.breadcrumb
+          : [roles[currentRoleKey]?.name ?? '角色', page.title];
+
+        crumbs.forEach((label, index) => {
+          const span = document.createElement('span');
+          span.textContent = label;
+          if (index > 0) {
+            span.classList.add('divider');
+          }
+          breadcrumbEl.appendChild(span);
+        });
+      }
+
+      function highlightMenu(pageId, fromMenu) {
+        const buttons = menuList.querySelectorAll('.menu-item');
+        buttons.forEach((btn) => btn.classList.remove('active'));
+
+        if (fromMenu) {
+          lastMenuPageId = pageId;
+        }
+
+        const activeId = fromMenu ? pageId : lastMenuPageId;
+        if (!activeId) return;
+        const activeButton = menuList.querySelector(`.menu-item[data-page="${activeId}"]`);
+        if (activeButton) {
+          activeButton.classList.add('active');
+        }
+      }
+
+      function openPage(pageId, fromMenu = false) {
+        const page = pages[pageId];
+        if (!page) return;
+
+        highlightMenu(pageId, fromMenu);
+        updateBreadcrumb(page);
+
+        pageContainer.innerHTML = `
+          <div class="page">
+            <div class="page-header">
+              <div>
+                <h2>${page.title}</h2>
+                ${page.subtitle ? `<p>${page.subtitle}</p>` : ''}
+              </div>
+              ${page.status ? `<span class="status">${page.status}</span>` : ''}
+            </div>
+            <div class="page-body">
+              ${page.content}
+            </div>
+            ${page.business ? `<footer class="page-footer"><h3>业务要点</h3>${page.business}</footer>` : ''}
+          </div>
+        `;
+      }
+
+      window.openPage = (pageId) => openPage(pageId, false);
+
+      const defaultRoleKey = Object.keys(roles)[0];
+      roleSelect.value = defaultRoleKey;
+      buildMenu(defaultRoleKey);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

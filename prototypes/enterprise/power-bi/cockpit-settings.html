@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>驾驶舱设置 | Power BI 自定义中心</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="analyst" data-page="cockpit-settings">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：业务分析师</span>
+            <strong>驾驶舱设置</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>执行驾驶舱配置中心</h1>
+                <p>
+                  参考 Power BI 服务中的个性化体验，集中管理驾驶舱版块、数据源、维度、筛选器与可视化样式。
+                </p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="#">保存配置</a>
+                <a class="button secondary" href="index.html">返回驾驶舱预览</a>
+              </div>
+            </div>
+
+            <section class="segment">
+              <h2>驾驶舱版块管理</h2>
+              <p class="muted">
+                根据 Power BI 仪表板自定义体验，开启或关闭关键版块，并为每个版块指定数据集与刷新策略。
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>版块</th>
+                    <th>绑定数据集</th>
+                    <th>刷新频率</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>营收 KPI 总览</td>
+                    <td>渠道销售绩效</td>
+                    <td>每 1 小时</td>
+                    <td><span class="metric-badge gain">已启用</span></td>
+                    <td><a href="dataset-detail.html">编辑版块</a></td>
+                  </tr>
+                  <tr>
+                    <td>利润率追踪</td>
+                    <td>财务分析模型</td>
+                    <td>每日凌晨</td>
+                    <td><span class="metric-badge gain">已启用</span></td>
+                    <td><a href="model-edit.html">调整度量</a></td>
+                  </tr>
+                  <tr>
+                    <td>订单交付热力</td>
+                    <td>订单履约与库存</td>
+                    <td>每 30 分钟</td>
+                    <td><span class="metric-badge loss">待确认</span></td>
+                    <td><a href="insight-detail.html">查看建议</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="segment">
+              <h2>数据源选择</h2>
+              <div class="grid">
+                <div class="card">
+                  <h3>认证数据源</h3>
+                  <p>从治理中心同步的认证数据集，确保指标与度量一致。</p>
+                  <ul>
+                    <li>渠道销售绩效（Premium 容量）</li>
+                    <li>财务分析模型（行级安全）</li>
+                    <li>客户 360（增量刷新）</li>
+                  </ul>
+                  <a class="button ghost" href="dataset-explorer.html">浏览更多</a>
+                </div>
+                <div class="card">
+                  <h3>自助数据源</h3>
+                  <p>连接 OneLake、Excel 或 Datamart，支持快速试验驾驶舱指标。</p>
+                  <ul>
+                    <li>市场活动投放.xlsx</li>
+                    <li>供应链 Datamart</li>
+                    <li>外部 API - 行业指数</li>
+                  </ul>
+                  <a class="button ghost" href="connection-wizard.html">配置连接向导</a>
+                </div>
+                <div class="card">
+                  <h3>数据质量状态</h3>
+                  <p>自动对接数据质量监控，显示源头健康度与告警。</p>
+                  <div class="badge-list">
+                    <span class="badge">销售：正常</span>
+                    <span class="badge">财务：正常</span>
+                    <span class="badge">供应链：告警</span>
+                  </div>
+                  <a class="button ghost" href="dataflow-monitor.html">查看刷新详情</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="segment">
+              <h2>数据维度与度量</h2>
+              <div class="split">
+                <div>
+                  <h3>选择维度</h3>
+                  <p class="muted">勾选用于切片驾驶舱的公共维度。</p>
+                  <ul class="checklist">
+                    <li><label><input type="checkbox" checked /> 区域 / 大区</label></li>
+                    <li><label><input type="checkbox" checked /> 渠道类型</label></li>
+                    <li><label><input type="checkbox" /> 产品系列</label></li>
+                    <li><label><input type="checkbox" /> 客户等级</label></li>
+                    <li><label><input type="checkbox" checked /> 时间（日、周、月）</label></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3>选择度量</h3>
+                  <p class="muted">引用语义模型中认证的 DAX 度量，支持 KPI 卡与图表联动。</p>
+                  <ul class="checklist">
+                    <li><label><input type="checkbox" checked /> 总营收</label></li>
+                    <li><label><input type="checkbox" checked /> 净利润率</label></li>
+                    <li><label><input type="checkbox" checked /> 订单准时率</label></li>
+                    <li><label><input type="checkbox" /> 市场 ROI</label></li>
+                    <li><label><input type="checkbox" /> 库存周转天数</label></li>
+                  </ul>
+                  <a class="button ghost" href="semantic-model.html">管理语义模型</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="segment">
+              <h2>筛选条件与书签</h2>
+              <p class="muted">参照 Power BI 书签与个性化视图，预设常用筛选条件以便高层快速切换。</p>
+              <div class="flow-steps">
+                <div class="flow-step">
+                  <strong>全局筛选器</strong>
+                  <p>时间范围：最近 90 天<br />区域：全国</p>
+                  <a class="button ghost" href="#">编辑</a>
+                </div>
+                <div class="flow-step">
+                  <strong>情景书签</strong>
+                  <p>"重点市场" 书签：区域=华北/华东，渠道=线上</p>
+                  <a class="button ghost" href="#">预览</a>
+                </div>
+                <div class="flow-step">
+                  <strong>行级安全</strong>
+                  <p>销售副总裁视图：仅查看所属大区指标。</p>
+                  <a class="button ghost" href="workspace-admin.html">配置访问</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="segment">
+              <h2>数据展示样式</h2>
+              <p class="muted">选择适合的可视化组件，支持 KPI 卡、图表、矩阵等多种样式，并可保存为模板。</p>
+              <div class="grid">
+                <div class="card visualization-option">
+                  <h3>指标卡 + 趋势线</h3>
+                  <p>适用于关键 KPI 快速概览，支持上一期对比与目标值。</p>
+                  <span class="badge">当前使用</span>
+                </div>
+                <div class="card visualization-option">
+                  <h3>堆积柱状图</h3>
+                  <p>按区域/渠道拆解营收贡献，展示趋势与结构占比。</p>
+                  <a class="button ghost" href="#">设为默认</a>
+                </div>
+                <div class="card visualization-option">
+                  <h3>矩阵 + 条件格式</h3>
+                  <p>适配复杂指标矩阵，可使用 KPI 图标与颜色强调变化。</p>
+                  <a class="button ghost" href="#">启用</a>
+                </div>
+                <div class="card visualization-option">
+                  <h3>组合图 + 预测线</h3>
+                  <p>结合折线与柱状，展示实际 vs 目标，并调用快速预测。</p>
+                  <a class="button ghost" href="#">启用</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>聚合 Power BI 官方的仪表板自定义能力，帮助分析师统一管理驾驶舱体验。</li>
+                <li>通过数据源、维度、筛选与样式的组合，实现跨版块一致的指标定义与可视化模板。</li>
+                <li>保存配置后可同步到执行驾驶舱页面，并通过书签快速分发高层视图。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

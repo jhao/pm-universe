@@ -2,83 +2,3209 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Amazon 全球电商 原型概览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Amazon 电商平台原型体验</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --amazon-blue: #131921;
+        --amazon-orange: #ffa41c;
+        --amazon-light: #f3f3f3;
+        --admin-bg: #0f172a;
+        --admin-card: #1e293b;
+        --admin-text: #e2e8f0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--amazon-light);
+        color: #1f2933;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .role-toggle {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 1000;
+        background: var(--amazon-orange);
+        color: #111827;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .role-toggle:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      header {
+        background: var(--amazon-blue);
+        color: #fff;
+      }
+
+      .top-bar {
+        display: flex;
+        align-items: center;
+        padding: 12px 24px;
+        gap: 24px;
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .search-box {
+        flex: 1;
+        display: flex;
+        max-width: 640px;
+      }
+
+      .search-box select,
+      .search-box input,
+      .search-box button {
+        border: none;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .search-box select {
+        background: #f3f3f3;
+        border-radius: 6px 0 0 6px;
+        color: #111827;
+      }
+
+      .search-box input {
+        flex: 1;
+      }
+
+      .search-box button {
+        background: var(--amazon-orange);
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 18px;
+        font-size: 13px;
+      }
+
+      .secondary-bar {
+        background: #232f3e;
+        padding: 8px 24px;
+        display: flex;
+        gap: 18px;
+        font-size: 13px;
+      }
+
+      main {
+        max-width: 1280px;
+        margin: 32px auto;
+        padding: 0 24px 48px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #fef3c7, #fde68a, #f97316);
+        border-radius: 16px;
+        padding: 32px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+        align-items: center;
+        color: #1f2937;
+        box-shadow: 0 12px 30px rgba(249, 115, 22, 0.25);
+      }
+
+      .hero h1 {
+        margin: 0 0 12px 0;
+        font-size: 32px;
+      }
+
+      .hero p {
+        margin: 0 0 18px 0;
+        line-height: 1.6;
+      }
+
+      .hero button {
+        background: var(--amazon-blue);
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .hero-illustration {
+        text-align: center;
+      }
+
+      .hero-illustration img {
+        max-width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .section-title {
+        margin: 48px 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .section-title a {
+        font-size: 14px;
+        color: var(--amazon-blue);
+      }
+
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 16px;
+      }
+
+      .category-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      }
+
+      .category-card span {
+        font-size: 28px;
+      }
+
+      .category-card strong {
+        font-size: 15px;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+      }
+
+      .product-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+        display: grid;
+        grid-template-rows: 160px 1fr;
+      }
+
+      .journey-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .journey-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(17, 24, 39, 0.05);
+      }
+
+      .journey-card span {
+        font-size: 28px;
+      }
+
+      .journey-card h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .journey-card p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #4b5563;
+      }
+
+      .journey-card button {
+        margin-top: auto;
+        align-self: flex-start;
+        background: var(--amazon-orange);
+        border: none;
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #111827;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(249, 115, 22, 0.25);
+      }
+
+      .product-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .product-info {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .rating {
+        color: #f59e0b;
+        font-size: 14px;
+      }
+
+      .deal-banner {
+        background: #111827;
+        color: #facc15;
+        border-radius: 16px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        box-shadow: 0 12px 28px rgba(17, 24, 39, 0.35);
+      }
+
+      .deal-banner strong {
+        font-size: 28px;
+      }
+
+      #primeBenefits {
+        cursor: pointer;
+      }
+
+      footer {
+        text-align: center;
+        padding: 24px;
+        color: #6b7280;
+      }
+
+      /* Admin dashboard */
+      .admin-wrapper {
+        background: var(--admin-bg);
+        color: var(--admin-text);
+        min-height: 100vh;
+        display: none;
+      }
+
+      .admin-layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 100vh;
+      }
+
+      .admin-sidebar {
+        background: #0b1220;
+        padding: 28px 20px;
+        border-right: 1px solid rgba(148, 163, 184, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .admin-sidebar h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .admin-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .admin-menu button {
+        text-align: left;
+        background: transparent;
+        border: none;
+        color: rgba(226, 232, 240, 0.85);
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.2s ease;
+      }
+
+      .admin-menu button:hover,
+      .admin-menu button.active {
+        background: rgba(56, 189, 248, 0.16);
+        color: #f8fafc;
+      }
+
+      .admin-menu small {
+        font-size: 11px;
+        opacity: 0.65;
+      }
+
+      .admin-body {
+        padding: 32px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .admin-header h1 {
+        margin: 0 0 8px 0;
+        font-size: 28px;
+      }
+
+      .admin-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .admin-actions button {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .admin-actions .primary {
+        background: #38bdf8;
+        color: #0f172a;
+      }
+
+      .admin-actions .secondary {
+        background: rgba(148, 163, 184, 0.2);
+        color: #e2e8f0;
+      }
+
+      .admin-section {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .admin-section.active {
+        display: flex;
+      }
+
+      .admin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .admin-card {
+        background: var(--admin-card);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 20px 35px rgba(8, 12, 24, 0.45);
+      }
+
+      .admin-card h3 {
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .metric {
+        background: rgba(148, 163, 184, 0.15);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .metric strong {
+        font-size: 22px;
+        display: block;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        text-align: left;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+      }
+
+      .kanban-column {
+        background: rgba(148, 163, 184, 0.15);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .kanban-column h4 {
+        margin-top: 0;
+      }
+
+      .kanban-card {
+        background: rgba(14, 165, 233, 0.15);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 10px;
+      }
+
+      .admin-footer {
+        margin-top: 12px;
+        text-align: center;
+        color: rgba(148, 163, 184, 0.7);
+        font-size: 12px;
+      }
+
+      .sub-tabs {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .sub-tabs button {
+        background: rgba(148, 163, 184, 0.18);
+        border: none;
+        color: #e2e8f0;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .sub-tabs button.active {
+        background: #38bdf8;
+        color: #0f172a;
+      }
+
+      .sub-panel {
+        display: none;
+      }
+
+      .sub-panel.active {
+        display: block;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.65);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 1100;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 24px;
+        max-width: 420px;
+        width: 100%;
+        color: #111827;
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+        position: relative;
+      }
+
+      .modal-card h3 {
+        margin-top: 0;
+      }
+
+      .modal-card.wide {
+        max-width: 1120px;
+        padding: 32px;
+      }
+
+      .modal-body-scroll {
+        max-height: 80vh;
+        overflow-y: auto;
+        padding-right: 8px;
+      }
+
+      .prototype-page {
+        display: grid;
+        gap: 24px;
+        color: #1f2937;
+      }
+
+      .prototype-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .prototype-header h3 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .prototype-meta {
+        display: flex;
+        gap: 10px;
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .prototype-badge {
+        background: rgba(17, 24, 39, 0.08);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-weight: 600;
+        font-size: 11px;
+      }
+
+      .section-card {
+        background: #f9fafb;
+        border-radius: 14px;
+        padding: 18px;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+        display: grid;
+        gap: 14px;
+      }
+
+      .section-card h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .section-card select,
+      .section-card input,
+      .pdp-buybox select {
+        margin-top: 6px;
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 13px;
+        background: #fff;
+      }
+
+      .section-card label,
+      .pdp-buybox label {
+        display: grid;
+        gap: 6px;
+        font-size: 13px;
+        color: #374151;
+      }
+
+      .white-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+      }
+
+      .pdp-layout {
+        display: grid;
+        grid-template-columns: 320px 1fr 280px;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .pdp-gallery {
+        padding: 18px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .pdp-gallery img {
+        width: 100%;
+        border-radius: 12px;
+        object-fit: cover;
+      }
+
+      .pdp-thumbs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .pdp-thumbs img {
+        border-radius: 10px;
+        border: 2px solid transparent;
+      }
+
+      .pdp-thumbs img.active {
+        border-color: var(--amazon-orange);
+      }
+
+      .pdp-main {
+        display: grid;
+        gap: 18px;
+      }
+
+      .pdp-main h4 {
+        font-size: 18px;
+      }
+
+      .pdp-price {
+        font-size: 28px;
+        color: var(--amazon-orange);
+        font-weight: 700;
+      }
+
+      .pdp-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+
+      .pdp-buybox {
+        padding: 18px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .pdp-buybox button {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: #ffd814;
+        color: #111827;
+      }
+
+      .btn-secondary {
+        background: #ffa41c;
+        color: #111827;
+      }
+
+      .list-split {
+        display: grid;
+        gap: 8px;
+        font-size: 13px;
+        color: #374151;
+      }
+
+      .checkout-layout,
+      .payment-layout,
+      .cart-layout,
+      .orders-layout,
+      .tracking-layout,
+      .category-layout {
+        display: grid;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .column-stack {
+        display: grid;
+        gap: 18px;
+      }
+
+      .checkout-layout {
+        grid-template-columns: 1fr 320px;
+      }
+
+      .payment-layout {
+        grid-template-columns: 260px 1fr 280px;
+      }
+
+      .cart-layout {
+        grid-template-columns: 1fr 320px;
+      }
+
+      .orders-layout {
+        grid-template-columns: 260px 1fr;
+      }
+
+      .tracking-layout {
+        grid-template-columns: 300px 1fr;
+      }
+
+      .category-layout {
+        grid-template-columns: 260px 1fr;
+      }
+
+      .stepper {
+        display: flex;
+        gap: 12px;
+        font-size: 13px;
+      }
+
+      .stepper span {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(17, 24, 39, 0.08);
+        font-weight: 600;
+      }
+
+      .stepper span.active {
+        background: var(--amazon-orange);
+        color: #111827;
+      }
+
+      .summary-box {
+        padding: 18px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .summary-total {
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .summary-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+      }
+
+      .summary-line strong {
+        font-weight: 600;
+      }
+
+      .payment-method {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .method-card {
+        padding: 14px;
+        border-radius: 12px;
+        border: 2px solid transparent;
+        background: #f3f4f6;
+      }
+
+      .method-card.active {
+        border-color: var(--amazon-orange);
+        background: #fff7ed;
+      }
+
+      .method-card strong {
+        display: block;
+        font-size: 14px;
+      }
+
+      .method-card span {
+        font-size: 12px;
+        color: #4b5563;
+      }
+
+      .cart-item {
+        display: grid;
+        grid-template-columns: 80px 1fr 100px;
+        gap: 16px;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .cart-item img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+
+      .cart-item-actions {
+        display: flex;
+        gap: 12px;
+        font-size: 12px;
+        color: #1d4ed8;
+      }
+
+      .cart-item-actions button {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .cart-item-price {
+        font-weight: 600;
+        text-align: right;
+      }
+
+      .cart-tabs {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .cart-tabs button {
+        border: none;
+        border-radius: 999px;
+        padding: 8px 16px;
+        background: #f3f4f6;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .cart-tabs button.active {
+        background: #111827;
+        color: #fff;
+      }
+
+      .order-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+        display: grid;
+        gap: 12px;
+      }
+
+      .order-status {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+      }
+
+      .order-stream {
+        display: grid;
+        gap: 16px;
+      }
+
+      .order-summary {
+        display: grid;
+        gap: 6px;
+        font-size: 13px;
+        color: #4b5563;
+      }
+
+      .order-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .order-actions button {
+        border: none;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 12px;
+        cursor: pointer;
+        background: #f3f4f6;
+      }
+
+      .order-actions button.primary {
+        background: #111827;
+        color: #fff;
+      }
+
+      .order-tag {
+        background: rgba(37, 99, 235, 0.1);
+        color: #1d4ed8;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .order-line {
+        display: grid;
+        grid-template-columns: 64px 1fr auto;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .order-line img {
+        width: 64px;
+        height: 64px;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+
+      .order-line strong {
+        font-size: 14px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 16px;
+        position: relative;
+        padding-left: 18px;
+      }
+
+      .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 6px;
+        bottom: 0;
+        width: 2px;
+        background: #d1d5db;
+      }
+
+      .timeline-step {
+        position: relative;
+        padding-left: 18px;
+        font-size: 13px;
+      }
+
+      .timeline-step::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: -18px;
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #9ca3af;
+      }
+
+      .timeline-step.active::before {
+        background: var(--amazon-orange);
+      }
+
+      .filter-panel {
+        display: grid;
+        gap: 10px;
+      }
+
+      .filter-panel button {
+        background: #f3f4f6;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .filter-panel button.active {
+        background: #111827;
+        color: #fff;
+      }
+
+      .category-tree {
+        display: grid;
+        gap: 12px;
+      }
+
+      .category-tree h4 {
+        margin: 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .category-tree ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+        font-size: 13px;
+      }
+
+      .category-showcase {
+        display: grid;
+        gap: 18px;
+      }
+
+      .category-showcase .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+      }
+
+      .category-card-sm {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+        display: grid;
+        gap: 8px;
+      }
+
+      .category-card-sm span {
+        font-size: 24px;
+      }
+
+      .category-hero {
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        border-radius: 16px;
+        padding: 24px;
+        display: grid;
+        gap: 12px;
+        color: #1e293b;
+      }
+
+      .category-hero h4 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .category-main {
+        display: grid;
+        gap: 20px;
+      }
+
+      .tracking-status {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+      }
+
+      .tracking-alert {
+        background: #fef3c7;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 13px;
+        color: #92400e;
+        box-shadow: 0 10px 20px rgba(217, 119, 6, 0.18);
+      }
+
+      .tracking-cards {
+        display: grid;
+        gap: 16px;
+      }
+
+      .spec-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+        font-size: 13px;
+      }
+
+      .spec-grid span {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .pill {
+        background: rgba(16, 185, 129, 0.15);
+        color: #047857;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .map-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+        display: grid;
+        gap: 16px;
+      }
+
+      .map-visual {
+        background: linear-gradient(135deg, #bae6fd, #e0f2fe);
+        border-radius: 14px;
+        height: 240px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .map-visual::after {
+        content: '港口 · 海关 · 末端配送节点';
+        position: absolute;
+        bottom: 16px;
+        right: 18px;
+        font-size: 12px;
+        color: #0f172a;
+        font-weight: 600;
+      }
+
+      .security-banner {
+        background: #ecfdf5;
+        border-radius: 12px;
+        padding: 14px;
+        font-size: 13px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .category-search-bar {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px 16px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      }
+
+      .category-search-bar input {
+        flex: 1;
+        border: none;
+        font-size: 14px;
+        background: transparent;
+      }
+
+      .category-search-bar button {
+        border: none;
+        background: var(--amazon-orange);
+        color: #111827;
+        border-radius: 10px;
+        padding: 8px 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .role-hint {
+        position: fixed;
+        top: 70px;
+        right: 16px;
+        background: rgba(17, 24, 39, 0.95);
+        color: #f9fafb;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.28);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-12px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .role-hint.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        .top-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .search-box {
+          width: 100%;
+        }
+
+        .secondary-bar {
+          flex-wrap: wrap;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>Amazon 全球电商 原型</h1>
-      <p class="tagline">全球最大的电商平台，覆盖零售、物流与云服务生态。</p>
+    <button class="role-toggle" id="roleToggle">切换为管理员视角</button>
+    <div class="role-hint" id="roleHint">当前：消费者体验</div>
+    <header class="customer-view">
+      <div class="top-bar">
+        <div class="logo">amazon.cn</div>
+        <div class="search-box">
+          <select>
+            <option>全部</option>
+            <option>电子产品</option>
+            <option>图书</option>
+            <option>家居</option>
+          </select>
+          <input type="text" placeholder="搜索全球好物" />
+          <button id="searchButton" data-open-modal="search">搜索</button>
+        </div>
+        <nav class="nav-links">
+          <a href="#" data-open-modal="login">你好，请登录</a>
+          <a href="#" data-open-modal="prime">我的Prime</a>
+          <a href="#" data-open-modal="orders">订单</a>
+          <a href="#" id="cartShortcut" data-open-modal="cart">购物车</a>
+        </nav>
+      </div>
+      <div class="secondary-bar">
+        <span>全部分类</span>
+        <span>Prime会员日</span>
+        <span>图书</span>
+        <span>电子产品</span>
+        <span>家居家装</span>
+        <span>生鲜</span>
+        <span>客户服务</span>
+      </div>
     </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>消费者、第三方卖家、品牌商</p>
-        <p><strong>核心痛点：</strong>消费者需要丰富商品与可靠物流，卖家需要高效运营工具</p>
-        <p><strong>价值主张：</strong>通过海量商品与 Prime 会员体系，提供一站式购物体验</p>
+    <main class="customer-view">
+      <section class="hero">
+        <div>
+          <h1>全球好物，Prime 极速送达</h1>
+          <p>
+            以会员身份畅享超过 1 亿件商品的免费配送、精选 Prime Video 影片与
+            Amazon Music 音乐，体验 Amazon 打造的全球一站式购物平台。
+          </p>
+          <button id="exploreCategories">立即体验 Prime</button>
+        </div>
+        <div class="hero-illustration">
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Amazon hero" />
+        </div>
+      </section>
+
+      <div class="section-title">
+        <h2>热门分类精选</h2>
+        <a href="#">查看全部</a>
+      </div>
+      <section class="category-grid">
+        <article class="category-card">
+          <span>📚</span>
+          <strong>海外原版图书</strong>
+          <p>精选畅销书、教材与专业书籍，一键购入。</p>
+        </article>
+        <article class="category-card">
+          <span>🎧</span>
+          <strong>智能数码</strong>
+          <p>耳机、音箱与智能家居设备，享受科技生活。</p>
+        </article>
+        <article class="category-card">
+          <span>🍳</span>
+          <strong>家居厨卫</strong>
+          <p>品质厨具、家装好物，打造舒适空间。</p>
+        </article>
+        <article class="category-card">
+          <span>🧴</span>
+          <strong>美妆个护</strong>
+          <p>全球口碑品牌直采，海淘必备精选。</p>
+        </article>
+      </section>
+
+      <div class="section-title">
+        <h2>今日闪购</h2>
+        <a href="#">全部优惠</a>
+      </div>
+      <section class="product-grid">
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Laptop" />
+          <div class="product-info">
+            <strong>华硕轻薄本 14"</strong>
+            <div class="rating">★★★★★ (2,381)</div>
+            <span>¥4,999 起 · Prime 次日达</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80" alt="Headphones" />
+          <div class="product-info">
+            <strong>Sony WH-1000XM5</strong>
+            <div class="rating">★★★★★ (18,024)</div>
+            <span>¥2,199 · 限时立减 15%</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?auto=format&fit=crop&w=800&q=80" alt="Kitchen" />
+          <div class="product-info">
+            <strong>德龙半自动咖啡机</strong>
+            <div class="rating">★★★★☆ (6,482)</div>
+            <span>¥1,299 · 海外购直邮</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80" alt="Books" />
+          <div class="product-info">
+            <strong>哈利·波特典藏套装</strong>
+            <div class="rating">★★★★★ (9,134)</div>
+            <span>¥589 · Prime 视频联合特典</span>
+          </div>
+        </article>
+      </section>
+
+      <div class="section-title">
+        <h2>核心页面体验速览</h2>
+        <a href="#" data-open-modal="journey">查看完整流程</a>
+      </div>
+      <section class="journey-grid">
+        <article class="journey-card">
+          <span>🛍️</span>
+          <h3>商品详情页</h3>
+          <p>沉浸式图文、规格对比与 Prime 服务承诺，帮助用户快速决策。</p>
+          <button data-open-modal="product">预览页面</button>
+        </article>
+        <article class="journey-card">
+          <span>🧾</span>
+          <h3>下单结算</h3>
+          <p>从购物车到提交订单的关键步骤，校验地址、配送与优惠。</p>
+          <button data-open-modal="checkout">查看流程</button>
+        </article>
+        <article class="journey-card">
+          <span>💳</span>
+          <h3>支付选择</h3>
+          <p>支持多币种与分期付款，付款成功实时同步订单状态。</p>
+          <button data-open-modal="payment">查看详情</button>
+        </article>
+        <article class="journey-card">
+          <span>🛒</span>
+          <h3>购物车页</h3>
+          <p>跨设备同步购物清单，可直接调整数量、应用优惠码。</p>
+          <button data-open-modal="cart">立即查看</button>
+        </article>
+        <article class="journey-card">
+          <span>📦</span>
+          <h3>订单中心</h3>
+          <p>聚合订单进度、售后入口与发票下载，便于用户跟踪。</p>
+          <button data-open-modal="orders">进入预览</button>
+        </article>
+        <article class="journey-card">
+          <span>🚚</span>
+          <h3>物流追踪</h3>
+          <p>全链路节点地图与异常提醒，实时掌握包裹动态。</p>
+          <button data-open-modal="tracking">实时查看</button>
+        </article>
+        <article class="journey-card">
+          <span>🗂️</span>
+          <h3>全部分类导航</h3>
+          <p>智能分类索引与搜索联想，让用户快速找到目标品类。</p>
+          <button data-open-modal="categories">浏览结构</button>
+        </article>
+      </section>
+
+      <div class="section-title" id="primeBenefits">
+        <h2>Prime 会员尊享</h2>
+      </div>
+      <section class="deal-banner">
+        <strong>Prime Day 独家福利</strong>
+        <p>
+          超过 60% 用户在 Prime Day 获得心仪好物。提前加入购物车，享受尖货限时抢购、
+          Amazon Fresh 生鲜 2 小时极速配送，以及 Prime Video 首映剧集抢先看。
+        </p>
+        <div class="bullet-points">
+          <p>· 会员专属折扣与提前购</p>
+          <p>· 跨境商品快速通关 & 关税补贴</p>
+          <p>· Alexa 设备语音下单体验</p>
+        </div>
+      </section>
+    </main>
+
+    <section class="admin-wrapper" id="adminView">
+      <div class="admin-layout">
+        <aside class="admin-sidebar">
+          <div>
+            <h2>Amazon 控制台</h2>
+            <p>管理员菜单</p>
+          </div>
+          <nav class="admin-menu" id="adminMenu">
+            <button class="active" data-section="dashboard" data-label="总览仪表板">总览仪表板 <small>实时指标</small></button>
+            <button data-section="catalog" data-label="商品与内容">商品与内容 <small>SKU / 图文 / 审核</small></button>
+            <button data-section="orders" data-label="订单与履约">订单与履约 <small>跨站点流程</small></button>
+            <button data-section="inventory" data-label="库存与供应链">库存与供应链 <small>仓配调度</small></button>
+            <button data-section="marketing" data-label="营销广告中心">营销广告中心 <small>预算 / 自动化</small></button>
+            <button data-section="customer" data-label="客服与体验">客服与体验 <small>工单 / 评价</small></button>
+            <button data-section="logistics" data-label="物流网络监控">物流网络监控 <small>FBA / 自发货</small></button>
+            <button data-section="finance" data-label="财务与结算">财务与结算 <small>发票 / 税务</small></button>
+            <button data-section="analytics" data-label="数据分析洞察">数据分析洞察 <small>BI / 预测</small></button>
+            <button data-section="security" data-label="权限与合规">权限与合规 <small>团队 / 安全</small></button>
+            <button data-section="settings" data-label="系统设置中心">系统设置中心 <small>自动化策略</small></button>
+          </nav>
+        </aside>
+        <div class="admin-body">
+          <div class="admin-header">
+            <div>
+              <h1>Amazon 卖家与运营控制台</h1>
+              <p>统一管理全球站点的商品、订单、广告与客户体验。</p>
+            </div>
+            <div class="admin-actions">
+              <button class="secondary" data-open-modal="report">创建报表</button>
+              <button class="primary" data-open-modal="newProduct">发布新品</button>
+            </div>
+          </div>
+
+          <div class="admin-section active" data-section="dashboard">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>实时运营指标</h3>
+                <div class="metrics-grid">
+                  <div class="metric">
+                    <span>GMV (24h)</span>
+                    <strong>$12.8M</strong>
+                    <small>较昨日 +8.4%</small>
+                  </div>
+                  <div class="metric">
+                    <span>Prime 新会员</span>
+                    <strong>32,640</strong>
+                    <small>全球市场 · 今日</small>
+                  </div>
+                  <div class="metric">
+                    <span>履约准时率</span>
+                    <strong>98.7%</strong>
+                    <small>FBA 仓配网络</small>
+                  </div>
+                  <div class="metric">
+                    <span>客服满意度</span>
+                    <strong>4.8 / 5</strong>
+                    <small>过去 7 天</small>
+                  </div>
+                </div>
+              </div>
+              <div class="admin-card">
+                <h3>站点健康评分</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>站点</th>
+                      <th>评分</th>
+                      <th>警报</th>
+                      <th>跟进人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>美国</td>
+                      <td>92 / 100</td>
+                      <td>Prime Day 库存风险</td>
+                      <td>运营 · Alice</td>
+                    </tr>
+                    <tr>
+                      <td>英国</td>
+                      <td>88 / 100</td>
+                      <td>VAT 发票延迟</td>
+                      <td>财务 · Henry</td>
+                    </tr>
+                    <tr>
+                      <td>日本</td>
+                      <td>94 / 100</td>
+                      <td>暂无</td>
+                      <td>-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>跨团队协作</h3>
+                <div class="kanban">
+                  <div class="kanban-column">
+                    <h4>待处理</h4>
+                    <div class="kanban-card">Prime Day 主视觉确认 · 品牌部</div>
+                    <div class="kanban-card">CN 站点税费调研 · 财务</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>进行中</h4>
+                    <div class="kanban-card">FBA 仓库容量扩容方案 · 运营</div>
+                    <div class="kanban-card">Alexa 语音下单文案本地化 · 产品</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>已完成</h4>
+                    <div class="kanban-card">Prime 会员权益页面翻新 · 设计</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="catalog">
+            <div class="admin-card">
+              <h3>商品生命周期管理</h3>
+              <div class="sub-tabs" data-group="catalog">
+                <button class="active" data-subtarget="catalog:listings">商品列表</button>
+                <button data-subtarget="catalog:content">图文与媒体</button>
+                <button data-subtarget="catalog:review">合规审核</button>
+              </div>
+              <div class="sub-panel active" data-subpanel="catalog:listings">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>标题</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>AMZ-KIN-001</td>
+                      <td>Kindle Scribe 2024</td>
+                      <td>待同步 EU 站</td>
+                      <td>编辑 · 提交审核</td>
+                    </tr>
+                    <tr>
+                      <td>AMZ-ECHO-008</td>
+                      <td>Echo Pop 智能音箱</td>
+                      <td>上线中</td>
+                      <td>优化 SEO 关键词</td>
+                    </tr>
+                    <tr>
+                      <td>AMZ-BAS-129</td>
+                      <td>Amazon Basics 电源插线板</td>
+                      <td>库存预警</td>
+                      <td>关联补货任务</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="sub-panel" data-subpanel="catalog:content">
+                <p>协同设计高清主图、A+ 内容与 360° 视频，预览多终端呈现效果。</p>
+                <ul>
+                  <li>待处理素材：12 套 · 设计部</li>
+                  <li>AI 文案助手草稿：5 条 · 支持多语言</li>
+                  <li>品牌旗舰店更新：预计上线 05/20</li>
+                </ul>
+              </div>
+              <div class="sub-panel" data-subpanel="catalog:review">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>提交时间</th>
+                      <th>责任人</th>
+                      <th>风险级别</th>
+                      <th>需要动作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>05/08 10:22</td>
+                      <td>法务 · Grace</td>
+                      <td>高</td>
+                      <td>补充 CE 认证文件</td>
+                    </tr>
+                    <tr>
+                      <td>05/08 13:47</td>
+                      <td>品控 · Leo</td>
+                      <td>中</td>
+                      <td>更新包装警示语</td>
+                    </tr>
+                    <tr>
+                      <td>05/09 09:18</td>
+                      <td>运营 · Ming</td>
+                      <td>低</td>
+                      <td>等待自动复审</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="orders">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>全球订单流转</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>订单号</th>
+                      <th>站点</th>
+                      <th>当前节点</th>
+                      <th>超时</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#CN-762193</td>
+                      <td>中国</td>
+                      <td>等待揽收</td>
+                      <td>+2h</td>
+                    </tr>
+                    <tr>
+                      <td>#US-612840</td>
+                      <td>美国</td>
+                      <td>库存不足</td>
+                      <td>-</td>
+                    </tr>
+                    <tr>
+                      <td>#JP-880421</td>
+                      <td>日本</td>
+                      <td>客户改址</td>
+                      <td>+1h</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>履约 SLA 仪表</h3>
+                <ul>
+                  <li>一日达准时率：96.2% · 目标 98%</li>
+                  <li>客服首次响应：8 分钟 · 目标 &lt; 5 分钟</li>
+                  <li>退货审批平均用时：3.4 小时 · 目标 2 小时</li>
+                  <li>异常订单处理效率：72% · 同比 +6%</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>自动化流程</h3>
+                <p>基于订单状态自动触发补货、客服通知与物流商 SLA 处罚。</p>
+                <div class="sub-tabs" data-group="orders">
+                  <button class="active" data-subtarget="orders:robot">智能指派</button>
+                  <button data-subtarget="orders:exception">异常处理</button>
+                  <button data-subtarget="orders:return">退换货</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="orders:robot">
+                  <ul>
+                    <li>海外仓库存 &lt; 5 天：自动生成 FBA 补货计划</li>
+                    <li>客户多次催促：升级至高级客服队列</li>
+                    <li>物流延误 &gt; 24h：触发运费补偿流程</li>
+                  </ul>
+                </div>
+                <div class="sub-panel" data-subpanel="orders:exception">
+                  <p>异常分类面板展示最新待处理任务：</p>
+                  <ul>
+                    <li>地址校验失败：18 单 · 已推送短信确认</li>
+                    <li>支付失败：9 单 · 等待客户重新支付</li>
+                    <li>跨境关税待确认：6 单 · 报关团队处理中</li>
+                  </ul>
+                </div>
+                <div class="sub-panel" data-subpanel="orders:return">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>退货原因</th>
+                        <th>占比</th>
+                        <th>改进措施</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>尺寸/规格不符</td>
+                        <td>34%</td>
+                        <td>优化商品详情页尺码助手</td>
+                      </tr>
+                      <tr>
+                        <td>物流损坏</td>
+                        <td>22%</td>
+                        <td>升级缓冲包装材料</td>
+                      </tr>
+                      <tr>
+                        <td>性能体验不佳</td>
+                        <td>18%</td>
+                        <td>上线体验评价收集问卷</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="inventory">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>仓储容量与周转</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>仓库</th>
+                      <th>利用率</th>
+                      <th>周转天数</th>
+                      <th>下一动作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>深圳 FBA</td>
+                      <td>84%</td>
+                      <td>18 天</td>
+                      <td>释放滞销库容</td>
+                    </tr>
+                    <tr>
+                      <td>宁波 FBA</td>
+                      <td>62%</td>
+                      <td>7 天</td>
+                      <td>补充热销 SKU</td>
+                    </tr>
+                    <tr>
+                      <td>德国 3PL</td>
+                      <td>71%</td>
+                      <td>12 天</td>
+                      <td>安排中转运输</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>供应商协同</h3>
+                <ul>
+                  <li>华南制造 · 本周交付率 96%</li>
+                  <li>越南代工厂 · 生产排期延迟 3 天</li>
+                  <li>环保材质供应商 · 交付批次已签收</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>补货预测模型</h3>
+                <p>基于销量、广告投放与季节性计算 30/60/90 天补货建议。</p>
+                <div class="sub-tabs" data-group="inventory">
+                  <button class="active" data-subtarget="inventory:30">30 天</button>
+                  <button data-subtarget="inventory:60">60 天</button>
+                  <button data-subtarget="inventory:90">90 天</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="inventory:30">
+                  <p>需立即补货 SKU：11 个 · 预计缺货日期 05/20</p>
+                </div>
+                <div class="sub-panel" data-subpanel="inventory:60">
+                  <p>中期备货建议：关注新品推广带来的需求波动。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="inventory:90">
+                  <p>旺季储备计划：Prime Day + Q4 节日促销资源锁定。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="marketing">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>广告投放概览</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>广告组</th>
+                      <th>曝光</th>
+                      <th>ACOS</th>
+                      <th>预算使用</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Prime Day 手机</td>
+                      <td>12.6M</td>
+                      <td>12%</td>
+                      <td>64%</td>
+                    </tr>
+                    <tr>
+                      <td>智能家居定投</td>
+                      <td>8.1M</td>
+                      <td>15%</td>
+                      <td>48%</td>
+                    </tr>
+                    <tr>
+                      <td>跨境图书推广</td>
+                      <td>5.2M</td>
+                      <td>9%</td>
+                      <td>36%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>活动排期</h3>
+                <ul>
+                  <li>5/15-5/20 · Prime Day 预热 · 站内 Banner & 推送</li>
+                  <li>6 月 · 音乐节主题活动 · Alexa 音箱联合营销</li>
+                  <li>7 月 · 学季返校 · 文具 & Kindle 捆绑优惠</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>营销自动化剧本</h3>
+                <div class="sub-tabs" data-group="marketing">
+                  <button class="active" data-subtarget="marketing:email">邮件触达</button>
+                  <button data-subtarget="marketing:push">站内推送</button>
+                  <button data-subtarget="marketing:live">直播带货</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="marketing:email">
+                  <p>Prime 新客欢迎邮件 · 预计打开率 48% · 转化 8.2%</p>
+                </div>
+                <div class="sub-panel" data-subpanel="marketing:push">
+                  <p>App 推送 4 条 · 支持地理围栏 · 实时 ROI 监控。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="marketing:live">
+                  <p>Amazon Live 直播排期：每周三 20:00 · 主推智能家居。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="customer">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>客服工单实时队列</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>渠道</th>
+                      <th>排队工单</th>
+                      <th>SLA</th>
+                      <th>优先级</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>在线聊天</td>
+                      <td>34</td>
+                      <td>5 分钟</td>
+                      <td>高</td>
+                    </tr>
+                    <tr>
+                      <td>邮件</td>
+                      <td>58</td>
+                      <td>4 小时</td>
+                      <td>中</td>
+                    </tr>
+                    <tr>
+                      <td>电话</td>
+                      <td>12</td>
+                      <td>即刻</td>
+                      <td>高</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>评价监控</h3>
+                <ul>
+                  <li>新增五星好评：+126 · 自动转化为素材</li>
+                  <li>差评预警：34 条 · 已派单至专项小组</li>
+                  <li>问答互动：16 条待回复 · 建议 2 小时内完成</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>体验优化地图</h3>
+                <div class="sub-tabs" data-group="customer">
+                  <button class="active" data-subtarget="customer:nps">NPS</button>
+                  <button data-subtarget="customer:return">退换货</button>
+                  <button data-subtarget="customer:voice">语音购物</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="customer:nps">
+                  <p>NPS：67 · 核心驱动：配送时效、Prime 视频权益。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="customer:return">
+                  <p>退货满意度：92% · AI 质检助手覆盖 80% 工单。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="customer:voice">
+                  <p>Alexa 语音购物满意度 4.6 / 5 · 新增语音指令 12 条。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="logistics">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>物流商 SLA 面板</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>物流商</th>
+                      <th>准时率</th>
+                      <th>延误订单</th>
+                      <th>跟进人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>亚马逊物流</td>
+                      <td>97%</td>
+                      <td>28</td>
+                      <td>运营 · Joy</td>
+                    </tr>
+                    <tr>
+                      <td>DHL 跨境</td>
+                      <td>89%</td>
+                      <td>42</td>
+                      <td>物流 · Ken</td>
+                    </tr>
+                    <tr>
+                      <td>顺丰速运</td>
+                      <td>95%</td>
+                      <td>16</td>
+                      <td>运营 · Lia</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>跨境节点地图</h3>
+                <p>实时可视化展示港口、海关与末端配送节点的吞吐情况。</p>
+                <ul>
+                  <li>上海港口：通关时长 16h · 正常</li>
+                  <li>洛杉矶码头：通关 28h · 拥堵预警</li>
+                  <li>东京站点：末端派送负载 68%</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>成本监控</h3>
+                <div class="sub-tabs" data-group="logistics">
+                  <button class="active" data-subtarget="logistics:fba">FBA</button>
+                  <button data-subtarget="logistics:mf">自发货</button>
+                  <button data-subtarget="logistics:return">逆向物流</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="logistics:fba">
+                  <p>FBA 单均履约成本：$3.26 · 环比下降 4%。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="logistics:mf">
+                  <p>自发货订单履约成本：$4.82 · 建议导入混合履约。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="logistics:return">
+                  <p>逆向物流成本：$1.12 · 退货集中在家居品类。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="finance">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>结算中心</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>周期</th>
+                      <th>应付商家</th>
+                      <th>已结金额</th>
+                      <th>待处理</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>本周</td>
+                      <td>$8.2M</td>
+                      <td>$6.7M</td>
+                      <td>$1.5M</td>
+                    </tr>
+                    <tr>
+                      <td>上周</td>
+                      <td>$7.9M</td>
+                      <td>$7.9M</td>
+                      <td>-</td>
+                    </tr>
+                    <tr>
+                      <td>本月累计</td>
+                      <td>$24.6M</td>
+                      <td>$17.9M</td>
+                      <td>$6.7M</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>发票与税务</h3>
+                <ul>
+                  <li>VAT 报表：英国、德国已提交 · 法国待补资料</li>
+                  <li>电子发票开具：本周 12,480 张 · 自动发送率 98%</li>
+                  <li>税收优惠政策：跨境出口退税方案审核中</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>预算控制台</h3>
+                <div class="sub-tabs" data-group="finance">
+                  <button class="active" data-subtarget="finance:opex">运营成本</button>
+                  <button data-subtarget="finance:capex">资本开支</button>
+                  <button data-subtarget="finance:forecast">现金流预测</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="finance:opex">
+                  <p>本月运营成本预算执行：72% · 较目标节省 6%。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="finance:capex">
+                  <p>仓储自动化升级项目 · 投资回收期预计 18 个月。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="finance:forecast">
+                  <p>滚动 13 周现金流预测：可覆盖库存采购 + 营销投放。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="analytics">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>BI 指标大屏</h3>
+                <p>关键指标：GMV、留存率、Prime 渗透率、广告 ROI 实时更新。</p>
+              </div>
+              <div class="admin-card">
+                <h3>预测模型中心</h3>
+                <ul>
+                  <li>销量预测：XGBoost · MAE 2.4%</li>
+                  <li>客户流失预测：AUC 0.91 · 重点关注 Prime 老客</li>
+                  <li>价格弹性分析：支持跨品类模拟</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>数据资产</h3>
+                <div class="sub-tabs" data-group="analytics">
+                  <button class="active" data-subtarget="analytics:dataset">数据集</button>
+                  <button data-subtarget="analytics:dashboard">仪表板</button>
+                  <button data-subtarget="analytics:experiment">实验</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="analytics:dataset">
+                  <p>公共数据集：订单事实表、客户维表、广告投放表。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="analytics:dashboard">
+                  <p>已发布仪表板：高管日报、Prime 运营周报、活动复盘。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="analytics:experiment">
+                  <p>AB 测试平台：进行中实验 6 个 · 预计 05/30 出结果。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="security">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>团队权限矩阵</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>角色</th>
+                      <th>功能范围</th>
+                      <th>审批人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>超级管理员</td>
+                      <td>全量访问 + 审批权限</td>
+                      <td>CTO</td>
+                    </tr>
+                    <tr>
+                      <td>运营经理</td>
+                      <td>商品 / 订单 / 广告</td>
+                      <td>运营总监</td>
+                    </tr>
+                    <tr>
+                      <td>客服主管</td>
+                      <td>客服工单 / 评价管理</td>
+                      <td>客户体验负责人</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="admin-card">
+                <h3>安全事件中心</h3>
+                <ul>
+                  <li>登录异常：2 起 · 已完成二次验证</li>
+                  <li>API 调用峰值：1 次 · 触发限流保护</li>
+                  <li>数据导出申请：4 个 · 等待审批</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>合规流程</h3>
+                <div class="sub-tabs" data-group="security">
+                  <button class="active" data-subtarget="security:gdpr">GDPR</button>
+                  <button data-subtarget="security:ccpa">CCPA</button>
+                  <button data-subtarget="security:iso">ISO27001</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="security:gdpr">
+                  <p>GDPR 数据清除请求：本周 12 个 · 平均处理 20 小时。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="security:ccpa">
+                  <p>CCPA 访问请求：8 个 · 已同步给美国法务团队。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="security:iso">
+                  <p>ISO27001 年度审计 · 待提交证据项 3 个。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section" data-section="settings">
+            <div class="admin-grid">
+              <div class="admin-card">
+                <h3>通知与提醒</h3>
+                <ul>
+                  <li>短信通知：订单异常、库存告警</li>
+                  <li>邮件摘要：每日高管运营日报</li>
+                  <li>Slack 集成：跨团队协同频道</li>
+                </ul>
+              </div>
+              <div class="admin-card">
+                <h3>自动化策略</h3>
+                <div class="sub-tabs" data-group="settings">
+                  <button class="active" data-subtarget="settings:rule">规则引擎</button>
+                  <button data-subtarget="settings:webhook">Webhook</button>
+                  <button data-subtarget="settings:approval">审批流</button>
+                </div>
+                <div class="sub-panel active" data-subpanel="settings:rule">
+                  <p>新增规则：库存低于 20% 自动锁定广告预算。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="settings:webhook">
+                  <p>对接 ERP、WMS、CRM 的实时回调状态。</p>
+                </div>
+                <div class="sub-panel" data-subpanel="settings:approval">
+                  <p>审批链路：新品上线 → 法务 → 品控 → 运营。</p>
+                </div>
+              </div>
+              <div class="admin-card">
+                <h3>环境配置</h3>
+                <p>支持生产、测试与沙箱环境快速切换与数据脱敏策略。</p>
+                <button class="secondary" data-open-modal="environment">查看环境切换流程</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-footer">Amazon 内部运营控制台 · 原型演示</div>
+        </div>
       </div>
     </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>消费者搜索商品并下单</li><li>卖家在 Seller Central 管理商品与广告</li><li>物流团队通过 FBA 完成仓储与配送</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>商品与搜索</h3>
-              <p class="goal">功能目标：帮助用户快速找到适合的商品</p>
-              <ul>
-                <li>搜索联想、类目导航与过滤器</li><li>商品详情页、评价与问答</li><li>推荐算法与个性化列表</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>交易与履约</h3>
-              <p class="goal">功能目标：确保下单到收货的流程顺畅</p>
-              <ul>
-                <li>购物车、结账与支付安全</li><li>Prime 配送、物流追踪与退换货</li><li>FBA 仓储管理与库存补货提醒</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>卖家中心</h3>
-              <p class="goal">功能目标：提供卖家运营、广告与数据工具</p>
-              <ul>
-                <li>商品上架、定价与库存</li><li>Sponsored Ads 广告管理</li><li>绩效指标、评价与客服工单</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>会员与服务扩展</h3>
-              <p class="goal">功能目标：提升用户忠诚度并拓展生态</p>
-              <ul>
-                <li>Prime 会员权益与订阅</li><li>Amazon Fresh、Prime Video 等增值服务</li><li>语音助手与智能设备集成</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>Prime 会员增长与留存</li><li>订单履约准时率与客户满意度</li><li>广告收入与第三方卖家贡献度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+
+    <div class="modal" id="modal-login">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>登录 Amazon 账号</h3>
+        <p>输入邮箱和密码，或使用手机验证码快捷登录。</p>
+        <ul>
+          <li>支持微信 / 支付宝快捷登录</li>
+          <li>Prime 会员尊享免邮、视频和音乐福利</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-prime">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>Prime 会员权益</h3>
+        <p>30 天免费试用，体验无限次极速达配送与 Prime Video / Music。</p>
+        <ul>
+          <li>海外购跨境物流加速</li>
+          <li>Prime Gaming 月度游戏礼包</li>
+          <li>Prime Reading 免费电子书</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-orders">
+      <div class="modal-card wide">
+        <button class="modal-close" data-close>&times;</button>
+        <div class="modal-body-scroll">
+          <div class="prototype-page">
+            <div class="prototype-header">
+              <div>
+                <h3>用户订单中心</h3>
+                <div class="prototype-meta">
+                  <span class="prototype-badge">近 6 个月</span>
+                  <span>查看数字订单 / 订阅省 / 退货换货</span>
+                </div>
+              </div>
+              <div class="prototype-meta">
+                <span>订单总数：12</span>
+                <span>售后处理中：2</span>
+              </div>
+            </div>
+            <div class="orders-layout">
+              <aside class="section-card filter-panel">
+                <button class="active">全部订单</button>
+                <button>可再次购买</button>
+                <button>正在配送</button>
+                <button>需要评价</button>
+                <button>退换货 / 售后</button>
+                <button>数字订单</button>
+              </aside>
+              <section class="order-stream">
+                <article class="order-card">
+                  <div class="order-status">
+                    <strong>订单号 #113-0025698-1234567</strong>
+                    <span class="order-tag">预计明日送达</span>
+                  </div>
+                  <div class="order-summary">
+                    <span>下单时间：2024-05-08 21:36</span>
+                    <span>支付方式：Visa 尾号 8890 · 金额 ¥5,298.00</span>
+                    <span>配送地址：上海市浦东新区张江路 988 号</span>
+                  </div>
+                  <div class="order-line">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=200&q=80" alt="Laptop" />
+                    <div>
+                      <strong>华硕灵耀 14 OLED 13代酷睿版</strong>
+                      <div class="prototype-meta">
+                        <span>规格：16GB + 1TB SSD</span>
+                        <span>颜色：深空蓝</span>
+                      </div>
+                    </div>
+                    <span class="pill">Prime 次日达</span>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-step active">
+                      <strong>05-09 08:32</strong> 包裹已出库 · 上海嘉定分拣中心
+                    </div>
+                    <div class="timeline-step active">
+                      <strong>05-08 23:05</strong> 支付成功，等待仓库发货
+                    </div>
+                    <div class="timeline-step">
+                      <strong>05-08 21:36</strong> 下单成功，系统已发送确认邮件
+                    </div>
+                  </div>
+                  <div class="order-actions">
+                    <button class="primary">跟踪物流</button>
+                    <button>再次购买</button>
+                    <button>联系客服</button>
+                    <button>下载发票</button>
+                  </div>
+                </article>
+                <article class="order-card">
+                  <div class="order-status">
+                    <strong>订单号 #113-1457823-9987210</strong>
+                    <span class="order-tag">退货申请处理中</span>
+                  </div>
+                  <div class="order-summary">
+                    <span>下单时间：2024-04-26 10:18</span>
+                    <span>支付方式：花呗 分期 · 金额 ¥1,268.00</span>
+                    <span>退货原因：尺寸不合适 · 预计 2 个工作日内退款</span>
+                  </div>
+                  <div class="order-line">
+                    <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=200&q=80" alt="Headphones" />
+                    <div>
+                      <strong>Sony WH-1000XM5 降噪耳机</strong>
+                      <div class="prototype-meta">
+                        <span>颜色：银灰</span>
+                        <span>服务：2 年意外保障</span>
+                      </div>
+                    </div>
+                    <span class="pill">退货中</span>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-step active">
+                      <strong>05-07 16:20</strong> 退货包裹已签收，等待质检
+                    </div>
+                    <div class="timeline-step active">
+                      <strong>05-05 09:40</strong> 快递员已上门取件
+                    </div>
+                    <div class="timeline-step">
+                      <strong>04-26 10:18</strong> 支付完成，商品已送达
+                    </div>
+                  </div>
+                  <div class="order-actions">
+                    <button class="primary">查看退货进度</button>
+                    <button>再次购买</button>
+                    <button>申请客服回电</button>
+                  </div>
+                </article>
+                <article class="order-card">
+                  <div class="order-status">
+                    <strong>订单号 #112-7788990-2211345</strong>
+                    <span class="order-tag">数字权益可用</span>
+                  </div>
+                  <div class="order-summary">
+                    <span>下单时间：2024-03-12 19:02</span>
+                    <span>支付方式：支付宝 · 金额 ¥589.00</span>
+                    <span>权益：Prime 阅读电子书 + Kindle 限免</span>
+                  </div>
+                  <div class="order-actions">
+                    <button class="primary">打开数字订单</button>
+                    <button>分享购买体验</button>
+                    <button>申请发票</button>
+                  </div>
+                </article>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-journey">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>Amazon 购物流程地图</h3>
+        <p>从发现商品到收货的典型用户路径，每个节点都对应高保真页面原型。</p>
+        <ol>
+          <li>浏览「全部分类」或搜索定位目标品类</li>
+          <li>进入「商品详情页」了解规格、评价与配送承诺</li>
+          <li>加入「购物车」并完成优惠核算</li>
+          <li>在「下单结算页」确认地址、配送与发票</li>
+          <li>通过「支付页」完成付款并获得实时确认</li>
+          <li>前往「订单中心」查看状态与售后入口</li>
+          <li>使用「物流追踪」监控包裹节点与异常提醒</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-product">
+      <div class="modal-card wide">
+        <button class="modal-close" data-close>&times;</button>
+        <div class="modal-body-scroll">
+          <div class="prototype-page">
+            <div class="prototype-header">
+              <div>
+                <h3>商品详情页（PDP）</h3>
+                <div class="prototype-meta">
+                  <span class="prototype-badge">Prime 次日达</span>
+                  <span>ASUS ZenBook 14 OLED · 13代酷睿 i7</span>
+                </div>
+              </div>
+              <div class="prototype-meta">
+                <span class="rating">★★★★★ (2,381)</span>
+                <span>库存状态：有货</span>
+              </div>
+            </div>
+            <div class="pdp-layout">
+              <aside class="white-card pdp-gallery">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80" alt="Laptop" />
+                <div class="pdp-thumbs">
+                  <img class="active" src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=400&q=80" alt="Laptop side" />
+                  <img src="https://images.unsplash.com/photo-1472289065668-ce650ac443d2?auto=format&fit=crop&w=400&q=80" alt="Keyboard" />
+                  <img src="https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=400&q=80" alt="Port" />
+                  <img src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92eee?auto=format&fit=crop&w=400&q=80" alt="Packaging" />
+                </div>
+                <div class="list-split">
+                  <span>· 360° 旋转查看 · 支持 AR 放置在桌面</span>
+                  <span>· 高分辨率图库 + 视频评测合集</span>
+                </div>
+              </aside>
+              <section class="white-card pdp-main">
+                <div>
+                  <h4>华硕灵耀 14 OLED 超轻薄本</h4>
+                  <div class="pdp-meta">
+                    <span>型号：UX3404 · 1.17kg</span>
+                    <span>颜色：深空蓝</span>
+                    <span>含 2 年全球联保</span>
+                  </div>
+                </div>
+                <div class="pdp-price">¥4,999.00</div>
+                <div class="list-split">
+                  <span>· 优惠：Prime 会员立减 ¥300 + 分期免息</span>
+                  <span>· 加购搭配：扩展坞、原装手写笔、Office 365</span>
+                </div>
+                <div class="section-card">
+                  <h4>产品亮点</h4>
+                  <div class="list-split">
+                    <span>· 第 13 代英特尔 i7 + 16GB LPDDR5</span>
+                    <span>· 2.8K HDR OLED 屏 · DC 调光护眼</span>
+                    <span>· AI 降噪双麦克风 + Wi-Fi 6E 极速网络</span>
+                    <span>· 75Wh 大电池 · 18 小时续航</span>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>规格对比</h4>
+                  <div class="spec-grid">
+                    <span><strong>处理器</strong><span>i7-1360P</span></span>
+                    <span><strong>显卡</strong><span>Iris Xe 96EU</span></span>
+                    <span><strong>内存</strong><span>16GB LPDDR5</span></span>
+                    <span><strong>硬盘</strong><span>1TB NVMe SSD</span></span>
+                    <span><strong>屏幕</strong><span>14" 2.8K 120Hz</span></span>
+                    <span><strong>接口</strong><span>雷电 4 ×2 / HDMI / USB-A</span></span>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>用户评价亮点</h4>
+                  <div class="list-split">
+                    <span>· 92% 用户认可屏幕色彩与亮度表现</span>
+                    <span>· Prime 次日达真实履约，包装防护到位</span>
+                    <span>· 办公场景续航可达 12 小时，表现优于预期</span>
+                  </div>
+                </div>
+              </section>
+              <aside class="white-card pdp-buybox">
+                <div>
+                  <div class="pdp-price">¥4,999</div>
+                  <div class="prototype-meta">
+                    <span>含税价</span>
+                    <span>支持 3/6/12 期分期</span>
+                  </div>
+                </div>
+                <div class="list-split">
+                  <span>配送：Prime 次日达 · 上海保税仓发货</span>
+                  <span>承诺：7 天无理由 · 30 天价保</span>
+                </div>
+                <label>
+                  颜色 / 规格
+                  <select>
+                    <option>深空蓝 · 16GB+1TB</option>
+                    <option>冰川银 · 32GB+1TB</option>
+                  </select>
+                </label>
+                <label>
+                  数量
+                  <select>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                  </select>
+                </label>
+                <button class="btn-primary">加入购物车</button>
+                <button class="btn-secondary">立即购买</button>
+                <div class="security-banner">
+                  <span>🔒</span>
+                  <div>支付安全保障 · 支持花呗 / Apple Pay / 银联云闪付</div>
+                </div>
+                <div class="list-split">
+                  <span>· Alexa 语音：添加到购物车 / 查询订单</span>
+                  <span>· 客服：24 小时在线 · 支持远程诊断</span>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-checkout">
+      <div class="modal-card wide">
+        <button class="modal-close" data-close>&times;</button>
+        <div class="modal-body-scroll">
+          <div class="prototype-page">
+            <div class="prototype-header">
+              <div>
+                <h3>下单结算页</h3>
+                <div class="prototype-meta">
+                  <span class="prototype-badge">购物车 → 填写信息 → 支付 → 完成</span>
+                  <span>实时校验地址 · 优惠 · 税费</span>
+                </div>
+              </div>
+              <div class="stepper">
+                <span>1. 购物车</span>
+                <span class="active">2. 填写信息</span>
+                <span>3. 支付</span>
+                <span>4. 完成</span>
+              </div>
+            </div>
+            <div class="checkout-layout">
+              <section class="column-stack">
+                <div class="section-card">
+                  <h4>送货地址</h4>
+                  <div class="prototype-meta">
+                    <span>收件人：李静 · 138****8890</span>
+                    <span>Prime 家庭地址</span>
+                  </div>
+                  <div class="list-split">
+                    <span>上海市浦东新区张江路 988 号 · 6 号楼 1502 室</span>
+                    <span>偏好：工作日 09:00-18:00 收货</span>
+                  </div>
+                  <div class="order-actions">
+                    <button class="primary">修改地址</button>
+                    <button>新增地址</button>
+                    <button>使用自提柜</button>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>配送与发票</h4>
+                  <div class="list-split">
+                    <span>· Prime 极速配送 · 明日 20:00 前送达</span>
+                    <span>· 预约配送：可选择周末 / 夜间时段</span>
+                  </div>
+                  <label>
+                    配送时间
+                    <select>
+                      <option>05-10 周五 · 18:00-22:00</option>
+                      <option>05-11 周六 · 09:00-12:00</option>
+                    </select>
+                  </label>
+                  <label>
+                    发票类型
+                    <select>
+                      <option>电子普通发票（个人）</option>
+                      <option>增值税专用发票（公司）</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="section-card">
+                  <h4>支付方式</h4>
+                  <div class="list-split">
+                    <span>· 默认：Visa 尾号 8890</span>
+                    <span>· 备用：花呗分期 / 招商银行信用卡</span>
+                  </div>
+                  <div class="order-actions">
+                    <button class="primary">切换支付方式</button>
+                    <button>添加新卡</button>
+                  </div>
+                  <div class="security-banner">
+                    <span>✅</span>
+                    <div>已开启「下单即扣」和「风险提醒」，确保支付安全。</div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>优惠与礼品</h4>
+                  <div class="list-split">
+                    <span>· 使用优惠码 <strong>PRIME300</strong> 已减 ¥300</span>
+                    <span>· 赠品：原装保护壳（价值 ¥199）</span>
+                    <span>· 礼品留言：祝毕业季顺顺利利！</span>
+                  </div>
+                  <label>
+                    输入优惠码
+                    <input type="text" value="PRIME300" />
+                  </label>
+                  <div class="order-actions">
+                    <button class="primary">应用</button>
+                    <button>礼品包装 ¥20</button>
+                  </div>
+                </div>
+              </section>
+              <aside class="white-card summary-box">
+                <h4>订单摘要</h4>
+                <div class="summary-line">
+                  <span>商品小计</span>
+                  <span>¥5,298.00</span>
+                </div>
+                <div class="summary-line">
+                  <span>Prime 会员折扣</span>
+                  <span>- ¥300.00</span>
+                </div>
+                <div class="summary-line">
+                  <span>配送费</span>
+                  <span>¥0.00</span>
+                </div>
+                <div class="summary-line">
+                  <span>进口税费</span>
+                  <span>¥198.00</span>
+                </div>
+                <div class="summary-line summary-total">
+                  <strong>应付总计</strong>
+                  <strong>¥5,196.00</strong>
+                </div>
+                <button class="btn-primary">提交订单</button>
+                <div class="list-split">
+                  <span>· 支持 Amazon Pay 一键下单</span>
+                  <span>· 订单提交后 30 分钟内可修改</span>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-payment">
+      <div class="modal-card wide">
+        <button class="modal-close" data-close>&times;</button>
+        <div class="modal-body-scroll">
+          <div class="prototype-page">
+            <div class="prototype-header">
+              <div>
+                <h3>支付页面</h3>
+                <div class="prototype-meta">
+                  <span class="prototype-badge">多渠道支付</span>
+                  <span>实时汇率 · 双重验证 · 风险监控</span>
+                </div>
+              </div>
+              <div class="stepper">
+                <span>1. 购物车</span>
+                <span>2. 填写信息</span>
+                <span class="active">3. 支付</span>
+                <span>4. 完成</span>
+              </div>
+            </div>
+            <div class="payment-layout">
+              <aside class="section-card payment-method">
+                <h4>选择支付方式</h4>
+                <div class="method-card active">
+                  <strong>Visa 尾号 8890</strong>
+                  <span>持卡人：LI JING · 到期 08/27</span>
+                  <span>支持 3/6/12 期免息</span>
+                </div>
+                <div class="method-card">
+                  <strong>花呗 分期</strong>
+                  <span>额度剩余 ¥12,600 · 预计月供 ¥433</span>
+                </div>
+                <div class="method-card">
+                  <strong>Amazon Pay 余额</strong>
+                  <span>可用 ¥1,200 · 可与信用卡组合支付</span>
+                </div>
+                <div class="order-actions">
+                  <button class="primary">添加新卡</button>
+                  <button>绑定支付宝</button>
+                </div>
+              </aside>
+              <section class="column-stack">
+                <div class="section-card">
+                  <h4>费用明细</h4>
+                  <div class="summary-line">
+                    <span>订单金额</span>
+                    <span>¥5,196.00</span>
+                  </div>
+                  <div class="summary-line">
+                    <span>使用余额</span>
+                    <span>¥1,000.00</span>
+                  </div>
+                  <div class="summary-line">
+                    <span>信用卡扣款</span>
+                    <span>¥4,196.00</span>
+                  </div>
+                  <div class="list-split">
+                    <span>· 多币种切换：CNY / USD / EUR</span>
+                    <span>· 汇率参考：Visa 实时牌价 1 USD = 7.12 CNY</span>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>安全验证</h4>
+                  <div class="list-split">
+                    <span>· 发送短信验证码至 138****8890</span>
+                    <span>· App 内可使用面容 ID 快速验证</span>
+                    <span>· 风控提示：设备指纹匹配成功</span>
+                  </div>
+                  <label>
+                    输入验证码
+                    <input type="text" placeholder="6 位验证码" />
+                  </label>
+                  <div class="order-actions">
+                    <button class="primary">确认付款</button>
+                    <button>重新发送</button>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>支付完成后</h4>
+                  <div class="list-split">
+                    <span>· 自动跳转至订单详情，展示物流节点</span>
+                    <span>· 提供电子发票下载与再次购买按钮</span>
+                    <span>· 推荐相关配件与 Prime 会员权益</span>
+                  </div>
+                </div>
+              </section>
+              <aside class="white-card summary-box">
+                <h4>支付摘要</h4>
+                <div class="summary-line">
+                  <span>应付总额</span>
+                  <strong>¥5,196.00</strong>
+                </div>
+                <div class="summary-line">
+                  <span>到账账户</span>
+                  <span>Amazon CN</span>
+                </div>
+                <div class="list-split">
+                  <span>· 付款成功短信 / 邮件即时通知</span>
+                  <span>· 账单将在 24 小时内同步至订单中心</span>
+                  <span>· 支持开票抬头与税号自动回填</span>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-cart">
+      <div class="modal-card wide">
+        <button class="modal-close" data-close>&times;</button>
+        <div class="modal-body-scroll">
+          <div class="prototype-page">
+            <div class="prototype-header">
+              <div>
+                <h3>购物车页面</h3>
+                <div class="prototype-meta">
+                  <span class="prototype-badge">可购买 · 稍后再买 · 订阅省</span>
+                  <span>实时同步库存与配送承诺</span>
+                </div>
+              </div>
+              <div class="prototype-meta">
+                <span>共 3 件商品</span>
+                <span>预计可节省 ¥320</span>
+              </div>
+            </div>
+            <div class="cart-layout">
+              <section class="column-stack">
+                <div class="cart-tabs">
+                  <button class="active">可购买 (3)</button>
+                  <button>稍后再买 (5)</button>
+                  <button>订阅省 (2)</button>
+                </div>
+                <div class="section-card">
+                  <div class="cart-item">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=200&q=80" alt="Laptop" />
+                    <div>
+                      <strong>华硕灵耀 14 OLED 笔记本</strong>
+                      <div class="prototype-meta">
+                        <span>深空蓝 · 16GB+1TB</span>
+                        <span>Prime 次日达</span>
+                      </div>
+                      <div class="cart-item-actions">
+                        <button>删除</button>
+                        <button>移入稍后再买</button>
+                        <button>加入心愿单</button>
+                      </div>
+                    </div>
+                    <div class="cart-item-price">¥4,999</div>
+                  </div>
+                  <div class="cart-item">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=200&q=80" alt="Backpack" />
+                    <div>
+                      <strong>Peak Design 多功能双肩包 20L</strong>
+                      <div class="prototype-meta">
+                        <span>雾灰 · 旅行摄影</span>
+                        <span>订阅省立减 10%</span>
+                      </div>
+                      <div class="cart-item-actions">
+                        <button>数量 -</button>
+                        <button>数量 +</button>
+                        <button>选择保障</button>
+                      </div>
+                    </div>
+                    <div class="cart-item-price">¥1,398</div>
+                  </div>
+                  <div class="cart-item">
+                    <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=200&q=80" alt="Headphones" />
+                    <div>
+                      <strong>Sony WH-1000XM5 降噪耳机</strong>
+                      <div class="prototype-meta">
+                        <span>银灰 · 附赠旅行包</span>
+                        <span>跨境税费 ¥86</span>
+                      </div>
+                      <div class="cart-item-actions">
+                        <button>删除</button>
+                        <button>移入稍后再买</button>
+                        <button>优惠详情</button>
+                      </div>
+                    </div>
+                    <div class="cart-item-price">¥2,199</div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>推荐搭配</h4>
+                  <div class="category-showcase">
+                    <div class="grid">
+                      <div class="category-card-sm">
+                        <span>🖱️</span>
+                        <strong>罗技 MX Master 3s</strong>
+                        <small>¥699 · 与笔记本一起购减 ¥50</small>
+                      </div>
+                      <div class="category-card-sm">
+                        <span>🎒</span>
+                        <strong>旅行收纳套装</strong>
+                        <small>¥199 · 满 2 件 8 折</small>
+                      </div>
+                      <div class="category-card-sm">
+                        <span>🔌</span>
+                        <strong>65W 氮化镓快充</strong>
+                        <small>¥149 · Prime 独享</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <aside class="white-card summary-box">
+                <h4>结算信息</h4>
+                <div class="summary-line">
+                  <span>商品金额</span>
+                  <span>¥8,596.00</span>
+                </div>
+                <div class="summary-line">
+                  <span>优惠减免</span>
+                  <span>- ¥320.00</span>
+                </div>
+                <div class="summary-line">
+                  <span>预计税费</span>
+                  <span>¥86.00</span>
+                </div>
+                <div class="summary-line summary-total">
+                  <strong>应付金额</strong>
+                  <strong>¥8,362.00</strong>
+                </div>
+                <button class="btn-primary">去结算</button>
+                <div class="list-split">
+                  <span>· Prime 免费配送门槛已满足</span>
+                  <span>· 可使用优惠码 PRIME300</span>
+                </div>
+                <div class="security-banner">
+                  <span>ℹ️</span>
+                  <div>发票、礼品留言将在下一步统一选择。</div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-tracking">
+      <div class="modal-card wide">
+        <button class="modal-close" data-close>&times;</button>
+        <div class="modal-body-scroll">
+          <div class="prototype-page">
+            <div class="prototype-header">
+              <div>
+                <h3>物流追踪页</h3>
+                <div class="prototype-meta">
+                  <span class="prototype-badge">包裹编号：CN785412369</span>
+                  <span>预计送达：05-10 · 20:00 前</span>
+                </div>
+              </div>
+              <div class="prototype-meta">
+                <span>当前节点：派送中 · 顺丰速运</span>
+                <span>签收码：4821</span>
+              </div>
+            </div>
+            <div class="tracking-layout">
+              <section class="column-stack">
+                <div class="section-card">
+                  <div class="tracking-status">
+                    <strong>配送进度</strong>
+                    <span class="pill">准时</span>
+                  </div>
+                  <div class="timeline">
+                    <div class="timeline-step active">
+                      <strong>05-09 10:22</strong> 配送员已揽收，正在前往上海浦东
+                    </div>
+                    <div class="timeline-step active">
+                      <strong>05-08 23:18</strong> 包裹离开上海国际转运中心
+                    </div>
+                    <div class="timeline-step active">
+                      <strong>05-08 14:06</strong> 完成清关 · 关税已结清
+                    </div>
+                    <div class="timeline-step">
+                      <strong>05-07 20:12</strong> 包裹抵达洛杉矶集散中心
+                    </div>
+                    <div class="timeline-step">
+                      <strong>05-06 08:40</strong> 卖家发货，等待航空出运
+                    </div>
+                  </div>
+                </div>
+                <div class="section-card tracking-cards">
+                  <div class="tracking-alert">⚠️ 目的地天气可能出现降雨，如需改约请点击「改约配送」。</div>
+                  <div class="list-split">
+                    <span>· 配送员：王强 · 186****2233</span>
+                    <span>· 自提柜备用：张江地铁站 A 口 · 48 小时保管</span>
+                    <span>· 售后支持：一键联系客服 / 申请补偿</span>
+                  </div>
+                  <div class="order-actions">
+                    <button class="primary">改约配送</button>
+                    <button>联系物流</button>
+                    <button>申请售后</button>
+                  </div>
+                </div>
+              </section>
+              <aside class="map-card">
+                <h4>跨境节点地图</h4>
+                <div class="map-visual"></div>
+                <div class="list-split">
+                  <span>· 上海保税仓：出库完成</span>
+                  <span>· 洛杉矶机场：清关完成</span>
+                  <span>· 浦东转运中心：派送中</span>
+                </div>
+                <div class="security-banner">
+                  <span>🛰️</span>
+                  <div>实时定位由 Amazon Logistics 提供 · 更新频率 5 分钟/次。</div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-categories">
+      <div class="modal-card wide">
+        <button class="modal-close" data-close>&times;</button>
+        <div class="modal-body-scroll">
+          <div class="prototype-page">
+            <div class="prototype-header">
+              <div>
+                <h3>全部分类导航页</h3>
+                <div class="prototype-meta">
+                  <span class="prototype-badge">场景 × 品牌 × 服务</span>
+                  <span>支持中文 / 英文检索与联想</span>
+                </div>
+              </div>
+              <div class="prototype-meta">
+                <span>热门活动：Prime Day · 全球购 · 数字内容</span>
+              </div>
+            </div>
+            <div class="category-layout">
+              <aside class="section-card category-tree">
+                <h4>热门品类</h4>
+                <ul>
+                  <li>家用电器</li>
+                  <li>手机数码</li>
+                  <li>电脑办公</li>
+                  <li>美妆个护</li>
+                  <li>母婴玩具</li>
+                  <li>图书文娱</li>
+                </ul>
+                <h4>生活方式</h4>
+                <ul>
+                  <li>智能家居</li>
+                  <li>户外运动</li>
+                  <li>轻奢时尚</li>
+                  <li>健康保健</li>
+                </ul>
+                <h4>服务</h4>
+                <ul>
+                  <li>Prime 会员</li>
+                  <li>Amazon Fresh</li>
+                  <li>Kindle / Audible</li>
+                  <li>Prime Video</li>
+                </ul>
+              </aside>
+              <section class="category-main">
+                <div class="category-search-bar">
+                  <span>🔍</span>
+                  <input type="text" placeholder="搜索产品、品牌或服务" />
+                  <button>搜索</button>
+                </div>
+                <div class="category-hero">
+                  <h4>Prime Day 全球购</h4>
+                  <p>尖货限时 48 小时 · 海外直邮包税 · 全站满 ¥699 减 ¥120。</p>
+                  <div class="prototype-meta">
+                    <span>精选国家：美国 / 日本 / 德国</span>
+                    <span>物流：最快 3 日达</span>
+                  </div>
+                </div>
+                <div class="category-showcase">
+                  <h4>精选会场</h4>
+                  <div class="grid">
+                    <div class="category-card-sm">
+                      <span>📱</span>
+                      <strong>5G 手机专场</strong>
+                      <small>Apple · Samsung · Xiaomi</small>
+                    </div>
+                    <div class="category-card-sm">
+                      <span>🏠</span>
+                      <strong>智能家居馆</strong>
+                      <small>Echo · Ring · 飞利浦 Hue</small>
+                    </div>
+                    <div class="category-card-sm">
+                      <span>🎧</span>
+                      <strong>高保真音频</strong>
+                      <small>Sony · Bose · Sennheiser</small>
+                    </div>
+                    <div class="category-card-sm">
+                      <span>📚</span>
+                      <strong>Kindle 畅读区</strong>
+                      <small>Prime Reading 免费书库</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="section-card">
+                  <h4>快捷入口</h4>
+                  <div class="list-split">
+                    <span>· 我的订单 / 退货换货</span>
+                    <span>· 客服中心 / 在线客服</span>
+                    <span>· Prime 会员中心 / 账单管理</span>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-search">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>智能搜索助手</h3>
+        <p>基于 AI 的搜索推荐，自动匹配 Prime 优惠、跨境物流与语音助手建议。</p>
+        <ul>
+          <li>支持语音输入与图片识别找同款</li>
+          <li>结合历史浏览记录个性化推荐</li>
+          <li>一键切换全球站点比价</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-report">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>创建运营报表</h3>
+        <p>选择站点、时间区间与指标，生成 PDF/Excel 供团队共享。</p>
+        <ul>
+          <li>支持 GMV、广告、库存、客服多指标组合</li>
+          <li>可配置每日定时发送</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-newProduct">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>发布新品流程</h3>
+        <p>准备商品基本信息、认证文件、媒体素材，提交至多区域站点。</p>
+        <ul>
+          <li>内置 AI 翻译多语言详情</li>
+          <li>审核节点可实时跟踪</li>
+          <li>与广告投放自动关联</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-environment">
+      <div class="modal-card">
+        <button class="modal-close" data-close>&times;</button>
+        <h3>环境切换流程</h3>
+        <p>选择目标环境并自动完成数据同步与脱敏校验。</p>
+        <ol>
+          <li>提交切换申请并指定窗口</li>
+          <li>系统校验依赖与资源状态</li>
+          <li>完成切换并生成审计日志</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer class="customer-view">
+      © 2024 Amazon 原型体验 · 包含消费者与管理端视角
+    </footer>
+
+    <script>
+      const roleToggle = document.getElementById('roleToggle');
+      const adminView = document.getElementById('adminView');
+      const customerSections = document.querySelectorAll('.customer-view');
+      const roleHint = document.getElementById('roleHint');
+      const adminMenuButtons = document.querySelectorAll('#adminMenu button');
+      const adminSections = document.querySelectorAll('.admin-section');
+      const modals = document.querySelectorAll('.modal');
+      const exploreCategories = document.getElementById('exploreCategories');
+      const categoryGrid = document.querySelector('.category-grid');
+      const primeBenefits = document.getElementById('primeBenefits');
+      let currentRole = 'customer';
+
+      function updateRoleUI() {
+        if (currentRole === 'customer') {
+          customerSections.forEach((section) => (section.style.display = ''));
+          adminView.style.display = 'none';
+          document.body.style.background = varComputed('--amazon-light');
+          roleToggle.textContent = '切换为管理员视角';
+          showHint('当前：消费者体验');
+        } else {
+          customerSections.forEach((section) => (section.style.display = 'none'));
+          adminView.style.display = 'block';
+          document.body.style.background = varComputed('--admin-bg');
+          roleToggle.textContent = '切换为消费者视角';
+          const activeButton = document.querySelector('#adminMenu button.active');
+          activateAdminSection(activeButton ? activeButton.dataset.section : 'dashboard', false);
+          showHint('当前：管理员控制台');
+        }
+      }
+
+      function varComputed(name) {
+        return getComputedStyle(document.documentElement)
+          .getPropertyValue(name)
+          .trim();
+      }
+
+      function showHint(text) {
+        roleHint.textContent = text;
+        roleHint.classList.add('show');
+        clearTimeout(showHint.timer);
+        showHint.timer = setTimeout(() => {
+          roleHint.classList.remove('show');
+        }, 2000);
+      }
+
+      function activateAdminSection(target, withHint = true) {
+        adminSections.forEach((section) => {
+          section.classList.toggle('active', section.dataset.section === target);
+        });
+        adminMenuButtons.forEach((btn) => {
+          const isActive = btn.dataset.section === target;
+          btn.classList.toggle('active', isActive);
+          if (isActive && currentRole === 'admin' && withHint) {
+            showHint(`模块：${btn.dataset.label}`);
+          }
+        });
+      }
+
+      roleToggle.addEventListener('click', () => {
+        currentRole = currentRole === 'customer' ? 'admin' : 'customer';
+        updateRoleUI();
+      });
+
+      adminMenuButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activateAdminSection(button.dataset.section);
+        });
+      });
+
+      document.querySelectorAll('.sub-tabs').forEach((group) => {
+        const groupName = group.dataset.group;
+        const buttons = group.querySelectorAll('button');
+        const panels = document.querySelectorAll(`.sub-panel[data-subpanel^="${groupName}:"]`);
+        buttons.forEach((button) => {
+          button.addEventListener('click', () => {
+            buttons.forEach((btn) => btn.classList.remove('active'));
+            button.classList.add('active');
+            panels.forEach((panel) => {
+              panel.classList.toggle('active', panel.dataset.subpanel === button.dataset.subtarget);
+            });
+          });
+        });
+      });
+
+      function openModal(id) {
+        const modal = document.getElementById(`modal-${id}`);
+        if (!modal) return;
+        modals.forEach((item) => item.classList.remove('active'));
+        modal.classList.add('active');
+        showHint(`打开：${modal.querySelector('h3').textContent}`);
+      }
+
+      function closeModal(modal) {
+        const target = modal || document.querySelector('.modal.active');
+        if (target) {
+          target.classList.remove('active');
+        }
+      }
+
+      document.querySelectorAll('[data-open-modal]').forEach((trigger) => {
+        trigger.addEventListener('click', (event) => {
+          event.preventDefault();
+          openModal(trigger.dataset.openModal);
+        });
+      });
+
+      modals.forEach((modal) => {
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            closeModal(modal);
+          }
+        });
+        modal.querySelectorAll('[data-close]').forEach((closeButton) => {
+          closeButton.addEventListener('click', () => closeModal(modal));
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      });
+
+      if (exploreCategories && categoryGrid) {
+        exploreCategories.addEventListener('click', () => {
+          categoryGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setTimeout(() => showHint('已定位：热门分类精选'), 400);
+        });
+      }
+
+      if (primeBenefits) {
+        primeBenefits.addEventListener('click', () => {
+          showHint('Prime 会员福利已在下方展示');
+        });
+      }
+
+      activateAdminSection('dashboard', false);
+      updateRoleUI();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

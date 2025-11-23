@@ -2,83 +2,2305 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>SAP S/4HANA 原型概览</title>
+    <title>SAP S/4HANA 企业数字核心原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg-body: #f4f6fb;
+        --bg-surface: #ffffff;
+        --bg-surface-alt: #f1f5f9;
+        --border: #d9e2ef;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --text-strong: #0f172a;
+        --text-medium: #475569;
+        --text-light: #94a3b8;
+        --shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        margin: 0;
+        background: var(--bg-body);
+        color: var(--text-strong);
+        min-height: 100vh;
+        display: flex;
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        width: 100%;
+      }
+
+      .side-nav {
+        background: var(--bg-surface);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        padding: 32px 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand {
+        font-weight: 700;
+        font-size: 22px;
+        margin-bottom: 4px;
+        color: var(--text-strong);
+      }
+
+      .brand-sub {
+        color: var(--text-medium);
+        font-size: 13px;
+        margin-bottom: 28px;
+      }
+
+      .menu-section-title {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: var(--text-light);
+        text-transform: uppercase;
+        margin: 24px 0 8px;
+      }
+
+      .menu-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .menu-item {
+        margin-bottom: 6px;
+      }
+
+      .menu-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        color: var(--text-medium);
+        text-decoration: none;
+        font-size: 15px;
+        transition: background 0.2s ease, color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .menu-link span.icon {
+        font-size: 18px;
+      }
+
+      .menu-link.active,
+      .menu-link:hover {
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--primary-dark);
+        font-weight: 600;
+      }
+
+      .main-area {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 28px 40px 18px;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .top-bar h1 {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 700;
+      }
+
+      .top-bar p {
+        margin: 4px 0 0;
+        color: var(--text-medium);
+        font-size: 14px;
+      }
+
+      .role-switch {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .role-switch-title {
+        font-size: 14px;
+        color: var(--text-medium);
+        margin-right: 6px;
+      }
+
+      .role-chip {
+        border: 1px solid var(--border);
+        background: var(--bg-surface);
+        color: var(--text-medium);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .role-chip.active {
+        border-color: rgba(37, 99, 235, 0.4);
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--primary-dark);
+        font-weight: 600;
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.15);
+      }
+
+      main {
+        flex: 1;
+        padding: 32px 40px 64px;
+      }
+
+      .page-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        gap: 24px;
+      }
+
+      .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .page-header h2 {
+        font-size: 28px;
+        margin: 0;
+      }
+
+      .page-header .subtitle {
+        color: var(--text-medium);
+        font-size: 16px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+      }
+
+      .hero-card {
+        background: var(--bg-surface);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-card h3 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text-medium);
+      }
+
+      .hero-card .value {
+        font-size: 28px;
+        font-weight: 700;
+        margin-top: 14px;
+      }
+
+      .hero-card .trend {
+        margin-top: 8px;
+        font-size: 13px;
+        color: var(--primary-dark);
+      }
+
+      .hero-card .badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--primary-dark);
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      .content-section {
+        background: var(--bg-surface);
+        border-radius: 22px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: 18px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .section-header h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .section-header .meta {
+        color: var(--text-light);
+        font-size: 13px;
+      }
+
+      .chart-placeholder {
+        height: 220px;
+        border-radius: 16px;
+        border: 1px dashed rgba(37, 99, 235, 0.2);
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(79, 70, 229, 0.08));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-dark);
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .data-table thead {
+        background: var(--bg-surface-alt);
+        color: var(--text-medium);
+        font-size: 13px;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        font-size: 14px;
+      }
+
+      .tag-list {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .tag {
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--primary-dark);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+
+      .action-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .action-button {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+      }
+
+      .action-button.secondary {
+        background: var(--bg-surface);
+        color: var(--primary-dark);
+        border: 1px solid rgba(37, 99, 235, 0.3);
+        box-shadow: none;
+      }
+
+      .business-notes {
+        background: var(--bg-surface-alt);
+        border-radius: 18px;
+        padding: 20px;
+        border: 1px dashed rgba(15, 23, 42, 0.15);
+      }
+
+      .business-notes h4 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+      }
+
+      .business-notes ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--text-medium);
+      }
+
+      .pill-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+      }
+
+      .pill-item {
+        background: var(--bg-surface-alt);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 13px;
+        color: var(--text-medium);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline-item {
+        background: rgba(37, 99, 235, 0.08);
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      .timeline-item strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      .back-button {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(15, 23, 42, 0.08);
+        cursor: pointer;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      @media (max-width: 1080px) {
+        .app-shell {
+          grid-template-columns: 240px 1fr;
+        }
+
+        .top-bar {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .role-switch {
+          flex-wrap: wrap;
+        }
+      }
+
+      @media (max-width: 820px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .side-nav {
+          position: fixed;
+          inset: 0;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+        }
+
+        body.nav-open .side-nav {
+          transform: translateX(0);
+        }
+
+        main {
+          padding: 24px 24px 48px;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>SAP S/4HANA 原型</h1>
-      <p class="tagline">面向大型企业的实时智能 ERP 核心系统。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>财务、供应链、制造、采购等跨部门团队</p>
-        <p><strong>核心痛点：</strong>传统 ERP 数据冗余、报表滞后、流程难以智能化</p>
-        <p><strong>价值主张：</strong>基于内存计算与行业最佳实践，支撑端到端业务与实时分析</p>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="brand">S/4HANA Digital Core</div>
+        <div class="brand-sub">智能 ERP 角色化演示</div>
+        <div id="menuContainer"></div>
+      </aside>
+      <div class="main-area">
+        <header class="top-bar">
+          <div>
+            <h1>企业运营指挥中心</h1>
+            <p id="roleDescription">基于角色的端到端流程体验</p>
+          </div>
+          <div class="role-switch" id="roleSwitch"></div>
+        </header>
+        <main>
+          <div class="page-wrapper" id="pageWrapper"></div>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>财务共享中心进行月结与审计</li><li>制造计划部门进行 MRP 与排程</li><li>采购团队协同供应商执行订单</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>财务管理</h3>
-              <p class="goal">功能目标：统一财务与管理会计数据</p>
-              <ul>
-                <li>通用日记账与财务关账</li><li>盈利能力分析与成本控制</li><li>现金管理与合规报表</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>制造与计划</h3>
-              <p class="goal">功能目标：优化生产计划与执行</p>
-              <ul>
-                <li>需求管理、MRP 与APS</li><li>生产订单、质量与成本</li><li>设备维护与工厂绩效分析</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>供应链与物流</h3>
-              <p class="goal">功能目标：提高供应链透明度与响应速度</p>
-              <ul>
-                <li>库存与仓储管理</li><li>运输计划、交货与追踪</li><li>外部供应商协同与扩展仓储</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>采购与合同</h3>
-              <p class="goal">功能目标：整合战略采购与运营采购</p>
-              <ul>
-                <li>采购申请、询价与合同</li><li>供应商评估与风险管理</li><li>与 Ariba、Fieldglass 集成</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>财务关账时长与审计通过率</li><li>计划准确率与生产周期</li><li>库存周转率与供应链准时率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+
+    <script>
+      const createHeroCards = (cards = []) => {
+        if (!cards.length) return "";
+        return `
+          <section class="hero-grid">
+            ${cards
+              .map(
+                (card) => `
+                  <article class="hero-card">
+                    ${card.badge ? `<span class="badge">${card.badge}</span>` : ""}
+                    <h3>${card.title}</h3>
+                    <div class="value">${card.value}</div>
+                    ${card.trend ? `<div class="trend">${card.trend}</div>` : ""}
+                  </article>
+                `
+              )
+              .join("")}
+          </section>
+        `;
+      };
+
+      const createTable = (table) => {
+        if (!table) return "";
+        const headers = (table.headers || [])
+          .map((header) => `<th>${header}</th>`)
+          .join("");
+        const rows = (table.rows || [])
+          .map(
+            (row) => `
+              <tr>
+                ${row.map((cell) => `<td>${cell}</td>`).join("")}
+              </tr>
+            `
+          )
+          .join("");
+        return `
+          <table class="data-table">
+            <thead><tr>${headers}</tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      };
+
+      const createHighlights = (items = []) => {
+        if (!items.length) return "";
+        return `
+          <ul class="pill-list">
+            ${items.map((item) => `<li class="pill-item">${item}</li>`).join("")}
+          </ul>
+        `;
+      };
+
+      const createTimeline = (items = []) => {
+        if (!items.length) return "";
+        return `
+          <div class="timeline">
+            ${items
+              .map(
+                (item) => `
+                  <div class="timeline-item">
+                    <strong>${item.title}</strong>
+                    <span>${item.description}</span>
+                  </div>
+                `
+              )
+              .join("")}
+          </div>
+        `;
+      };
+
+      const createSection = (section) => {
+        const header = `
+          <div class="section-header">
+            <h3>${section.title || ""}</h3>
+            ${section.meta ? `<span class="meta">${section.meta}</span>` : ""}
+          </div>
+        `;
+
+        let body = "";
+        if (section.type === "chart") {
+          body = `<div class="chart-placeholder">${section.placeholder || "图表占位"}</div>`;
+        } else if (section.type === "table") {
+          body = createTable(section.table);
+        } else if (section.type === "highlights") {
+          body = createHighlights(section.items);
+        } else if (section.type === "timeline") {
+          body = createTimeline(section.items);
+        } else if (section.type === "custom") {
+          body = section.html || "";
+        }
+
+        return `
+          <section class="content-section">
+            ${section.title || section.meta ? header : ""}
+            ${body}
+          </section>
+        `;
+      };
+
+      const createBusinessNotes = (notes = []) => {
+        if (!notes.length) return "";
+        return `
+          <section class="business-notes">
+            <h4>主要业务说明</h4>
+            <ul>
+              ${notes.map((note) => `<li>${note}</li>`).join("")}
+            </ul>
+          </section>
+        `;
+      };
+
+      const renderActions = (actions = []) => {
+        if (!actions.length) return "";
+        return `
+          <div class="action-bar">
+            ${actions
+              .map(
+                (action) => `
+                  <button class="action-button ${action.tone === "secondary" ? "secondary" : ""}" data-target="${action.target}">
+                    ${action.label}
+                  </button>
+                `
+              )
+              .join("")}
+          </div>
+        `;
+      };
+
+      const roles = {
+        cfo: {
+          name: "财务总监",
+          icon: "💼",
+          description: "掌控集团实时财务、合规与盈利能力。",
+          menuGroups: [
+            {
+              title: "财务驾驶舱",
+              items: [
+                { id: "finance-dashboard", label: "实时财务总览", icon: "📊" },
+                { id: "finance-close", label: "月末关账控制台", icon: "🗓️" },
+                { id: "finance-cashflow", label: "现金流预测", icon: "💧" },
+                { id: "finance-profitability", label: "盈利能力分析", icon: "📈" },
+                { id: "finance-audit", label: "审计追踪中心", icon: "🛡️" }
+              ]
+            }
+          ],
+          pages: {
+            "finance-dashboard": {
+              title: "实时财务总览",
+              subtitle: "统一集团公司代码的日现金、利润与风险态势",
+              heroCards: [
+                {
+                  title: "今日现金余额",
+                  value: "¥ 12.8B",
+                  trend: "较昨日 +4.1%",
+                  badge: "实时"
+                },
+                {
+                  title: "EBITDA 年初至今",
+                  value: "¥ 3.4B",
+                  trend: "完成年度目标 62%"
+                },
+                {
+                  title: "应收账款周转天数",
+                  value: "38 天",
+                  trend: "较上月 -5 天"
+                },
+                {
+                  title: "关键风险暴露",
+                  value: "6 项",
+                  trend: "需 CFO 今日关注",
+                  badge: "预警"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "6 周现金流预测",
+                  meta: "基于应收、应付、库存与计划排程自动预测",
+                  placeholder: "现金流入 / 流出场景模拟"
+                },
+                {
+                  type: "table",
+                  title: "重点监控的公司代码",
+                  meta: "异常阈值由机器学习动态计算",
+                  table: {
+                    headers: ["公司代码", "KPI", "当前值", "阈值", "责任人"],
+                    rows: [
+                      ["CN01", "净现金流", "-¥ 42M", "≥ 0", "陈欣"],
+                      ["US03", "应收账期", "52 天", "≤ 40", "Michael"],
+                      ["DE07", "库存占用", "¥ 380M", "≤ 300M", "Lukas"]
+                    ]
+                  }
+                },
+                {
+                  type: "highlights",
+                  title: "自动洞察",
+                  items: [
+                    "AI 识别出三笔发票可能重复入账，建议启动三方匹配审核。",
+                    "美洲区域毛利率因运输附加费下降 1.6%，需评估定价策略。",
+                    "亚太区关税减免政策即将到期，建议两周内完成补录。"
+                  ]
+                }
+              ],
+              actions: [
+                {
+                  label: "查看盈利中心详情",
+                  target: "finance-profit-center-detail"
+                },
+                {
+                  label: "打开关账日历",
+                  target: "finance-close-calendar",
+                  tone: "secondary"
+                }
+              ],
+              businessNotes: [
+                "为 CFO 提供集团层面的关键指标、预警与 AI 洞察。",
+                "通过统一的现金流预测模型评估短期资金缺口。",
+                "支持快速跳转至利润中心与关账场景进行深挖。"
+              ]
+            },
+            "finance-close": {
+              title: "月末关账控制台",
+              subtitle: "串联凭证、审批、审计追踪的端到端流程",
+              heroCards: [
+                {
+                  title: "关账整体进度",
+                  value: "72%",
+                  trend: "目标完成 5/7 天",
+                  badge: "进行中"
+                },
+                {
+                  title: "待审批凭证",
+                  value: "18 笔",
+                  trend: "平均等待 3.2 小时"
+                },
+                {
+                  title: "审计事项",
+                  value: "4 项",
+                  trend: "均已分派责任人"
+                }
+              ],
+              sections: [
+                {
+                  type: "timeline",
+                  title: "关键里程碑",
+                  items: [
+                    {
+                      title: "第 3 天：库存对账",
+                      description: "仓储数据与财务账簿自动核对完成 95%。"
+                    },
+                    {
+                      title: "第 5 天：成本分摊",
+                      description: "生产订单差异结转至盈利中心，等待 CFO 审批。"
+                    },
+                    {
+                      title: "第 6 天：合并报表",
+                      description: "系统自动生成合并分录并推送审计追踪。"
+                    }
+                  ]
+                },
+                {
+                  type: "table",
+                  title: "瓶颈任务清单",
+                  table: {
+                    headers: ["任务", "负责人", "状态", "阻塞说明", "下一步"],
+                    rows: [
+                      ["固定资产折旧", "王蕾", "等待数据", "资产主数据更新延迟", "提醒主数据团队"],
+                      ["跨公司交易抵销", "Anders", "处理中", "缺少瑞典子公司数据", "请求补数"],
+                      ["成本中心结转", "陈凯", "待审批", "CFO 复核", "安排视频会议"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                {
+                  label: "进入关账日历",
+                  target: "finance-close-calendar"
+                },
+                {
+                  label: "打开审计抽样列表",
+                  target: "finance-audit-sample",
+                  tone: "secondary"
+                }
+              ],
+              businessNotes: [
+                "聚合关账流程关键节点，自动识别瓶颈并指派责任。",
+                "提供 AI 建议以缩短凭证等待与审批周期。",
+                "支持快速跳转至关账日历与审计抽样页面。"
+              ]
+            },
+            "finance-cashflow": {
+              title: "现金流预测",
+              subtitle: "结合销售计划、采购承诺与资金成本的多场景模拟",
+              heroCards: [
+                {
+                  title: "未来 6 周净现金",
+                  value: "+¥ 620M",
+                  trend: "较基准场景 +12%"
+                },
+                {
+                  title: "信用额度占用",
+                  value: "41%",
+                  trend: "剩余额度 ¥ 280M"
+                },
+                {
+                  title: "高风险客户",
+                  value: "8 家",
+                  trend: "建议提前催收"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "多场景现金流对比",
+                  meta: "考虑销售提报、采购订单与资本支出计划",
+                  placeholder: "基准 / 压力 / 最佳 场景曲线"
+                },
+                {
+                  type: "table",
+                  title: "压力场景关键驱动",
+                  table: {
+                    headers: ["驱动因素", "影响金额", "缓解动作", "负责人"],
+                    rows: [
+                      ["供应商延迟付款", "-¥ 120M", "谈判延长账期", "采购部"],
+                      ["汇率波动", "-¥ 65M", "启用对冲组合", "财资部"],
+                      ["库存积压", "-¥ 48M", "发起折扣清货", "销售运营"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                {
+                  label: "打开融资方案对比",
+                  target: "finance-funding-options"
+                }
+              ],
+              businessNotes: [
+                "提供基准、压力、乐观等多情景模拟，辅助现金调度。",
+                "结合信用额度与银行融资成本给出优化建议。",
+                "支持跳转至融资方案页面进行额度配置。"
+              ]
+            },
+            "finance-profitability": {
+              title: "盈利能力分析",
+              subtitle: "按产品线、区域、客户维度的动态盈利洞察",
+              heroCards: [
+                {
+                  title: "本季度毛利率",
+                  value: "28.4%",
+                  trend: "较上季度 +1.7%"
+                },
+                {
+                  title: "亏损产品线",
+                  value: "2 条",
+                  trend: "触发 AI 根因分析"
+                },
+                {
+                  title: "高价值客户",
+                  value: "12 家",
+                  trend: "贡献 46% 毛利"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "产品线盈利热力图",
+                  meta: "综合成本、售价、折扣与返利数据",
+                  placeholder: "热力图 & 贡献度矩阵"
+                },
+                {
+                  type: "table",
+                  title: "毛利率波动分析",
+                  table: {
+                    headers: ["维度", "波动", "驱动因素", "建议动作"],
+                    rows: [
+                      ["华东地区", "+2.3%", "生产良率提升", "扩大产能配额"],
+                      ["医疗行业客户", "-1.1%", "服务成本上升", "调整服务包"],
+                      ["消费电子线", "-3.4%", "原料涨价", "启动替代供应商"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                {
+                  label: "打开盈利中心详情",
+                  target: "finance-profit-center-detail"
+                }
+              ],
+              businessNotes: [
+                "快速识别毛利波动与关键驱动因素。",
+                "结合 AI 建议，直接指派改善举措给相关负责人。",
+                "支持进一步钻取至盈利中心明细页面。"
+              ]
+            },
+            "finance-audit": {
+              title: "审计追踪中心",
+              subtitle: "整合内外部审计抽样、证据与整改追踪",
+              heroCards: [
+                {
+                  title: "开放审计事项",
+                  value: "14 项",
+                  trend: "其中高风险 3 项"
+                },
+                {
+                  title: "整改完成率",
+                  value: "67%",
+                  trend: "距离目标 90% 还差 7 项"
+                },
+                {
+                  title: "待上传凭证",
+                  value: "26 份",
+                  trend: "提醒责任人完成"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "高风险审计事项",
+                  table: {
+                    headers: ["事项", "风险等级", "到期日", "责任部门", "状态"],
+                    rows: [
+                      ["收入确认测试", "高", "2024-04-12", "销售财务", "待证据"],
+                      ["IT 一般控制", "高", "2024-04-18", "信息安全", "整改中"],
+                      ["库存盘点", "中", "2024-05-02", "供应链", "待复核"]
+                    ]
+                  }
+                },
+                {
+                  type: "highlights",
+                  title: "系统建议",
+                  items: [
+                    "建议启用电子凭证 OCR 自动校验，减少手动上传错误。",
+                    "针对收入确认事项，推荐采用机器学习异常检测。",
+                    "IT 控制整改建议邀请 SAP GRC 顾问远程协同。"
+                  ]
+                }
+              ],
+              actions: [
+                {
+                  label: "查看抽样详情",
+                  target: "finance-audit-sample"
+                }
+              ],
+              businessNotes: [
+                "集中展示内外部审计的整改与凭证进度。",
+                "AI 提示可以帮助优先处理高风险事项。",
+                "可进一步查看抽样明细，跟进责任人。"
+              ]
+            },
+            "finance-profit-center-detail": {
+              title: "盈利中心详细视图",
+              subtitle: "展示所选盈利中心的收入、成本与差异分析",
+              detail: true,
+              heroCards: [
+                {
+                  title: "利润中心：APAC-Healthcare",
+                  value: "毛利率 31.2%",
+                  trend: "同比 +3.6%"
+                },
+                {
+                  title: "期间收入",
+                  value: "¥ 860M",
+                  trend: "预算达成 105%"
+                },
+                {
+                  title: "期间成本",
+                  value: "¥ 592M",
+                  trend: "成本差异 -4.8%"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "收入/成本结构",
+                  placeholder: "收入来源 VS 成本构成 水晶图"
+                },
+                {
+                  type: "table",
+                  title: "差异明细",
+                  table: {
+                    headers: ["科目", "差异", "驱动", "负责人"],
+                    rows: [
+                      ["原材料", "-¥ 18M", "新合同价格生效", "采购"],
+                      ["营销费用", "+¥ 6M", "市场活动增加", "市场"],
+                      ["售后服务", "-¥ 9M", "自助服务率提升", "客户成功"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                {
+                  label: "返回上一页",
+                  target: "back",
+                  tone: "secondary"
+                }
+              ],
+              businessNotes: [
+                "聚焦单一盈利中心的收入、成本与差异情况。",
+                "支持 CFO 与业务负责人开展例会复盘。",
+                "可继续下钻到合同或订单级别（示意）。"
+              ]
+            },
+            "finance-close-calendar": {
+              title: "关账日历",
+              subtitle: "横跨公司代码的关账周期与关键节点排程",
+              detail: true,
+              heroCards: [
+                {
+                  title: "当前周期",
+                  value: "2024 年 3 月",
+                  trend: "共 9 天"
+                },
+                {
+                  title: "延误任务",
+                  value: "3 项",
+                  trend: "平均延误 6 小时"
+                }
+              ],
+              sections: [
+                {
+                  type: "timeline",
+                  title: "每日重点",
+                  items: [
+                    {
+                      title: "Day 1 - 预提与应计",
+                      description: "自动生成 65% 凭证，剩余由业务补录。"
+                    },
+                    {
+                      title: "Day 4 - 公司间对账",
+                      description: "系统匹配 98% 交易，剩余 12 笔需人工确认。"
+                    },
+                    {
+                      title: "Day 7 - 报表发布",
+                      description: "生成 IFRS、GAAP 两套报表并推送 CFO 审批。"
+                    }
+                  ]
+                },
+                {
+                  type: "highlights",
+                  title: "自动提醒",
+                  items: [
+                    "提醒王蕾在 4 小时内完成固定资产折旧凭证审批。",
+                    "建议与供应链同步库存调整，避免重复作业。"
+                  ]
+                }
+              ],
+              actions: [
+                {
+                  label: "返回上一页",
+                  target: "back",
+                  tone: "secondary"
+                }
+              ],
+              businessNotes: [
+                "关账日历聚合每日关键活动，方便 CFO 审阅。",
+                "支持自动提醒责任人并串联跨部门协同。"
+              ]
+            },
+            "finance-audit-sample": {
+              title: "审计抽样详情",
+              subtitle: "抽样范围、凭证与整改动作的全流程追踪",
+              detail: true,
+              heroCards: [
+                {
+                  title: "抽样批次",
+                  value: "FY24-Q1",
+                  trend: "覆盖凭证 320 条"
+                },
+                {
+                  title: "待整改",
+                  value: "5 项",
+                  trend: "高风险 2 项"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "抽样列表",
+                  table: {
+                    headers: ["凭证号", "科目", "金额", "状态", "责任人"],
+                    rows: [
+                      ["10002345", "收入", "¥ 2.4M", "待凭证", "李娜"],
+                      ["20004566", "采购", "¥ 1.1M", "整改中", "陈凯"],
+                      ["30007888", "费用", "¥ 0.6M", "完成", "王蕾"]
+                    ]
+                  }
+                },
+                {
+                  type: "highlights",
+                  title: "审计建议",
+                  items: [
+                    "针对收入确认建议新增异常账龄提醒。",
+                    "采购凭证需补充供应商合同附件。"
+                  ]
+                }
+              ],
+              actions: [
+                {
+                  label: "返回上一页",
+                  target: "back",
+                  tone: "secondary"
+                }
+              ],
+              businessNotes: [
+                "审计抽样详情帮助 CFO 快速定位整改进展。",
+                "支持与责任人协同、上传凭证并记录沟通。"
+              ]
+            },
+            "finance-funding-options": {
+              title: "融资方案对比",
+              subtitle: "综合信用额度、利率与现金需求的智能推荐",
+              detail: true,
+              heroCards: [
+                {
+                  title: "推荐方案",
+                  value: "方案 B",
+                  trend: "满足现金缺口 100%"
+                },
+                {
+                  title: "平均资金成本",
+                  value: "3.4%",
+                  trend: "较现状下降 0.6%"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "方案对比",
+                  table: {
+                    headers: ["方案", "额度", "成本", "担保要求", "建议"],
+                    rows: [
+                      ["方案 A", "¥ 200M", "3.8%", "应收质押", "部分满足"],
+                      ["方案 B", "¥ 260M", "3.4%", "库存质押", "推荐"],
+                      ["方案 C", "¥ 180M", "3.2%", "母公司担保", "次选"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                {
+                  label: "返回上一页",
+                  target: "back",
+                  tone: "secondary"
+                }
+              ],
+              businessNotes: [
+                "比较不同融资渠道的额度、成本与担保条件。",
+                "为 CFO 制定资金调度与融资决策提供依据。"
+              ]
+            }
+          }
+        },
+        scm: {
+          name: "供应链总监",
+          icon: "🚚",
+          description: "统一供应链指挥塔，掌握库存、运输与供应商协同。",
+          menuGroups: [
+            {
+              title: "供应链指挥塔",
+              items: [
+                { id: "scm-control-tower", label: "供应链态势概览", icon: "🛰️" },
+                { id: "scm-inventory", label: "库存可视化", icon: "📦" },
+                { id: "scm-transport", label: "运输计划看板", icon: "🚚" },
+                { id: "scm-collaboration", label: "供应商协同门户", icon: "🤝" }
+              ]
+            }
+          ],
+          pages: {
+            "scm-control-tower": {
+              title: "供应链态势概览",
+              subtitle: "多站点供应链实时监控与预警",
+              heroCards: [
+                {
+                  title: "订单履约率",
+                  value: "94.2%",
+                  trend: "较上周 +2.4%"
+                },
+                {
+                  title: "平均交付周期",
+                  value: "6.2 天",
+                  trend: "目标 ≤ 7 天"
+                },
+                {
+                  title: "高风险告警",
+                  value: "5 个",
+                  trend: "集中在物流延迟"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "全球供应网络可视化",
+                  placeholder: "工厂 / DC / 客户节点热力图"
+                },
+                {
+                  type: "table",
+                  title: "关键预警",
+                  table: {
+                    headers: ["类型", "影响区域", "影响范围", "缓解建议"],
+                    rows: [
+                      ["港口拥堵", "亚太", "12 TEU 延迟", "启用备选港口"],
+                      ["原料短缺", "欧洲", "3 家供应商", "触发替代供应商"],
+                      ["天气风险", "北美", "2 条干线", "调整运输计划"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                {
+                  label: "打开运输延误详情",
+                  target: "scm-delay-detail"
+                }
+              ],
+              businessNotes: [
+                "提供端到端的供应链关键指标与热点预警。",
+                "帮助总监快速定位风险并指派应对动作。"
+              ]
+            },
+            "scm-inventory": {
+              title: "库存可视化",
+              subtitle: "跨仓库、工厂与在途库存的透明视图",
+              heroCards: [
+                {
+                  title: "总库存价值",
+                  value: "¥ 5.8B",
+                  trend: "周转天数 48 天"
+                },
+                {
+                  title: "缺货 SKU",
+                  value: "24 个",
+                  trend: "重点关注前 10 名"
+                },
+                {
+                  title: "积压 SKU",
+                  value: "36 个",
+                  trend: "建议促销清理"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "库存健康度矩阵",
+                  placeholder: "库存天数 vs 需求覆盖"
+                },
+                {
+                  type: "table",
+                  title: "缺货 Top10",
+                  table: {
+                    headers: ["SKU", "需求覆盖天数", "主要原因", "计划动作"],
+                    rows: [
+                      ["SKU-AP01", "2 天", "供应商延迟", "加急采购"],
+                      ["SKU-EU09", "1 天", "需求超计划", "启用替代品"],
+                      ["SKU-US12", "0 天", "库存盘差", "复核库存"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "进入补货计划", target: "scm-replenishment" }
+              ],
+              businessNotes: [
+                "聚焦库存健康度、缺货与积压情况。",
+                "支持向补货计划页面下钻，协同采购与计划团队。"
+              ]
+            },
+            "scm-transport": {
+              title: "运输计划看板",
+              subtitle: "运输排程、运力与异常的实时调度",
+              heroCards: [
+                {
+                  title: "准时交付率",
+                  value: "92%",
+                  trend: "较上周 -3%"
+                },
+                {
+                  title: "在途货件",
+                  value: "184 批",
+                  trend: "延误 9 批"
+                },
+                {
+                  title: "运力利用率",
+                  value: "78%",
+                  trend: "目标 ≥ 80%"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "延误批次",
+                  table: {
+                    headers: ["批次", "路线", "延误", "原因", "处理动作"],
+                    rows: [
+                      ["TL-4901", "上海 → 汉堡", "18 小时", "港口拥堵", "改走鹿特丹"],
+                      ["TL-5120", "洛杉矶 → 芝加哥", "6 小时", "暴风雪", "调整交付窗口"],
+                      ["TL-4788", "深圳 → 悉尼", "12 小时", "航班取消", "改订包机"]
+                    ]
+                  }
+                },
+                {
+                  type: "highlights",
+                  title: "AI 调度建议",
+                  items: [
+                    "建议启用合作承运商 B 的备用运力。",
+                    "对延误客户提前推送新的 ETA。"
+                  ]
+                }
+              ],
+              actions: [
+                {
+                  label: "调度延误批次",
+                  target: "scm-delay-detail"
+                }
+              ],
+              businessNotes: [
+                "可视化运输执行状态与延误原因。",
+                "支持打开延误详情，调整运力与客户沟通。"
+              ]
+            },
+            "scm-collaboration": {
+              title: "供应商协同门户",
+              subtitle: "供应商承诺、交付与绩效的协同空间",
+              heroCards: [
+                {
+                  title: "协同供应商",
+                  value: "128 家",
+                  trend: "完成评分 96%"
+                },
+                {
+                  title: "待确认订单",
+                  value: "42 单",
+                  trend: "平均响应 9 小时"
+                },
+                {
+                  title: "预警供应商",
+                  value: "5 家",
+                  trend: "需重点跟进"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "待供应商确认订单",
+                  table: {
+                    headers: ["PO", "供应商", "金额", "承诺交期", "状态"],
+                    rows: [
+                      ["PO4500123", "伟盛电子", "¥ 3.1M", "2024-04-06", "待确认"],
+                      ["PO4500456", "NordChem", "¥ 1.8M", "2024-04-10", "要求改期"],
+                      ["PO4500522", "Sunrise Logistics", "¥ 2.4M", "2024-04-03", "已确认"]
+                    ]
+                  }
+                },
+                {
+                  type: "highlights",
+                  title: "协同建议",
+                  items: [
+                    "向预警供应商推送产能协同计划。",
+                    "自动生成供应商绩效报告并邀请确认。"
+                  ]
+                }
+              ],
+              actions: [
+                {
+                  label: "查看供应商绩效",
+                  target: "scm-supplier-scorecard"
+                }
+              ],
+              businessNotes: [
+                "帮助供应链总监与供应商透明协作。",
+                "提供绩效评分、订单确认与改期流程。"
+              ]
+            },
+            "scm-delay-detail": {
+              title: "运输延误详情",
+              subtitle: "针对延误批次的根因分析与调度建议",
+              detail: true,
+              heroCards: [
+                {
+                  title: "延误批次数",
+                  value: "9",
+                  trend: "高影响 3 批"
+                },
+                {
+                  title: "预计影响客户",
+                  value: "17",
+                  trend: "已通知 12 家"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "根因分析",
+                  table: {
+                    headers: ["批次", "根因", "缓解动作", "负责人"],
+                    rows: [
+                      ["TL-4901", "港口拥堵", "改走鹿特丹", "调度中心"],
+                      ["TL-5120", "天气", "调整交付承诺", "客服"],
+                      ["TL-4788", "航班取消", "预订包机", "物流经理"]
+                    ]
+                  }
+                },
+                {
+                  type: "highlights",
+                  title: "下一步计划",
+                  items: [
+                    "与客户共享最新 ETA 并获取确认。",
+                    "评估备用承运商费用影响。"
+                  ]
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "延误详情页面帮助快速协同调度与客户沟通。"
+              ]
+            },
+            "scm-replenishment": {
+              title: "补货计划",
+              subtitle: "基于需求预测与安全库存的补货建议",
+              detail: true,
+              heroCards: [
+                {
+                  title: "建议补货量",
+                  value: "¥ 420M",
+                  trend: "覆盖 4 周需求"
+                },
+                {
+                  title: "潜在缺货",
+                  value: "18 SKU",
+                  trend: "集中在 APAC"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "补货建议",
+                  table: {
+                    headers: ["SKU", "建议数量", "建议到货", "优先级", "说明"],
+                    rows: [
+                      ["SKU-AP01", "12,000", "2024-04-05", "高", "客户订单激增"],
+                      ["SKU-AP08", "8,600", "2024-04-08", "中", "安全库存不足"],
+                      ["SKU-US12", "5,200", "2024-04-04", "高", "盘差待复核"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "补货建议基于需求预测与库存策略自动生成。",
+                "可与采购经理协同确认采购计划。"
+              ]
+            },
+            "scm-supplier-scorecard": {
+              title: "供应商绩效卡",
+              subtitle: "从交付、质量、成本三个维度评分",
+              detail: true,
+              heroCards: [
+                {
+                  title: "供应商评分",
+                  value: "A-",
+                  trend: "较上季度提升"
+                },
+                {
+                  title: "准时交付",
+                  value: "96%",
+                  trend: "目标 95%"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "绩效指标",
+                  table: {
+                    headers: ["指标", "当前值", "目标", "趋势"],
+                    rows: [
+                      ["质量合格率", "99.2%", "99%", "↑"],
+                      ["成本偏差", "-1.5%", "0%", "↑"],
+                      ["协同响应", "8 小时", "≤ 12 小时", "↑"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "供应商绩效卡用于季度业务回顾与改进计划。"
+              ]
+            }
+          }
+        },
+        manufacturing: {
+          name: "工厂经理",
+          icon: "🏭",
+          description: "掌控生产排程、设备与质量的执行。",
+          menuGroups: [
+            {
+              title: "工厂运营",
+              items: [
+                { id: "mfg-schedule", label: "生产排程中心", icon: "🗓️" },
+                { id: "mfg-execution", label: "车间执行监控", icon: "🛠️" },
+                { id: "mfg-quality", label: "质量异常响应", icon: "🧪" },
+                { id: "mfg-maintenance", label: "设备维护日历", icon: "⚙️" }
+              ]
+            }
+          ],
+          pages: {
+            "mfg-schedule": {
+              title: "生产排程中心",
+              subtitle: "即时掌握产能、订单与约束条件",
+              heroCards: [
+                {
+                  title: "本周产能利用",
+                  value: "87%",
+                  trend: "关键产线接近满载"
+                },
+                {
+                  title: "延迟订单",
+                  value: "12",
+                  trend: "需协调物料"
+                },
+                {
+                  title: "物料缺口",
+                  value: "8",
+                  trend: "影响 3 条产线"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "排程甘特图",
+                  placeholder: "产线 / 工单 / 时间轴"
+                },
+                {
+                  type: "table",
+                  title: "产能冲突清单",
+                  table: {
+                    headers: ["工单", "产线", "冲突", "缓解动作"],
+                    rows: [
+                      ["WO-1022", "Line A", "物料缺料", "请求替代料"],
+                      ["WO-1045", "Line C", "设备维护", "调整至夜班"],
+                      ["WO-1080", "Line B", "人手不足", "跨线支援"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "打开排程模拟器", target: "mfg-simulation" }
+              ],
+              businessNotes: [
+                "集中查看产能、物料与订单冲突。",
+                "支持跳转排程模拟器优化产能分配。"
+              ]
+            },
+            "mfg-execution": {
+              title: "车间执行监控",
+              subtitle: "实时产量、OEE 与异常处理",
+              heroCards: [
+                {
+                  title: "今日产量",
+                  value: "18,240 件",
+                  trend: "计划达成 96%"
+                },
+                {
+                  title: "OEE",
+                  value: "85%",
+                  trend: "较上周 +2%"
+                },
+                {
+                  title: "异常事件",
+                  value: "3 起",
+                  trend: "正在处理"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "实时订单进度",
+                  table: {
+                    headers: ["工单", "计划", "实际", "偏差", "状态"],
+                    rows: [
+                      ["WO-1102", "1200", "1180", "-20", "正常"],
+                      ["WO-1115", "800", "640", "-160", "等待物料"],
+                      ["WO-1120", "600", "620", "+20", "超额完成"]
+                    ]
+                  }
+                },
+                {
+                  type: "highlights",
+                  title: "异常处理动作",
+                  items: [
+                    "Line C 夜班缺人，建议启动弹性排班。",
+                    "WO-1115 触发物料加急流程。"
+                  ]
+                }
+              ],
+              actions: [
+                { label: "查看异常详情", target: "mfg-exception-detail" }
+              ],
+              businessNotes: [
+                "监控实时产量与 OEE，并联动异常处理。",
+                "支持跳转异常详情开展协同。"
+              ]
+            },
+            "mfg-quality": {
+              title: "质量异常响应",
+              subtitle: "质量事件、处置与追溯",
+              heroCards: [
+                {
+                  title: "本周质量事件",
+                  value: "6 起",
+                  trend: "严重 1 起"
+                },
+                {
+                  title: "平均响应时间",
+                  value: "2.4 小时",
+                  trend: "目标 ≤ 3 小时"
+                },
+                {
+                  title: "待关闭纠正措施",
+                  value: "9 项",
+                  trend: "提醒责任人"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "质量事件列表",
+                  table: {
+                    headers: ["事件", "工单", "影响批次", "状态", "负责人"],
+                    rows: [
+                      ["QC-2401", "WO-1102", "3 批", "调查中", "李强"],
+                      ["QC-2402", "WO-1088", "1 批", "已隔离", "王婷"],
+                      ["QC-2403", "WO-1115", "2 批", "纠正中", "赵磊"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "打开 8D 报告", target: "mfg-8d-report" }
+              ],
+              businessNotes: [
+                "质量事件统一跟踪并与纠正措施联动。",
+                "支持查看 8D 报告以跟踪整改。"
+              ]
+            },
+            "mfg-maintenance": {
+              title: "设备维护日历",
+              subtitle: "预防性维护、停机与技师排班",
+              heroCards: [
+                {
+                  title: "计划维护",
+                  value: "18 台",
+                  trend: "本周"
+                },
+                {
+                  title: "非计划停机",
+                  value: "2 台",
+                  trend: "正在抢修"
+                }
+              ],
+              sections: [
+                {
+                  type: "timeline",
+                  title: "本周维护计划",
+                  items: [
+                    {
+                      title: "周一",
+                      description: "Line A 压机保养，需停机 4 小时。"
+                    },
+                    {
+                      title: "周三",
+                      description: "Line C 涂装系统更换喷嘴。"
+                    },
+                    {
+                      title: "周五",
+                      description: "设备点检+润滑，协调夜班进行。"
+                    }
+                  ]
+                },
+                {
+                  type: "highlights",
+                  title: "提醒",
+                  items: [
+                    "与生产计划同步维护窗口，避免交付影响。",
+                    "两台关键设备待确认备件到货。"
+                  ]
+                }
+              ],
+              actions: [
+                { label: "查看工单明细", target: "mfg-maintenance-detail" }
+              ],
+              businessNotes: [
+                "维护计划与生产计划协同，减少停机。",
+                "支持查看维护工单明细。"
+              ]
+            },
+            "mfg-simulation": {
+              title: "排程模拟器",
+              subtitle: "多场景产能模拟与瓶颈缓解",
+              detail: true,
+              heroCards: [
+                {
+                  title: "目标场景",
+                  value: "夜班扩班",
+                  trend: "可提高 6% 产能"
+                },
+                {
+                  title: "关键瓶颈",
+                  value: "Line C",
+                  trend: "受限于技师"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "场景对比",
+                  table: {
+                    headers: ["场景", "产出", "加班", "成本", "建议"],
+                    rows: [
+                      ["当前", "18k 件", "0", "基准", "保持"],
+                      ["夜班扩班", "19.1k 件", "+2 小时", "+¥ 0.3M", "推荐"],
+                      ["外协产能", "20k 件", "无", "+¥ 0.8M", "备选"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "模拟不同排程策略对产出与成本的影响。",
+                "帮助工厂经理快速决策。"
+              ]
+            },
+            "mfg-exception-detail": {
+              title: "异常事件详情",
+              subtitle: "跨部门协同处理生产异常",
+              detail: true,
+              heroCards: [
+                {
+                  title: "事件编号",
+                  value: "EXC-2024-03-12",
+                  trend: "优先级 高"
+                },
+                {
+                  title: "当前状态",
+                  value: "物料补货中",
+                  trend: "预计 3 小时恢复"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "协同任务",
+                  table: {
+                    headers: ["任务", "责任人", "预计完成", "备注"],
+                    rows: [
+                      ["供应商确认发货", "采购-陈敏", "15:00", "已发出 PO"],
+                      ["调整排程", "计划-王浩", "16:00", "调整夜班"],
+                      ["客户沟通", "销售-Emily", "17:00", "发送更新"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "记录异常处理的任务、责任人与时效。"
+              ]
+            },
+            "mfg-8d-report": {
+              title: "8D 报告",
+              subtitle: "质量问题的系统化整改记录",
+              detail: true,
+              heroCards: [
+                {
+                  title: "问题等级",
+                  value: "严重",
+                  trend: "客户投诉"
+                },
+                {
+                  title: "完成进度",
+                  value: "62%",
+                  trend: "剩余 3 步"
+                }
+              ],
+              sections: [
+                {
+                  type: "timeline",
+                  title: "8D 步骤",
+                  items: [
+                    {
+                      title: "D3 临时遏制",
+                      description: "隔离 2 批次成品"
+                    },
+                    {
+                      title: "D4 根因分析",
+                      description: "鱼骨图定位喷涂设备偏差"
+                    },
+                    {
+                      title: "D5 永久措施",
+                      description: "更换喷嘴并更新维护标准"
+                    }
+                  ]
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "8D 报告帮助持续改进并与客户共享进展。"
+              ]
+            },
+            "mfg-maintenance-detail": {
+              title: "维护工单明细",
+              subtitle: "技师排班、备件与进度跟踪",
+              detail: true,
+              heroCards: [
+                {
+                  title: "工单编号",
+                  value: "PM-4580",
+                  trend: "计划停机 4h"
+                },
+                {
+                  title: "备件状态",
+                  value: "已到货",
+                  trend: "库存位置 A-12"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "操作步骤",
+                  table: {
+                    headers: ["步骤", "描述", "责任技师", "预计时长"],
+                    rows: [
+                      ["1", "停机安全确认", "刘强", "0.5h"],
+                      ["2", "更换主轴轴承", "周杰", "2h"],
+                      ["3", "功能测试", "刘强", "1.5h"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "维护工单明细用于协调技师与备件管理。"
+              ]
+            }
+          }
+        },
+        procurement: {
+          name: "采购经理",
+          icon: "🛒",
+          description: "覆盖战略采购、合同与订单执行的闭环管理。",
+          menuGroups: [
+            {
+              title: "采购运营",
+              items: [
+                { id: "proc-strategy", label: "战略采购概览", icon: "🧭" },
+                { id: "proc-contract", label: "合同生命周期", icon: "📃" },
+                { id: "proc-orders", label: "采购订单执行", icon: "✅" },
+                { id: "proc-supplier", label: "供应商评估", icon: "⭐" }
+              ]
+            }
+          ],
+          pages: {
+            "proc-strategy": {
+              title: "战略采购概览",
+              subtitle: "支出、品类策略与节省目标",
+              heroCards: [
+                {
+                  title: "年度节省目标",
+                  value: "¥ 180M",
+                  trend: "已实现 54%"
+                },
+                {
+                  title: "合规合同覆盖",
+                  value: "82%",
+                  trend: "较上月 +6%"
+                },
+                {
+                  title: "待谈判项目",
+                  value: "9 个",
+                  trend: "集中在 IT & 物流"
+                }
+              ],
+              sections: [
+                {
+                  type: "chart",
+                  title: "品类支出分布",
+                  placeholder: "直接 / 间接支出占比"
+                },
+                {
+                  type: "table",
+                  title: "关键项目进展",
+                  table: {
+                    headers: ["项目", "阶段", "目标节省", "负责人"],
+                    rows: [
+                      ["IT 外包重谈", "谈判", "¥ 28M", "李晴"],
+                      ["物流集中采购", "招标", "¥ 16M", "周楠"],
+                      ["原料多源化", "分析", "¥ 24M", "郭鹏"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "查看项目详情", target: "proc-project-detail" }
+              ],
+              businessNotes: [
+                "展示战略采购目标、节省与关键项目。",
+                "支持跳转项目详情协调跨部门团队。"
+              ]
+            },
+            "proc-contract": {
+              title: "合同生命周期",
+              subtitle: "合同起草、审批、履约与续签",
+              heroCards: [
+                {
+                  title: "有效合同",
+                  value: "312 份",
+                  trend: "即将到期 18 份"
+                },
+                {
+                  title: "平均审批时长",
+                  value: "2.8 天",
+                  trend: "目标 ≤ 3 天"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "即将到期合同",
+                  table: {
+                    headers: ["合同", "供应商", "到期日", "负责人", "状态"],
+                    rows: [
+                      ["CT-2020-118", "LinkTech", "2024-04-08", "陈敏", "续约中"],
+                      ["CT-2021-332", "FastPrint", "2024-04-15", "王蕾", "审批中"],
+                      ["CT-2021-447", "SunChem", "2024-04-03", "赵磊", "待起草"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "打开合同详情", target: "proc-contract-detail" }
+              ],
+              businessNotes: [
+                "帮助采购经理掌握合同到期与审批。",
+                "支持进入合同详情进行续签管理。"
+              ]
+            },
+            "proc-orders": {
+              title: "采购订单执行",
+              subtitle: "订单确认、收货与发票进度",
+              heroCards: [
+                {
+                  title: "本周下单金额",
+                  value: "¥ 96M",
+                  trend: "较计划 +8%"
+                },
+                {
+                  title: "已确认订单",
+                  value: "86%",
+                  trend: "待确认 24 单"
+                },
+                {
+                  title: "发票匹配异常",
+                  value: "6 单",
+                  trend: "触发三方匹配"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "订单执行看板",
+                  table: {
+                    headers: ["PO", "状态", "收货", "发票", "下一步"],
+                    rows: [
+                      ["PO4500123", "已确认", "部分收货", "未开票", "等待供应商"],
+                      ["PO4500345", "待确认", "未收货", "未开票", "提醒供应商"],
+                      ["PO4500566", "收货完成", "完成", "待匹配", "财务复核"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "进入发票匹配", target: "proc-invoice-match" }
+              ],
+              businessNotes: [
+                "采购订单执行页面串联确认、收货与发票状态。",
+                "支持进入发票匹配页面处理异常。"
+              ]
+            },
+            "proc-supplier": {
+              title: "供应商评估",
+              subtitle: "绩效、风险与改进计划",
+              heroCards: [
+                {
+                  title: "评估供应商",
+                  value: "280 家",
+                  trend: "本季度完成 92%"
+                },
+                {
+                  title: "高风险供应商",
+                  value: "7 家",
+                  trend: "需立刻跟进"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "风险清单",
+                  table: {
+                    headers: ["供应商", "风险类型", "等级", "缓解计划"],
+                    rows: [
+                      ["NordChem", "财务", "高", "请求最新报表"],
+                      ["LinkTech", "交付", "中", "启用次级工厂"],
+                      ["Sunrise Logistics", "合规", "中", "审查合规证书"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "打开改善计划", target: "proc-improvement-plan" }
+              ],
+              businessNotes: [
+                "聚焦高风险供应商与改进计划。",
+                "支持跳转改善计划页面，协同供应商。"
+              ]
+            },
+            "proc-project-detail": {
+              title: "采购项目详情",
+              subtitle: "项目节奏、里程碑与协同团队",
+              detail: true,
+              heroCards: [
+                {
+                  title: "项目阶段",
+                  value: "谈判",
+                  trend: "预计 3 周完成"
+                },
+                {
+                  title: "潜在节省",
+                  value: "¥ 28M",
+                  trend: "影响 IT 预算"
+                }
+              ],
+              sections: [
+                {
+                  type: "timeline",
+                  title: "里程碑",
+                  items: [
+                    { title: "方案比选", description: "完成 4 家供应商评估" },
+                    { title: "商业谈判", description: "进行折扣与 SLA 谈判" },
+                    { title: "合同审批", description: "法律与财务联合审批" }
+                  ]
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "采购项目详情用于跨部门协同与时间管理。"
+              ]
+            },
+            "proc-contract-detail": {
+              title: "合同详情",
+              subtitle: "条款、审批与履约状态",
+              detail: true,
+              heroCards: [
+                {
+                  title: "合同价值",
+                  value: "¥ 42M",
+                  trend: "框架合同"
+                },
+                {
+                  title: "履约状态",
+                  value: "执行中",
+                  trend: "剩余 8 个月"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "审批轨迹",
+                  table: {
+                    headers: ["步骤", "角色", "结果", "时间"],
+                    rows: [
+                      ["起草", "采购", "完成", "2024-03-18"],
+                      ["法务审核", "法务", "完成", "2024-03-20"],
+                      ["财务审批", "财务", "进行中", "-"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "合同详情整合条款、审批与履约状态，便于续约管理。"
+              ]
+            },
+            "proc-invoice-match": {
+              title: "发票匹配",
+              subtitle: "三方匹配与异常处理",
+              detail: true,
+              heroCards: [
+                {
+                  title: "异常发票",
+                  value: "6 单",
+                  trend: "集中在物流类"
+                },
+                {
+                  title: "待审批",
+                  value: "12 单",
+                  trend: "平均等待 1.6 天"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "匹配详情",
+                  table: {
+                    headers: ["发票", "PO", "异常", "状态", "处理"],
+                    rows: [
+                      ["INV-8890", "PO4500566", "金额不符", "处理中", "调整发票"],
+                      ["INV-8896", "PO4500123", "缺收货", "待收货", "催促仓库"],
+                      ["INV-8901", "PO4500345", "缺合同", "待附件", "提醒供应商"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "三方匹配页面帮助采购与财务联动处理异常。"
+              ]
+            },
+            "proc-improvement-plan": {
+              title: "供应商改善计划",
+              subtitle: "针对风险供应商的联合行动",
+              detail: true,
+              heroCards: [
+                {
+                  title: "目标供应商",
+                  value: "NordChem",
+                  trend: "风险等级 高"
+                },
+                {
+                  title: "计划进度",
+                  value: "45%",
+                  trend: "剩余 2 项行动"
+                }
+              ],
+              sections: [
+                {
+                  type: "table",
+                  title: "行动清单",
+                  table: {
+                    headers: ["行动", "负责人", "目标日期", "状态"],
+                    rows: [
+                      ["提交财报", "供应商", "2024-04-05", "待提交"],
+                      ["质检整改", "质量", "2024-04-08", "进行中"],
+                      ["交付演练", "物流", "2024-04-12", "未开始"]
+                    ]
+                  }
+                }
+              ],
+              actions: [
+                { label: "返回上一页", target: "back", tone: "secondary" }
+              ],
+              businessNotes: [
+                "改善计划用于跟踪供应商整改进展并协调责任人。"
+              ]
+            }
+          }
+        }
+      };
+
+      const state = {
+        role: 'cfo',
+        page: null,
+        history: []
+      };
+
+      const roleSwitchEl = document.getElementById('roleSwitch');
+      const menuContainer = document.getElementById('menuContainer');
+      const pageWrapper = document.getElementById('pageWrapper');
+      const roleDescription = document.getElementById('roleDescription');
+
+      const getPrimaryPage = (roleId) => {
+        const role = roles[roleId];
+        if (!role) return null;
+        const firstGroup = role.menuGroups[0];
+        return firstGroup && firstGroup.items.length ? firstGroup.items[0].id : null;
+      };
+
+      const renderPageContent = (page) => {
+        if (!page) return;
+        const headerControls = page.detail
+          ? '<button class="back-button" data-target="back">← 返回上一页</button>'
+          : '';
+        const hero = createHeroCards(page.heroCards);
+        const sections = (page.sections || []).map((section) => createSection(section)).join('');
+        const actions = renderActions(page.actions);
+        const notes = createBusinessNotes(page.businessNotes);
+
+        pageWrapper.innerHTML = `
+          <header class="page-header">
+            ${headerControls}
+            <h2>${page.title}</h2>
+            ${page.subtitle ? `<p class="subtitle">${page.subtitle}</p>` : ''}
+          </header>
+          ${hero}
+          ${sections}
+          ${actions}
+          ${notes}
+        `;
+
+        pageWrapper.querySelectorAll('.action-button').forEach((button) => {
+          button.addEventListener('click', () => handleAction(button.dataset.target));
+        });
+
+        const backButton = pageWrapper.querySelector('.back-button');
+        if (backButton) {
+          backButton.addEventListener('click', () => handleAction('back'));
+        }
+      };
+
+      const renderMenu = () => {
+        const role = roles[state.role];
+        if (!role) return;
+        roleDescription.textContent = role.description;
+
+        const menuHtml = role.menuGroups
+          .map((group) => {
+            const itemsHtml = group.items
+              .map((item) => {
+                const isActive = item.id === state.page;
+                return `
+                  <li class="menu-item">
+                    <a class="menu-link ${isActive ? 'active' : ''}" data-id="${item.id}">
+                      <span class="icon">${item.icon}</span>
+                      <span>${item.label}</span>
+                    </a>
+                  </li>
+                `;
+              })
+              .join('');
+            return `
+              <div class="menu-group">
+                <div class="menu-section-title">${group.title}</div>
+                <ul class="menu-list">${itemsHtml}</ul>
+              </div>
+            `;
+          })
+          .join('');
+
+        menuContainer.innerHTML = menuHtml;
+
+        menuContainer.querySelectorAll('.menu-link').forEach((link) => {
+          link.addEventListener('click', () => {
+            const pageId = link.dataset.id;
+            state.history = [];
+            goToPage(pageId, { pushHistory: false });
+          });
+        });
+      };
+
+      const renderRoleSwitch = () => {
+        roleSwitchEl.innerHTML = `
+          <span class="role-switch-title">切换角色：</span>
+          ${Object.entries(roles)
+            .map(([roleId, role]) => {
+              const active = state.role === roleId ? 'active' : '';
+              return `<button class="role-chip ${active}" data-role="${roleId}">${role.icon} ${role.name}</button>`;
+            })
+            .join('')}
+        `;
+
+        roleSwitchEl.querySelectorAll('.role-chip').forEach((chip) => {
+          chip.addEventListener('click', () => {
+            const roleId = chip.dataset.role;
+            if (roleId === state.role) return;
+            state.role = roleId;
+            state.history = [];
+            const defaultPage = getPrimaryPage(roleId);
+            state.page = defaultPage;
+            renderRoleSwitch();
+            renderMenu();
+            goToPage(defaultPage, { pushHistory: false });
+          });
+        });
+      };
+
+      const goToPage = (pageId, { pushHistory = true } = {}) => {
+        const role = roles[state.role];
+        if (!role || !role.pages[pageId]) return;
+
+        if (pushHistory && state.page) {
+          state.history.push(state.page);
+        }
+
+        state.page = pageId;
+        renderMenu();
+        renderPageContent(role.pages[pageId]);
+      };
+
+      const handleAction = (target) => {
+        if (!target) return;
+        if (target === 'back') {
+          if (state.history.length) {
+            const previous = state.history.pop();
+            goToPage(previous, { pushHistory: false });
+          } else {
+            const fallback = getPrimaryPage(state.role);
+            goToPage(fallback, { pushHistory: false });
+          }
+          return;
+        }
+        goToPage(target, { pushHistory: true });
+      };
+
+      const init = () => {
+        renderRoleSwitch();
+        const defaultPage = getPrimaryPage(state.role);
+        state.page = defaultPage;
+        renderMenu();
+        goToPage(defaultPage, { pushHistory: false });
+      };
+
+      init();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

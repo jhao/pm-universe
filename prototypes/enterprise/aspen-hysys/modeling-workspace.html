@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>建模工作台 · Aspen HYSYS</title>
+    <link rel="stylesheet" href="style.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="app-menu">
+        <div class="menu-logo">
+          <span>Aspen HYSYS</span>
+          <strong>流程优化系统</strong>
+        </div>
+        <nav class="menu-nav">
+          <a class="menu-link" href="index.html">系统概览</a>
+          <a class="menu-link" href="role-dashboard.html">统一指挥舱<span class="menu-link-note">Dashboard</span></a>
+          <a class="menu-link active" href="modeling-workspace.html">建模工作台<span class="menu-link-note">Modeling</span></a>
+          <a class="menu-link" href="dynamic-simulation.html">动态模拟监控<span class="menu-link-note">Simulation</span></a>
+          <a class="menu-link" href="optimization-center.html">优化闭环中心<span class="menu-link-note">Optimization</span></a>
+          <a class="menu-link" href="collaboration-hub.html">协同控制塔<span class="menu-link-note">Collaboration</span></a>
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <header class="page-header">
+          <div class="header-top">
+            <div>
+              <nav class="breadcrumb">
+                <a href="index.html">Aspen HYSYS</a>
+                <span>/</span>
+                <span>建模工作台</span>
+              </nav>
+              <h1>建模工作台</h1>
+              <p class="subtitle">展示流程工程师在 HYSYS 中搭建流程模型的核心界面，突出画布、属性面板与求解状态，支持多角色切换查看指标与任务。</p>
+            </div>
+            <div class="header-role-switch">
+              <button class="active" data-role="engineer">流程工程师</button>
+              <button data-role="optimizer">运营优化师</button>
+              <button data-role="manager">项目经理</button>
+            </div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>当前项目</strong>
+              <p>乙烯裂解装置扩容 · 模型版本 v3.2</p>
+            </div>
+            <div class="meta-card">
+              <strong>进度</strong>
+              <p>建模完成度 68%，待动态参数校核</p>
+            </div>
+            <div class="meta-card">
+              <strong>关键依赖</strong>
+              <p>实验物性数据导入、换热器效率测试</p>
+            </div>
+          </div>
+        </header>
+
+        <main class="page">
+          <section class="core-section">
+            <h2>建模核心界面</h2>
+            <div class="core-preview">
+              <div class="core-panel">
+                <strong>流程画布</strong>
+                <h3>PFD 拖拽建模</h3>
+                <div class="core-canvas">
+                  <div class="core-lane">单元组件库 · 左侧</div>
+                  <div class="core-lane">流程拓扑画布</div>
+                  <div class="core-lane">实时报警提示</div>
+                </div>
+                <p>支持拖拽单元、自动连线、模板插入与实时校核，体现建模主流程。</p>
+              </div>
+              <div class="core-panel">
+                <strong>属性面板</strong>
+                <h3>物流与单元参数</h3>
+                <ul>
+                  <li>物流属性：温度、压力、组分、焓值</li>
+                  <li>单元参数：效率、压降、换热面积</li>
+                  <li>求解器状态：迭代残差、约束提示</li>
+                </ul>
+              </div>
+              <div class="core-panel">
+                <strong>协同提醒</strong>
+                <h3>右上角角色切换</h3>
+                <p>角色切换展示不同待办与关注指标，指导跨团队协同完成建模任务。</p>
+                <div class="core-lanes">
+                  <div class="core-lane">待办任务</div>
+                  <div class="core-lane">关键 KPI</div>
+                  <div class="core-lane">风险提醒</div>
+                </div>
+              </div>
+            </div>
+            <div class="core-description">
+              <h3>主要业务说明</h3>
+              <p>建模工作台承载从流程图到模型求解的核心步骤，强调模板化建模、属性校核与求解状态监控。可继续跳转到动态模拟页面查看模型如何用于场景推演，或访问协同控制塔进行审批与版本管理。</p>
+              <div class="core-actions">
+                <a class="cta-link" href="dynamic-simulation.html">查看动态模拟演示</a>
+                <a class="cta-link" href="collaboration-hub.html">前往协同控制塔</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>角色切换体验</h2>
+            <div data-role-container>
+              <div class="role-switch" data-role-switch>
+                <button class="active" data-role="engineer">流程工程师</button>
+                <button data-role="optimizer">运营优化师</button>
+                <button data-role="manager">项目经理</button>
+              </div>
+              <div class="role-panels">
+                <div class="role-panel active" data-role="engineer">
+                  <h3>工程师视角</h3>
+                  <ul>
+                    <li>待办：完善换热器 E-204 传热系数、校核压缩机效率</li>
+                    <li>指标：物流闭合率 97.6%、求解残差 1e-5</li>
+                    <li>支持：智能助手推荐类似装置的参数设定</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="optimizer">
+                  <h3>优化师视角</h3>
+                  <ul>
+                    <li>关注点：后续动态模拟所需的控制点标签</li>
+                    <li>指标：热能损失估算、蒸汽平衡预判</li>
+                    <li>支持：请求工程师标注操作变量上下限</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="manager">
+                  <h3>经理视角</h3>
+                  <ul>
+                    <li>关注点：建模里程碑、风险与审批状态</li>
+                    <li>指标：任务完成 6/9、风险项 2 条待确认</li>
+                    <li>支持：触发外部专家评审、生成状态报告</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>建模任务分解</h2>
+            <div class="grid-3">
+              <div class="story-card">
+                <strong>任务板块</strong>
+                <p>物流定义完成 85%，待补充轻烃侧支路物性。</p>
+                <p>责任人：王晓宁 · 截止时间：周三</p>
+              </div>
+              <div class="story-card">
+                <strong>关键校核</strong>
+                <p>换热器网络需确认压降与污垢系数，自动对比历史案例。</p>
+                <p>责任人：刘畅 · 需要项目经理审批</p>
+              </div>
+              <div class="story-card">
+                <strong>外部协同</strong>
+                <p>与 Licensor 分享当前模型版本，收集反馈并记录批注。</p>
+                <p>责任人：项目经理 · 权限：只读 + 批注</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>质量与风险监控</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>检查项</th>
+                  <th>状态</th>
+                  <th>负责人</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>物流物料平衡</td>
+                  <td><span class="badge">通过</span></td>
+                  <td>流程工程师</td>
+                  <td>偏差控制在 ±1.5%</td>
+                </tr>
+                <tr>
+                  <td>关键单元仿真精度</td>
+                  <td><span class="badge">待校核</span></td>
+                  <td>外部专家</td>
+                  <td>等待实测换热系数</td>
+                </tr>
+                <tr>
+                  <td>HAZOP 假设确认</td>
+                  <td><span class="badge">风险</span></td>
+                  <td>项目经理</td>
+                  <td>需要更新泄压阀设置</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </main>
+
+        <footer>建模工作台原型聚焦流程工程师的主流程，同时支撑跨角色获取任务与风险信息。</footer>
+      </div>
+    </div>
+
+    <script src="app.js" type="module"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

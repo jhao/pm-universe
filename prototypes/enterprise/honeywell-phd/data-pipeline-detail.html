@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>通道配置详情 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a></li>
+            <li><a class="nav-link" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a></li>
+            <li><a class="nav-link is-active" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a></li>
+            <li><a class="nav-link" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a></li>
+            <li><a class="nav-link" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a></li>
+            <li><a class="nav-link" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a></li>
+            <li><a class="nav-link" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a></li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>返回</strong>
+          <div>• <a href="data-collection.html">返回采集总览</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>通道配置详情</h2>
+            <span class="breadcrumb">Honeywell PHD / 数据采集 / 通道详情</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card" id="opc-ua-12">
+            <h3>OPC-UA-12 通道概览</h3>
+            <div class="detail-layout">
+              <div class="meta-grid">
+                <div class="meta-item"><strong>状态</strong><br /><span class="badge success"><span class="status-dot"></span> 正常</span></div>
+                <div class="meta-item"><strong>采样频率</strong><br />1s</div>
+                <div class="meta-item"><strong>映射标签</strong><br />2,340</div>
+                <div class="meta-item"><strong>备用通道</strong><br />OPC-UA-09</div>
+              </div>
+              <div class="note-box">提示：此通道采集裂解炉核心点位，若需调整频率请在下方提交变更申请。</div>
+            </div>
+          </section>
+
+          <section class="section-card" id="mqtt-01">
+            <h3>MQTT-01 状态追踪</h3>
+            <div class="split-layout">
+              <div>
+                <h4>实时监控</h4>
+                <div class="chart-placeholder" style="height: 220px;">吞吐与延迟趋势</div>
+              </div>
+              <div>
+                <h4>运维动作</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>触发自检（完成于 10:22）</li>
+                  <li><span class="check-icon">✓</span>通知供应商排查网络波动</li>
+                  <li><span class="check-icon">✓</span>将影响通报至 <a href="operations-dashboard.html">运行驾驶舱</a></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card" id="modbus-07">
+            <h3>采样策略调整</h3>
+            <div class="split-layout">
+              <div>
+                <h4>当前配置</h4>
+                <table class="table">
+                  <thead>
+                    <tr><th>点位</th><th>采样频率</th><th>质量</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Pump-01</td><td>2s</td><td><span class="badge success"><span class="status-dot"></span> 正常</span></td></tr>
+                    <tr><td>Pump-02</td><td>5s</td><td><span class="badge warning"><span class="status-dot"></span> 波动</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <h4>申请变更</h4>
+                <div class="role-section" data-role="运维主管">
+                  <p>提交采样频率变更请求，审批后自动更新。</p>
+                  <div class="action-buttons">
+                    <a class="button" href="report-schedule.html#approval">提交审批</a>
+                    <a class="button secondary" href="alarm-management.html#critical">查看相关报警</a>
+                  </div>
+                </div>
+                <div class="role-section" data-role="工艺工程师">
+                  <p>确认变更不会影响工艺分析，必要时通知模型团队在 <a href="model-training-detail.html">训练详情</a> 中更新数据窗口。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            通道详情页展示不同通道的配置、状态与变更流程。通过与报表、报警、模型页面的链接，确保采集策略调整能及时同步至相关业务。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

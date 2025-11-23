@@ -2,83 +2,1131 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>CapCut 视频剪辑 原型概览</title>
+    <title>CapCut 多角色原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --primary: #2563eb;
+        --primary-soft: rgba(37, 99, 235, 0.12);
+        --text-strong: #0f172a;
+        --text: #334155;
+        --border: #e2e8f0;
+        --shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+        --radius-lg: 24px;
+        --radius-md: 18px;
+        --radius-sm: 12px;
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(160deg, #eef2ff 0%, #f5f7fb 40%, #eef5ff 100%);
+        color: var(--text);
+        padding: 48px 56px 72px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+      }
+
+      .brand {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: var(--text-strong);
+      }
+
+      .tagline {
+        margin: 0;
+        font-size: 18px;
+        color: #64748b;
+      }
+
+      .role-switch {
+        display: inline-flex;
+        background: rgba(255, 255, 255, 0.75);
+        padding: 8px;
+        border-radius: 999px;
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.12);
+        backdrop-filter: blur(6px);
+      }
+
+      .role-button {
+        border: none;
+        border-radius: 999px;
+        padding: 12px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .role-button.is-active {
+        background: var(--primary);
+        color: #ffffff;
+        box-shadow: 0 12px 20px rgba(37, 99, 235, 0.35);
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+
+      aside {
+        background: var(--panel);
+        border-radius: var(--radius-lg);
+        padding: 28px 22px;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .role-summary {
+        background: linear-gradient(145deg, rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0.02));
+        border-radius: var(--radius-md);
+        padding: 18px;
+        margin-bottom: 24px;
+        color: var(--text-strong);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .role-summary strong {
+        font-size: 16px;
+        color: var(--text-strong);
+      }
+
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-item {
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 14px 16px;
+        background: rgba(226, 232, 240, 0.65);
+        color: var(--text-strong);
+        font-size: 15px;
+        font-weight: 600;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-item:hover {
+        background: rgba(37, 99, 235, 0.12);
+        transform: translateX(6px);
+      }
+
+      .nav-item.is-active {
+        background: var(--primary);
+        color: #ffffff;
+        box-shadow: 0 14px 24px rgba(37, 99, 235, 0.25);
+      }
+
+      main {
+        background: var(--panel);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        min-height: 660px;
+      }
+
+      .content-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .content-header h2 {
+        margin: 0;
+        font-size: 28px;
+        color: var(--text-strong);
+      }
+
+      .content-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .action-button {
+        border: none;
+        border-radius: 999px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        background: rgba(37, 99, 235, 0.14);
+        color: var(--primary);
+      }
+
+      .action-button.primary {
+        background: var(--primary);
+        color: #ffffff;
+        box-shadow: 0 12px 20px rgba(37, 99, 235, 0.32);
+      }
+
+      .action-button:hover {
+        transform: translateY(-2px);
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 18px;
+      }
+
+      .metric-card {
+        background: rgba(241, 245, 249, 0.6);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .metric-card strong {
+        font-size: 32px;
+        color: var(--text-strong);
+      }
+
+      .metric-trend {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #16a34a;
+      }
+
+      .panel-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .panel-grid.two-column {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+
+      .panel {
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(226, 232, 240, 0.6);
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background: rgba(248, 250, 255, 0.72);
+      }
+
+      .panel h3 {
+        margin: 0;
+        font-size: 18px;
+        color: var(--text-strong);
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        color: var(--text);
+      }
+
+      .table thead {
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      .table th,
+      .table td {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .list-board {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .list-column {
+        background: rgba(37, 99, 235, 0.08);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .list-column h4 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text-strong);
+      }
+
+      .list-item {
+        background: #ffffff;
+        border-radius: var(--radius-sm);
+        padding: 12px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .list-item strong {
+        font-size: 14px;
+        color: var(--text-strong);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 20px;
+        color: var(--text);
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: rgba(37, 99, 235, 0.35);
+      }
+
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+      }
+
+      .empty-state {
+        padding: 40px;
+        border: 2px dashed rgba(148, 163, 184, 0.4);
+        border-radius: var(--radius-md);
+        text-align: center;
+        color: #64748b;
+      }
+
+      footer {
+        margin-top: 32px;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 14px;
+      }
+
+      @media (max-width: 1200px) {
+        body {
+          padding: 32px 28px 56px;
+        }
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          flex-direction: column;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
     <header>
-      <h1>CapCut 视频剪辑 原型</h1>
-      <p class="tagline">面向移动创作者的一站式视频剪辑与发布工具。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>短视频创作者、品牌营销团队、视频剪辑师</p>
-        <p><strong>核心痛点：</strong>跨端剪辑复杂、素材管理难、缺少智能模板</p>
-        <p><strong>价值主张：</strong>提供模板、特效与云端同步，帮助创作者快速制作专业视频</p>
+      <div class="brand">
+        <h1>CapCut 多角色原型系统</h1>
+        <p class="tagline">统一演示创作者用户端、管理员端与运营端的核心流程。</p>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>创作者导入素材并使用模板剪辑</li><li>团队协作管理项目与云端素材</li><li>一键发布至 TikTok 等平台</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>时间线剪辑</h3>
-              <p class="goal">功能目标：提供专业且易用的剪辑体验</p>
-              <ul>
-                <li>多轨道编辑、关键帧与蒙版</li><li>自动字幕、音频降噪与变声</li><li>比例适配、画质增强与导出设置</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>模板与素材库</h3>
-              <p class="goal">功能目标：降低剪辑创作门槛</p>
-              <ul>
-                <li>海量模板、滤镜与转场</li><li>音乐版权库与音效</li><li>素材市场与创作者分享</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>协作与云端</h3>
-              <p class="goal">功能目标：支持跨设备编辑与团队协作</p>
-              <ul>
-                <li>云端项目同步与版本管理</li><li>多人协作、评论与权限设置</li><li>云备份、素材库共享</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>发布与变现</h3>
-              <p class="goal">功能目标：打通内容发布与商业化</p>
-              <ul>
-                <li>一键发布至 TikTok、YouTube 等</li><li>品牌合作模板与广告片制作</li><li>创作者激励与数据分析</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>日均剪辑项目数与导出成功率</li><li>模板使用率与素材库交易额</li><li>跨端活跃用户与团队协作次数</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+      <div class="role-switch" id="role-switch"></div>
+    </header>
+    <div class="app-shell">
+      <aside>
+        <div class="role-summary" id="role-summary"></div>
+        <nav id="menu"></nav>
+      </aside>
+      <main>
+        <div class="content-header">
+          <h2 id="content-title"></h2>
+          <div class="content-actions" id="content-actions"></div>
+        </div>
+        <section class="metric-grid" id="metrics"></section>
+        <section class="panel-grid" id="panels"></section>
+      </main>
+    </div>
+    <footer>点击左侧菜单体验各角色的核心功能页面。</footer>
+    <script type="module">
+      const roleData = {
+        creator: {
+          key: 'creator',
+          label: '创作者用户端',
+          summary: `
+            <strong>创作者工作流</strong>
+            <span>聚焦创作效率与内容发布，提供跨端素材、模板和智能剪辑体验。</span>
+          `,
+          menus: [
+            {
+              id: 'creator-dashboard',
+              label: '工作台总览',
+              badge: 'LIVE',
+              header: '工作台总览',
+              actions: ['新建项目', '导入素材'],
+              metrics: [
+                { label: '本周发布', value: '6 个作品', trend: '+2' },
+                { label: '模板复用率', value: '72%', trend: '+8%' },
+                { label: '剪辑时长', value: '4h 36m', trend: '-18%' },
+                { label: '互动增长', value: '132%', trend: '+24%' }
+              ],
+              panels: [
+                {
+                  title: '进行中的项目',
+                  content: `
+                    <div class="list-board">
+                      <div class="list-column">
+                        <h4>草稿</h4>
+                        <div class="list-item">
+                          <strong>品牌联合 vlog</strong>
+                          <span>最后更新：今天 10:24</span>
+                          <span class="badge">等待配音</span>
+                        </div>
+                        <div class="list-item">
+                          <strong>滑雪日常</strong>
+                          <span>最后更新：昨天 21:10</span>
+                          <span class="badge">AI 剪辑完成</span>
+                        </div>
+                      </div>
+                      <div class="list-column">
+                        <h4>处理中</h4>
+                        <div class="list-item">
+                          <strong>新品发布预告</strong>
+                          <span>团队协作 · 3 条评论</span>
+                          <span class="badge">待审核</span>
+                        </div>
+                        <div class="list-item">
+                          <strong>音乐节花絮</strong>
+                          <span>云端渲染中 · 78%</span>
+                        </div>
+                      </div>
+                      <div class="list-column">
+                        <h4>已发布</h4>
+                        <div class="list-item">
+                          <strong>周末旅拍</strong>
+                          <span>播放 32.4w · 互动率 18%</span>
+                          <span class="badge">数据飙升</span>
+                        </div>
+                        <div class="list-item">
+                          <strong>创作技巧拆解</strong>
+                          <span>播放 18.6w · 收藏 2.1w</span>
+                        </div>
+                      </div>
+                    </div>
+                  `
+                },
+                {
+                  title: '今日提醒',
+                  content: `
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <strong>12:00</strong> · TikTok 品牌任务提交窗口开启
+                      </div>
+                      <div class="timeline-item">
+                        <strong>15:30</strong> · AI 去水印模型更新完成
+                      </div>
+                      <div class="timeline-item">
+                        <strong>18:45</strong> · 云端素材整理完成，等待分类
+                      </div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'creator-projects',
+              label: '项目与素材',
+              header: '项目与素材管理',
+              actions: ['上传素材', '创建协作空间'],
+              metrics: [
+                { label: '项目总数', value: '28 个', trend: '+5' },
+                { label: '协作空间', value: '7 个', trend: '+1' },
+                { label: '云端容量', value: '83%', trend: '+3%' }
+              ],
+              panels: [
+                {
+                  title: '素材库速览',
+                  content: `
+                    <table class="table">
+                      <thead>
+                        <tr><th>素材名称</th><th>类型</th><th>时长/数量</th><th>状态</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Launch_2024_Broll.mov</td><td>视频</td><td>02:36</td><td><span class="badge">4K HDR</span></td></tr>
+                        <tr><td>Brand_Jingle.wav</td><td>音频</td><td>18s</td><td>版权可用</td></tr>
+                        <tr><td>Product_Grid.psd</td><td>图片</td><td>6 张</td><td>待修订</td></tr>
+                        <tr><td>Team_Review.clip</td><td>剪辑片段</td><td>01:12</td><td>评论 5</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                },
+                {
+                  title: '团队协作区',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel">
+                        <h3>新品发布</h3>
+                        <span>成员：林峰、周行、可可</span>
+                        <span>进度：85%</span>
+                        <div class="badge">同步云端</div>
+                      </div>
+                      <div class="panel">
+                        <h3>线下活动回顾</h3>
+                        <span>成员：Nova 团队</span>
+                        <span>进度：54%</span>
+                        <div class="badge">待补录音频</div>
+                      </div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'creator-market',
+              label: '模板市集',
+              header: '模板市集',
+              actions: ['浏览精选', '上传模板'],
+              metrics: [
+                { label: '收藏模板', value: '48 套', trend: '+6' },
+                { label: 'AI 推荐匹配', value: '93%', trend: '+12%' },
+                { label: '最新素材', value: '12 项', trend: '+3' }
+              ],
+              panels: [
+                {
+                  title: '精选主题',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel">
+                        <h3>短剧快剪</h3>
+                        <span>15 秒黄金节奏 · 4:5 · 自带字幕动画</span>
+                        <div class="badge">人气 TOP1</div>
+                      </div>
+                      <div class="panel">
+                        <h3>品牌上新</h3>
+                        <span>动态分屏 · 支持一键换色</span>
+                        <div class="badge">AI 自动适配</div>
+                      </div>
+                    </div>
+                  `
+                },
+                {
+                  title: '我的模板',
+                  content: `
+                    <div class="list-board">
+                      <div class="list-column">
+                        <h4>近期使用</h4>
+                        <div class="list-item"><strong>闪光日志</strong><span>最近使用：2 天前</span></div>
+                        <div class="list-item"><strong>旅拍合集</strong><span>最近使用：4 天前</span></div>
+                      </div>
+                      <div class="list-column">
+                        <h4>收藏夹</h4>
+                        <div class="list-item"><strong>潮流宣传</strong><span>热度 96%</span></div>
+                        <div class="list-item"><strong>动态字幕</strong><span>AI 自动翻译</span></div>
+                      </div>
+                      <div class="list-column">
+                        <h4>团队共享</h4>
+                        <div class="list-item"><strong>品牌资产包</strong><span>共 24 项</span></div>
+                        <div class="list-item"><strong>年度回顾</strong><span>协作编辑中</span></div>
+                      </div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'creator-analytics',
+              label: '数据洞察',
+              header: '创作数据洞察',
+              actions: ['导出报告', '配置指标'],
+              metrics: [
+                { label: '曝光量', value: '1.8M', trend: '+18%' },
+                { label: '平均完播率', value: '64%', trend: '+6%' },
+                { label: '粉丝增长', value: '+12.3K', trend: '+21%' }
+              ],
+              panels: [
+                {
+                  title: '渠道表现对比',
+                  content: `
+                    <table class="table">
+                      <thead><tr><th>渠道</th><th>完播率</th><th>互动率</th><th>转化</th></tr></thead>
+                      <tbody>
+                        <tr><td>TikTok</td><td>71%</td><td>16%</td><td class="badge">增长 12%</td></tr>
+                        <tr><td>YouTube Shorts</td><td>64%</td><td>11%</td><td>稳定</td></tr>
+                        <tr><td>Instagram Reels</td><td>58%</td><td>9%</td><td>待提升</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                },
+                {
+                  title: '观众反馈热词',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel"><h3>好评热点</h3><span>“转场流畅”、“配乐很炸”、“滤镜很清爽”</span></div>
+                      <div class="panel"><h3>优化建议</h3><span>“字幕可再大些”、“希望增加幕后花絮”、“增加配色模板”</span></div>
+                    </div>
+                  `
+                }
+              ]
+            }
+          ]
+        },
+        admin: {
+          key: 'admin',
+          label: '管理员控制台',
+          summary: `
+            <strong>平台治理中心</strong>
+            <span>聚焦系统健康、账号安全与权限策略，保障平台稳定运行。</span>
+          `,
+          menus: [
+            {
+              id: 'admin-overview',
+              label: '系统总览',
+              badge: 'NEW',
+              header: '系统总览',
+              actions: ['刷新监控', '告警设置'],
+              metrics: [
+                { label: '在线用户', value: '12,864', trend: '+4.8%' },
+                { label: '接口成功率', value: '99.92%', trend: '+0.2%' },
+                { label: '告警未处理', value: '3 条', trend: '-5' },
+                { label: '任务队列', value: '正常', trend: '稳定' }
+              ],
+              panels: [
+                {
+                  title: '实时健康度',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel">
+                        <h3>服务节点</h3>
+                        <span>核心 API · 运行正常</span>
+                        <span>延迟：84ms</span>
+                        <div class="badge">蓝绿发布</div>
+                      </div>
+                      <div class="panel">
+                        <h3>转码集群</h3>
+                        <span>GPU 占用：63%</span>
+                        <span>排队任务：8</span>
+                        <div class="badge">自适应扩容</div>
+                      </div>
+                    </div>
+                  `
+                },
+                {
+                  title: '最新告警流',
+                  content: `
+                    <div class="timeline">
+                      <div class="timeline-item"><strong>09:12</strong> · 素材上传服务 - 瞬时失败率 6% (自动降级)</div>
+                      <div class="timeline-item"><strong>10:45</strong> · 运营后台登录失败次数异常 (已锁定)</div>
+                      <div class="timeline-item"><strong>12:30</strong> · 云存储账单提醒 (处理中)</div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'admin-users',
+              label: '用户与权限',
+              header: '用户与权限管理',
+              actions: ['新增账号', '批量导入'],
+              metrics: [
+                { label: '总账号', value: '82,604', trend: '+1,260' },
+                { label: '企业团队', value: '2,146', trend: '+64' },
+                { label: '封禁中', value: '42 个', trend: '-3' }
+              ],
+              panels: [
+                {
+                  title: '权限矩阵',
+                  content: `
+                    <table class="table">
+                      <thead><tr><th>角色</th><th>创建项目</th><th>审核权限</th><th>运营工具</th></tr></thead>
+                      <tbody>
+                        <tr><td>创作者</td><td>✅</td><td>⬜️</td><td>⬜️</td></tr>
+                        <tr><td>管理员</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                        <tr><td>运营</td><td>✅</td><td>半权限</td><td>✅</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                },
+                {
+                  title: '账号风险雷达',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel">
+                        <h3>异常登录</h3>
+                        <span>过去 24h：12 次</span>
+                        <div class="badge">已触发验证</div>
+                      </div>
+                      <div class="panel">
+                        <h3>违规上传</h3>
+                        <span>待处理：5 条</span>
+                        <div class="badge">运营复核中</div>
+                      </div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'admin-permission',
+              label: '策略引擎',
+              header: '权限策略引擎',
+              actions: ['发布策略', '版本回滚'],
+              metrics: [
+                { label: '策略版本', value: 'v3.2.1', trend: '本周更新' },
+                { label: '生效角色', value: '8 类', trend: '+2' },
+                { label: '回滚记录', value: '1 次', trend: '可回溯' }
+              ],
+              panels: [
+                {
+                  title: '策略草稿箱',
+                  content: `
+                    <div class="list-board">
+                      <div class="list-column">
+                        <h4>未发布</h4>
+                        <div class="list-item"><strong>素材敏感词 2.0</strong><span>责任人：Shawn</span></div>
+                        <div class="list-item"><strong>跨区协作放行</strong><span>责任人：Ivy</span></div>
+                      </div>
+                      <div class="list-column">
+                        <h4>已发布</h4>
+                        <div class="list-item"><strong>水印管控优化</strong><span>生效时间：今天 08:00</span></div>
+                        <div class="list-item"><strong>账号分层升级</strong><span>生效时间：昨日 14:30</span></div>
+                      </div>
+                    </div>
+                  `
+                },
+                {
+                  title: '审批日志',
+                  content: `
+                    <table class="table">
+                      <thead><tr><th>提交人</th><th>策略名称</th><th>状态</th><th>时间</th></tr></thead>
+                      <tbody>
+                        <tr><td>Shawn</td><td>内容导出审计</td><td><span class="badge">已通过</span></td><td>09:18</td></tr>
+                        <tr><td>Ivy</td><td>素材加密规则</td><td>待审批</td><td>10:42</td></tr>
+                        <tr><td>Nico</td><td>私有云同步</td><td>回退修改</td><td>昨天</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'admin-review',
+              label: '审核中心',
+              header: '审核中心',
+              actions: ['开始审核', '分配任务'],
+              metrics: [
+                { label: '待审核内容', value: '128 条', trend: '+18' },
+                { label: 'AI 初审通过', value: '84%', trend: '+4%' },
+                { label: '人工复核', value: '26%', trend: '-3%' }
+              ],
+              panels: [
+                {
+                  title: '待办队列',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel">
+                        <h3>广告投放素材</h3>
+                        <span>需在 2 小时内完成</span>
+                        <div class="badge">已分配：Luna</div>
+                      </div>
+                      <div class="panel">
+                        <h3>社区投诉</h3>
+                        <span>高优先级 6 条</span>
+                        <div class="badge">AI 标签完成</div>
+                      </div>
+                    </div>
+                  `
+                },
+                {
+                  title: '审核抽样记录',
+                  content: `
+                    <table class="table">
+                      <thead><tr><th>项目</th><th>抽查率</th><th>结果</th><th>复盘</th></tr></thead>
+                      <tbody>
+                        <tr><td>广告素材</td><td>10%</td><td>合规</td><td>查看</td></tr>
+                        <tr><td>公开模板</td><td>8%</td><td>发现问题 2 条</td><td>跟进中</td></tr>
+                        <tr><td>内容分发</td><td>12%</td><td>正常</td><td>——</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                }
+              ]
+            }
+          ]
+        },
+        operations: {
+          key: 'operations',
+          label: '运营驾驶舱',
+          summary: `
+            <strong>增长运营中心</strong>
+            <span>策划活动、管理内容位与收益结算，驱动平台增长与商业化。</span>
+          `,
+          menus: [
+            {
+              id: 'ops-dashboard',
+              label: '运营总览',
+              badge: 'TOP',
+              header: '运营总览驾驶舱',
+              actions: ['创建活动', '同步数据'],
+              metrics: [
+                { label: '站内活动', value: '12 个', trend: '+3' },
+                { label: '曝光增幅', value: '146%', trend: '+24%' },
+                { label: 'GMV', value: '￥3.8M', trend: '+18%' },
+                { label: 'ROI', value: '4.3', trend: '+0.6' }
+              ],
+              panels: [
+                {
+                  title: '活动热力榜',
+                  content: `
+                    <table class="table">
+                      <thead><tr><th>活动名称</th><th>状态</th><th>曝光</th><th>参与</th></tr></thead>
+                      <tbody>
+                        <tr><td>春季创作季</td><td><span class="badge">进行中</span></td><td>86.2w</td><td>14.6w</td></tr>
+                        <tr><td>模板升级挑战</td><td>预热</td><td>28.4w</td><td>6.2w</td></tr>
+                        <tr><td>品牌共创计划</td><td>已结束</td><td>64.1w</td><td>11.3w</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                },
+                {
+                  title: '渠道波动',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel">
+                        <h3>站内 Banner</h3>
+                        <span>点击率 12.4%</span>
+                        <div class="badge">高于预期</div>
+                      </div>
+                      <div class="panel">
+                        <h3>推送消息</h3>
+                        <span>到达率 92%</span>
+                        <div class="badge">建议 A/B</div>
+                      </div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'ops-campaign',
+              label: '活动策划',
+              header: '活动策划工作台',
+              actions: ['生成方案', '协同排期'],
+              metrics: [
+                { label: '策划中', value: '5 个', trend: '+1' },
+                { label: '预算占用', value: '￥820K', trend: '+12%' },
+                { label: '素材需求', value: '28 项', trend: '+6' }
+              ],
+              panels: [
+                {
+                  title: '活动流程板',
+                  content: `
+                    <div class="list-board">
+                      <div class="list-column">
+                        <h4>洞察</h4>
+                        <div class="list-item"><strong>用户调研访谈</strong><span>完成率 80%</span></div>
+                        <div class="list-item"><strong>竞品亮点盘点</strong><span>已归档</span></div>
+                      </div>
+                      <div class="list-column">
+                        <h4>策划</h4>
+                        <div class="list-item"><strong>传播主题定稿</strong><span>预计今晚上线</span></div>
+                        <div class="list-item"><strong>激励机制设计</strong><span>待财务确认</span></div>
+                      </div>
+                      <div class="list-column">
+                        <h4>执行</h4>
+                        <div class="list-item"><strong>模板大赛</strong><span>报名 2,316</span></div>
+                        <div class="list-item"><strong>品牌联动</strong><span>签约 4 家</span></div>
+                      </div>
+                    </div>
+                  `
+                },
+                {
+                  title: '排期甘特',
+                  content: `
+                    <div class="timeline">
+                      <div class="timeline-item"><strong>本周</strong> · 主题海报上线 · 直播招商启动</div>
+                      <div class="timeline-item"><strong>下周</strong> · 站内置顶 Banner 替换 · KOL 联合发布</div>
+                      <div class="timeline-item"><strong>+2 周</strong> · 活动复盘 · 数据沉淀</div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'ops-placement',
+              label: '内容位管理',
+              header: '内容位管理',
+              actions: ['新增内容位', '调整权重'],
+              metrics: [
+                { label: '总内容位', value: '56 个', trend: '+4' },
+                { label: '曝光权重', value: '72%', trend: '+6%' },
+                { label: '竞价请求', value: '18 次', trend: '+5' }
+              ],
+              panels: [
+                {
+                  title: '内容位矩阵',
+                  content: `
+                    <table class="table">
+                      <thead><tr><th>区域</th><th>优先级</th><th>当前内容</th><th>剩余时长</th></tr></thead>
+                      <tbody>
+                        <tr><td>首页 Banner</td><td>高</td><td>春季创作季</td><td>02:14:32</td></tr>
+                        <tr><td>发现页第 1 位</td><td>高</td><td>AI 剪辑教程</td><td>00:46:21</td></tr>
+                        <tr><td>发现页第 3 位</td><td>中</td><td>热门模板合集</td><td>01:18:09</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                },
+                {
+                  title: '权重调节器',
+                  content: `
+                    <div class="panel-grid two-column">
+                      <div class="panel">
+                        <h3>运营优先</h3>
+                        <span>曝光分配：60%</span>
+                        <div class="badge">推荐</div>
+                      </div>
+                      <div class="panel">
+                        <h3>算法优先</h3>
+                        <span>曝光分配：40%</span>
+                        <div class="badge">A/B 进行中</div>
+                      </div>
+                    </div>
+                  `
+                }
+              ]
+            },
+            {
+              id: 'ops-finance',
+              label: '收益结算',
+              header: '收益结算中心',
+              actions: ['生成账单', '导出明细'],
+              metrics: [
+                { label: '待结算金额', value: '￥1.26M', trend: '+9%' },
+                { label: '合作品牌', value: '38 家', trend: '+5' },
+                { label: '创作者收益', value: '￥2.4M', trend: '+16%' }
+              ],
+              panels: [
+                {
+                  title: '结算进度表',
+                  content: `
+                    <table class="table">
+                      <thead><tr><th>项目</th><th>周期</th><th>金额</th><th>状态</th></tr></thead>
+                      <tbody>
+                        <tr><td>品牌共创计划</td><td>3 月</td><td>￥480K</td><td><span class="badge">已到账</span></td></tr>
+                        <tr><td>模板大赛激励</td><td>4 月</td><td>￥320K</td><td>待付款</td></tr>
+                        <tr><td>广告收益分成</td><td>4 月</td><td>￥460K</td><td>核验中</td></tr>
+                      </tbody>
+                    </table>
+                  `
+                },
+                {
+                  title: '对账提醒',
+                  content: `
+                    <div class="timeline">
+                      <div class="timeline-item"><strong>今天</strong> · 向财务同步活动激励发票</div>
+                      <div class="timeline-item"><strong>本周五</strong> · 完成品牌共创成本核对</div>
+                      <div class="timeline-item"><strong>下周二</strong> · 更新创作者分成比例</div>
+                    </div>
+                  `
+                }
+              ]
+            }
+          ]
+        }
+      };
+
+      const roleSwitch = document.getElementById('role-switch');
+      const roleSummary = document.getElementById('role-summary');
+      const menu = document.getElementById('menu');
+      const contentTitle = document.getElementById('content-title');
+      const contentActions = document.getElementById('content-actions');
+      const metricsContainer = document.getElementById('metrics');
+      const panelsContainer = document.getElementById('panels');
+
+      let currentRoleKey = 'creator';
+      let currentMenuId = null;
+
+      const renderRoleSwitch = () => {
+        roleSwitch.innerHTML = '';
+        Object.values(roleData).forEach((role) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'role-button';
+          button.textContent = role.label;
+          button.dataset.role = role.key;
+          if (role.key === currentRoleKey) {
+            button.classList.add('is-active');
+          }
+          button.addEventListener('click', () => {
+            if (currentRoleKey !== role.key) {
+              currentRoleKey = role.key;
+              currentMenuId = null;
+              renderRoleSwitch();
+              renderSidebar();
+            }
+          });
+          roleSwitch.appendChild(button);
+        });
+      };
+
+      const renderSidebar = () => {
+        const role = roleData[currentRoleKey];
+        roleSummary.innerHTML = role.summary;
+        menu.innerHTML = '';
+        role.menus.forEach((item, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'nav-item';
+          button.textContent = item.label;
+          if (item.badge) {
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = item.badge;
+            button.appendChild(badge);
+          }
+          if (!currentMenuId && index === 0) {
+            currentMenuId = item.id;
+          }
+          if (currentMenuId === item.id) {
+            button.classList.add('is-active');
+          }
+          button.addEventListener('click', () => {
+            currentMenuId = item.id;
+            renderSidebar();
+            renderContent();
+          });
+          menu.appendChild(button);
+        });
+        renderContent();
+      };
+
+      const renderContent = () => {
+        const role = roleData[currentRoleKey];
+        const current = role.menus.find((item) => item.id === currentMenuId) || role.menus[0];
+        if (!current) {
+          contentTitle.textContent = '';
+          contentActions.innerHTML = '';
+          metricsContainer.innerHTML = '';
+          panelsContainer.innerHTML = '<div class="empty-state">暂无内容</div>';
+          return;
+        }
+        contentTitle.textContent = current.header;
+        contentActions.innerHTML = '';
+        (current.actions || []).forEach((label, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'action-button';
+          if (index === 0) {
+            button.classList.add('primary');
+          }
+          button.textContent = label;
+          contentActions.appendChild(button);
+        });
+
+        metricsContainer.innerHTML = '';
+        (current.metrics || []).forEach((metric) => {
+          const card = document.createElement('div');
+          card.className = 'metric-card';
+          const label = document.createElement('span');
+          label.textContent = metric.label;
+          const value = document.createElement('strong');
+          value.textContent = metric.value;
+          card.appendChild(label);
+          card.appendChild(value);
+          if (metric.trend) {
+            const trend = document.createElement('span');
+            trend.className = 'metric-trend';
+            trend.textContent = metric.trend;
+            card.appendChild(trend);
+          }
+          metricsContainer.appendChild(card);
+        });
+
+        panelsContainer.innerHTML = '';
+        (current.panels || []).forEach((panel) => {
+          const wrapper = document.createElement('article');
+          wrapper.className = 'panel';
+          const title = document.createElement('h3');
+          title.textContent = panel.title;
+          wrapper.appendChild(title);
+          const content = document.createElement('div');
+          content.innerHTML = panel.content;
+          wrapper.appendChild(content);
+          panelsContainer.appendChild(wrapper);
+        });
+      };
+
+      renderRoleSwitch();
+      renderSidebar();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

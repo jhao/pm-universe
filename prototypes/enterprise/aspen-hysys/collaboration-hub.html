@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>协同控制塔 · Aspen HYSYS</title>
+    <link rel="stylesheet" href="style.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="app-menu">
+        <div class="menu-logo">
+          <span>Aspen HYSYS</span>
+          <strong>流程优化系统</strong>
+        </div>
+        <nav class="menu-nav">
+          <a class="menu-link" href="index.html">系统概览</a>
+          <a class="menu-link" href="role-dashboard.html">统一指挥舱<span class="menu-link-note">Dashboard</span></a>
+          <a class="menu-link" href="modeling-workspace.html">建模工作台<span class="menu-link-note">Modeling</span></a>
+          <a class="menu-link" href="dynamic-simulation.html">动态模拟监控<span class="menu-link-note">Simulation</span></a>
+          <a class="menu-link" href="optimization-center.html">优化闭环中心<span class="menu-link-note">Optimization</span></a>
+          <a class="menu-link active" href="collaboration-hub.html">协同控制塔<span class="menu-link-note">Collaboration</span></a>
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <header class="page-header">
+          <div class="header-top">
+            <div>
+              <nav class="breadcrumb">
+                <a href="index.html">Aspen HYSYS</a>
+                <span>/</span>
+                <span>协同控制塔</span>
+              </nav>
+              <h1>协同控制塔</h1>
+              <p class="subtitle">管理模型版本、批注审批、知识沉淀与外部共享的统一窗口，首屏强调版本对比与审批动态。</p>
+            </div>
+            <div class="header-role-switch">
+              <button class="active" data-role="engineer">流程工程师</button>
+              <button data-role="optimizer">运营优化师</button>
+              <button data-role="manager">项目经理</button>
+              <button data-role="partner">外部顾问</button>
+            </div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>当前版本</strong>
+              <p>v3.2（待审批） · 更新内容：动态参数校准</p>
+            </div>
+            <div class="meta-card">
+              <strong>协同状态</strong>
+              <p>批注 8 条 · 审批待处理 2 项</p>
+            </div>
+            <div class="meta-card">
+              <strong>外部共享</strong>
+              <p>Licensor 访问中 · 有效期 7 天</p>
+            </div>
+          </div>
+        </header>
+
+        <main class="page">
+          <section class="core-section">
+            <h2>协同核心界面</h2>
+            <div class="core-preview">
+              <div class="core-panel">
+                <strong>版本对比</strong>
+                <h3>结构与参数差异</h3>
+                <ul>
+                  <li>新增再沸器 E-205 模型，更新物流连接</li>
+                  <li>冷箱控制回路新增旁路阀门</li>
+                  <li>调整压缩机效率曲线，纳入最新测试数据</li>
+                </ul>
+              </div>
+              <div class="core-panel">
+                <strong>审批轨迹</strong>
+                <h3>待办列表</h3>
+                <div class="core-canvas">
+                  <div class="core-lane">动态参数审批</div>
+                  <div class="core-lane">安全假设确认</div>
+                  <div class="core-lane">知识库更新</div>
+                </div>
+                <p>审批队列突出风险与负责人，便于项目经理快速处理。</p>
+              </div>
+              <div class="core-panel">
+                <strong>角色切换</strong>
+                <h3>协同提醒</h3>
+                <p>右上角角色切换后展示针对性的批注、审批与共享权限提示，保持跨组织协作。</p>
+                <div class="core-lanes">
+                  <div class="core-lane">批注响应</div>
+                  <div class="core-lane">审批状态</div>
+                  <div class="core-lane">外部共享</div>
+                </div>
+              </div>
+            </div>
+            <div class="core-description">
+              <h3>主要业务说明</h3>
+              <p>协同控制塔承担模型治理、审批与知识沉淀的关键角色，帮助团队以受控方式上线模型版本。可继续跳转至统一指挥舱查看整体进展，也可访问优化闭环中心了解执行状态。</p>
+              <div class="core-actions">
+                <a class="cta-link" href="role-dashboard.html">返回统一指挥舱</a>
+                <a class="cta-link" href="optimization-center.html">查看优化闭环</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>角色切换体验</h2>
+            <div data-role-container>
+              <div class="role-switch" data-role-switch>
+                <button class="active" data-role="engineer">流程工程师</button>
+                <button data-role="optimizer">运营优化师</button>
+                <button data-role="manager">项目经理</button>
+                <button data-role="partner">外部顾问</button>
+              </div>
+              <div class="role-panels">
+                <div class="role-panel active" data-role="engineer">
+                  <h3>工程师视角</h3>
+                  <ul>
+                    <li>提交新版本说明，关联实验数据附件</li>
+                    <li>响应批注并更新模型描述</li>
+                    <li>同步知识库条目与最佳实践</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="optimizer">
+                  <h3>优化师视角</h3>
+                  <ul>
+                    <li>审阅动态参数调整对优化的影响</li>
+                    <li>确认关键 KPI 是否更新</li>
+                    <li>发起执行团队通知，准备现场验证</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="manager">
+                  <h3>经理视角</h3>
+                  <ul>
+                    <li>查看审批队列、风险清单与决策建议</li>
+                    <li>协调外部顾问反馈，安排会议</li>
+                    <li>生成向管理层汇报的摘要</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="partner">
+                  <h3>外部顾问视角</h3>
+                  <ul>
+                    <li>受邀查看只读模型快照，添加批注</li>
+                    <li>下载必要数据文件，提供专业建议</li>
+                    <li>提交风险提示或改进建议</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>审批与任务列表</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>事项</th>
+                  <th>状态</th>
+                  <th>责任人</th>
+                  <th>截止时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>动态参数更新审批</td>
+                  <td><span class="badge">待处理</span></td>
+                  <td>项目经理</td>
+                  <td>5 月 20 日</td>
+                </tr>
+                <tr>
+                  <td>安全假设确认</td>
+                  <td><span class="badge">进行中</span></td>
+                  <td>外部顾问</td>
+                  <td>5 月 22 日</td>
+                </tr>
+                <tr>
+                  <td>知识库更新</td>
+                  <td><span class="badge">完成</span></td>
+                  <td>流程工程师</td>
+                  <td>5 月 18 日</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section>
+            <h2>沟通记录</h2>
+            <div class="grid-3">
+              <div class="story-card">
+                <strong>批注 · 运营优化师</strong>
+                <p>请确认新增控制阀对动态模拟的影响。</p>
+                <p>状态：工程师已回复，等待验证。</p>
+              </div>
+              <div class="story-card">
+                <strong>批注 · 外部顾问</strong>
+                <p>建议添加紧急排放量评估，确保合规。</p>
+                <p>状态：项目经理已创建审批任务。</p>
+              </div>
+              <div class="story-card">
+                <strong>会议纪要</strong>
+                <p>5 月 15 日 · 技术评审会，确认版本上线路径。</p>
+                <p>后续行动：现场验证完成后发起复盘。</p>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer>协同控制塔原型呈现多角色共创、审批治理与知识沉淀的核心能力。</footer>
+      </div>
+    </div>
+
+    <script src="app.js" type="module"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜服务合同详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="service">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>客户服务中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>说明：</strong>服务合同关联生产、供应链与财务数据。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">客户服务 &gt; 服务合同</div>
+            <h1>EMEA-Delta 维保合同</h1>
+            <p class="role-tagline" data-role-summary>跟踪客户履约与售后服务交付，提高满意度与续约率。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>合同概览</h2>
+              <div class="panel-actions">
+                <a class="button" href="service.html">返回排班</a>
+                <a class="button secondary" href="finance.html">查看收入计划</a>
+              </div>
+            </div>
+            <dl class="description-list">
+              <div>
+                <dt>合同编号</dt>
+                <dd>CTR-2023-EMEA-01</dd>
+              </div>
+              <div>
+                <dt>合同期限</dt>
+                <dd>2023-04-01 至 2025-03-31</dd>
+              </div>
+              <div>
+                <dt>合同金额</dt>
+                <dd>¥ 9,800,000</dd>
+              </div>
+              <div>
+                <dt data-role-visibility="finance">账单节奏</dt>
+                <dd data-role-visibility="finance" class="is-visible">季度结算｜每季 2,450,000</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel" data-role-visibility="service,finance">
+            <div class="panel-header">
+              <h2>服务级别协议</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="service-case-detail.html">查看近期工单</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>响应时间</h3>
+                <p>关键故障 2 小时内响应，重大升级 8 小时内响应。</p>
+              </div>
+              <div class="card">
+                <h3>备件策略</h3>
+                <p>关键备件在 W1 保持安全库存，紧急情况 4 小时内到场。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="service,supply,production">
+            <div class="panel-header">
+              <h2>履约与资源计划</h2>
+              <div class="panel-actions">
+                <a class="button" href="production.html">查看生产排程</a>
+                <a class="button secondary" href="supply-chain.html">查看供应计划</a>
+              </div>
+            </div>
+            <div class="flex-table">
+              <div class="flex-row">
+                <strong>季度维护窗口</strong>
+                <span>4 月｜7 月｜10 月｜次年 1 月</span>
+                <a href="service.html">安排工程师</a>
+              </div>
+              <div class="flex-row">
+                <strong>关键物料保障</strong>
+                <span>SMT 板｜电源模组｜备件套装</span>
+                <a href="warehouse-transfer.html">查看库存</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示服务合同的关键结构。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                合同页面覆盖基本信息、SLA、履约计划，提供跳转到生产排程、供应链、财务等页面的入口，用于演示跨部门协同；切换角色后，财务关注账单节奏，供应链关注物料保障，生产关注维护窗口。
+              </p>
+              <p>
+                通过顶部按钮可快速回到排班或查看收入计划，辅助演示合同到执行的闭环。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

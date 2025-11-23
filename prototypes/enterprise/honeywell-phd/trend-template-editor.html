@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>趋势模板编辑器 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a></li>
+            <li><a class="nav-link" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a></li>
+            <li><a class="nav-link" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a></li>
+            <li><a class="nav-link is-active" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a></li>
+            <li><a class="nav-link" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a></li>
+            <li><a class="nav-link" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a></li>
+            <li><a class="nav-link" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a></li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>返回</strong>
+          <div>• <a href="trend-analysis.html">返回趋势工作台</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>趋势模板编辑器</h2>
+            <span class="breadcrumb">Honeywell PHD / 趋势分析 / 模板编辑</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card">
+            <h3>模板基本信息</h3>
+            <div class="detail-layout">
+              <div class="meta-grid">
+                <div class="meta-item"><strong>模板名称</strong><br />裂解炉能效监控</div>
+                <div class="meta-item"><strong>标签数量</strong><br />12</div>
+                <div class="meta-item"><strong>时间窗口</strong><br />最近 24 小时</div>
+                <div class="meta-item"><strong>共享范围</strong><br />工艺团队</div>
+              </div>
+              <div class="note-box">此模板将同步至运行日报与能耗简报，可在 <a href="report-center.html#kpi">报表中心</a> 预览效果。</div>
+            </div>
+          </section>
+
+          <section class="section-card" id="energy">
+            <h3>标签配置</h3>
+            <table class="table">
+              <thead>
+                <tr><th>标签</th><th>采样频率</th><th>处理</th><th>可见角色</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr data-role="工艺工程师,运维主管">
+                  <td>F-301 炉膛温度</td>
+                  <td>1s</td>
+                  <td>平滑 + 去噪</td>
+                  <td>工艺、运维</td>
+                  <td><a href="#" onclick="return false;">移除</a></td>
+                </tr>
+                <tr data-role="工艺工程师">
+                  <td>乙烯塔回流比</td>
+                  <td>5s</td>
+                  <td>标准化</td>
+                  <td>工艺</td>
+                  <td><a href="data-collection.html#tag">添加新标签</a></td>
+                </tr>
+                <tr data-role="管理层,工艺工程师">
+                  <td>单位能耗 KPI</td>
+                  <td>1 min</td>
+                  <td>聚合</td>
+                  <td>管理层</td>
+                  <td><a href="report-center.html#executive">同步到报表</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="section-card">
+            <h3>动作配置</h3>
+            <div class="split-layout">
+              <div>
+                <h4>触发器</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>炉膛温度 > 850℃ 时发送报警至 <a href="alarm-management.html">报警中心</a></li>
+                  <li><span class="check-icon">✓</span>单位能耗连续 30 分钟上升时推送至 <a href="operations-dashboard.html">驾驶舱</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4>角色协作</h4>
+                <div class="role-section" data-role="工艺工程师">
+                  <p>确认模板调整后在 <a href="trend-analysis.html">趋势工作台</a> 测试效果。</p>
+                </div>
+                <div class="role-section" data-role="运维主管">
+                  <p>如涉及采样频率变化，请通知 <a href="data-pipeline-detail.html">采集团队</a>。</p>
+                </div>
+                <div class="role-section" data-role="管理层">
+                  <p>通过 <a href="report-center.html#executive">经营简报</a> 关注节能目标达成。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            模板编辑器用于维护趋势模板的标签、处理逻辑与触发动作，并通过链接与报警、报表、驾驶舱等模块联动。角色切换可查看不同角色在模板编辑中的关注点。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

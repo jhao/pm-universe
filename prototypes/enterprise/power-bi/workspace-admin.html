@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>工作区与发布 | 租户管理员视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="admin" data-page="workspace-admin">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：租户管理员</span>
+            <strong>工作区与发布</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>工作区治理总览</h1>
+                <p>掌握各业务工作区的容量、成员和发布节奏。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="workspace-detail.html">查看工作区详情</a>
+                <a class="button secondary" href="subscription-alerts.html">跳转订阅警报</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>工作区健康度</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>工作区</th>
+                    <th>容量使用</th>
+                    <th>管理员</th>
+                    <th>最近发布</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>销售运营</td>
+                    <td>62%</td>
+                    <td>张敏</td>
+                    <td>2024-03-02</td>
+                    <td><span class="metric-badge gain">正常</span></td>
+                  </tr>
+                  <tr>
+                    <td>供应链执行</td>
+                    <td>81%</td>
+                    <td>李伟</td>
+                    <td>2024-03-01</td>
+                    <td><span class="metric-badge gain">正常</span></td>
+                  </tr>
+                  <tr>
+                    <td>市场洞察</td>
+                    <td>95%</td>
+                    <td>王倩</td>
+                    <td>2024-02-26</td>
+                    <td><span class="metric-badge loss">容量紧张</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>治理动作</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>容量伸缩</strong>
+                  <p>计划扩容市场洞察工作区</p>
+                  <a class="button ghost" href="workspace-detail.html">查看容量计划</a>
+                </div>
+                <div class="status-tile">
+                  <strong>成员审核</strong>
+                  <p>销售运营 2 个外部成员待确认</p>
+                </div>
+                <div class="status-tile">
+                  <strong>发布节奏</strong>
+                  <p>季度发布评审将于下周进行</p>
+                  <a class="button ghost" href="subscription-alerts.html">通知负责人</a>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>展示工作区的容量使用与发布节奏，帮助管理员判断健康度。</li>
+                <li>支持查看具体工作区详情并安排容量管理。</li>
+                <li>治理动作模块引导管理员执行扩容、成员审计等关键步骤。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

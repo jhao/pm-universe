@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 偏差上报</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="deviation-report">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>分析人员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">偏差记录自动通知 QA 并进入 CAPA 流程。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">偏差模板</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">偏差上报</h1>
+              <p class="hero-subtitle">记录实验执行中的异常情况，触发质量评估并生成 CAPA 任务。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="secondary-btn" href="result-entry.html?role=analyst">返回结果录入</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">偏差信息</span>
+              <a class="link-btn" href="capa-tracking.html?role=qa">查看 CAPA</a>
+            </div>
+            <div class="panel-body">
+              <div class="form-grid">
+                <div class="form-control">
+                  <label>偏差编号</label>
+                  <input type="text" value="DV-20230518-01" />
+                </div>
+                <div class="form-control">
+                  <label>关联批次</label>
+                  <input type="text" value="BT-230505-02" />
+                </div>
+                <div class="form-control">
+                  <label>偏差类型</label>
+                  <select>
+                    <option>仪器异常</option>
+                    <option>操作失误</option>
+                    <option>环境超标</option>
+                  </select>
+                </div>
+                <div class="form-control">
+                  <label>影响等级</label>
+                  <select>
+                    <option>中</option>
+                    <option>高</option>
+                    <option>低</option>
+                  </select>
+                </div>
+                <div class="form-control" style="grid-column: 1 / -1;">
+                  <label>描述</label>
+                  <textarea placeholder="描述偏差发生经过、影响范围和初步处理"></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">即时措施</span>
+              <a class="link-btn" href="qa-release.html?role=qa">通知 QA</a>
+            </div>
+            <div class="panel-body">
+              <div class="form-grid">
+                <div class="form-control">
+                  <label>采取措施</label>
+                  <textarea placeholder="如 停止仪器、隔离样品等"></textarea>
+                </div>
+                <div class="form-control">
+                  <label>责任人</label>
+                  <input type="text" placeholder="填写责任人" />
+                </div>
+                <div class="form-control">
+                  <label>预计完成时间</label>
+                  <input type="datetime-local" />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" type="button">提交偏差</button>
+                <a class="link-btn" href="release-detail.html?role=qa">查看质量处理</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>偏差上报页面帮助分析人员快速提交异常信息并触发质量跟进。</p>
+            <ul class="clean">
+              <li>填写偏差类型、影响等级与描述。</li>
+              <li>即时措施同步至质量主管审批。</li>
+              <li>提交后自动进入 CAPA 跟踪。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

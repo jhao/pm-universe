@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>数据集详情 | 业务分析师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="analyst" data-page="dataset-explorer">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：业务分析师</span>
+            <strong>数据集详情</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>订单履约与库存数据集</h1>
+                <p>涵盖订单、库存、运输节点的统一模型，支持行级安全控制。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="report-builder.html">使用此数据集建模</a>
+                <a class="button secondary" href="dataflow-monitor.html">查看刷新血缘</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>字段结构</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>字段</th>
+                    <th>类型</th>
+                    <th>描述</th>
+                    <th>敏感度</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>OrderID</td>
+                    <td>文本</td>
+                    <td>唯一订单编号</td>
+                    <td>公开</td>
+                  </tr>
+                  <tr>
+                    <td>CustomerSegment</td>
+                    <td>文本</td>
+                    <td>客户细分</td>
+                    <td>内部</td>
+                  </tr>
+                  <tr>
+                    <td>DeliveredDate</td>
+                    <td>日期</td>
+                    <td>实际交付时间</td>
+                    <td>内部</td>
+                  </tr>
+                  <tr>
+                    <td>InventoryRiskScore</td>
+                    <td>数值</td>
+                    <td>库存风险评分</td>
+                    <td>敏感</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>刷新与血缘</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>刷新方式</strong>
+                  <p>网关计划刷新，每日 02:00</p>
+                </div>
+                <div class="status-tile">
+                  <strong>最近刷新</strong>
+                  <p>今天 02:03 成功</p>
+                  <a class="button ghost" href="refresh-log.html">查看日志</a>
+                </div>
+                <div class="status-tile">
+                  <strong>使用情况</strong>
+                  <p>12 个报表、3 个仪表盘</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>安全与共享</h2>
+              <p>应用行级安全角色：区域经理、供应链主管、执行领导。</p>
+              <div class="link-list">
+                <a href="insight-detail.html">查看业务洞察示例</a>
+                <a href="report-versioning.html">查看依赖报表</a>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>展示数据集字段结构、刷新方式和共享范围，保证使用合规。</li>
+                <li>支持快速跳转至刷新日志与行级安全配置，便于排查和治理。</li>
+                <li>提供下游报表与洞察链接，帮助分析师理解数据集价值。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

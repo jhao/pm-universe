@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>报表创作中心 | 业务分析师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="analyst" data-page="report-builder">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：业务分析师</span>
+            <strong>报表创作中心</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>销售绩效报表设计</h1>
+                <p>拖拽字段生成可视化，结合 DAX 提供深入分析。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="report-versioning.html">保存并发布版本</a>
+                <a class="button secondary" href="dataset-explorer.html">切换数据集</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>画布预览</h2>
+              <div class="grid">
+                <div class="card">
+                  <h2>字段窗格</h2>
+                  <p>客户细分、订单状态、地区、渠道。</p>
+                  <a class="button ghost" href="dataset-detail.html">字段说明</a>
+                </div>
+                <div class="card">
+                  <h2>可视化窗格</h2>
+                  <p>柱状图、折线图、地图、KPI 卡片。</p>
+                  <div class="link-list">
+                    <a href="insight-detail.html">添加智能叙事</a>
+                    <a href="report-versioning.html">书签管理</a>
+                  </div>
+                </div>
+                <div class="card">
+                  <h2>筛选器</h2>
+                  <p>按区域、季度、渠道类型筛选。</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>关键度量</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>度量名称</th>
+                    <th>公式摘要</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>总营收</td>
+                    <td>SUM(Sales[Amount])</td>
+                    <td>汇总销售金额，受筛选影响。</td>
+                  </tr>
+                  <tr>
+                    <td>订单达成率</td>
+                    <td>DIVIDE(SUM(Delivered), SUM(Target))</td>
+                    <td>衡量订单完成目标的比例。</td>
+                  </tr>
+                  <tr>
+                    <td>平均交付天数</td>
+                    <td>AVERAGEX(Orders, Orders[DeliveryDays])</td>
+                    <td>体现交付效率。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>协作与评论</h2>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span>张敏 @ 渠道优化</span>
+                  <span>建议突出北区表现</span>
+                </div>
+                <div class="timeline-item">
+                  <span>王倩 @ 市场洞察</span>
+                  <span>添加投放 ROI 卡片</span>
+                </div>
+                <div class="timeline-item">
+                  <span>李伟 @ 供应链</span>
+                  <span>引入库存周转率指标</span>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>展示报表创作界面核心元素，支持拖拽字段和图表调整。</li>
+                <li>支持直接保存版本并发布，同时查看关键 DAX 度量定义。</li>
+                <li>评论时间线帮助跨部门协作，确保报表满足业务需求。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

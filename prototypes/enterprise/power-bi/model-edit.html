@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>模型编辑 | 数据工程师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="engineer" data-page="semantic-model">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：数据工程师</span>
+            <strong>模型编辑</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>语义模型编辑器</h1>
+                <p>调整表关系、度量与安全规则并预览影响。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="semantic-model.html">保存并发布</a>
+                <a class="button secondary" href="report-versioning.html">查看影响报表</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>关系调整</h2>
+              <div class="grid">
+                <div class="card">
+                  <h2>新增关系</h2>
+                  <p>产品维度 ↔ 库存事实</p>
+                </div>
+                <div class="card">
+                  <h2>关系类型</h2>
+                  <p>单向过滤，基数：多对一</p>
+                </div>
+                <div class="card">
+                  <h2>影响范围</h2>
+                  <p>影响库存分析报表</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>安全规则</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>角色</th>
+                    <th>筛选表达式</th>
+                    <th>描述</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>区域经理</td>
+                    <td>[Region] = USERPRINCIPALNAME()</td>
+                    <td>按所属区域限制数据。</td>
+                  </tr>
+                  <tr>
+                    <td>供应链主管</td>
+                    <td>[Region] IN AllowedRegions</td>
+                    <td>多区域访问权限。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>变更预览</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>受影响度量</strong>
+                  <p>库存覆盖天数</p>
+                </div>
+                <div class="status-tile">
+                  <strong>受影响报表</strong>
+                  <p>供应链执行仪表盘</p>
+                </div>
+                <div class="status-tile">
+                  <strong>验证结果</strong>
+                  <p>通过</p>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>模拟语义模型编辑器的核心工作流，覆盖关系、度量与安全。</li>
+                <li>展示变更影响范围，帮助工程师评估风险。</li>
+                <li>可直接回到模型总览或通知报表团队，完成变更闭环。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

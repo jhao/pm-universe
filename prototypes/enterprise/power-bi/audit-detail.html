@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>审计日志详情 | 租户管理员视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="admin" data-page="governance">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：租户管理员</span>
+            <strong>审计日志详情</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>敏感报表访问记录</h1>
+                <p>审计高敏感报表的访问行为及导出动作。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="governance-center.html">标记已处理</a>
+                <a class="button secondary" href="alert-detail.html">配置升级警报</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>访问日志</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>用户</th>
+                    <th>动作</th>
+                    <th>对象</th>
+                    <th>结果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2024-03-02 09:12</td>
+                    <td>zhangmin@corp</td>
+                    <td>查看</td>
+                    <td>高管仪表盘</td>
+                    <td>成功</td>
+                  </tr>
+                  <tr>
+                    <td>2024-03-02 09:18</td>
+                    <td>guest@partner</td>
+                    <td>导出 PDF</td>
+                    <td>高管仪表盘</td>
+                    <td>阻止（策略）</td>
+                  </tr>
+                  <tr>
+                    <td>2024-03-02 09:30</td>
+                    <td>liwei@corp</td>
+                    <td>分享</td>
+                    <td>供应链执行仪表盘</td>
+                    <td>成功</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>审计备注</h2>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span>审计员：刘倩</span>
+                  <span>已确认外部导出被拦截</span>
+                </div>
+                <div class="timeline-item">
+                  <span>运营副总</span>
+                  <span>要求强化合作方培训</span>
+                </div>
+              </div>
+              <div class="link-list">
+                <a href="workspace-detail.html">查看相关工作区</a>
+                <a href="subscription-alerts.html">同步通知</a>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>展示敏感报表访问与导出行为，便于审计跟踪。</li>
+                <li>提供审计备注和后续动作，确保合规问题闭环。</li>
+                <li>可跳转至治理中心或警报配置，持续强化安全。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>排产明细 · Blue Yonder SCM Cloud</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --sidebar-bg: #0f172a;
+        --card-bg: #ffffff;
+        --border: #e2e8f0;
+        --text-main: #1f2937;
+        --text-sub: #64748b;
+        --accent: #2563eb;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text-main); }
+      a { color: inherit; text-decoration: none; }
+      .layout { display: flex; min-height: 100vh; }
+      .sidebar { width: 248px; background: var(--sidebar-bg); color: #fff; padding: 32px 24px; display: flex; flex-direction: column; }
+      .brand { font-size: 20px; font-weight: 600; margin-bottom: 32px; display: flex; align-items: center; gap: 8px; }
+      .brand span.logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; font-weight: 700; }
+      .menu { display: flex; flex-direction: column; gap: 12px; }
+      .menu a { padding: 12px 16px; border-radius: 10px; font-size: 15px; color: rgba(255, 255, 255, 0.72); transition: background 0.2s, color 0.2s; }
+      .menu a.active, .menu a:hover { background: rgba(37, 99, 235, 0.16); color: #fff; }
+      .menu small { display: block; font-size: 12px; opacity: 0.65; margin-top: 4px; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 0 32px; }
+      .breadcrumbs { display: flex; flex-direction: column; gap: 6px; }
+      .breadcrumbs span { font-size: 13px; color: var(--text-sub); }
+      .breadcrumbs h1 { margin: 0; font-size: 26px; }
+      .topbar-actions { display: flex; align-items: center; gap: 16px; }
+      .role-switcher { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 12px; }
+      .role-switcher label { font-size: 13px; color: var(--text-sub); }
+      .role-switcher select { border: none; outline: none; font-size: 14px; background: transparent; }
+      .role-pill { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+      main.content { padding: 24px 32px 40px 32px; display: flex; flex-direction: column; gap: 24px; }
+      .card { background: var(--card-bg); border-radius: 18px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
+      .card header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .card h2 { margin: 0; font-size: 20px; }
+      .card p { margin: 0; font-size: 14px; color: var(--text-sub); }
+      .timeline { display: grid; gap: 14px; }
+      .timeline-item { padding: 16px; border-radius: 14px; background: #f8fafc; border: 1px solid #dbeafe; }
+      .timeline-item strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+      .table th, .table td { padding: 12px; border: 1px solid #e2e8f0; font-size: 13px; text-align: left; }
+      .table thead { background: #f8fafc; }
+      .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+      .panel { padding: 16px; border-radius: 14px; background: #f1f5f9; border: 1px solid #dbeafe; font-size: 13px; color: var(--text-sub); }
+      .panel strong { display: block; margin-bottom: 6px; color: var(--text-main); }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14px; border: 1px solid transparent; transition: all 0.2s; }
+      .btn.primary { background: #2563eb; color: #fff; }
+      .btn.secondary { border: 1px solid #cbd5f5; color: #1d4ed8; background: #eef2ff; }
+      .role-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .highlight { padding: 16px; border-radius: 16px; background: #e0f2fe; border: 1px solid #93c5fd; font-size: 13px; color: #0c4a6e; }
+      .highlight strong { display: block; margin-bottom: 6px; }
+      .page-notes { padding: 18px; border-radius: 16px; background: #fefce8; border: 1px solid #facc15; font-size: 14px; color: #78350f; line-height: 1.6; }
+      @media (max-width: 1200px) { .grid-two, .role-highlights { grid-template-columns: repeat(1, minmax(0, 1fr)); } }
+    </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">BY</span>Blue Yonder SCM Cloud</div>
+        <nav class="menu">
+          <a href="index.html" data-page="dashboard">控制塔概览<small>实时 KPI · 风险预警</small></a>
+          <a href="demand-planning.html" data-page="demand">需求规划工作台<small>机器学习预测</small></a>
+          <a href="replenishment-inventory.html" data-page="replenishment">补货与库存优化<small>渠道分配策略</small></a>
+          <a href="supply-planning.html" data-page="supply">供应计划与 S&OP<small>产能协同</small></a>
+          <a href="logistics-fulfillment.html" data-page="logistics">物流履约监控<small>运输 · 仓储</small></a>
+          <a href="executive-analytics.html" data-page="executive">高管驾驶舱<small>战略指标</small></a>
+        </nav>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>供应计划 / 排产明细</span>
+            <h1>排产与订单执行详情</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <label for="roleSelect">当前角色</label>
+              <select id="roleSelect">
+                <option value="demand-planner">需求计划经理</option>
+                <option value="supply-planner">供应计划经理</option>
+                <option value="logistics-manager">物流运营经理</option>
+                <option value="executive">首席供应链官</option>
+              </select>
+              <span class="role-pill" id="roleBadge">供应计划经理视角</span>
+            </div>
+          </div>
+        </header>
+        <main class="content">
+          <section class="card">
+            <header>
+              <div>
+                <h2>关键排产时间线</h2>
+                <p>展示未来 4 周的产能与订单执行节奏</p>
+              </div>
+              <a class="btn primary" href="supply-planning.html">返回供应计划工作台</a>
+            </header>
+            <div class="timeline" id="timeline"></div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>订单与产能匹配</h2>
+                <p>核对各订单在工厂的排产状态与缺口</p>
+              </div>
+            </header>
+            <table class="table" id="orderTable"></table>
+          </section>
+
+          <section class="grid-two">
+            <div class="card">
+              <header>
+                <div>
+                  <h2>瓶颈分析</h2>
+                  <p>识别导致产能不足的资源或物料</p>
+                </div>
+                <a class="btn secondary" href="risk-mitigation-playbook.html">查看缓解计划</a>
+              </header>
+              <div class="panel" id="bottleneckPanel"></div>
+            </div>
+            <div class="card">
+              <header>
+                <div>
+                  <h2>协同任务</h2>
+                  <p>跨团队执行排产调整的待办</p>
+                </div>
+                <a class="btn secondary" href="collaboration-workbench.html">进入任务看板</a>
+              </header>
+              <div class="panel" id="taskPanel"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <header>
+              <div>
+                <h2>角色关注</h2>
+                <p>切换角色查看排产明细需要关注的事项</p>
+              </div>
+            </header>
+            <div class="role-highlights" id="roleHighlights"></div>
+          </section>
+
+          <section class="page-notes">
+            <strong>页面说明：</strong>排产明细页面以时间线和订单匹配表呈现核心信息，帮助观众快速理解生产节奏与潜在缺口。瓶颈分析与协同任务区块说明关键业务动作，可继续跳转到风险缓解或任务看板。角色切换用于演示不同职能的关注点。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script>
+      const currentPage = 'supply';
+      document.querySelectorAll('.menu a').forEach((link) => { if (link.dataset.page === currentPage) link.classList.add('active'); });
+
+      const timelineData = [
+        { week: '第 20 周', detail: '越南工厂加班 2 班，完成促销订单排产。' },
+        { week: '第 21 周', detail: '巴西工厂调整排班，腾出 8% 产能。' },
+        { week: '第 22 周', detail: '墨西哥工厂支持北美紧急订单，启动跨工厂调拨。' },
+        { week: '第 23 周', detail: 'S&OP 决议执行情景 B，锁定产能计划。' }
+      ];
+      const timeline = document.getElementById('timeline');
+      timeline.innerHTML = timelineData
+        .map((item) => `<div class=\"timeline-item\"><strong>${item.week}</strong>${item.detail}</div>`)
+        .join('');
+
+      const orderTable = document.getElementById('orderTable');
+      const orders = [
+        { order: '#PO-7821', sku: 'XG-200', factory: '越南', qty: '6,000', status: '排产完成', gap: '-' },
+        { order: '#PO-7826', sku: 'LZ-410', factory: '巴西', qty: '3,500', status: '缺口 6%', gap: '需外协 200 件' },
+        { order: '#PO-7830', sku: 'AC-150', factory: '墨西哥', qty: '4,200', status: '排产中', gap: '-' },
+        { order: '#PO-7835', sku: 'KF-330', factory: '波兰', qty: '2,800', status: '排产完成', gap: '-' }
+      ];
+      orderTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>订单号</th>
+            <th>SKU</th>
+            <th>工厂</th>
+            <th>数量</th>
+            <th>排产状态</th>
+            <th>缺口说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orders
+            .map(
+              (row) => `
+                <tr>
+                  <td>${row.order}</td>
+                  <td><a href="demand-forecast-sku.html" style="color:#1d4ed8;">${row.sku}</a></td>
+                  <td>${row.factory}</td>
+                  <td>${row.qty}</td>
+                  <td>${row.status}</td>
+                  <td>${row.gap}</td>
+                </tr>
+              `
+            )
+            .join('')}
+        </tbody>`;
+
+      const bottleneckPanel = document.getElementById('bottleneckPanel');
+      const bottlenecks = [
+        '物料：ZF-09 缺口 3%，需加急采购。',
+        '产线：越南装配线周末需加班以满足交期。',
+        '质量：新供应商需额外检验时间 12 小时。'
+      ];
+      bottleneckPanel.innerHTML = bottlenecks.map((item) => `<p>· ${item}</p>`).join('');
+
+      const taskPanel = document.getElementById('taskPanel');
+      const tasks = [
+        '与采购确认 ZF-09 紧急订单交期。',
+        '通知物流准备额外集装箱。',
+        '更新客户关于 LZ-410 的交付承诺。'
+      ];
+      taskPanel.innerHTML = tasks.map((item) => `<p>· ${item}</p>`).join('');
+
+      const roleConfig = {
+        'demand-planner': [
+          { title: '需求异常反馈', text: '若订单调整需及时通知供应计划团队。' },
+          { title: '客户沟通', text: '确保关键客户了解交付变化。' },
+          { title: '数据回写', text: '将执行反馈纳入下一轮预测。' }
+        ],
+        'supply-planner': [
+          { title: '产能调度', text: '协调多工厂资源，解决缺口。' },
+          { title: '物料保障', text: '与采购紧密合作，避免断供。' },
+          { title: '异常处理', text: '快速审批加班或外协申请。' }
+        ],
+        'logistics-manager': [
+          { title: '装运计划', text: '依据排产时间安排运输窗口。' },
+          { title: '仓储准备', text: '提前规划成品入库与出库节奏。' },
+          { title: '应急预案', text: '为延误订单准备改道方案。' }
+        ],
+        executive: [
+          { title: '战略订单', text: '关注高价值订单的执行情况。' },
+          { title: '财务影响', text: '评估加班与外协的成本。' },
+          { title: '风险治理', text: '推动长期解决瓶颈问题。' }
+        ]
+      };
+
+      const select = document.getElementById('roleSelect');
+      const badge = document.getElementById('roleBadge');
+      const highlights = document.getElementById('roleHighlights');
+      const savedRole = window.localStorage.getItem('by-active-role') || 'supply-planner';
+      select.value = savedRole;
+
+      const renderRole = (role) => {
+        const config = roleConfig[role] || [];
+        badge.textContent = `${select.options[select.selectedIndex].text}视角`;
+        highlights.innerHTML = config
+          .map((item) => `<div class=\"highlight\"><strong>${item.title}</strong>${item.text}</div>`)
+          .join('');
+        window.localStorage.setItem('by-active-role', role);
+      };
+
+      renderRole(savedRole);
+      select.addEventListener('change', (event) => renderRole(event.target.value));
+    </script>
+      <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

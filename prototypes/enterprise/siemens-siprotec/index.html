@@ -2,83 +2,1508 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Siemens SIPROTEC 数字化保护 原型概览</title>
+    <title>Siemens SIPROTEC 数字化保护 原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: #f3f6fb;
+        color: #0f172a;
+      }
+      .app-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 28px;
+        background: linear-gradient(120deg, #0f172a, #1e3a8a);
+        color: #fff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .brand-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.1);
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .brand p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        opacity: 0.8;
+      }
+      .role-switcher {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(15, 23, 42, 0.4);
+        padding: 8px 14px;
+        border-radius: 14px;
+        font-size: 14px;
+      }
+      .role-switcher label {
+        opacity: 0.8;
+      }
+      .role-switcher select {
+        appearance: none;
+        border: none;
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        padding: 6px 24px 6px 12px;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .main-layout {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        gap: 0;
+      }
+      .sidebar {
+        background: #111c44;
+        color: #e2e8f0;
+        padding: 28px 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        box-shadow: inset -1px 0 0 rgba(148, 163, 184, 0.2);
+      }
+      .role-brief {
+        background: rgba(15, 23, 42, 0.55);
+        padding: 18px;
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .role-brief h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .role-brief p {
+        margin: 0;
+        color: rgba(226, 232, 240, 0.85);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .role-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .role-metric {
+        background: rgba(148, 163, 184, 0.18);
+        padding: 10px 12px;
+        border-radius: 12px;
+      }
+      .role-metric span {
+        display: block;
+      }
+      .role-metric .label {
+        font-size: 11px;
+        color: rgba(226, 232, 240, 0.7);
+        letter-spacing: 0.5px;
+      }
+      .role-metric .value {
+        margin-top: 4px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .menu-title {
+        margin: 0 0 10px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1.8px;
+        color: rgba(226, 232, 240, 0.5);
+      }
+      .menu-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        color: inherit;
+        text-decoration: none;
+        transition: background 0.2s ease, transform 0.2s ease;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .menu-item:hover {
+        background: rgba(59, 130, 246, 0.22);
+        transform: translateX(4px);
+      }
+      .menu-item-active {
+        background: linear-gradient(120deg, rgba(59, 130, 246, 0.45), rgba(14, 116, 144, 0.5));
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.35);
+      }
+      .menu-item-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 10px;
+        background: rgba(226, 232, 240, 0.18);
+        display: grid;
+        place-items: center;
+        font-size: 15px;
+      }
+      main.content {
+        background: #f8fafc;
+        padding: 32px 36px 80px;
+        overflow: auto;
+      }
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        align-items: flex-start;
+        margin-bottom: 26px;
+      }
+      .page-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #0f172a;
+      }
+      .page-header p {
+        margin: 6px 0 0;
+        color: #475569;
+      }
+      .page-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .action-button {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #1d4ed8;
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(29, 78, 216, 0.25);
+        transition: transform 0.2s ease;
+      }
+      .action-button.secondary {
+        background: rgba(15, 23, 42, 0.08);
+        color: #1e293b;
+        box-shadow: none;
+      }
+      .action-button:hover {
+        transform: translateY(-2px);
+      }
+      .page-core {
+        display: grid;
+        gap: 20px;
+      }
+      .two-column {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 20px 22px;
+        box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+      }
+      .card h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        color: #0f172a;
+      }
+      .card p {
+        margin: 4px 0 0;
+        color: #475569;
+        font-size: 13px;
+      }
+      .metrics-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin-top: 10px;
+      }
+      .metric-block {
+        background: #eef2ff;
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+      .metric-block span {
+        display: block;
+      }
+      .metric-block .label {
+        font-size: 12px;
+        color: #4c1d95;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .metric-block .value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #312e81;
+        margin-top: 6px;
+      }
+      table.grid-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      table.grid-table thead {
+        background: #eff6ff;
+      }
+      table.grid-table th,
+      table.grid-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+      }
+      table.grid-table tbody tr:hover {
+        background: #f8fafc;
+      }
+      .timeline {
+        display: grid;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .timeline-item {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+      .timeline-item::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #1d4ed8;
+        margin-top: 6px;
+      }
+      .timeline-item strong {
+        font-size: 13px;
+      }
+      .business-explainer {
+        margin-top: 32px;
+        padding: 20px 22px;
+        background: rgba(59, 130, 246, 0.08);
+        border-radius: 18px;
+        color: #0f172a;
+      }
+      .business-explainer h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+      }
+      .business-explainer ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #1e293b;
+        line-height: 1.7;
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: rgba(34, 197, 94, 0.12);
+        color: #047857;
+        margin-left: 6px;
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(14, 165, 233, 0.12);
+        color: #0369a1;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .status-pill.critical {
+        background: rgba(248, 113, 113, 0.15);
+        color: #b91c1c;
+      }
+      .chip-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .chip {
+        background: rgba(15, 23, 42, 0.08);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+      .stacked-list {
+        display: grid;
+        gap: 10px;
+      }
+      .stacked-item {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 12px 14px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+      @media (max-width: 960px) {
+        .main-layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .sidebar {
+          position: sticky;
+          top: 76px;
+          z-index: 10;
+          flex-direction: row;
+          overflow-x: auto;
+          gap: 18px;
+        }
+        .role-brief {
+          min-width: 240px;
+        }
+        .menu-list {
+          flex-direction: row;
+          flex-wrap: nowrap;
+          gap: 12px;
+        }
+        .menu-item {
+          min-width: 180px;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>Siemens SIPROTEC 数字化保护 原型</h1>
-      <p class="tagline">电力系统保护与自动化解决方案。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>电网调度、变电站运维、电力工程师</p>
-        <p><strong>核心痛点：</strong>电力系统故障响应需要高可靠保护设备与配置软件</p>
-        <p><strong>价值主张：</strong>通过数字化保护装置与监控平台，保障电网安全与自动化</p>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon">⚡️</div>
+          <div>
+            <h1>Siemens SIPROTEC 数字化保护控制中心</h1>
+            <p>统一调度 · 变电运维 · 网络安全联动</p>
+          </div>
+        </div>
+        <div class="role-switcher">
+          <label for="roleSelect">角色切换</label>
+          <select id="roleSelect" aria-label="切换角色"></select>
+        </div>
+      </header>
+      <div class="main-layout">
+        <aside class="sidebar">
+          <section class="role-brief">
+            <h2 id="roleName">调度主管</h2>
+            <p id="roleDesc">负责监控电网运行态势、协调应急调度与资源。</p>
+            <div class="role-metrics" id="roleMetrics"></div>
+          </section>
+          <div>
+            <p class="menu-title">功能导航</p>
+            <nav>
+              <ul class="menu-list" id="menuList"></ul>
+            </nav>
+          </div>
+        </aside>
+        <main class="content" aria-live="polite">
+          <div class="page-header" id="pageHeader"></div>
+          <section class="page-core" id="pageCore"></section>
+          <section class="business-explainer" id="pageBusiness"></section>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>工程师配置保护装置参数</li><li>监控中心实时监视保护状态</li><li>事故发生时快速定位并恢复供电</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>保护装置管理</h3>
-              <p class="goal">功能目标：高效配置与维护保护设备</p>
-              <ul>
-                <li>装置参数设置与模板</li><li>固件管理与远程升级</li><li>保护定值计算与仿真</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>监控与报警</h3>
-              <p class="goal">功能目标：实时掌握电网运行状态</p>
-              <ul>
-                <li>SCADA 集成与事件浏览</li><li>告警分级、记录与通知</li><li>波形记录与故障分析</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>网络与安全</h3>
-              <p class="goal">功能目标：保障变电站通信安全</p>
-              <ul>
-                <li>IEC 61850 通信管理</li><li>角色权限、日志与安全策略</li><li>网络拓扑监控与冗余</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>资产与生命周期</h3>
-              <p class="goal">功能目标：延长保护设备生命周期</p>
-              <ul>
-                <li>维护计划、检修记录</li><li>备件管理与工单</li><li>运行数据分析与寿命预测</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>故障响应时间与供电恢复时间</li><li>保护装置可用率与故障率</li><li>安全事件数量与合规通过率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script>
+      const roles = {
+        dispatcher: {
+          name: '调度主管',
+          description: '监控电网运行态势，统筹调度指令，保障供电稳定。',
+          metrics: [
+            { label: '实时负荷', value: '76%'},
+            { label: '告警处理', value: '8 条'},
+            { label: '调度指令', value: '3 条'},
+            { label: '备用容量', value: '18%' }
+          ],
+          menu: [
+            {
+              id: 'dispatcher-dashboard',
+              icon: '📊',
+              label: '实时监控总览',
+              getContent: () => ({
+                title: '实时监控总览',
+                subtitle: '汇总电网态势、关键负荷与指令执行进度。',
+                actions: [
+                  { label: '查看故障详情', target: 'dispatcher-incident-detail', tone: 'primary' },
+                  { label: '导出日报', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>电网态势雷达</h3>
+                      <p>北区负荷超 95%，西南分区风电出力提升中。</p>
+                      <div class="metrics-row">
+                        <div class="metric-block">
+                          <span class="label">系统频率</span>
+                          <span class="value">50.03 Hz</span>
+                        </div>
+                        <div class="metric-block">
+                          <span class="label">负荷峰值</span>
+                          <span class="value">12.7 GW</span>
+                        </div>
+                        <div class="metric-block">
+                          <span class="label">可再生占比</span>
+                          <span class="value">42%</span>
+                        </div>
+                      </div>
+                      <div class="chip-group">
+                        <span class="chip">北部 - 高峰保障</span>
+                        <span class="chip">华中 - 谷段调频</span>
+                        <span class="chip">华南 - 需求响应</span>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>调度指令执行</h3>
+                      <p>今日共下达 12 条调度指令，执行完成率 92%。</p>
+                      <table class="grid-table">
+                        <thead>
+                          <tr><th>指令编号</th><th>目标站</th><th>执行状态</th><th>更新时间</th></tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>JD-2024-0912</td>
+                            <td>苏州南变</td>
+                            <td><span class="status-pill">执行中</span></td>
+                            <td>08:42</td>
+                          </tr>
+                          <tr>
+                            <td>JD-2024-0908</td>
+                            <td>南京城北</td>
+                            <td><span class="status-pill">已完成</span></td>
+                            <td>07:58</td>
+                          </tr>
+                          <tr>
+                            <td>JD-2024-0903</td>
+                            <td>扬州西</td>
+                            <td><span class="status-pill critical">待反馈</span></td>
+                            <td>07:31</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>关键告警流</h3>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <div>
+                          <strong>08:45 · 220kV 吴中站</strong>
+                          <p>母线 II 段保护动作，备用通道已切换。<button class="action-button secondary" data-open-page="dispatcher-incident-detail">查看详情</button></p>
+                        </div>
+                      </div>
+                      <div class="timeline-item">
+                        <div>
+                          <strong>08:28 · 苏锡常环网</strong>
+                          <p>线路电流短时越限，执行需求响应 30MW。</p>
+                        </div>
+                      </div>
+                      <div class="timeline-item">
+                        <div>
+                          <strong>08:12 · 南京核心</strong>
+                          <p>切换 AGC 策略为“高安全模式”。</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>展示调度主管关注的实时负荷、频率与指令执行态势。</li>
+                    <li>支持快速跳转至告警事件详情与调度指令复核页面。</li>
+                    <li>可在此触发应急策略切换、导出日报等调度动作。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'dispatcher-event-center',
+              icon: '🚨',
+              label: '故障事件中心',
+              getContent: () => ({
+                title: '故障事件中心',
+                subtitle: '集中查看保护装置告警、联动处理流程。',
+                actions: [
+                  { label: '打开联动预案', target: 'dispatcher-recovery-playbook', tone: 'primary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>事件分级面板</h3>
+                    <table class="grid-table">
+                      <thead>
+                        <tr><th>等级</th><th>告警类型</th><th>当前数量</th><th>分配负责人</th><th>处理进度</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>一级</td>
+                          <td>线路短路保护动作</td>
+                          <td>2</td>
+                          <td>陈伟</td>
+                          <td><span class="status-pill critical">立即处理</span></td>
+                        </tr>
+                        <tr>
+                          <td>二级</td>
+                          <td>电压越限</td>
+                          <td>5</td>
+                          <td>李珊</td>
+                          <td><span class="status-pill">处理中</span></td>
+                        </tr>
+                        <tr>
+                          <td>三级</td>
+                          <td>通信异常</td>
+                          <td>3</td>
+                          <td>AI 机器人</td>
+                          <td><span class="status-pill">自动分析</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>事件分布</h3>
+                      <p>今日共有 18 起事件，主要集中在华东沿海区域。</p>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>吴中站保护动作</strong>
+                          <p>继保装置 SP-23 重合闸失败，已转人工复位。<a href="#" data-open-page="dispatcher-incident-detail">打开详情</a></p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>无锡北区电压越限</strong>
+                          <p>预计 15 分钟恢复，触发用户侧削峰 20MW。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>昆山 500kV 通信抖动</strong>
+                          <p>网络安全团队正在排查，暂不影响保护投运。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>处理流程追踪</h3>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <div>
+                            <strong>调度核实</strong>
+                            <p>AI 辅助诊断完成，建议执行“隔离 + 负荷转供”。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <div>
+                            <strong>运维响应</strong>
+                            <p>派单编号 WO-3342 已下发至苏州运维班。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <div>
+                            <strong>复电验证</strong>
+                            <p>待运维反馈；可预约远程复电窗口。</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>用于调度主管汇总查看各等级故障事件及处理人。</li>
+                    <li>可一键拉起联动预案，协调运维与安全团队处置。</li>
+                    <li>支持跳转到事件详情、恢复预案等子页面，跟踪处理进度。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'dispatcher-incident-detail',
+              icon: '🧭',
+              label: '事件详情（吴中站）',
+              getContent: () => ({
+                title: '吴中站母线 II 段保护事件',
+                subtitle: '发生时间 08:45，事件编号 EVT-2024-0912。',
+                actions: [
+                  { label: '生成恢复方案', target: 'dispatcher-recovery-playbook', tone: 'primary' },
+                  { label: '推送调度指令', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>保护动作轨迹</h3>
+                      <table class="grid-table">
+                        <thead>
+                          <tr><th>时间</th><th>动作</th><th>备注</th></tr>
+                        </thead>
+                        <tbody>
+                          <tr><td>08:45:12</td><td>差动保护启动</td><td>电流不平衡，触发 Stage 1</td></tr>
+                          <tr><td>08:45:16</td><td>母联断路器跳闸</td><td>自动转供路径 B</td></tr>
+                          <tr><td>08:45:30</td><td>重合闸失败</td><td>保护逻辑限制</td></tr>
+                          <tr><td>08:45:42</td><td>备用通道合上</td><td>负荷恢复 65%</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="card">
+                      <h3>装置状态</h3>
+                      <p>核心保护装置 SIPROTEC 7SJ82 在线，故障录波已上传。</p>
+                      <div class="metrics-row">
+                        <div class="metric-block">
+                          <span class="label">母线电压</span>
+                          <span class="value">218 kV</span>
+                        </div>
+                        <div class="metric-block">
+                          <span class="label">负荷恢复</span>
+                          <span class="value">92%</span>
+                        </div>
+                        <div class="metric-block">
+                          <span class="label">保护状态</span>
+                          <span class="value">合闸待命</span>
+                        </div>
+                      </div>
+                      <div class="chip-group">
+                        <span class="chip">录波文件 WZ-0912.DAT</span>
+                        <span class="chip">AI 诊断：暂态短路</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h3>调度动作建议</h3>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <div>
+                          <strong>步骤 1 · 校验隔离范围</strong>
+                          <p>已完成，保护逻辑符合预案 F-03。</p>
+                        </div>
+                      </div>
+                      <div class="timeline-item">
+                        <div>
+                          <strong>步骤 2 · 协调负荷转供</strong>
+                          <p>建议从苏州北变转供 20MW，预计 3 分钟内完成。</p>
+                        </div>
+                      </div>
+                      <div class="timeline-item">
+                        <div>
+                          <strong>步骤 3 · 申请远程重合闸</strong>
+                          <p>等待运维确认现场检查结果。<button class="action-button secondary" data-open-page="maintenance-workbench">通知运维</button></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>呈现单一保护事件的详细轨迹、装置状态及 AI 诊断。</li>
+                    <li>支持调度主管快速生成恢复方案并下发指令。</li>
+                    <li>可联动运维角色，通知现场检查并反馈重合闸条件。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'dispatcher-recovery-playbook',
+              icon: '🛠️',
+              label: '恢复预案编排',
+              getContent: () => ({
+                title: '恢复预案编排',
+                subtitle: '根据 AI 建议与历史案例生成预案草稿。',
+                actions: [
+                  { label: '提交预案审批', tone: 'primary' },
+                  { label: '回到事件中心', target: 'dispatcher-event-center', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>预案步骤构建</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>步骤 A · 自动隔离</strong>
+                          <p>执行脚本 <code>ISO-F03</code>，预计耗时 30 秒。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>步骤 B · 负荷转供</strong>
+                          <p>目标站点：苏州北变、吴江站。需求响应 15MW。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>步骤 C · 复电校验</strong>
+                          <p>调用 SIPROTEC 录波智能分析，确认保护整定。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>协同成员与审批</h3>
+                      <table class="grid-table">
+                        <thead><tr><th>部门</th><th>负责人</th><th>状态</th></tr></thead>
+                        <tbody>
+                          <tr><td>调度运行</td><td>陈伟</td><td><span class="status-pill">待确认</span></td></tr>
+                          <tr><td>变电运维</td><td>刘畅</td><td><span class="status-pill">处理中</span></td></tr>
+                          <tr><td>网络安全</td><td>张磊</td><td><span class="status-pill">已批准</span></td></tr>
+                        </tbody>
+                      </table>
+                      <button class="action-button" data-open-page="security-visibility">查看安全评估</button>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>供调度主管编排应急恢复步骤并分配协同成员。</li>
+                    <li>展示 AI 自动生成的步骤草案，支持调整与版本管理。</li>
+                    <li>可跳转至安全评估页面查看网络风险确认状态。</li>
+                  </ul>
+                `
+              })
+            }
+          ]
+        },
+        maintenance: {
+          name: '变电站运维',
+          description: '负责保护装置巡检、维护计划执行以及现场复核。',
+          metrics: [
+            { label: '今日工单', value: '6 单' },
+            { label: '现场人员', value: '4 人' },
+            { label: '备件库存', value: '95%' },
+            { label: '巡检合格', value: '98%' }
+          ],
+          menu: [
+            {
+              id: 'maintenance-workbench',
+              icon: '🧰',
+              label: '现场工单工作台',
+              getContent: () => ({
+                title: '现场工单工作台',
+                subtitle: '汇总今日工单状态、现场反馈与调度交互。',
+                actions: [
+                  { label: '创建检修任务', target: 'maintenance-maintenance-plan', tone: 'primary' },
+                  { label: '同步调度事件', target: 'dispatcher-incident-detail', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>工单看板</h3>
+                    <table class="grid-table">
+                      <thead><tr><th>工单编号</th><th>类型</th><th>站点</th><th>负责人</th><th>状态</th></tr></thead>
+                      <tbody>
+                        <tr><td>WO-3342</td><td>故障复核</td><td>吴中站</td><td>刘畅</td><td><span class="status-pill critical">待现场确认</span></td></tr>
+                        <tr><td>WO-3338</td><td>预防巡检</td><td>苏州北变</td><td>赵雷</td><td><span class="status-pill">执行中</span></td></tr>
+                        <tr><td>WO-3333</td><td>固件升级</td><td>常熟东</td><td>AI 机器人</td><td><span class="status-pill">排程中</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>现场实时反馈</h3>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <div>
+                            <strong>08:56 刘畅 · 吴中站</strong>
+                            <p>母线设备绝缘测试完成，等待调度复核。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <div>
+                            <strong>08:20 赵雷 · 苏州北变</strong>
+                            <p>7SJ82 固件 4.2 升级完成，功能测试正常。</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>备件与安全校验</h3>
+                      <p>关键备件库存符合应急标准，可支持 3 次更换操作。</p>
+                      <div class="metrics-row">
+                        <div class="metric-block">
+                          <span class="label">备用保护</span>
+                          <span class="value">12 套</span>
+                        </div>
+                        <div class="metric-block">
+                          <span class="label">绝缘手套</span>
+                          <span class="value">22 副</span>
+                        </div>
+                        <div class="metric-block">
+                          <span class="label">安全许可</span>
+                          <span class="value">全部有效</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>集中展示运维班组的工单处理与现场反馈。</li>
+                    <li>支持创建新工单、同步调度侧故障信息。</li>
+                    <li>用于跟踪备件与安全许可状态，保障操作合规。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'maintenance-device-insight',
+              icon: '🛰️',
+              label: '保护装置视图',
+              getContent: () => ({
+                title: '保护装置视图',
+                subtitle: '查看站点内 SIPROTEC 装置状态与参数。',
+                actions: [
+                  { label: '编辑装置参数', target: 'maintenance-device-editor', tone: 'primary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>装置概览</h3>
+                    <table class="grid-table">
+                      <thead><tr><th>装置编号</th><th>位置</th><th>固件</th><th>状态</th><th>最新巡检</th></tr></thead>
+                      <tbody>
+                        <tr><td>7SJ82-01</td><td>母线 II 段</td><td>v4.2</td><td><span class="status-pill">在线</span></td><td>2024/09/10</td></tr>
+                        <tr><td>7SS85-02</td><td>母差保护柜</td><td>v3.9</td><td><span class="status-pill">联动待测</span></td><td>2024/09/08</td></tr>
+                        <tr><td>7KE85-05</td><td>电能质量</td><td>v2.5</td><td><span class="status-pill critical">需升级</span></td><td>2024/08/30</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>实时遥信</h3>
+                      <div class="chip-group">
+                        <span class="chip">断路器位置：合位</span>
+                        <span class="chip">重合闸：就绪</span>
+                        <span class="chip">保护定值版本：2024-08-02</span>
+                        <span class="chip">通信链路：冗余 A/B 正常</span>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>历史事件</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>2024/07/21 巡检记录</strong>
+                          <p>二次回路测试通过，校准差动阈值。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>2024/05/30 故障录波</strong>
+                          <p>短路事件分析已归档，标签 <span class="badge">稳定</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>呈现站内所有保护装置的运行状态、固件版本。</li>
+                    <li>支持跳转到装置参数编辑页面进行整定调整。</li>
+                    <li>结合历史事件与遥信信息，辅助运维决策。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'maintenance-device-editor',
+              icon: '⚙️',
+              label: '装置参数编辑',
+              getContent: () => ({
+                title: '装置参数编辑',
+                subtitle: '对 7SJ82-01 进行保护定值与逻辑调整。',
+                actions: [
+                  { label: '保存草稿', tone: 'primary' },
+                  { label: '回到装置视图', target: 'maintenance-device-insight', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>差动保护定值</h3>
+                      <table class="grid-table">
+                        <thead><tr><th>参数</th><th>当前值</th><th>建议值</th></tr></thead>
+                        <tbody>
+                          <tr><td>启动电流</td><td>0.25 In</td><td>0.22 In</td></tr>
+                          <tr><td>时间常数</td><td>0.35 s</td><td>保持</td></tr>
+                          <tr><td>重合闸延迟</td><td>0.6 s</td><td>0.5 s</td></tr>
+                        </tbody>
+                      </table>
+                      <button class="action-button" data-open-page="security-access-control">请求安全审批</button>
+                    </div>
+                    <div class="card">
+                      <h3>逻辑预览</h3>
+                      <p>采用图形化逻辑链路，展示 Trip、Reclose、Block 条件。</p>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>Trip 条件</strong>
+                          <p>差动电流 &gt;= 0.22 In 且定时器触发。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>Block 条件</strong>
+                          <p>通信链路异常或装置检修模式。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>Reclose 策略</strong>
+                          <p>一次失败后切换至备用方案 B。</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>供运维人员对保护定值进行查看、对比与调整。</li>
+                    <li>可发起安全审批与调度确认，确保变更闭环。</li>
+                    <li>展示逻辑预览，辅助理解动作链路与风险。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'maintenance-maintenance-plan',
+              icon: '🗓️',
+              label: '检修与巡检计划',
+              getContent: () => ({
+                title: '检修与巡检计划',
+                subtitle: '规划未来 7 天的检修窗口与巡检任务。',
+                actions: [
+                  { label: '生成巡检报告', target: 'maintenance-inspection-report', tone: 'primary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>日历排程</h3>
+                    <table class="grid-table">
+                      <thead><tr><th>日期</th><th>任务</th><th>站点</th><th>参与人员</th><th>状态</th></tr></thead>
+                      <tbody>
+                        <tr><td>9/12</td><td>母线隔离验证</td><td>吴中站</td><td>刘畅、陈伟</td><td><span class="status-pill">协调中</span></td></tr>
+                        <tr><td>9/13</td><td>保护定值校验</td><td>苏州北变</td><td>赵雷</td><td><span class="status-pill">已确认</span></td></tr>
+                        <tr><td>9/15</td><td>录波数据清理</td><td>昆山 500kV</td><td>AI 机器人</td><td><span class="status-pill">自动执行</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>风险与依赖</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>吴中站</strong>
+                          <p>需与调度确认隔离窗口，避免影响高峰负荷。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>苏州北变</strong>
+                          <p>固件升级后需 2 小时监测窗口。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>资源准备</h3>
+                      <div class="chip-group">
+                        <span class="chip">绝缘工器具校验完成</span>
+                        <span class="chip">安全工单模板更新</span>
+                        <span class="chip">备件需求：母线电压互感器 1 台</span>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>规划检修与巡检计划，协调调度窗口。</li>
+                    <li>展示风险依赖与资源准备情况。</li>
+                    <li>支持生成巡检报告并回传给调度侧复核。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'maintenance-inspection-report',
+              icon: '📝',
+              label: '巡检报告预览',
+              getContent: () => ({
+                title: '巡检报告预览',
+                subtitle: '吴中站保护装置巡检报告草稿。',
+                actions: [
+                  { label: '提交报告', tone: 'primary' },
+                  { label: '回到工作台', target: 'maintenance-workbench', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>巡检摘要</h3>
+                    <p>巡检时间：2024/09/12 08:30-09:30</p>
+                    <p>巡检人员：刘畅、王力</p>
+                    <div class="chip-group">
+                      <span class="chip">装置自检通过</span>
+                      <span class="chip">差动回路清洁</span>
+                      <span class="chip">录波数据备份完成</span>
+                    </div>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>检查项结果</h3>
+                      <table class="grid-table">
+                        <thead><tr><th>检查项</th><th>结果</th><th>备注</th></tr></thead>
+                        <tbody>
+                          <tr><td>一次设备连接</td><td>合格</td><td>接触良好</td></tr>
+                          <tr><td>二次回路</td><td>合格</td><td>绝缘阻值 45MΩ</td></tr>
+                          <tr><td>保护定值</td><td>合格</td><td>与调度一致</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="card">
+                      <h3>问题与建议</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>建议</strong>
+                          <p>重合闸延迟建议优化为 0.5s，待调度确认。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>风险</strong>
+                          <p>备用 PT 老化迹象，建议下月安排更换。</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>展示巡检报告的核心内容、检查项与建议。</li>
+                    <li>支持提交给调度侧与安全侧进行联合确认。</li>
+                    <li>通过按钮可快速回到工作台继续处理其他工单。</li>
+                  </ul>
+                `
+              })
+            }
+          ]
+        },
+        security: {
+          name: '网络安全管理员',
+          description: '监控变电站通信安全、访问控制与合规状态。',
+          metrics: [
+            { label: '安全告警', value: '3 条' },
+            { label: '访问控制', value: '正常' },
+            { label: '补丁状态', value: '92%' },
+            { label: '合规得分', value: '98' }
+          ],
+          menu: [
+            {
+              id: 'security-visibility',
+              icon: '🛡️',
+              label: '安全态势总览',
+              getContent: () => ({
+                title: '安全态势总览',
+                subtitle: '聚焦通信网络、终端安全与配置合规性。',
+                actions: [
+                  { label: '发布风险通告', tone: 'primary' },
+                  { label: '查看访问控制', target: 'security-access-control', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>安全指标面板</h3>
+                    <div class="metrics-row">
+                      <div class="metric-block"><span class="label">IDS 告警</span><span class="value">3 条</span></div>
+                      <div class="metric-block"><span class="label">白名单命中</span><span class="value">98%</span></div>
+                      <div class="metric-block"><span class="label">补丁合规</span><span class="value">92%</span></div>
+                      <div class="metric-block"><span class="label">零信任评分</span><span class="value">87</span></div>
+                    </div>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>安全告警</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>08:40 · 异常登录尝试</strong>
+                          <p>来源 IP 10.23.8.21，已自动阻断。<button class="action-button secondary" data-open-page="security-access-control">查看访问策略</button></p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>08:12 · 通信加密降级</strong>
+                          <p>吴中站 MMS 通道降级为 TLS1.1，待排查。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>合规检查</h3>
+                      <table class="grid-table">
+                        <thead><tr><th>检查项</th><th>状态</th><th>最后审核</th></tr></thead>
+                        <tbody>
+                          <tr><td>IEC 61850 安全策略</td><td><span class="status-pill">合规</span></td><td>2024/09/05</td></tr>
+                          <tr><td>账号权限分离</td><td><span class="status-pill">合规</span></td><td>2024/09/01</td></tr>
+                          <tr><td>补丁管理</td><td><span class="status-pill critical">需关注</span></td><td>2024/08/20</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>展示网络安全态势与关键告警、合规情况。</li>
+                    <li>支持联动访问控制、补丁管理等子功能页面。</li>
+                    <li>安全管理员可从此发布风险通告并同步给调度、运维。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'security-access-control',
+              icon: '🔐',
+              label: '访问控制策略',
+              getContent: () => ({
+                title: '访问控制策略',
+                subtitle: '管理不同角色的访问权限与审批流程。',
+                actions: [
+                  { label: '新增访问权限', tone: 'primary' },
+                  { label: '返回安全总览', target: 'security-visibility', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>角色权限矩阵</h3>
+                    <table class="grid-table">
+                      <thead><tr><th>角色</th><th>控制中心</th><th>远程访问</th><th>参数修改</th><th>审批要求</th></tr></thead>
+                      <tbody>
+                        <tr><td>调度主管</td><td>完全</td><td>允许</td><td>审批后</td><td>安全 + 调度</td></tr>
+                        <tr><td>变电运维</td><td>查看</td><td>临时授权</td><td>审批后</td><td>安全 + 运维</td></tr>
+                        <tr><td>外部厂商</td><td>限制</td><td>VPN</td><td>不允许</td><td>安全 + 法务</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>审批流程</h3>
+                      <div class="timeline">
+                        <div class="timeline-item">
+                          <div>
+                            <strong>提交申请</strong>
+                            <p>运维提交装置参数修改申请。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <div>
+                            <strong>安全复核</strong>
+                            <p>验证操作窗口、网络基线。</p>
+                          </div>
+                        </div>
+                        <div class="timeline-item">
+                          <div>
+                            <strong>调度确认</strong>
+                            <p>确认不影响负荷与供电安全。</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>审计提示</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>异常登录锁定</strong>
+                          <p>连续 3 次失败自动锁定 30 分钟。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>多因素认证</strong>
+                          <p>调度、运维高危操作必须启用 MFA。</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>配置各角色的访问权限与审批流程。</li>
+                    <li>提供审批链路与审计提示，确保操作合规。</li>
+                    <li>支持与运维、调度角色联动，实现安全闭环。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'security-log-audit',
+              icon: '📜',
+              label: '日志与审计',
+              getContent: () => ({
+                title: '日志与审计',
+                subtitle: '查看关键操作日志与合规审计结果。',
+                actions: [
+                  { label: '导出审计清单', tone: 'primary' },
+                  { label: '查看合规得分', target: 'security-compliance-report', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>操作日志</h3>
+                    <table class="grid-table">
+                      <thead><tr><th>时间</th><th>用户</th><th>操作</th><th>结果</th></tr></thead>
+                      <tbody>
+                        <tr><td>08:55</td><td>liuchang</td><td>装置参数修改</td><td><span class="status-pill">审批通过</span></td></tr>
+                        <tr><td>08:47</td><td>chenwei</td><td>下发调度指令</td><td><span class="status-pill">完成</span></td></tr>
+                        <tr><td>08:33</td><td>ai-agent</td><td>巡检报告生成</td><td><span class="status-pill">完成</span></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>审计关注</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>补丁策略</strong>
+                          <p>需在 9/20 前完成关键补丁部署。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>账号合规</strong>
+                          <p>外部厂商账号 1 个即将到期。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>日志检索</h3>
+                      <p>支持按角色、站点、操作类型筛选日志记录。</p>
+                      <div class="chip-group">
+                        <span class="chip">筛选：变电站=吴中</span>
+                        <span class="chip">操作=参数修改</span>
+                        <span class="chip">时间=近 24 小时</span>
+                      </div>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>集中展示关键操作日志与审计关注点。</li>
+                    <li>支持导出审计清单并跳转至合规报告页面。</li>
+                    <li>帮助安全管理员追踪补丁策略与账号合规。</li>
+                  </ul>
+                `
+              })
+            },
+            {
+              id: 'security-compliance-report',
+              icon: '📈',
+              label: '合规报告',
+              getContent: () => ({
+                title: '合规报告',
+                subtitle: '展示年度合规评分与待整改项。',
+                actions: [
+                  { label: '发送给监管', tone: 'primary' },
+                  { label: '返回日志审计', target: 'security-log-audit', tone: 'secondary' }
+                ],
+                core: `
+                  <div class="card">
+                    <h3>年度合规评分</h3>
+                    <div class="metrics-row">
+                      <div class="metric-block"><span class="label">整体评分</span><span class="value">98 / 100</span></div>
+                      <div class="metric-block"><span class="label">技术控制</span><span class="value">97</span></div>
+                      <div class="metric-block"><span class="label">流程管理</span><span class="value">99</span></div>
+                    </div>
+                  </div>
+                  <div class="two-column">
+                    <div class="card">
+                      <h3>整改计划</h3>
+                      <div class="stacked-list">
+                        <div class="stacked-item">
+                          <strong>补丁管理</strong>
+                          <p>9/18 前完成 SIPROTEC 7KE85 补丁测试。</p>
+                        </div>
+                        <div class="stacked-item">
+                          <strong>访问策略</strong>
+                          <p>优化外部厂商账户过期提醒机制。</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <h3>监管对标</h3>
+                      <table class="grid-table">
+                        <thead><tr><th>要求</th><th>符合度</th><th>备注</th></tr></thead>
+                        <tbody>
+                          <tr><td>国网 2024-07 通知</td><td>100%</td><td>全部落实</td></tr>
+                          <tr><td>能源局安全指南</td><td>95%</td><td>需补充安全演练记录</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                `,
+                business: `
+                  <h3>页面业务说明</h3>
+                  <ul>
+                    <li>汇总安全合规评分、整改计划与监管对标。</li>
+                    <li>支持一键发送报告给监管机构或合作方。</li>
+                    <li>可返回日志审计页面查看支撑数据与证据链。</li>
+                  </ul>
+                `
+              })
+            }
+          ]
+        }
+      };
+      const roleSelect = document.getElementById('roleSelect');
+      const roleName = document.getElementById('roleName');
+      const roleDesc = document.getElementById('roleDesc');
+      const roleMetrics = document.getElementById('roleMetrics');
+      const menuList = document.getElementById('menuList');
+      const pageHeader = document.getElementById('pageHeader');
+      const pageCore = document.getElementById('pageCore');
+      const pageBusiness = document.getElementById('pageBusiness');
+
+      let currentRoleKey = 'dispatcher';
+      let currentPageId = 'dispatcher-dashboard';
+
+      Object.entries(roles).forEach(([key, role]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = role.name;
+        roleSelect.appendChild(option);
+      });
+
+      const renderMetrics = (metrics) => {
+        roleMetrics.innerHTML = '';
+        metrics.forEach((metric) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'role-metric';
+          wrap.innerHTML = `<span class="label">${metric.label}</span><span class="value">${metric.value}</span>`;
+          roleMetrics.appendChild(wrap);
+        });
+      };
+
+      const renderMenu = (role) => {
+        menuList.innerHTML = '';
+        role.menu.forEach((item) => {
+          const li = document.createElement('li');
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'menu-item';
+          button.dataset.page = item.id;
+          button.innerHTML = `<span class="menu-item-icon">${item.icon}</span><span>${item.label}</span>`;
+          button.addEventListener('click', () => {
+            openPage(item.id);
+          });
+          li.appendChild(button);
+          menuList.appendChild(li);
+        });
+        highlightMenu(currentPageId);
+      };
+
+      const highlightMenu = (pageId) => {
+        menuList.querySelectorAll('.menu-item').forEach((node) => {
+          if (node.dataset.page === pageId) {
+            node.classList.add('menu-item-active');
+            node.setAttribute('aria-current', 'page');
+          } else {
+            node.classList.remove('menu-item-active');
+            node.removeAttribute('aria-current');
+          }
+        });
+      };
+
+      const renderPage = (roleKey, pageId) => {
+        const role = roles[roleKey];
+        const page = role.menu.find((item) => item.id === pageId) || role.menu[0];
+        if (!page) return;
+        const data = page.getContent();
+
+        pageHeader.innerHTML = `
+          <div>
+            <h2>${data.title}</h2>
+            <p>${data.subtitle || ''}</p>
+          </div>
+          <div class="page-actions">
+            ${(data.actions || [])
+              .map((action) => {
+                const toneClass = action.tone === 'secondary' ? 'action-button secondary' : 'action-button';
+                const targetAttr = action.target ? ` data-open-page="${action.target}"` : '';
+                return `<button type="button" class="${toneClass}"${targetAttr}>${action.label}</button>`;
+              })
+              .join('')}
+          </div>
+        `;
+        pageCore.innerHTML = data.core;
+        pageBusiness.innerHTML = data.business;
+
+        highlightMenu(page.id);
+      };
+
+      const renderRole = (roleKey) => {
+        const role = roles[roleKey];
+        if (!role) return;
+        currentRoleKey = roleKey;
+        roleName.textContent = role.name;
+        roleDesc.textContent = role.description;
+        renderMetrics(role.metrics);
+        renderMenu(role);
+        currentPageId = role.menu[0]?.id || '';
+        renderPage(roleKey, currentPageId);
+      };
+
+      const openPage = (pageId) => {
+        const role = roles[currentRoleKey];
+        if (!role) return;
+        const exists = role.menu.some((item) => item.id === pageId);
+        if (exists) {
+          currentPageId = pageId;
+          renderPage(currentRoleKey, pageId);
+        } else {
+          // 如果当前角色没有该页面，则尝试查找所属角色并切换
+          for (const [key, roleItem] of Object.entries(roles)) {
+            if (roleItem.menu.some((item) => item.id === pageId)) {
+              roleSelect.value = key;
+              renderRole(key);
+              currentPageId = pageId;
+              renderPage(key, pageId);
+              break;
+            }
+          }
+        }
+      };
+
+      roleSelect.addEventListener('change', (event) => {
+        const value = event.target.value;
+        renderRole(value);
+      });
+
+      document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-open-page]');
+        if (trigger) {
+          const targetPage = trigger.getAttribute('data-open-page');
+          if (targetPage) {
+            openPage(targetPage);
+          }
+        }
+      });
+
+      // 初始化
+      roleSelect.value = currentRoleKey;
+      renderRole(currentRoleKey);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

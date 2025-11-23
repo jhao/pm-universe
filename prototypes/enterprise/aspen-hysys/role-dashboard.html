@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>统一指挥舱 · Aspen HYSYS</title>
+    <link rel="stylesheet" href="style.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="app-menu">
+        <div class="menu-logo">
+          <span>Aspen HYSYS</span>
+          <strong>流程优化系统</strong>
+        </div>
+        <nav class="menu-nav">
+          <a class="menu-link" href="index.html">系统概览</a>
+          <a class="menu-link active" href="role-dashboard.html">统一指挥舱<span class="menu-link-note">Dashboard</span></a>
+          <a class="menu-link" href="modeling-workspace.html">建模工作台<span class="menu-link-note">Modeling</span></a>
+          <a class="menu-link" href="dynamic-simulation.html">动态模拟监控<span class="menu-link-note">Simulation</span></a>
+          <a class="menu-link" href="optimization-center.html">优化闭环中心<span class="menu-link-note">Optimization</span></a>
+          <a class="menu-link" href="collaboration-hub.html">协同控制塔<span class="menu-link-note">Collaboration</span></a>
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <header class="page-header">
+          <div class="header-top">
+            <div>
+              <nav class="breadcrumb">
+                <a href="index.html">Aspen HYSYS</a>
+                <span>/</span>
+                <span>统一指挥舱</span>
+              </nav>
+              <h1>统一指挥舱</h1>
+              <p class="subtitle">单页整合不同角色的 KPI、任务、风险与协同提醒，作为系统入口展示跨角色总览。</p>
+            </div>
+            <div class="header-role-switch">
+              <button class="active" data-role="engineer">流程工程师</button>
+              <button data-role="optimizer">运营优化师</button>
+              <button data-role="manager">项目经理</button>
+            </div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>项目</strong>
+              <p>乙烯扩能 · 全流程模拟与优化</p>
+            </div>
+            <div class="meta-card">
+              <strong>今日状态</strong>
+              <p>建模完成 72% · 动态模拟验证进行中</p>
+            </div>
+            <div class="meta-card">
+              <strong>关键事件</strong>
+              <p>下午 15:00 优化评审会 · 需完成资料准备</p>
+            </div>
+          </div>
+        </header>
+
+        <main class="page">
+          <section class="core-section">
+            <h2>统一指挥舱核心界面</h2>
+            <div class="core-preview">
+              <div class="core-panel">
+                <strong>跨角色 KPI</strong>
+                <h3>实时指标看板</h3>
+                <div class="core-canvas">
+                  <div class="core-lane">建模进度</div>
+                  <div class="core-lane">优化收益</div>
+                  <div class="core-lane">风险提醒</div>
+                </div>
+                <p>总览卡片展示关键指标，与角色切换联动强调不同重点。</p>
+              </div>
+              <div class="core-panel">
+                <strong>行动时间线</strong>
+                <h3>今日安排</h3>
+                <ul>
+                  <li>09:00 建模同步 · 完成动态参数需求确认</li>
+                  <li>14:00 动态演练 · 记录报警与改进项</li>
+                  <li>17:00 风险复盘 · 推进未完成任务</li>
+                </ul>
+              </div>
+              <div class="core-panel">
+                <strong>联动入口</strong>
+                <h3>功能快速导航</h3>
+                <div class="core-lanes">
+                  <div class="core-lane">建模工作台</div>
+                  <div class="core-lane">动态模拟</div>
+                  <div class="core-lane">优化闭环</div>
+                </div>
+                <p>通过菜单或指挥舱入口快速跳转至各功能页面，保持演示连贯。</p>
+              </div>
+            </div>
+            <div class="core-description">
+              <h3>主要业务说明</h3>
+              <p>统一指挥舱是讲解整个系统角色协同的起点。通过 KPI、时间线与导航入口，帮助观众快速理解不同页面的价值。可继续前往建模工作台查看工程师操作，或跳转至优化闭环中心了解收益兑现。</p>
+              <div class="core-actions">
+                <a class="cta-link" href="modeling-workspace.html">前往建模工作台</a>
+                <a class="cta-link" href="optimization-center.html">查看优化闭环</a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>角色 KPI 面板</h2>
+            <div data-role-container>
+              <div class="role-switch" data-role-switch>
+                <button class="active" data-role="engineer">流程工程师</button>
+                <button data-role="optimizer">运营优化师</button>
+                <button data-role="manager">项目经理</button>
+              </div>
+              <div class="role-panels">
+                <div class="role-panel active" data-role="engineer">
+                  <h3>工程师 KPI</h3>
+                  <ul>
+                    <li>模型完成度：72%（今日目标 80%）</li>
+                    <li>收敛状态：迭代残差 9.8e-6 · 未完成单元 2 个</li>
+                    <li>风险提示：E-205 传热系数待确认</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="optimizer">
+                  <h3>优化师 KPI</h3>
+                  <ul>
+                    <li>节能潜力：预计 -3.8% · 跟踪偏差 0.6%</li>
+                    <li>执行状态：方案 3 反馈完成 60%</li>
+                    <li>风险提示：APC 参数需同步最新上下限</li>
+                  </ul>
+                </div>
+                <div class="role-panel" data-role="manager">
+                  <h3>经理 KPI</h3>
+                  <ul>
+                    <li>项目进度：总体 68% · 当前阶段动态验证</li>
+                    <li>审批状态：待处理事项 3 条 · 风险 2 条</li>
+                    <li>协同提醒：邀请 Licensor 参加周会</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>今日行动时间线</h2>
+            <div data-stage-container>
+              <div class="role-switch" data-stage-switch>
+                <button class="active" data-stage-target="timeline-morning">上午</button>
+                <button data-stage-target="timeline-afternoon">下午</button>
+                <button data-stage-target="timeline-evening">收尾</button>
+              </div>
+              <div class="stage-panel active" data-stage="timeline-morning">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>09:00 · 建模同步</strong>
+                    <span>工程师确认动态参数需求，优化师记录关键变量</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>10:30 · 数据导入</strong>
+                    <span>实验室上传最新物性，自动通知相关人员</span>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="timeline-afternoon">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>14:00 · 动态演练</strong>
+                    <span>模拟冷启动场景，记录报警与改进项</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>15:00 · 优化评审会</strong>
+                    <span>讨论方案 3 执行状态，决策是否扩大实施</span>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-panel" data-stage="timeline-evening">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>17:00 · 风险复盘</strong>
+                    <span>项目经理检查审批状态，推进未完成项</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>18:00 · 日终总结</strong>
+                    <span>生成日报：模型进展、优化收益、风险更新</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>跨团队任务看板</h2>
+            <div class="grid-3">
+              <div class="story-card">
+                <strong>工程师 · 建模校核</strong>
+                <p>完成换热器网络参数验证，更新模型版本。</p>
+                <p>状态：进行中 · 截止：5 月 19 日</p>
+              </div>
+              <div class="story-card">
+                <strong>优化师 · 执行跟踪</strong>
+                <p>收集现场反馈，确认节能效果差异。</p>
+                <p>状态：进行中 · 截止：5 月 20 日</p>
+              </div>
+              <div class="story-card">
+                <strong>经理 · 审批治理</strong>
+                <p>完成安全假设审批，准备向管理层汇报。</p>
+                <p>状态：待处理 · 截止：5 月 19 日</p>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer>统一指挥舱原型用于快速演示多角色切换与任务协同的实时状态。</footer>
+      </div>
+    </div>
+
+    <script src="app.js" type="module"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

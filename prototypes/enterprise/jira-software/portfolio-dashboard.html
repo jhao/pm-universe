@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 项目组合仪表板</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page-id="portfolio">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>组合视图</strong><br />
+          项目数：6 · 战略主题：3<br />
+          刷新时间：7 月 18 日 10:00
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">项目组合 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">执行</a>
+              <a class="system-link" href="#">价值</a>
+              <a class="system-link" href="#">健康</a>
+              <a class="system-link" href="#">资源</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索项目或 OKR" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">组合洞察 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">战略组合执行情况</h1>
+              <p class="page-hero__subtitle">按战略主题聚合项目表现，识别价值贡献与风险热点。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">战略达成</span>
+                  <span class="hero-stat__value">71%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">价值交付</span>
+                  <span class="hero-stat__value">￥4.6M</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">风险聚集</span>
+                  <span class="hero-stat__value">2 项</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="progress-report.html" data-keep-role>
+                📊 查看周报
+              </a>
+              <a class="hero-actions__secondary" href="resource-planning.html" data-keep-role>
+                🧩 分配资源
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">战略主题进度</h2>
+                  <p class="surface-card__subtitle">按主题聚合项目</p>
+                </div>
+                <div class="segmented-control">
+                  <button class="is-active">本季度</button>
+                  <button>全年</button>
+                </div>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">客户体验升级</p>
+                    <p class="list-item__desc">项目：Quantum Launch、Onboarding Revamp</p>
+                  </div>
+                  <span class="tag">进度 72%</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">智能自动化</p>
+                    <p class="list-item__desc">项目：Automation Studio、AI Assist</p>
+                  </div>
+                  <span class="tag">进度 58%</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">企业治理</p>
+                    <p class="list-item__desc">项目：Compliance Hub、Audit Center</p>
+                  </div>
+                  <span class="tag">进度 43%</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">组合价值</h2>
+                  <p class="surface-card__subtitle">交付价值与 KPI 表现</p>
+                </div>
+                <a class="action-link" href="progress-report.html" data-keep-role>查看指标</a>
+              </div>
+              <div class="metric-group">
+                <div class="metric-card">
+                  <span class="metric-card__label">新增 ARR</span>
+                  <span class="metric-card__value">￥1.8M</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">留存提升</span>
+                  <span class="metric-card__value">+4.2%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-card__label">效率提升</span>
+                  <span class="metric-card__value">-18% SLA</span>
+                </div>
+              </div>
+              <div class="chart-placeholder"></div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">项目健康</h2>
+                  <p class="surface-card__subtitle">健康度评分与阻塞</p>
+                </div>
+                <a class="action-link" href="risk-overview.html" data-keep-role>查看风险地图</a>
+              </div>
+              <div class="board-columns">
+                <div class="board-column">
+                  <div class="board-column__title">健康</div>
+                  <div class="board-card">
+                    <h3 class="board-card__title">Quantum Launch</h3>
+                    <p class="list-item__desc">评分 8.4 · 风险：中</p>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <div class="board-column__title">关注</div>
+                  <div class="board-card">
+                    <h3 class="board-card__title">Automation Studio</h3>
+                    <p class="list-item__desc">评分 6.5 · 风险：高</p>
+                  </div>
+                </div>
+                <div class="board-column">
+                  <div class="board-column__title">风险</div>
+                  <div class="board-card">
+                    <h3 class="board-card__title">Compliance Hub</h3>
+                    <p class="list-item__desc">评分 5.2 · 风险：高</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">资源概览</h2>
+                  <p class="surface-card__subtitle">跨项目资源分配</p>
+                </div>
+                <a class="action-link" href="resource-planning.html" data-keep-role>打开资源视图</a>
+              </div>
+              <div class="chart-placeholder"></div>
+              <div class="focus-banner">
+                <strong>提醒：</strong>
+                <span>自动化主题对后端资源需求高，需从其他项目调配 2 人。</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">关键决策</h2>
+                <p class="surface-card__subtitle">需高层确认的动作</p>
+              </div>
+              <a class="action-link" href="report-detail.html" data-keep-role>导出决策清单</a>
+            </div>
+            <div class="list">
+              <div class="list-item">
+                <div class="list-item__meta">
+                  <p class="list-item__title">扩展 AI 投资</p>
+                  <p class="list-item__desc">申请额外预算 1.2M · 用于自动化主题</p>
+                </div>
+                <span class="tag">待审批</span>
+              </div>
+              <div class="list-item">
+                <div class="list-item__meta">
+                  <p class="list-item__title">调整合规时间线</p>
+                  <p class="list-item__desc">目标上线时间推迟至 9 月</p>
+                </div>
+                <span class="tag">建议</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">项目组合仪表板帮助 <span data-role-name></span> 在战略层面洞察项目价值与风险，及时协调资源与决策。可快速跳转到周报、资源排期或风险地图继续深入。</p>
+            <div class="page-info__actions">
+              <a href="progress-report.html" data-keep-role>→ 查看周报</a>
+              <a href="resource-planning.html" data-keep-role>→ 管理资源</a>
+              <a href="risk-overview.html" data-keep-role>→ 查看风险</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,84 +1,1191 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Siemens Teamcenter 原型概览</title>
+    <title>Siemens Teamcenter 角色化原型演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --bg-surface: #f4f6fb;
+        --bg-panel: #ffffff;
+        --primary: #1d4ed8;
+        --accent: #0f172a;
+        --text-main: #0f172a;
+        --text-sub: #475569;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --danger: #dc2626;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top left, rgba(29, 78, 216, 0.12), transparent 55%), var(--bg-surface);
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+        color: var(--text-main);
+      }
+
+      .app-shell { display: flex; flex-direction: column; min-height: 100vh; }
+
+      .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 32px;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+      }
+
+      .brand { display: flex; flex-direction: column; gap: 6px; }
+      .brand-title { font-size: 20px; font-weight: 600; letter-spacing: 0.5px; }
+      .brand-subtitle { font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+
+      .top-actions { display: flex; align-items: center; gap: 18px; }
+      .top-menu { display: flex; gap: 12px; }
+      .top-menu a {
+        text-decoration: none;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+        padding: 6px 12px;
+        border-radius: 999px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      .top-menu a:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+      .role-switcher { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+      .role-switcher label { font-size: 12px; color: rgba(255, 255, 255, 0.7); }
+      .role-switcher select {
+        appearance: none;
+        padding: 8px 28px 8px 12px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(15, 23, 42, 0.5);
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+      }
+
+      .app-body { flex: 1; display: flex; min-height: 0; }
+
+      .side-menu {
+        width: 280px;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(8px);
+        box-shadow: 16px 0 40px rgba(15, 23, 42, 0.08);
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .role-panel {
+        background: linear-gradient(135deg, rgba(29, 78, 216, 0.12), rgba(59, 130, 246, 0.08));
+        padding: 18px;
+        border-radius: 16px;
+        border: 1px solid rgba(59, 130, 246, 0.18);
+      }
+      .role-panel h2 { margin: 0 0 8px 0; font-size: 16px; }
+      .role-panel p { margin: 0 0 12px 0; font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+      .role-highlights { display: flex; flex-wrap: wrap; gap: 8px; }
+      .role-highlights span { font-size: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(15, 23, 42, 0.08); }
+
+      .menu-group h3 {
+        margin: 0 0 12px 0;
+        font-size: 13px;
+        color: #0f172a;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .menu-items { display: flex; flex-direction: column; gap: 10px; }
+      .menu-item {
+        background: transparent;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 14px;
+        padding: 12px 14px;
+        display: flex;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        color: var(--text-main);
+      }
+      .menu-item:hover { border-color: rgba(29, 78, 216, 0.4); background: rgba(29, 78, 216, 0.08); transform: translateX(4px); }
+      .menu-item.active { border-color: var(--primary); background: rgba(29, 78, 216, 0.16); box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.35); }
+      .menu-item .icon { font-size: 18px; line-height: 1; margin-top: 2px; }
+      .menu-item .meta { display: flex; flex-direction: column; gap: 6px; }
+      .menu-item .meta strong { font-size: 14px; }
+      .menu-item .meta span { font-size: 12px; color: var(--text-sub); }
+
+      .content-area { flex: 1; padding: 36px; overflow-y: auto; }
+      .page-wrapper { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+      .page-breadcrumb { display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--text-sub); }
+      .page-breadcrumb button { background: none; border: none; color: var(--primary); cursor: pointer; padding: 0; font-size: 13px; }
+
+      .page-header {
+        background: var(--bg-panel);
+        border-radius: 24px;
+        padding: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 32px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+      }
+      .page-header h1 { margin: 10px 0 12px 0; font-size: 26px; }
+      .page-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(29, 78, 216, 0.12);
+        color: var(--primary);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+      }
+      .page-description { margin: 0; font-size: 14px; color: var(--text-sub); line-height: 1.7; }
+
+      .metrics-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+      .metric-card { background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(29, 78, 216, 0.08)); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(29, 78, 216, 0.2); }
+      .metric-card strong { font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; }
+      .metric-value { font-size: 22px; font-weight: 600; color: var(--accent); }
+      .metric-trend { font-size: 12px; }
+      .metric-trend.positive { color: var(--success); }
+      .metric-trend.neutral { color: var(--warning); }
+      .metric-trend.negative { color: var(--danger); }
+
+      .page-grid-two { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; }
+      .card { background: var(--bg-panel); border-radius: 20px; border: 1px solid rgba(148, 163, 184, 0.16); box-shadow: 0 18px 32px rgba(15, 23, 42, 0.08); padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+      .card header { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 600; color: var(--accent); }
+      .card header span { font-size: 12px; color: var(--text-sub); }
+      .placeholder-chart { height: 150px; border-radius: 16px; border: 1px dashed rgba(148, 163, 184, 0.45); background: repeating-linear-gradient(-45deg, rgba(148, 163, 184, 0.25), rgba(148, 163, 184, 0.25) 10px, rgba(148, 163, 184, 0.1) 10px, rgba(148, 163, 184, 0.1) 20px), rgba(248, 250, 252, 0.8); display: flex; align-items: center; justify-content: center; color: var(--text-sub); font-size: 12px; text-align: center; padding: 16px; }
+
+      .list-cards { display: flex; flex-direction: column; gap: 12px; }
+      .list-card { padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.16); background: rgba(248, 250, 252, 0.95); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+      .list-card strong { font-size: 14px; }
+      .list-card span { font-size: 12px; color: var(--text-sub); }
+
+      .status-pill { padding: 6px 10px; border-radius: 999px; font-size: 12px; background: rgba(15, 23, 42, 0.08); color: #0f172a; }
+      .status-pill.success { background: rgba(22, 163, 74, 0.15); color: var(--success); }
+      .status-pill.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+      .status-pill.danger { background: rgba(220, 38, 38, 0.15); color: var(--danger); }
+      .status-pill.neutral { background: rgba(148, 163, 184, 0.2); color: var(--text-sub); }
+
+      table.overview-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+      table.overview-table thead { background: rgba(15, 23, 42, 0.04); }
+      table.overview-table th, table.overview-table td { padding: 10px 12px; border-bottom: 1px solid rgba(148, 163, 184, 0.2); text-align: left; }
+
+      .timeline { display: flex; flex-direction: column; gap: 12px; }
+      .timeline-item { display: flex; gap: 12px; align-items: flex-start; }
+      .timeline-item::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--primary); margin-top: 6px; box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.12); }
+      .timeline-item strong { display: block; font-size: 13px; margin-bottom: 4px; }
+
+      .action-group { display: flex; gap: 12px; flex-wrap: wrap; }
+      .primary-button, .ghost-button, .link-button { border-radius: 12px; border: none; font-size: 13px; padding: 10px 16px; cursor: pointer; transition: all 0.2s ease; }
+      .primary-button { background: var(--primary); color: #fff; box-shadow: 0 10px 22px rgba(29, 78, 216, 0.25); }
+      .primary-button:hover { background: #163fa3; }
+      .ghost-button { background: rgba(29, 78, 216, 0.08); color: var(--primary); border: 1px solid rgba(29, 78, 216, 0.25); }
+      .ghost-button:hover { background: rgba(29, 78, 216, 0.14); }
+      .link-button { background: none; color: var(--primary); text-decoration: underline; padding: 0; }
+
+      .page-footnote { background: rgba(15, 23, 42, 0.06); border-radius: 20px; padding: 20px 24px; font-size: 13px; color: var(--text-sub); line-height: 1.7; }
+      .page-footnote h2 { margin: 0 0 12px 0; font-size: 16px; color: var(--accent); }
+      .page-footnote ul { margin: 0; padding-left: 18px; }
+
+      @media (max-width: 1200px) {
+        .app-body { flex-direction: column; }
+        .side-menu { width: 100%; border-bottom: 1px solid rgba(148, 163, 184, 0.18); flex-direction: row; overflow-x: auto; }
+        .role-panel { min-width: 260px; }
+        .page-grid-two { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 768px) {
+        .top-bar { flex-direction: column; gap: 16px; align-items: flex-start; }
+        .top-actions { width: 100%; justify-content: space-between; }
+        .role-switcher { align-items: flex-start; }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>Siemens Teamcenter 原型</h1>
-      <p class="tagline">面向制造业的产品生命周期管理 (PLM) 平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>产品研发、工程、制造协同团队</p>
-        <p><strong>核心痛点：</strong>产品数据分散、版本控制困难、跨部门协同效率低</p>
-        <p><strong>价值主张：</strong>提供统一的产品数据管理、协同设计与变更控制</p>
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="brand">
+          <span class="brand-title">Teamcenter 角色化原型控制台</span>
+          <span class="brand-subtitle">演示多角色协同下的核心业务路径</span>
+        </div>
+        <div class="top-actions">
+          <nav class="top-menu">
+            <a href="#" data-page-target="pm-dashboard">数字主线</a>
+            <a href="#" data-page-target="eng-workbench">工程协同</a>
+            <a href="#" data-page-target="mfg-mbom-sync">制造准备</a>
+            <a href="#" data-page-target="sup-portal">供应协同</a>
+          </nav>
+          <div class="role-switcher">
+            <label for="roleSelect">切换演示角色</label>
+            <select id="roleSelect">
+              <option value="productManager">产品经理 / PLM Owner</option>
+              <option value="designEngineer">设计工程师</option>
+              <option value="manufacturingLead">制造工艺主管</option>
+              <option value="supplierPartner">供应链协同伙伴</option>
+            </select>
+          </div>
+        </div>
+      </header>
+      <div class="app-body">
+        <aside class="side-menu">
+          <section class="role-panel" id="rolePanel"></section>
+          <nav id="menuContainer"></nav>
+        </aside>
+        <main class="content-area">
+          <div class="page-wrapper" id="pageWrapper"></div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const prototypeRoles = {
+        productManager: {
+          name: '产品经理 / PLM Owner',
+          description: '统筹产品数字主线，关注变更策略、BOM 完整性与跨部门协同。',
+          highlights: ['跨项目透明度', '变更治理', '协同流程'],
+          menu: [
+            {
+              title: '日常驾驶舱',
+              items: [
+                { id: 'pm-dashboard', label: '产品数字主线总览', caption: '项目状态与跨部门风险一览', icon: '📊' },
+                { id: 'pm-bom', label: '结构化 BOM 管理', caption: 'EBOM / MBOM 差异与变体', icon: '🧩' },
+                { id: 'pm-change', label: 'ECO 变更审批', caption: '审批、成本与流程轨迹', icon: '🗂️' }
+              ]
+            }
+          ],
+          defaultPage: 'pm-dashboard'
+        },
+        designEngineer: {
+          name: '设计工程师',
+          description: '聚焦 CAD 模型协同、版本控制与问题闭环，加速研发迭代。',
+          highlights: ['多 CAD 协作', '版本控制', '问题闭环'],
+          menu: [
+            {
+              title: '工程工作台',
+              items: [
+                { id: 'eng-workbench', label: 'CAD 协同工作台', caption: '任务、模型状态与即时协作', icon: '🧑‍💻' },
+                { id: 'eng-issue-tracking', label: '问题单看板', caption: '设计缺陷与整改进度', icon: '🗃️' },
+                { id: 'eng-simulation', label: '仿真结果集成', caption: '结构 / 热仿真数据联动', icon: '🛰️' }
+              ]
+            }
+          ],
+          defaultPage: 'eng-workbench'
+        },
+        manufacturingLead: {
+          name: '制造工艺主管',
+          description: '确保设计变更与制造准备同步，驱动工艺版本受控落地。',
+          highlights: ['MBOM 对齐', '工艺规划', '车间准备'],
+          menu: [
+            {
+              title: '制造准备',
+              items: [
+                { id: 'mfg-mbom-sync', label: 'MBOM 同步中心', caption: '设计与制造版本对齐', icon: '🏭' },
+                { id: 'mfg-process-plan', label: '工艺规划白板', caption: '工序、资源与负荷编排', icon: '🧭' },
+                { id: 'mfg-shop-prep', label: '车间准备包', caption: '作业指导书与工装状态', icon: '📦' }
+              ]
+            }
+          ],
+          defaultPage: 'mfg-mbom-sync'
+        },
+        supplierPartner: {
+          name: '供应链协同伙伴',
+          description: '接收最新版本、提交交付与确认变更，提升外协协同效率。',
+          highlights: ['任务协同', '文档互换', '变更确认'],
+          menu: [
+            {
+              title: '协同门户',
+              items: [
+                { id: 'sup-portal', label: '供应商工作台', caption: '消息、绩效、日程提醒', icon: '🤝' },
+                { id: 'sup-collab-tasks', label: '协同任务排程', caption: '交付节点与风险提示', icon: '📅' },
+                { id: 'sup-doc-center', label: '文档与模型中心', caption: '版本下载与提交记录', icon: '🗄️' }
+              ]
+            }
+          ],
+          defaultPage: 'sup-portal'
+        }
+      };
+
+      const prototypePages = {
+
+'pm-dashboard': {
+  badge: '核心驾驶舱',
+  title: '产品数字主线总览',
+  description: '聚焦跨系列项目的执行状态、资源负荷与重点风险，一图掌控 PLM 指标。',
+  metrics: [
+    { label: '项目健康度', value: '92%', trend: '+4.8% MoM', type: 'positive' },
+    { label: 'ECO 平均周期', value: '6.5 天', trend: '-1.2 天', type: 'positive' },
+    { label: '成本影响', value: '¥ 1.8M', trend: '+0.3M', type: 'negative' }
+  ],
+  core: `
+    <div class="page-grid-two">
+      <section class="card">
+        <header>跨项目执行状态 <span>12 个活跃项目</span></header>
+        <div class="placeholder-chart">项目趋势图占位</div>
+        <div class="action-group">
+          <button class="primary-button" data-page-target="pm-change">前往 ECO 审批</button>
+          <button class="ghost-button" data-page-target="pm-bom">查看 BOM 详情</button>
+        </div>
+      </section>
+      <section class="card">
+        <header>跨部门待办 <span>今日提醒</span></header>
+        <div class="list-cards">
+          <div class="list-card">
+            <div>
+              <strong>制造工艺：确认导流板夹具</strong>
+              <span>受 ECO-2024-118 影响</span>
+            </div>
+            <button class="link-button" data-page-target="mfg-process-plan">工艺白板</button>
+          </div>
+          <div class="list-card">
+            <div>
+              <strong>供应商：提交新版工艺卡</strong>
+              <span>SeatWorks 需在 6 月 15 日前完成</span>
+            </div>
+            <button class="link-button" data-page-target="sup-doc-center">打开门户</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  `,
+  business: `
+    <p>驾驶舱聚合关键指标并提供跨部门跳转，便于快速协调资源。</p>
+    <ul>
+      <li>趋势卡片让产品经理即时掌握项目状态。</li>
+      <li>跨部门待办列表定位需要推动的协同动作。</li>
+      <li>按钮直达审批、BOM、制造与供应相关页面。</li>
+    </ul>
+  `
+},
+'pm-bom': {
+  badge: 'BOM 管理',
+  title: '结构化 BOM 管理',
+  description: '管理 EBOM、MBOM 以及变体配置，评估变更影响范围。',
+  metrics: [
+    { label: 'BOM 层级', value: '12 层', trend: '完整性 100%', type: 'positive' },
+    { label: '受影响零件', value: '47 个', trend: '+5 新增', type: 'neutral' },
+    { label: '配置覆盖率', value: '93%', trend: '+2%', type: 'positive' }
+  ],
+  core: `
+    <section class="card">
+      <header>产品结构树 <span>车型：PHEV-X 2025</span></header>
+      <div class="placeholder-chart">BOM 树形结构占位</div>
+      <div class="action-group">
+        <button class="primary-button" data-page-target="pm-change">关联 ECO 流程</button>
+        <button class="ghost-button" data-page-target="mfg-mbom-sync">推送到 MBOM</button>
       </div>
     </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>工程团队管理 CAD 数据与版本</li><li>产品经理审批变更、管理 BOM</li><li>制造团队同步最新工艺与工装</li>
-      </ol>
+    <section class="card">
+      <header>变更影响分析 <span>ECO-2024-118</span></header>
+      <table class="overview-table">
+        <thead><tr><th>零件</th><th>状态</th><th>工艺影响</th><th>供应状态</th></tr></thead>
+        <tbody>
+          <tr><td>冷却模块</td><td><span class="status-pill warning">需复核</span></td><td>夹具需调整</td><td>供应商待确认</td></tr>
+          <tr><td>水泵支架</td><td><span class="status-pill success">已同步</span></td><td>无需调整</td><td>库存充足</td></tr>
+        </tbody>
+      </table>
+      <button class="link-button" data-page-target="sup-doc-center">通知供应商上传文档</button>
     </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>产品数据管理</h3>
-              <p class="goal">功能目标：构建统一的产品数字主线</p>
-              <ul>
-                <li>多 CAD 集成与版本控制</li><li>文档、规格与配置管理</li><li>BOM 管理与可视化</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>变更与流程</h3>
-              <p class="goal">功能目标：标准化变更流程与审批</p>
-              <ul>
-                <li>ECM/ECO 变更管理</li><li>工作流设计与审批任务</li><li>影响分析与追溯</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>协同与项目</h3>
-              <p class="goal">功能目标：提高跨团队协作效率</p>
-              <ul>
-                <li>项目计划与里程碑</li><li>需求管理与可追溯性</li><li>供应商协同与安全分享</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>制造集成</h3>
-              <p class="goal">功能目标：打通设计与制造</p>
-              <ul>
-                <li>MBOM、BOP 与工艺规划</li><li>工装管理与虚拟仿真</li><li>与 MES/ERP 集成</li>
-              </ul>
-            </section>
-            
+  `,
+  business: `
+    <p>页面展示核心结构与变更影响，为审批和制造同步提供数据支持。</p>
+    <ul>
+      <li>结构树帮助快速定位变更范围。</li>
+      <li>影响分析表格汇聚设计、制造、供应信息。</li>
+      <li>下方链接可直接通知供应商补齐资料。</li>
+    </ul>
+  `
+},
+'pm-change': {
+  badge: '流程治理',
+  title: 'ECO 变更审批中心',
+  description: '集中处理工程变更，追踪审批进度、成本与影响范围。',
+  metrics: [
+    { label: '待审批', value: '7 单', trend: '-2 vs 上周', type: 'positive' },
+    { label: '平均审批时长', value: '48 小时', trend: '-6 小时', type: 'positive' },
+    { label: '高风险变更', value: '2 单', trend: '需关注', type: 'negative' }
+  ],
+  core: `
+    <section class="card">
+      <header>审批队列 <span>优先级排序</span></header>
+      <table class="overview-table">
+        <thead><tr><th>编号</th><th>主题</th><th>阶段</th><th>责任人</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td>ECO-2024-118</td><td>冷却模块调整</td><td><span class="status-pill warning">影响评估</span></td><td>赵工</td><td><button class="primary-button" data-page-target="pm-change-detail">查看详情</button></td></tr>
+          <tr><td>ECR-2024-042</td><td>焊点缺陷</td><td><span class="status-pill success">评审通过</span></td><td>王工</td><td><button class="ghost-button" data-page-target="eng-issue-detail">整改方案</button></td></tr>
+        </tbody>
+      </table>
     </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>变更周期与版本错误率</li><li>项目按期交付率</li><li>设计到制造的数据一致性</li>
-      </ul>
+    <section class="card">
+      <header>流程轨迹 <span>ECO-2024-118</span></header>
+      <div class="timeline">
+        <div class="timeline-item"><div><strong>提交</strong><span>设计工程师上传 CAD 对比与仿真报告。</span></div></div>
+        <div class="timeline-item"><div><strong>制造评估</strong><span>确认需更新 2 套工装。</span></div></div>
+        <div class="timeline-item"><div><strong>财务评估</strong><span>预计一次性成本 ¥320K。</span></div></div>
+      </div>
+      <div class="action-group">
+        <button class="primary-button">批准变更</button>
+        <button class="ghost-button" data-page-target="sup-change-ack">通知供应商确认</button>
+        <button class="link-button" data-page-target="pm-dashboard">返回驾驶舱</button>
+      </div>
     </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+  `,
+  business: `
+    <p>审批页面聚合待办与轨迹，帮助产品经理快速决策并联动相关角色。</p>
+    <ul>
+      <li>审批队列集中展示需处理的 ECO。</li>
+      <li>流程轨迹回放各节点输入，便于追踪。</li>
+      <li>操作按钮支持审批、供应商通知和返回驾驶舱。</li>
+    </ul>
+  `
+},
+'pm-change-detail': {
+  badge: '审批详情',
+  title: 'ECO-2024-118 评估详情',
+  description: '查看变更评估、成本拆解与跨部门意见，辅助审批决策。',
+  metrics: [
+    { label: '影响零件', value: '12 个', trend: '覆盖关键系统', type: 'negative' },
+    { label: '停线时间', value: '4 小时', trend: '建议周末', type: 'neutral' },
+    { label: '审批进度', value: '67%', trend: '待制造确认', type: 'neutral' }
+  ],
+  core: `
+    <section class="card">
+      <header>评估摘要 <span>跨部门汇总</span></header>
+      <div class="placeholder-chart">设计 / 制造 / 财务总结占位</div>
+      <div class="action-group">
+        <button class="primary-button">批准并同步</button>
+        <button class="ghost-button" data-page-target="mfg-routing-detail">查看制造作业包</button>
+        <button class="link-button" data-page-target="pm-change">返回审批列表</button>
+      </div>
+    </section>
+    <section class="card">
+      <header>成本拆解</header>
+      <table class="overview-table">
+        <thead><tr><th>科目</th><th>一次性成本</th><th>单车成本</th><th>备注</th></tr></thead>
+        <tbody>
+          <tr><td>新工装</td><td>¥180,000</td><td>--</td><td>折旧 24 个月</td></tr>
+          <tr><td>材料差异</td><td>¥60,000</td><td>+ ¥45</td><td>散热片升级</td></tr>
+        </tbody>
+      </table>
+    </section>
+  `,
+  business: `
+    <p>详情页聚焦关键评估结果，让审批人快速掌握是否放行。</p>
+    <ul>
+      <li>摘要卡片集中展示部门意见。</li>
+      <li>成本拆解帮助量化决策影响。</li>
+      <li>操作可进一步查看制造准备或回到审批队列。</li>
+    </ul>
+  `
+},
+
+'eng-workbench': {
+  badge: '工程工作台',
+  title: 'CAD 协同工作台',
+  description: '汇集任务、模型状态与协同沟通，帮助工程师快速进入工作流。',
+  metrics: [
+    { label: '进行中任务', value: '8 个', trend: '+2', type: 'neutral' },
+    { label: '版本冲突', value: '0', trend: '保持良好', type: 'positive' },
+    { label: '平均提交频次', value: '3 次/天', trend: '+1', type: 'positive' }
+  ],
+  core: `
+    <div class="page-grid-two">
+      <section class="card">
+        <header>我的任务 <span>自动同步</span></header>
+        <div class="list-cards">
+          <div class="list-card">
+            <div>
+              <strong>完成冷却导流板建模</strong>
+              <span>关联 ECO-2024-118 · 截止 6 月 15 日</span>
+            </div>
+            <button class="link-button" data-page-target="pm-change-detail">查看 ECO</button>
+          </div>
+          <div class="list-card">
+            <div>
+              <strong>更新水泵支架约束</strong>
+              <span>等待仿真反馈</span>
+            </div>
+            <span class="status-pill warning">进行中</span>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <header>模型版本状态 <span>今日同步</span></header>
+        <div class="placeholder-chart">版本树 / 分支对比占位</div>
+        <div class="action-group">
+          <button class="primary-button" data-page-target="eng-version-compare">打开版本对比</button>
+          <button class="ghost-button" data-page-target="eng-simulation">查看仿真结果</button>
+        </div>
+      </section>
+    </div>
+  `,
+  business: `
+    <p>工作台聚合任务和模型信息，让设计工程师在一个界面完成日常工作。</p>
+    <ul>
+      <li>任务与项目管理工具同步，避免重复维护。</li>
+      <li>版本状态可跳转到对比或仿真页面。</li>
+      <li>卡片操作连接到其他关键流程。</li>
+    </ul>
+  `
+},
+'eng-version-compare': {
+  badge: '版本对比',
+  title: 'CAD 版本对比与批注',
+  description: '可视化比较不同版本模型的差异，确保变更透明。',
+  metrics: [
+    { label: '对比版本', value: 'V35 ↔ V36', trend: '最新', type: 'positive' },
+    { label: '差异特征', value: '5 处', trend: '+2', type: 'neutral' },
+    { label: '批注', value: '8 条', trend: '+3', type: 'neutral' }
+  ],
+  core: `
+    <section class="card">
+      <header>几何差异预览 <span>颜色标识新增 / 删除</span></header>
+      <div class="placeholder-chart">3D 差异叠加视图占位</div>
+      <div class="action-group">
+        <button class="primary-button" data-page-target="eng-workbench">返回工作台</button>
+        <button class="ghost-button" data-page-target="eng-issue-tracking">派发整改任务</button>
+      </div>
+    </section>
+    <section class="card">
+      <header>变更批注列表</header>
+      <div class="list-cards">
+        <div class="list-card">
+          <div><strong>新增导流板</strong><span>请制造确认夹具兼容性。</span></div>
+          <span class="status-pill warning">待确认</span>
+        </div>
+        <div class="list-card">
+          <div><strong>加强筋厚度调整</strong><span>仿真显示应力降低 8%。</span></div>
+          <span class="status-pill success">已同意</span>
+        </div>
+      </div>
+    </section>
+  `,
+  business: `
+    <p>版本对比页面帮助工程师与制造、质量对齐变更细节。</p>
+    <ul>
+      <li>差异预览一目了然展示几何变化。</li>
+      <li>批注列表同步到 ECO 审批。</li>
+      <li>操作按钮用于回到工作台或建立问题单。</li>
+    </ul>
+  `
+},
+'eng-issue-tracking': {
+  badge: '问题闭环',
+  title: '设计问题单看板',
+  description: '跟踪缺陷、整改任务与跨部门协同状态，实现快速闭环。',
+  metrics: [
+    { label: '待处理', value: '6 条', trend: '-1', type: 'positive' },
+    { label: '平均关闭时间', value: '3.2 天', trend: '-0.5 天', type: 'positive' },
+    { label: '跨部门待协同', value: '2 条', trend: '需关注', type: 'negative' }
+  ],
+  core: `
+    <section class="card">
+      <header>问题单看板</header>
+      <div class="list-cards">
+        <div class="list-card">
+          <div>
+            <strong>冷却模块测试失败</strong>
+            <span>责任人：赵工 · 优先级：高</span>
+          </div>
+          <button class="link-button" data-page-target="eng-issue-detail">查看详情</button>
+        </div>
+        <div class="list-card">
+          <div>
+            <strong>导流板与工装干涉</strong>
+            <span>需制造同步夹具调整</span>
+          </div>
+          <button class="link-button" data-page-target="mfg-routing-detail">查看工艺包</button>
+        </div>
+      </div>
+    </section>
+    <section class="card">
+      <header>闭环时间线</header>
+      <div class="timeline">
+        <div class="timeline-item"><div><strong>问题记录</strong><span>质量团队在 DV 测试中发现异常。</span></div></div>
+        <div class="timeline-item"><div><strong>工程分析</strong><span>设计工程完成根因分析。</span></div></div>
+        <div class="timeline-item"><div><strong>制造反馈</strong><span>夹具可在周末窗口更新。</span></div></div>
+      </div>
+    </section>
+  `,
+  business: `
+    <p>看板页面协助工程师掌握问题进展并与制造保持同步。</p>
+    <ul>
+      <li>问题列表突出高优事项并可展开详情。</li>
+      <li>时间线记录关键节点用于会议复盘。</li>
+      <li>链接跳转到问题详情或工艺准备页面。</li>
+    </ul>
+  `
+},
+'eng-issue-detail': {
+  badge: '问题详情',
+  title: '冷却模块测试失败 · 问题单',
+  description: '记录问题根因、整改计划与验证节点，确保问题闭环。',
+  metrics: [
+    { label: '优先级', value: '高', trend: '需关注', type: 'negative' },
+    { label: '目标关闭', value: '6 月 20 日', trend: '剩余 4 天', type: 'neutral' },
+    { label: '协同团队', value: '制造 / 质量', trend: '同步中', type: 'neutral' }
+  ],
+  core: `
+    <section class="card">
+      <header>问题摘要</header>
+      <div class="placeholder-chart">测试结果与指标对比占位</div>
+      <div class="action-group">
+        <button class="primary-button">提交整改结果</button>
+        <button class="ghost-button" data-page-target="eng-workbench">回到工作台</button>
+      </div>
+    </section>
+    <section class="card">
+      <header>整改计划</header>
+      <table class="overview-table">
+        <thead><tr><th>任务</th><th>负责人</th><th>状态</th><th>预计完成</th></tr></thead>
+        <tbody>
+          <tr><td>调整导流板角度</td><td>赵工</td><td><span class="status-pill warning">进行中</span></td><td>6 月 16 日</td></tr>
+          <tr><td>更新仿真参数</td><td>陈工</td><td><span class="status-pill success">已完成</span></td><td>6 月 14 日</td></tr>
+        </tbody>
+      </table>
+    </section>
+  `,
+  business: `
+    <p>问题详情提供整改计划与提交入口，确保缺陷被及时解决。</p>
+    <ul>
+      <li>摘要区域集中展示测试差异。</li>
+      <li>整改计划明确责任与期限。</li>
+      <li>按钮可直接反馈结果或返回工程工作台。</li>
+    </ul>
+  `
+},
+'eng-simulation': {
+  badge: '验证中心',
+  title: '仿真结果集成',
+  description: '统一查看结构、热仿真结果以及与实测数据的对比。',
+  metrics: [
+    { label: '最新运行', value: '6 月 13 日', trend: '按计划', type: 'positive' },
+    { label: '验证场景', value: '5 个', trend: '+1', type: 'neutral' },
+    { label: '关键告警', value: '1 条', trend: '需关注', type: 'negative' }
+  ],
+  core: `
+    <section class="card">
+      <header>仿真结果概览</header>
+      <div class="placeholder-chart">结构 / 热仿真仪表盘占位</div>
+      <div class="action-group">
+        <button class="primary-button" data-page-target="eng-issue-detail">创建整改任务</button>
+        <button class="ghost-button" data-page-target="pm-dashboard">同步到驾驶舱</button>
+      </div>
+    </section>
+    <section class="card">
+      <header>实测对比</header>
+      <table class="overview-table">
+        <thead><tr><th>指标</th><th>仿真</th><th>实测</th><th>差异</th></tr></thead>
+        <tbody>
+          <tr><td>峰值温度</td><td>85℃</td><td>89℃</td><td><span class="status-pill warning">+4℃</span></td></tr>
+          <tr><td>流量</td><td>42 L/min</td><td>40 L/min</td><td><span class="status-pill danger">-2 L/min</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+  `,
+  business: `
+    <p>仿真页面让设计工程与质量共用一套验证结果，快速识别差异。</p>
+    <ul>
+      <li>概览卡片合并多个仿真场景。</li>
+      <li>实测对比高亮偏差指标。</li>
+      <li>操作按钮可创建问题或通知产品经理。</li>
+    </ul>
+  `
+},
+
+'mfg-mbom-sync': {
+  badge: '制造对齐',
+  title: 'MBOM 同步中心',
+  description: '对比 EBOM 与 MBOM 差异，确保制造版本与设计保持同步。',
+  metrics: [
+    { label: '同步完成度', value: '88%', trend: '+5%', type: 'positive' },
+    { label: '待处理差异', value: '6 项', trend: '-2', type: 'positive' },
+    { label: '待确认工装', value: '2 套', trend: '需关注', type: 'negative' }
+  ],
+  core: `
+    <section class="card">
+      <header>差异列表 <span>自动检测</span></header>
+      <table class="overview-table">
+        <thead><tr><th>零件</th><th>EBOM</th><th>MBOM</th><th>差异</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td>冷却模块</td><td>V36</td><td>V35</td><td><span class="status-pill warning">版本滞后</span></td><td><button class="ghost-button" data-page-target="pm-change-detail">查看 ECO</button></td></tr>
+          <tr><td>导流板</td><td>新增</td><td>缺失</td><td><span class="status-pill danger">需添加</span></td><td><button class="ghost-button" data-page-target="mfg-routing-detail">生成作业</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="card">
+      <header>同步任务</header>
+      <div class="list-cards">
+        <div class="list-card">
+          <div><strong>更新工装定位方案</strong><span>负责人：李工 · 截止 6 月 17 日</span></div>
+          <button class="link-button" data-page-target="mfg-process-plan">查看工艺白板</button>
+        </div>
+        <div class="list-card">
+          <div><strong>通知供应商上传新版工艺卡</strong><span>负责人：供应链</span></div>
+          <button class="link-button" data-page-target="sup-doc-center">进入文档中心</button>
+        </div>
+      </div>
+    </section>
+  `,
+  business: `
+    <p>同步中心帮助制造主管掌握差异并立即分派任务。</p>
+    <ul>
+      <li>差异表格突出需处理的零件。</li>
+      <li>任务卡片明确责任人和截止时间。</li>
+      <li>操作与设计、供应页面无缝互联。</li>
+    </ul>
+  `
+},
+'mfg-process-plan': {
+  badge: '工艺规划',
+  title: '工艺规划白板',
+  description: '规划工序顺序、资源与负荷，确保量产前准备充分。',
+  metrics: [
+    { label: '工序完成度', value: '75%', trend: '+10%', type: 'positive' },
+    { label: '资源冲突', value: '1 个', trend: '需协调', type: 'negative' },
+    { label: '待确认 SOP', value: '4 份', trend: '+1', type: 'neutral' }
+  ],
+  core: `
+    <section class="card">
+      <header>工序时间轴 <span>冷却模块产线</span></header>
+      <div class="placeholder-chart">工序 / 资源甘特占位</div>
+      <div class="action-group">
+        <button class="primary-button" data-page-target="mfg-routing-detail">生成作业包</button>
+        <button class="ghost-button" data-page-target="mfg-shop-prep">查看准备包</button>
+      </div>
+    </section>
+    <section class="card">
+      <header>风险与依赖</header>
+      <div class="list-cards">
+        <div class="list-card">
+          <div><strong>夹具改造等待设计确认</strong><span>需在 6 月 16 日前完成</span></div>
+          <button class="link-button" data-page-target="eng-workbench">联系设计团队</button>
+        </div>
+        <div class="list-card">
+          <div><strong>工艺文件审批</strong><span>需产品经理签字</span></div>
+          <button class="link-button" data-page-target="pm-change">跳转审批</button>
+        </div>
+      </div>
+    </section>
+  `,
+  business: `
+    <p>工艺白板展示工序节奏与风险，便于制造主管协调资源。</p>
+    <ul>
+      <li>时间轴帮助确认产线准备进度。</li>
+      <li>风险卡片指出需要外部支持的事项。</li>
+      <li>链接实现与设计、产品经理的协同闭环。</li>
+    </ul>
+  `
+},
+'mfg-shop-prep': {
+  badge: '车间准备',
+  title: '车间准备包',
+  description: '汇总作业指导书、工装状态与培训安排，确保上线顺利。',
+  metrics: [
+    { label: '准备包完成度', value: '82%', trend: '+7%', type: 'positive' },
+    { label: '工装已到位', value: '5/6', trend: '缺 1 套', type: 'negative' },
+    { label: '培训完成', value: '68%', trend: '+12%', type: 'positive' }
+  ],
+  core: `
+    <section class="card">
+      <header>作业指导书清单</header>
+      <table class="overview-table">
+        <thead><tr><th>文件</th><th>版本</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td>冷却模块装配 SOP</td><td>V2.1</td><td><span class="status-pill success">已发布</span></td><td><button class="link-button" data-page-target="sup-doc-center">共享给供应商</button></td></tr>
+          <tr><td>导流板安装指引</td><td>草稿</td><td><span class="status-pill warning">待审批</span></td><td><button class="link-button" data-page-target="pm-change">提交审批</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="card">
+      <header>工装与培训状态</header>
+      <div class="list-cards">
+        <div class="list-card">
+          <div><strong>定位夹具</strong><span>预计 6 月 16 日到位</span></div>
+          <span class="status-pill warning">在途</span>
+        </div>
+        <div class="list-card">
+          <div><strong>操作员培训</strong><span>已完成 68%，剩余两班次</span></div>
+          <button class="link-button" data-page-target="mfg-process-plan">查看计划</button>
+        </div>
+      </div>
+    </section>
+  `,
+  business: `
+    <p>准备包集中展示车间上线所需资料，确保变更落地。</p>
+    <ul>
+      <li>指导书与工装状态统一呈现。</li>
+      <li>培训进度帮助安排剩余班次。</li>
+      <li>可与审批、供应文档中心互联。</li>
+    </ul>
+  `
+},
+'mfg-routing-detail': {
+  badge: '作业包',
+  title: '冷却模块作业包',
+  description: '查看最新的工艺路线、设备需求与检验节点。',
+  metrics: [
+    { label: '版本', value: 'MBOM V12', trend: '最新', type: 'positive' },
+    { label: '工序数量', value: '8', trend: '新增 1', type: 'neutral' },
+    { label: '质检节点', value: '3', trend: '保持', type: 'neutral' }
+  ],
+  core: `
+    <section class="card">
+      <header>工艺路线</header>
+      <div class="placeholder-chart">工序流程 / 质检节点占位</div>
+      <div class="action-group">
+        <button class="primary-button">发布到车间</button>
+        <button class="ghost-button" data-page-target="mfg-shop-prep">返回准备包</button>
+      </div>
+    </section>
+    <section class="card">
+      <header>关键设备与工具</header>
+      <div class="list-cards">
+        <div class="list-card"><div><strong>导流板定位夹具</strong><span>状态：待校准</span></div><button class="link-button" data-page-target="pm-bom">查看零件</button></div>
+        <div class="list-card"><div><strong>流量测试工装</strong><span>状态：可用</span></div><span class="status-pill success">良好</span></div>
+      </div>
+    </section>
+  `,
+  business: `
+    <p>作业包页面支持制造主管审核关键工序与资源，确保上线准备充分。</p>
+    <ul>
+      <li>流程图展示工序与质检节点。</li>
+      <li>设备列表列出需重点关注的工装。</li>
+      <li>可返回准备包或跳转到 BOM 查看零件详情。</li>
+    </ul>
+  `
+},
+
+        'sup-portal': {
+          badge: '供应门户',
+          title: '供应商工作台',
+          description: '供应商集中查看消息、绩效与待办，快速响应 OEM 协同。',
+          metrics: [
+            { label: '当月评分', value: '4.6 / 5', trend: '+0.2', type: 'positive' },
+            { label: '待处理通知', value: '3 条', trend: '+1', type: 'negative' },
+            { label: '准时交付率', value: '97%', trend: '+3%', type: 'positive' }
+          ],
+          core: `
+            <section class="card">
+              <header>最新消息</header>
+              <div class="list-cards">
+                <div class="list-card"><div><strong>ECO-2024-118 需要确认</strong><span>请在 6 月 14 日前回复影响评估。</span></div><button class="link-button" data-page-target="sup-change-ack">去确认</button></div>
+                <div class="list-card"><div><strong>新培训资料可用</strong><span>冷却模块装配 SOP V2.1</span></div><button class="link-button" data-page-target="sup-doc-center">查看文档</button></div>
+              </div>
+            </section>
+            <section class="card">
+              <header>绩效概览</header>
+              <div class="placeholder-chart">交付率 / 质量评分趋势占位</div>
+            </section>
+          `,
+          business: `
+            <p>供应商工作台提供通知与绩效视图，确保外协伙伴紧跟 OEM 节奏。</p>
+            <ul>
+              <li>消息卡片提醒需要响应的事项。</li>
+              <li>绩效趋势让供应商了解目标完成情况。</li>
+              <li>按钮可跳转到变更确认与文档中心。</li>
+            </ul>
+          `
+        },
+        'sup-collab-tasks': {
+          badge: '协同任务',
+          title: '协同任务排程',
+          description: '按交付节点管理任务和风险，保障外协进度。',
+          metrics: [
+            { label: '进行中任务', value: '5', trend: '+1', type: 'neutral' },
+            { label: '风险提醒', value: '1', trend: '需关注', type: 'negative' },
+            { label: '完成率', value: '82%', trend: '+6%', type: 'positive' }
+          ],
+          core: `
+            <section class="card">
+              <header>任务列表</header>
+              <div class="list-cards">
+                <div class="list-card"><div><strong>提交冷却模块样件</strong><span>截止 6 月 18 日 · 状态：在途</span></div><span class="status-pill warning">需跟进</span></div>
+                <div class="list-card"><div><strong>反馈 ECO-2024-118 影响</strong><span>截止 6 月 14 日</span></div><button class="link-button" data-page-target="sup-change-ack">立即确认</button></div>
+              </div>
+            </section>
+            <section class="card">
+              <header>风险提醒</header>
+              <div class="timeline">
+                <div class="timeline-item"><div><strong>物流</strong><span>预计运输时间增加 1 天，需调整交付计划。</span></div></div>
+                <div class="timeline-item"><div><strong>质量</strong><span>上一批次抽检发现轻微偏差，已提交整改。</span></div></div>
+              </div>
+            </section>
+          `,
+          business: `
+            <p>任务页面帮助供应伙伴管理交付与风险，并与 OEM 同步进度。</p>
+            <ul>
+              <li>任务卡片标识状态和截止日期。</li>
+              <li>风险时间线提示潜在延误。</li>
+              <li>链接指向变更确认等后续动作。</li>
+            </ul>
+          `
+        },
+        'sup-doc-center': {
+          badge: '资料中心',
+          title: '文档与模型中心',
+          description: '集中管理可下载的工程资料与供应商提交记录，确保版本一致。',
+          metrics: [
+            { label: '最新版本', value: 'V2.1', trend: '更新', type: 'positive' },
+            { label: '待审核提交', value: '2', trend: '+1', type: 'negative' },
+            { label: '共享文件', value: '18', trend: '+3', type: 'positive' }
+          ],
+          core: `
+            <section class="card">
+              <header>可下载资料</header>
+              <table class="overview-table">
+                <thead><tr><th>名称</th><th>版本</th><th>类型</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td>冷却模块装配 SOP</td><td>V2.1</td><td>PDF</td><td><button class="ghost-button">下载</button></td></tr>
+                  <tr><td>导流板 3D 模型</td><td>V36</td><td>STEP</td><td><button class="ghost-button">下载</button></td></tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="card">
+              <header>供应商提交记录</header>
+              <div class="list-cards">
+                <div class="list-card"><div><strong>SeatWorks · 工艺卡</strong><span>提交于 6 月 12 日 · 待审核</span></div><button class="link-button" data-page-target="sup-change-ack">关联变更确认</button></div>
+                <div class="list-card"><div><strong>CoolFlow · 样件检测报告</strong><span>提交于 6 月 11 日 · 已通过</span></div><span class="status-pill success">通过</span></div>
+              </div>
+            </section>
+          `,
+          business: `
+            <p>文档中心确保供应商访问的资料始终最新，并记录提交反馈。</p>
+            <ul>
+              <li>资料表格列出可下载的官方版本。</li>
+              <li>提交记录追踪审核状态。</li>
+              <li>链接将文档与变更确认流程串联。</li>
+            </ul>
+          `
+        },
+        'sup-change-ack': {
+          badge: '变更确认',
+          title: 'ECO-2024-118 供应商确认',
+          description: '供应商查看变更摘要、影响与承诺计划，反馈执行安排。',
+          metrics: [
+            { label: '响应截止', value: '6 月 14 日', trend: '剩余 2 天', type: 'negative' },
+            { label: '影响零件', value: '3', trend: '需同步', type: 'neutral' },
+            { label: '确认状态', value: '待回复', trend: '重要', type: 'negative' }
+          ],
+          core: `
+            <section class="card">
+              <header>变更摘要</header>
+              <div class="placeholder-chart">变更内容 / 影响范围占位</div>
+              <div class="action-group">
+                <button class="primary-button">接受变更</button>
+                <button class="ghost-button">提出疑问</button>
+                <button class="link-button" data-page-target="sup-portal">返回工作台</button>
+              </div>
+            </section>
+            <section class="card">
+              <header>执行计划反馈</header>
+              <table class="overview-table">
+                <thead><tr><th>动作</th><th>负责人</th><th>计划日期</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr><td>更新零件工艺卡</td><td>供应商工程师</td><td>6 月 16 日</td><td><span class="status-pill warning">待执行</span></td></tr>
+                  <tr><td>首批样件交付</td><td>物流</td><td>6 月 18 日</td><td><span class="status-pill neutral">计划中</span></td></tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          business: `
+            <p>变更确认页帮助供应商理解影响并承诺执行计划，与 OEM 实现闭环。</p>
+            <ul>
+              <li>摘要卡片提供关键信息和行动入口。</li>
+              <li>执行计划表格明确责任与时间。</li>
+              <li>可返回供应商工作台继续处理其他事项。</li>
+            </ul>
+          `
+        }
+      };
+
+      const state = {
+        currentRole: 'productManager',
+        currentPage: null,
+        history: []
+      };
+
+      const pageWrapper = document.getElementById('pageWrapper');
+      const menuContainer = document.getElementById('menuContainer');
+      const rolePanel = document.getElementById('rolePanel');
+      const roleSelect = document.getElementById('roleSelect');
+
+      function renderRolePanel(roleKey) {
+        const role = prototypeRoles[roleKey];
+        rolePanel.innerHTML = `
+          <h2>${role.name}</h2>
+          <p>${role.description}</p>
+          <div class="role-highlights">
+            ${role.highlights.map((tag) => `<span>${tag}</span>`).join('')}
+          </div>
+        `;
+      }
+
+      function renderMenu(roleKey) {
+        const role = prototypeRoles[roleKey];
+        menuContainer.innerHTML = role.menu
+          .map(
+            (group) => `
+              <section class="menu-group">
+                <h3>${group.title}</h3>
+                <div class="menu-items">
+                  ${group.items
+                    .map(
+                      (item) => `
+                        <button class="menu-item" data-page="${item.id}">
+                          <span class="icon">${item.icon}</span>
+                          <span class="meta">
+                            <strong>${item.label}</strong>
+                            <span>${item.caption}</span>
+                          </span>
+                        </button>
+                      `
+                    )
+                    .join('')}
+                </div>
+              </section>
+            `
+          )
+          .join('');
+
+        menuContainer.querySelectorAll('.menu-item').forEach((button) => {
+          button.addEventListener('click', () => {
+            const pageId = button.getAttribute('data-page');
+            renderPage(pageId, { resetHistory: true });
+          });
+        });
+      }
+
+      function renderMetrics(metrics) {
+        if (!metrics || !metrics.length) return '';
+        const items = metrics
+          .map(
+            (metric) => `
+              <div class="metric-card">
+                <strong>${metric.label}</strong>
+                <span class="metric-value">${metric.value}</span>
+                <span class="metric-trend ${metric.type}">${metric.trend}</span>
+              </div>
+            `
+          )
+          .join('');
+        return `<div class="metrics-grid">${items}</div>`;
+      }
+
+      function highlightMenu(pageId) {
+        menuContainer.querySelectorAll('.menu-item').forEach((button) => {
+          if (button.getAttribute('data-page') === pageId) {
+            button.classList.add('active');
+          } else {
+            button.classList.remove('active');
+          }
+        });
+      }
+
+      function renderPage(pageId, options = {}) {
+        const page = prototypePages[pageId];
+        if (!page) return;
+
+        if (options.resetHistory) {
+          state.history = [];
+        } else if (options.pushHistory && state.currentPage) {
+          state.history.push(state.currentPage);
+        }
+
+        state.currentPage = pageId;
+        highlightMenu(pageId);
+
+        const metricsBlock = renderMetrics(page.metrics);
+        const backButton = state.history.length
+          ? `<div class="page-breadcrumb"><button data-action="go-back">← 返回上一页</button><span>${page.title}</span></div>`
+          : '';
+
+        pageWrapper.innerHTML = `
+          ${backButton}
+          <section class="page-header">
+            <div>
+              <span class="page-badge">${page.badge}</span>
+              <h1>${page.title}</h1>
+              <p class="page-description">${page.description}</p>
+            </div>
+            ${metricsBlock}
+          </section>
+          <section class="page-core">${page.core}</section>
+          <section class="page-footnote">
+            <h2>页面业务说明</h2>
+            ${page.business}
+          </section>
+        `;
+
+        pageWrapper.querySelectorAll('[data-action="go-back"]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const previous = state.history.pop();
+            if (previous) {
+              renderPage(previous, { resetHistory: false });
+            }
+          });
+        });
+
+        pageWrapper.querySelectorAll('[data-page-target]').forEach((el) => {
+          el.addEventListener('click', (event) => {
+            event.preventDefault();
+            const target = el.getAttribute('data-page-target');
+            renderPage(target, { pushHistory: true });
+          });
+        });
+      }
+
+      function setRole(roleKey) {
+        const role = prototypeRoles[roleKey];
+        if (!role) return;
+        state.currentRole = roleKey;
+        renderRolePanel(roleKey);
+        renderMenu(roleKey);
+        renderPage(role.defaultPage, { resetHistory: true });
+      }
+
+      document.querySelectorAll('.top-menu a[data-page-target]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const target = link.getAttribute('data-page-target');
+          const roleKey = Object.keys(prototypeRoles).find((key) => {
+            const role = prototypeRoles[key];
+            return role.menu.some((group) => group.items.some((item) => item.id === target));
+          });
+          if (roleKey && roleKey !== state.currentRole) {
+            roleSelect.value = roleKey;
+            setRole(roleKey);
+          }
+          renderPage(target, { resetHistory: true });
+        });
+      });
+
+      roleSelect.addEventListener('change', (event) => {
+        setRole(event.target.value);
+      });
+
+      setRole(state.currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

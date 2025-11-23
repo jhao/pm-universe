@@ -3,82 +3,83 @@
   <head>
     <meta charset="utf-8" />
     <title>ADP Workforce Now 原型概览</title>
-    <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
-  <body>
-    <header>
-      <h1>ADP Workforce Now 原型</h1>
-      <p class="tagline">面向中大型企业的云端人力与薪酬管理平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>HR 管理者、薪酬专员、员工</p>
-        <p><strong>核心痛点：</strong>美国市场复杂的税务薪酬规则，HR 流程数字化不足</p>
-        <p><strong>价值主张：</strong>提供本地化合规、薪酬税务自动化与员工自助服务</p>
+  <body data-page="overview">
+    <main class="layout">
+      <div class="top-bar">
+        <div>
+          <div class="breadcrumbs">企业级原型 · 人力与薪酬数字化</div>
+          <h1>ADP Workforce Now</h1>
+          <p class="subtitle">覆盖人事、薪酬、考勤、人才与分析的一体化人力云平台</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="secondary-button">下载需求说明</button>
+          <button class="primary-button">预约演示</button>
+        </div>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>员工在自助门户提交休假与查看薪资单</li><li>HR 管理招聘、绩效与福利计划</li><li>财务对接薪酬报表与税务申报</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>人事核心</h3>
-              <p class="goal">功能目标：集中管理员工数据与组织结构</p>
-              <ul>
-                <li>员工记录、合同与职位管理</li><li>入离职流程与电子签名</li><li>人员变动审批与通知</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>薪酬税务</h3>
-              <p class="goal">功能目标：自动处理工资与税务合规</p>
-              <ul>
-                <li>薪资计算、直接存款与发薪</li><li>税务自动申报与报表</li><li>薪资异常监控与提醒</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>时间与考勤</h3>
-              <p class="goal">功能目标：准确记录工作时长与排班</p>
-              <ul>
-                <li>打卡、排班与加班审批</li><li>加班、假期与福利追踪</li><li>移动端打卡与地理围栏</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>人才管理</h3>
-              <p class="goal">功能目标：提升员工绩效与发展</p>
-              <ul>
-                <li>绩效评估、目标与反馈</li><li>学习课程与认证</li><li>招聘 ATS 集成与背景调查</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>薪资发放准时率与错误率</li><li>合规税务申报完成率</li><li>员工自助使用率与满意度</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+
+      <section class="panel" style="gap:16px;">
+        <div class="panel-header">
+          <h2 class="section-title">模块总览</h2>
+          <input class="search-input" type="search" placeholder="搜索模块或功能..." data-search />
+        </div>
+        <div class="card-grid" data-module-grid></div>
+        <div class="empty-state" data-empty-state hidden>暂无匹配模块</div>
+      </section>
+
+      <section class="panel" style="gap:20px;">
+        <div class="panel-header">
+          <h2 class="section-title">典型流程入口</h2>
+          <a class="ghost-button" href="../..">返回原型目录</a>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <span class="badge">入职流程</span>
+            <h3>新员工 Onboarding</h3>
+            <p class="subtitle">从 offer 签署、资料收集到首日任务一步完成。</p>
+            <ul class="feature-list">
+              <li>触发入职任务清单</li>
+              <li>自动同步薪酬与系统权限</li>
+              <li>欢迎邮件与团队介绍</li>
+            </ul>
+            <div class="cta"><a class="secondary-button" href="employee-directory.html">查看人事核心</a></div>
+          </article>
+          <article class="card">
+            <span class="badge">发薪流程</span>
+            <h3>双周薪资批次</h3>
+            <p class="subtitle">监控每个步骤，确保发薪准确及时。</p>
+            <ul class="feature-list">
+              <li>工时同步与异常提醒</li>
+              <li>福利扣减自动套用</li>
+              <li>提交前预览报表</li>
+            </ul>
+            <div class="cta"><a class="secondary-button" href="payroll-run.html">进入薪资批次</a></div>
+          </article>
+          <article class="card">
+            <span class="badge">洞察看板</span>
+            <h3>HR 指标总览</h3>
+            <p class="subtitle">实时掌握薪酬、离职率与员工体验指标。</p>
+            <ul class="feature-list">
+              <li>自定义 KPI 与阈值</li>
+              <li>钻取到具体团队</li>
+              <li>支持导出与订阅</li>
+            </ul>
+            <div class="cta"><a class="secondary-button" href="analytics-reporting.html">打开报表中心</a></div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

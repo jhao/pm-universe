@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 结果录入面板</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="result-entry">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>分析人员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">结果录入需经过双人复核并自动生成审计轨迹。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">下载模板</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">结果录入面板</h1>
+              <p class="hero-subtitle">录入或导入测试结果，自动计算偏差并触发 QA 复核流程。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="secondary-btn" href="test-execution.html?role=analyst">返回测试执行</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">结果输入</span>
+              <a class="link-btn" href="qa-release.html?role=qa">发送 QA 审核</a>
+            </div>
+            <div class="panel-body">
+              <div class="form-grid">
+                <div class="form-control">
+                  <label>批次</label>
+                  <input type="text" value="BT-230412-07" />
+                </div>
+                <div class="form-control">
+                  <label>项目</label>
+                  <input type="text" value="稳定性 Day14 溶出" />
+                </div>
+                <div class="form-control">
+                  <label>方法版本</label>
+                  <select>
+                    <option>HPLC-SOP-003 v3.2</option>
+                    <option>HPLC-SOP-003 v3.1</option>
+                  </select>
+                </div>
+                <div class="form-control">
+                  <label>测定值</label>
+                  <input type="number" step="0.01" placeholder="输入结果" />
+                </div>
+                <div class="form-control">
+                  <label>计算结果</label>
+                  <input type="text" value="释放度 96.5%" />
+                </div>
+                <div class="form-control">
+                  <label>偏差</label>
+                  <input type="text" value="符合规格" />
+                </div>
+                <div class="form-control" style="grid-column: 1 / -1;">
+                  <label>备注</label>
+                  <textarea placeholder="记录异常或说明"></textarea>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" type="button">提交结果</button>
+                <a class="link-btn" href="deviation-report.html?role=analyst">发起偏差</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="split-layout">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">结果列表</span>
+                <a class="link-btn" href="test-batch-detail.html?role=analyst">查看批次</a>
+              </div>
+              <div class="panel-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>样本</th>
+                      <th>结果</th>
+                      <th>规格</th>
+                      <th>复核</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>样本 01</td>
+                      <td>96.5%</td>
+                      <td>≥ 90%</td>
+                      <td><span class="badge warning">待复核</span></td>
+                    </tr>
+                    <tr>
+                      <td>样本 02</td>
+                      <td>95.8%</td>
+                      <td>≥ 90%</td>
+                      <td><span class="badge info">复核中</span></td>
+                    </tr>
+                    <tr>
+                      <td>样本 03</td>
+                      <td>97.2%</td>
+                      <td>≥ 90%</td>
+                      <td><span class="badge success">完成</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">复核进度</span>
+                <a class="link-btn" href="qa-release.html?role=qa">查看 QA</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>QA 审核</span>
+                    <span>王颖 · 待处理</span>
+                  </div>
+                  <div class="list-item">
+                    <span>复核签名</span>
+                    <span>陈宇 · 已完成</span>
+                  </div>
+                  <div class="list-item">
+                    <span>附加资料</span>
+                    <span>光谱图已上传</span>
+                  </div>
+                </div>
+                <div class="business-notes">
+                  <h3>提示</h3>
+                  <p>提交结果后系统自动生成复核任务并发送通知。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>结果录入面板支持手动输入与文件导入，自动校验规格并驱动 QA 审核流程。</p>
+            <ul class="clean">
+              <li>录入完成后生成审计轨迹。</li>
+              <li>复核状态可跨角色查看。</li>
+              <li>偏差可直接跳转到质量模块。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

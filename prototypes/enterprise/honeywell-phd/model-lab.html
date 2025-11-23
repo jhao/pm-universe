@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>模型实验室 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a></li>
+            <li><a class="nav-link" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a></li>
+            <li><a class="nav-link" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a></li>
+            <li><a class="nav-link" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a></li>
+            <li><a class="nav-link" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a></li>
+            <li><a class="nav-link" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a></li>
+            <li><a class="nav-link is-active" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a></li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>模型动作</strong>
+          <div>• <a href="model-training-detail.html">训练详情</a></div>
+          <div>• <a href="operations-dashboard.html">推送驾驶舱</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>模型实验室</h2>
+            <span class="breadcrumb">Honeywell PHD / 模型实验室</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card">
+            <h3>模型列表</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>模型名称</th>
+                  <th>类型</th>
+                  <th>版本</th>
+                  <th>最近评估</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-role="工艺工程师" id="regression">
+                  <td>裂解炉能耗回归模型</td>
+                  <td>多元回归</td>
+                  <td>v3.2</td>
+                  <td>2024-04-18</td>
+                  <td><span class="badge success"><span class="status-dot"></span> 部署中</span></td>
+                  <td><a href="model-training-detail.html#regression">查看版本对比</a></td>
+                </tr>
+                <tr data-role="运维主管">
+                  <td>采集通道异常检测</td>
+                  <td>Isolation Forest</td>
+                  <td>v1.5</td>
+                  <td>2024-04-17</td>
+                  <td><span class="badge warning"><span class="status-dot"></span> 待训练</span></td>
+                  <td><a href="model-training-detail.html#anomaly">补充训练数据</a></td>
+                </tr>
+                <tr data-role="管理层,工艺工程师">
+                  <td>综合节能 KPI 模型</td>
+                  <td>回归 + 规则</td>
+                  <td>v2.0</td>
+                  <td>2024-04-10</td>
+                  <td><span class="badge success"><span class="status-dot"></span> 已发布</span></td>
+                  <td><a href="operations-dashboard.html">同步至驾驶舱</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="section-card">
+            <h3>模型训练流水线</h3>
+            <div class="detail-layout">
+              <div class="meta-grid">
+                <div class="meta-item">
+                  <strong>数据来源</strong><br />
+                  趋势模板 / 采集通道 / 实验室化验
+                </div>
+                <div class="meta-item">
+                  <strong>训练频次</strong><br />
+                  每周三 · 自动触发
+                </div>
+                <div class="meta-item">
+                  <strong>部署环境</strong><br />
+                  PHD Online + 云端备份
+                </div>
+              </div>
+              <div class="action-buttons">
+                <a class="button" href="model-training-detail.html">查看训练详情</a>
+                <a class="button secondary" href="alarm-management.html#quality">查看模型报警</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card">
+            <h3>角色洞察</h3>
+            <div class="split-layout">
+              <div class="role-section" data-role="工艺工程师">
+                <h4>工艺工程师</h4>
+                <p>关注模型预测偏差、特征贡献与回归残差。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="model-training-detail.html#regression">查看残差分析</a>
+                  <a class="button secondary" href="trend-analysis.html">回看趋势</a>
+                </div>
+              </div>
+              <div class="role-section" data-role="运维主管">
+                <h4>运维主管</h4>
+                <p>确认异常检测模型是否覆盖所有采集通道。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="data-pipeline-detail.html">更新通道映射</a>
+                  <a class="button secondary" href="alarm-management.html">检查报警</a>
+                </div>
+              </div>
+              <div class="role-section" data-role="管理层">
+                <h4>管理层</h4>
+                <p>审查模型节能贡献，决定是否推广。</p>
+                <div class="action-buttons">
+                  <a class="button secondary" href="operations-dashboard.html">查看节能 KPI</a>
+                  <a class="button secondary" href="report-center.html#executive">下载经营简报</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            模型实验室集中管理回归、异常检测等模型资产，提供训练流水线和角色化洞察。通过操作按钮可跳转至训练详情、报警管理和驾驶舱等模块，形成端到端的模型闭环。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

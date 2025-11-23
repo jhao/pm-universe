@@ -2,83 +2,1055 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>TikTok / 抖音 短视频 原型概览</title>
+    <title>TikTok / 抖音 多角色产品原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: #0f172a;
+        color: #0f172a;
+      }
+      .app-shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        background: linear-gradient(145deg, #0f172a 0%, #1d2671 45%, #f5f7fa 45%, #f5f7fa 100%);
+      }
+      aside {
+        background: rgba(15, 23, 42, 0.92);
+        color: #e2e8f0;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        box-shadow: 12px 0 32px rgba(15, 23, 42, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+      .brand {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: 0.02em;
+      }
+      .brand span {
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.72);
+      }
+      .role-switcher {
+        display: grid;
+        gap: 10px;
+      }
+      .role-switcher h2 {
+        margin: 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: rgba(148, 163, 184, 0.9);
+        letter-spacing: 0.12em;
+      }
+      .role-buttons {
+        display: grid;
+        gap: 10px;
+      }
+      .role-button {
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        padding: 14px;
+        text-align: left;
+        background: rgba(15, 23, 42, 0.55);
+        color: #f8fafc;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+      }
+      .role-button span {
+        font-size: 12px;
+        font-weight: 400;
+        color: rgba(226, 232, 240, 0.6);
+      }
+      .role-button:hover {
+        transform: translateX(4px);
+        background: rgba(59, 130, 246, 0.22);
+        box-shadow: 0 12px 24px rgba(59, 130, 246, 0.18);
+      }
+      .role-button[data-active="true"] {
+        background: linear-gradient(135deg, #22d3ee, #6366f1);
+        box-shadow: 0 18px 28px rgba(79, 70, 229, 0.38);
+      }
+      nav ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 6px;
+      }
+      nav li {
+        margin: 0;
+      }
+      .menu-button {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 0;
+        background: rgba(15, 23, 42, 0.4);
+        color: #e2e8f0;
+        text-align: left;
+        font-size: 14px;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        align-items: center;
+        gap: 12px;
+        transition: background 0.16s ease, transform 0.16s ease;
+      }
+      .menu-button span {
+        font-size: 12px;
+        color: rgba(226, 232, 240, 0.5);
+      }
+      .menu-button:hover {
+        transform: translateX(3px);
+        background: rgba(59, 130, 246, 0.18);
+      }
+      .menu-button[data-active="true"] {
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.36);
+      }
+      .menu-icon {
+        font-size: 18px;
+        text-align: center;
+      }
+      main {
+        backdrop-filter: blur(18px);
+        padding: 40px 56px 56px 56px;
+        display: grid;
+        gap: 28px;
+      }
+      .role-summary {
+        display: grid;
+        gap: 12px;
+      }
+      .role-summary h2 {
+        margin: 0;
+        font-size: 28px;
+        color: #0f172a;
+      }
+      .role-summary p {
+        margin: 0;
+        font-size: 15px;
+        color: #475569;
+      }
+      .role-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 18px;
+      }
+      .metric-card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        display: grid;
+        gap: 6px;
+      }
+      .metric-card h3 {
+        margin: 0;
+        font-size: 13px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .metric-card strong {
+        font-size: 24px;
+        color: #0f172a;
+      }
+      .content-surface {
+        background: rgba(255, 255, 255, 0.82);
+        border-radius: 28px;
+        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+        padding: 28px;
+        display: grid;
+        gap: 24px;
+      }
+      .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .content-header h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+      .chip-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+      .grid-columns {
+        display: grid;
+        gap: 18px;
+      }
+      .grid-two {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      .grid-three {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .video-card,
+      .panel,
+      .list-card,
+      .table,
+      .kanban,
+      .chart,
+      .timeline {
+        background: rgba(248, 250, 252, 0.92);
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        padding: 20px;
+        display: grid;
+        gap: 12px;
+      }
+      .panel h4,
+      .list-card h4,
+      .table h4,
+      .kanban h4,
+      .chart h4,
+      .timeline h4,
+      .video-card h4 {
+        margin: 0;
+        font-size: 16px;
+        color: #0f172a;
+      }
+      .video-preview {
+        background: linear-gradient(160deg, rgba(59, 130, 246, 0.18), rgba(99, 102, 241, 0.36));
+        border-radius: 16px;
+        padding: 40px 20px;
+        display: grid;
+        place-items: center;
+        color: #1f2937;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .video-controls {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        font-size: 24px;
+        color: #1e293b;
+      }
+      .list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+      .list li {
+        background: rgba(255, 255, 255, 0.86);
+        border-radius: 12px;
+        padding: 12px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: #1f2937;
+      }
+      .badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.18);
+        color: #0ea5e9;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .table-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        font-size: 13px;
+        color: #1f2937;
+        align-items: center;
+      }
+      .table-grid strong {
+        color: #0f172a;
+      }
+      .kanban-columns {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .kanban-column {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 14px;
+        padding: 16px;
+        display: grid;
+        gap: 10px;
+      }
+      .kanban-column h5 {
+        margin: 0;
+        font-size: 13px;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .kanban-item {
+        background: rgba(241, 245, 249, 0.9);
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 13px;
+        color: #1f2937;
+        display: grid;
+        gap: 6px;
+      }
+      .kanban-item span {
+        font-size: 11px;
+        color: #6366f1;
+      }
+      .chart-bars {
+        display: grid;
+        gap: 10px;
+      }
+      .chart-bar {
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+      .chart-bar::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        border-radius: inherit;
+      }
+      .chart-bar[data-fill="70"]::after {
+        width: 70%;
+        background: linear-gradient(90deg, #38bdf8, #6366f1);
+      }
+      .chart-bar[data-fill="55"]::after {
+        width: 55%;
+        background: linear-gradient(90deg, #22d3ee, #3b82f6);
+      }
+      .chart-bar[data-fill="88"]::after {
+        width: 88%;
+        background: linear-gradient(90deg, #f59e0b, #ef4444);
+      }
+      .chart-bar[data-fill="42"]::after {
+        width: 42%;
+        background: linear-gradient(90deg, #34d399, #10b981);
+      }
+      .timeline-items {
+        display: grid;
+        gap: 12px;
+      }
+      .timeline-item {
+        display: grid;
+        gap: 4px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(241, 245, 249, 0.95);
+        border-left: 4px solid #6366f1;
+      }
+      .timeline-item strong {
+        color: #1f2937;
+      }
+      .status-light {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #64748b;
+      }
+      .status-light::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+      .legend {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: #64748b;
+      }
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        margin-right: 6px;
+        background: currentColor;
+      }
+      @media (max-width: 1040px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          position: sticky;
+          top: 0;
+          z-index: 9;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>TikTok / 抖音 短视频 原型</h1>
-      <p class="tagline">兴趣驱动的短视频与直播电商平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>短视频内容创作者、泛娱乐用户、商家与带货机构</p>
-        <p><strong>核心痛点：</strong>用户需要短时高频的娱乐内容，商家希望通过直播实现即时成交</p>
-        <p><strong>价值主张：</strong>通过短视频推荐与直播闭环，打通内容消费与商业转化</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>用户打开 App 浏览短视频信息流</li><li>创作者拍摄、剪辑并发布短视频或开播</li><li>商家发起直播带货并管理订单履约</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>内容推荐引擎</h3>
-              <p class="goal">功能目标：基于兴趣图谱精准匹配用户与内容</p>
-              <ul>
-                <li>上下滑信息流与沉浸式播放</li><li>点赞、关注、转发驱动的反馈循环</li><li>推荐理由标签与兴趣管理</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>创作工具链</h3>
-              <p class="goal">功能目标：降低短视频与直播内容的创作门槛</p>
-              <ul>
-                <li>拍摄模板、滤镜特效与音乐版权库</li><li>剪映互通、一键成片与智能字幕</li><li>直播伴侣、连麦与互动玩法插件</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商业变现体系</h3>
-              <p class="goal">功能目标：为创作者与商家提供多元收入来源</p>
-              <ul>
-                <li>直播带货、短视频挂车、商城小店</li><li>达人分销、品牌广告与开屏资源</li><li>星图平台对接品牌合作与履约保障</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>安全与合规治理</h3>
-              <p class="goal">功能目标：确保内容生态健康并满足各国监管要求</p>
-              <ul>
-                <li>内容审核、未成年人模式与限时提醒</li><li>账户安全、风险控制与数据合规</li><li>直播违规检测与处罚体系</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>单日观看时长与完播率</li><li>直播 GMV 与订单转化率</li><li>创作者变现覆盖率与内容违规率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    <div class="app-shell">
+      <aside>
+        <div class="brand">
+          <h1>抖音体验驾驶舱</h1>
+          <span>角色切换 · 场景演示 · 菜单联动</span>
+        </div>
+        <section class="role-switcher">
+          <h2>角色视角</h2>
+          <div class="role-buttons">
+            <button class="role-button" data-role="user" data-active="true">
+              用户端体验
+              <span>沉浸内容 · 社交互动</span>
+            </button>
+            <button class="role-button" data-role="admin" data-active="false">
+              管理员中枢
+              <span>治理合规 · 风险巡检</span>
+            </button>
+            <button class="role-button" data-role="ops" data-active="false">
+              运营战情室
+              <span>活动策划 · 增长调度</span>
+            </button>
+          </div>
+        </section>
+        <nav>
+          <ul id="menuList"></ul>
+        </nav>
+      </aside>
+      <main>
+        <section class="role-summary">
+          <h2 id="roleTitle">用户端体验</h2>
+          <p id="roleTagline">沉浸式短视频与直播购物的日常体验</p>
+          <div class="role-metrics" id="roleMetrics"></div>
+        </section>
+        <section class="content-surface">
+          <header class="content-header">
+            <h3 id="contentTitle">推荐信息流</h3>
+            <div class="chip-group" id="contentChips"></div>
+          </header>
+          <div id="contentBody"></div>
+        </section>
+      </main>
+    </div>
+    <script>
+      const roleBlueprint = {
+        user: {
+          title: "用户端体验",
+          tagline: "沉浸式短视频与直播购物的日常体验",
+          metrics: [
+            { label: "今日观看时长", value: "126 min" },
+            { label: "直播互动", value: "38 次" },
+            { label: "收藏内容", value: "12 个" },
+            { label: "成长任务", value: "4 / 6" },
+          ],
+          menu: [
+            {
+              id: "feed",
+              icon: "🔥",
+              label: "推荐信息流",
+              chips: ["兴趣标签", "秒滑响应"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="video-card">
+                    <h4>今日主推 · 电音派对</h4>
+                    <div class="video-preview">全屏竖版视频占位</div>
+                    <div class="video-controls">❤️  ｜ 💬  ｜ ➕  ｜ ↗️</div>
+                    <div class="legend">
+                      <span style="color:#f97316">强兴趣</span>
+                      <span style="color:#38bdf8">好友推荐</span>
+                      <span style="color:#a855f7">本地热度</span>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h4>实时互动脉冲</h4>
+                    <ul class="list">
+                      <li>「街舞 Battle」<span class="badge">LIVE</span></li>
+                      <li>好物种草榜<span>TOP 3 · 98% 完播</span></li>
+                      <li>音乐磁场<span>连播 27 首</span></li>
+                      <li>城市玩家<span>同城打卡 · 14km</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "commerce",
+              icon: "🛍️",
+              label: "直播购物",
+              chips: ["秒杀席位", "主播连麦"],
+              body: `
+                <div class="grid-columns grid-three">
+                  <div class="panel">
+                    <h4>精选会场</h4>
+                    <ul class="list">
+                      <li>超级品牌日<span>20:00 开播</span></li>
+                      <li>限时秒杀场<span>剩余 12 分钟</span></li>
+                      <li>达人团购团<span>已拼 872 件</span></li>
+                    </ul>
+                  </div>
+                  <div class="video-card">
+                    <h4>直播间预览 · 小潮</h4>
+                    <div class="video-preview">主播位 + 商品挂车</div>
+                    <div class="video-controls">🛒 ｜ 🎁 ｜ ⚡ ｜ 💬</div>
+                  </div>
+                  <div class="panel">
+                    <h4>购物心愿单</h4>
+                    <ul class="list">
+                      <li>智能健身镜<span>优惠券 -¥400</span></li>
+                      <li>潮流球鞋联名<span>库存紧张</span></li>
+                      <li>低卡冻干餐<span>粉丝专享</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "social",
+              icon: "💬",
+              label: "消息与社交",
+              chips: ["小组频道", "连麦互动"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="list-card">
+                    <h4>好友动态</h4>
+                    <ul class="list">
+                      <li>阿宁开播「夜骑 Vlog」<span>刚刚</span></li>
+                      <li>夏沫发布「手帐教程」<span>5 分钟前</span></li>
+                      <li>探店玩家邀你共创<span>待回复</span></li>
+                    </ul>
+                  </div>
+                  <div class="panel">
+                    <h4>语音房 · 持续热聊</h4>
+                    <ul class="list">
+                      <li>「城市夜谈」<span>在线 56 人</span></li>
+                      <li>「新番追剧局」<span>连线中</span></li>
+                      <li>「装备交流岛」<span>排队 08</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "profile",
+              icon: "🧭",
+              label: "个人空间",
+              chips: ["数据总览", "创作提效"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="panel">
+                    <h4>创作成长曲线</h4>
+                    <div class="chart-bars">
+                      <div>粉丝增长</div>
+                      <div class="chart-bar" data-fill="70"></div>
+                      <div>点赞热度</div>
+                      <div class="chart-bar" data-fill="55"></div>
+                      <div>内容质量</div>
+                      <div class="chart-bar" data-fill="88"></div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h4>作品矩阵</h4>
+                    <ul class="list">
+                      <li>系列专辑 · 城市探索<span>8 支上线</span></li>
+                      <li>精选合集 · 音乐短片<span>5 支上线</span></li>
+                      <li>直播回放 · 好物推荐<span>3 场可复看</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "missions",
+              icon: "🎯",
+              label: "任务中心",
+              chips: ["创作激励", "权益解锁"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="panel">
+                    <h4>今日待完成</h4>
+                    <ul class="list">
+                      <li>发布 1 条 Vlog<span>奖励 300 积分</span></li>
+                      <li>直播互动 15 次<span>解锁挂车券</span></li>
+                      <li>粉丝私信回复<span>信誉 +2</span></li>
+                    </ul>
+                  </div>
+                  <div class="panel">
+                    <h4>权益进度</h4>
+                    <ul class="list">
+                      <li>城市主理人<span>已完成 80%</span></li>
+                      <li>潮品优选官<span>待完成 2 项</span></li>
+                      <li>直播电商达人<span>预审通过</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+        admin: {
+          title: "管理员中枢",
+          tagline: "实时治理内容生态与系统安全",
+          metrics: [
+            { label: "违规预警", value: "12 条" },
+            { label: "待审核直播", value: "34 场" },
+            { label: "账号风控", value: "8 个" },
+            { label: "系统健康", value: "99.3%" },
+          ],
+          menu: [
+            {
+              id: "dashboard",
+              icon: "📊",
+              label: "数据驾驶舱",
+              chips: ["实时监控", "异常告警"],
+              body: `
+                <div class="grid-columns grid-three">
+                  <div class="panel">
+                    <h4>内容安全指数</h4>
+                    <div class="chart-bars">
+                      <div>审核通过率</div>
+                      <div class="chart-bar" data-fill="88"></div>
+                      <div>AI 识别覆盖</div>
+                      <div class="chart-bar" data-fill="70"></div>
+                    </div>
+                    <div class="status-light" style="color:#16a34a;">运行稳定</div>
+                  </div>
+                  <div class="panel">
+                    <h4>实时指标</h4>
+                    <ul class="list">
+                      <li>直播开播量<span>712 场</span></li>
+                      <li>短视频上传<span>4.2K 条/小时</span></li>
+                      <li>风险事件<span>低于阈值</span></li>
+                    </ul>
+                  </div>
+                  <div class="panel">
+                    <h4>告警走廊</h4>
+                    <ul class="list">
+                      <li>涉商投诉集中<span>杭州 · 3 起</span></li>
+                      <li>音乐版权疑似<span>待复审</span></li>
+                      <li>直播异常下线<span>需复盘</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "moderation",
+              icon: "🛡️",
+              label: "内容审核",
+              chips: ["AI 辅助", "多级流转"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="table">
+                    <h4>待审工单队列</h4>
+                    <div class="table-grid" style="font-weight:600; color:#475569;">
+                      <div>工单号</div><div>类型</div><div>优先级</div><div>截止</div>
+                    </div>
+                    <div class="table-grid"><strong>#A9043</strong><div>直播违规</div><div><span class="badge">紧急</span></div><div>07:15</div></div>
+                    <div class="table-grid"><strong>#A9044</strong><div>广告投放</div><div><span class="badge" style="background:rgba(239,68,68,0.12); color:#ef4444;">高</span></div><div>07:45</div></div>
+                    <div class="table-grid"><strong>#A9045</strong><div>版权争议</div><div>中</div><div>09:00</div></div>
+                  </div>
+                  <div class="panel">
+                    <h4>机器建议 · 快速处理</h4>
+                    <ul class="list">
+                      <li>AI 判定低风险<span>自动放行</span></li>
+                      <li>AI 判定高风险<span>需二次复核</span></li>
+                      <li>关键词触发<span>触发封禁流程</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "tickets",
+              icon: "📬",
+              label: "投诉工单",
+              chips: ["多渠道", "智能分派"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="panel">
+                    <h4>渠道分布</h4>
+                    <div class="chart-bars">
+                      <div>App 内申诉</div>
+                      <div class="chart-bar" data-fill="55"></div>
+                      <div>商家服务台</div>
+                      <div class="chart-bar" data-fill="42"></div>
+                      <div>第三方同步</div>
+                      <div class="chart-bar" data-fill="70"></div>
+                    </div>
+                  </div>
+                  <div class="timeline">
+                    <h4>处置进度</h4>
+                    <div class="timeline-items">
+                      <div class="timeline-item"><strong>07:20</strong> · 商家退款协商处理中</div>
+                      <div class="timeline-item"><strong>08:05</strong> · 达人违规申诉待仲裁</div>
+                      <div class="timeline-item"><strong>08:30</strong> · 直播低俗内容复盘</div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "permission",
+              icon: "🧩",
+              label: "权限管理",
+              chips: ["最小授权", "动态审批"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="list-card">
+                    <h4>角色矩阵</h4>
+                    <ul class="list">
+                      <li>内容审核员<span>敏感词库</span></li>
+                      <li>风控分析师<span>风险模型</span></li>
+                      <li>系统管理员<span>根访问</span></li>
+                    </ul>
+                  </div>
+                  <div class="panel">
+                    <h4>审批动态</h4>
+                    <ul class="list">
+                      <li>新增账号 · 张晨<span>审批中</span></li>
+                      <li>权限升级 · 王琦<span>已通过</span></li>
+                      <li>临时授权 · 刘雷<span>剩余 2 小时</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "system",
+              icon: "⚙️",
+              label: "系统设置",
+              chips: ["通知策略", "版本控制"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="panel">
+                    <h4>环境状态</h4>
+                    <ul class="list">
+                      <li>审核集群<span>负载 42%</span></li>
+                      <li>风控服务<span>稳定运行</span></li>
+                      <li>备份任务<span>凌晨 02:00</span></li>
+                    </ul>
+                  </div>
+                  <div class="panel">
+                    <h4>版本发布窗口</h4>
+                    <div class="timeline-items">
+                      <div class="timeline-item"><strong>周三</strong> · 风控策略热修</div>
+                      <div class="timeline-item"><strong>周四</strong> · 审核台 Batch 更新</div>
+                      <div class="timeline-item"><strong>周六</strong> · 例行应急演练</div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+        ops: {
+          title: "运营战情室",
+          tagline: "全域活动排期与增长实验调度",
+          metrics: [
+            { label: "在播活动", value: "9 场" },
+            { label: "日活刺激", value: "+6.4%" },
+            { label: "商家陪跑", value: "27 个" },
+            { label: "实验进度", value: "5 项" },
+          ],
+          menu: [
+            {
+              id: "campaign",
+              icon: "🎉",
+              label: "活动策划",
+              chips: ["多会场", "资源位"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="kanban">
+                    <h4>执行看板</h4>
+                    <div class="kanban-columns">
+                      <div class="kanban-column">
+                        <h5>准备中</h5>
+                        <div class="kanban-item">城市美食节<span>资源锁定</span></div>
+                        <div class="kanban-item">校园创作赛<span>主题确认</span></div>
+                      </div>
+                      <div class="kanban-column">
+                        <h5>进行中</h5>
+                        <div class="kanban-item">超级品牌日<span>GMV 冲刺</span></div>
+                        <div class="kanban-item">主播挑战赛<span>热度攀升</span></div>
+                      </div>
+                      <div class="kanban-column">
+                        <h5>收尾阶段</h5>
+                        <div class="kanban-item">城市夜拍季<span>复盘整理</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h4>资源排期表</h4>
+                    <ul class="list">
+                      <li>开屏广告<span>20:00-22:00</span></li>
+                      <li>焦点推荐位<span>整点轮播</span></li>
+                      <li>直播浮层<span>Top3 主播</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "merchant",
+              icon: "🤝",
+              label: "商家扶持",
+              chips: ["陪跑计划", "达人撮合"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="table">
+                    <h4>重点商家面板</h4>
+                    <div class="table-grid" style="font-weight:600; color:#475569;">
+                      <div>商家</div><div>赛道</div><div>今日目标</div><div>陪跑经理</div>
+                    </div>
+                    <div class="table-grid"><strong>乐活家居</strong><div>家电</div><div>GMV ¥1.2M</div><div>赵蕾</div></div>
+                    <div class="table-grid"><strong>漫音潮玩</strong><div>潮流</div><div>粉丝 +15k</div><div>王磊</div></div>
+                    <div class="table-grid"><strong>南风茶社</strong><div>美食</div><div>转化 12%</div><div>李涵</div></div>
+                  </div>
+                  <div class="panel">
+                    <h4>达人撮合池</h4>
+                    <ul class="list">
+                      <li>美食主播 · 小灰<span>邀约中</span></li>
+                      <li>科技测评 · Max<span>已确认</span></li>
+                      <li>生活方式 · Laya<span>待跟进</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "calendar",
+              icon: "🗓️",
+              label: "内容日历",
+              chips: ["热点订阅", "跨团队"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="timeline">
+                    <h4>本周亮点</h4>
+                    <div class="timeline-items">
+                      <div class="timeline-item"><strong>周二</strong> · 新游直播首发</div>
+                      <div class="timeline-item"><strong>周四</strong> · 城市夜市联播</div>
+                      <div class="timeline-item"><strong>周六</strong> · 国风主题日</div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h4>跨团队协作</h4>
+                    <ul class="list">
+                      <li>市场部 · 话题包发布<span>已完成</span></li>
+                      <li>法务 · 合规指引更新<span>待确认</span></li>
+                      <li>客服 · 快速响应预案<span>已同步</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "traffic",
+              icon: "🚀",
+              label: "流量调度",
+              chips: ["智能分发", "实时调控"],
+              body: `
+                <div class="grid-columns grid-three">
+                  <div class="panel">
+                    <h4>分发策略</h4>
+                    <ul class="list">
+                      <li>兴趣强化<span>+12% 曝光</span></li>
+                      <li>新用户冷启动<span>A/B 版本</span></li>
+                      <li>直播优先级<span>热度优先</span></li>
+                    </ul>
+                  </div>
+                  <div class="panel">
+                    <h4>流量阈值</h4>
+                    <div class="chart-bars">
+                      <div>内容池装载</div>
+                      <div class="chart-bar" data-fill="70"></div>
+                      <div>活动增益</div>
+                      <div class="chart-bar" data-fill="55"></div>
+                      <div>风控限流</div>
+                      <div class="chart-bar" data-fill="42"></div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h4>实时调度</h4>
+                    <ul class="list">
+                      <li>18:00 黄金档<span>加码</span></li>
+                      <li>22:00 夜猫场<span>平衡</span></li>
+                      <li>次日清晨<span>预热</span></li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            },
+            {
+              id: "growth",
+              icon: "🧪",
+              label: "增长实验",
+              chips: ["对照组", "实验看板"],
+              body: `
+                <div class="grid-columns grid-two">
+                  <div class="panel">
+                    <h4>实验分组</h4>
+                    <ul class="list">
+                      <li>信息流推荐算法 V8<span>A/B 34% : 66%</span></li>
+                      <li>直播购物挂件优化<span>实验 3 组</span></li>
+                      <li>Push 召回文案刷新<span>已上线</span></li>
+                    </ul>
+                  </div>
+                  <div class="panel">
+                    <h4>效果追踪</h4>
+                    <div class="chart-bars">
+                      <div>留存提升</div>
+                      <div class="chart-bar" data-fill="55"></div>
+                      <div>人均时长</div>
+                      <div class="chart-bar" data-fill="70"></div>
+                      <div>付费转化</div>
+                      <div class="chart-bar" data-fill="42"></div>
+                    </div>
+                  </div>
+                </div>
+              `,
+            },
+          ],
+        },
+      };
+
+      const roleButtons = document.querySelectorAll('.role-button');
+      const menuList = document.getElementById('menuList');
+      const roleTitle = document.getElementById('roleTitle');
+      const roleTagline = document.getElementById('roleTagline');
+      const roleMetrics = document.getElementById('roleMetrics');
+      const contentTitle = document.getElementById('contentTitle');
+      const contentChips = document.getElementById('contentChips');
+      const contentBody = document.getElementById('contentBody');
+
+      let currentRole = 'user';
+      let currentMenu = 'feed';
+
+      const renderRole = (roleKey) => {
+        const role = roleBlueprint[roleKey];
+        if (!role) return;
+        currentRole = roleKey;
+        currentMenu = role.menu[0]?.id;
+
+        roleButtons.forEach((btn) => {
+          btn.dataset.active = String(btn.dataset.role === roleKey);
+        });
+
+        roleTitle.textContent = role.title;
+        roleTagline.textContent = role.tagline;
+        roleMetrics.innerHTML = role.metrics
+          .map(
+            (metric) => `
+              <div class="metric-card">
+                <h3>${metric.label}</h3>
+                <strong>${metric.value}</strong>
+              </div>
+            `
+          )
+          .join('');
+
+        menuList.innerHTML = role.menu
+          .map(
+            (item, index) => `
+              <li>
+                <button class="menu-button" data-menu="${item.id}" data-active="${index === 0}">
+                  <span class="menu-icon">${item.icon}</span>
+                  <div>
+                    <div>${item.label}</div>
+                    <span>${item.chips.join(' · ')}</span>
+                  </div>
+                </button>
+              </li>
+            `
+          )
+          .join('');
+
+        attachMenuEvents();
+        renderContent(roleKey, currentMenu);
+      };
+
+      const renderContent = (roleKey, menuId) => {
+        const role = roleBlueprint[roleKey];
+        if (!role) return;
+        const menuItem = role.menu.find((item) => item.id === menuId) || role.menu[0];
+        if (!menuItem) return;
+
+        menuList.querySelectorAll('.menu-button').forEach((btn) => {
+          btn.dataset.active = String(btn.dataset.menu === menuItem.id);
+        });
+
+        contentTitle.textContent = menuItem.label;
+        contentChips.innerHTML = menuItem.chips
+          .map((chip) => `<span class="chip">${chip}</span>`)
+          .join('');
+        contentBody.innerHTML = menuItem.body;
+      };
+
+      const attachMenuEvents = () => {
+        menuList.querySelectorAll('.menu-button').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const targetMenu = btn.dataset.menu;
+            currentMenu = targetMenu;
+            renderContent(currentRole, currentMenu);
+          });
+        });
+      };
+
+      roleButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const targetRole = btn.dataset.role;
+          if (targetRole && targetRole !== currentRole) {
+            renderRole(targetRole);
+          }
+        });
+      });
+
+      renderRole(currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reddit 管理员控制台</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+        background: #f1f5f9;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        color: #0f172a;
+      }
+      aside {
+        width: 280px;
+        background: #0b1120;
+        color: #e2e8f0;
+        padding: 36px 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+      .health {
+        display: grid;
+        gap: 8px;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .menu-group h3 {
+        margin: 0 0 12px;
+        font-size: 13px;
+        color: #64748b;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .menu-item {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: rgba(148, 163, 184, 0.12);
+        color: inherit;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s ease, border 0.2s ease, color 0.2s ease;
+      }
+      .menu-item span {
+        font-size: 18px;
+      }
+      .menu-item:hover, .menu-item.active {
+        background: rgba(59, 130, 246, 0.18);
+        border-color: rgba(59, 130, 246, 0.45);
+        color: #ffffff;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        background: #ffffff;
+        padding: 24px 44px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header h1 {
+        margin: 0 0 8px;
+      }
+      header p {
+        margin: 0;
+        color: #475569;
+      }
+      .role-switch {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14px;
+        color: #475569;
+      }
+      .role-switch a {
+        text-decoration: none;
+        border: 1px solid #cbd5f5;
+        padding: 6px 14px;
+        border-radius: 999px;
+        color: #1d4ed8;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      .role-switch a:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+      }
+      .content {
+        flex: 1;
+        padding: 36px 44px 60px;
+        background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.18), transparent 55%),
+          #f8fafc;
+      }
+      .section {
+        display: none;
+        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        align-items: start;
+      }
+      .section.active {
+        display: grid;
+      }
+      .panel {
+        background: #ffffff;
+        border-radius: 22px;
+        padding: 24px;
+        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+      .panel h2 {
+        margin: 0 0 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 20px;
+      }
+      .panel h2 span {
+        font-size: 13px;
+        color: #475569;
+      }
+      .metrics {
+        display: grid;
+        gap: 16px;
+      }
+      .metric-item {
+        padding: 18px 20px;
+        border-radius: 16px;
+        background: rgba(59, 130, 246, 0.1);
+        display: grid;
+        gap: 6px;
+      }
+      .metric-item strong {
+        font-size: 18px;
+      }
+      .metric-item span {
+        color: #475569;
+        font-size: 12px;
+      }
+      .table {
+        display: grid;
+        gap: 12px;
+      }
+      .table-header, .table-row {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 0.8fr;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 14px;
+        background: rgba(15, 23, 42, 0.05);
+        font-size: 13px;
+      }
+      .table-row {
+        background: rgba(148, 163, 184, 0.12);
+      }
+      .timeline {
+        display: grid;
+        gap: 10px;
+      }
+      .timeline-item {
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.06);
+        display: grid;
+        gap: 6px;
+      }
+      .timeline-item .meta {
+        font-size: 12px;
+        color: #475569;
+      }
+      .audit-list {
+        display: grid;
+        gap: 12px;
+      }
+      .audit-item {
+        padding: 16px 20px;
+        border-radius: 16px;
+        border: 1px dashed rgba(148, 163, 184, 0.4);
+        background: rgba(226, 232, 240, 0.3);
+        display: grid;
+        gap: 8px;
+      }
+      footer {
+        padding: 20px 44px;
+        font-size: 12px;
+        color: #64748b;
+        background: rgba(15, 23, 42, 0.05);
+      }
+      @media (max-width: 1100px) {
+        body {
+          flex-direction: column;
+        }
+        aside {
+          width: 100%;
+        }
+      }
+    </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <aside>
+      <div class="logo">Reddit · 管理员</div>
+      <div class="health">
+        <span>平台运行状态：良好</span>
+        <span>实时在线用户：1.82M</span>
+        <span>延迟报警：0 · 阻断策略：正常</span>
+      </div>
+      <nav>
+        <div class="menu-group">
+          <h3>全局监控</h3>
+          <button class="menu-item active" data-target="overview"><span>📊</span>实时概览</button>
+          <button class="menu-item" data-target="safety"><span>🛡️</span>内容风控</button>
+        </div>
+        <div class="menu-group">
+          <h3>治理与支持</h3>
+          <button class="menu-item" data-target="users"><span>👥</span>用户治理</button>
+          <button class="menu-item" data-target="communities"><span>🏘️</span>社区赋能</button>
+        </div>
+        <div class="menu-group">
+          <h3>业务管理</h3>
+          <button class="menu-item" data-target="ads"><span>💼</span>商业审核</button>
+          <button class="menu-item" data-target="system"><span>⚙️</span>系统配置</button>
+        </div>
+      </nav>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <h1>管理员控制台</h1>
+          <p>掌握全站运行状态，快速响应风险并调配资源。</p>
+        </div>
+        <div class="role-switch">
+          切换角色：
+          <a href="index.html">角色大厅</a>
+          <a href="user.html">用户</a>
+          <a href="operations.html">运营</a>
+        </div>
+      </header>
+      <section class="content">
+        <div class="section active" data-section="overview">
+          <article class="panel">
+            <h2>📈 即时指标 <span>过去 15 分钟刷新</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>活跃会话 · 2.1M</strong>
+                <span>峰值来自 r/worldnews · 同比 +18%</span>
+              </div>
+              <div class="metric-item">
+                <strong>内容发布 · 184k</strong>
+                <span>原创帖 64% · 长帖同比 +12%</span>
+              </div>
+              <div class="metric-item">
+                <strong>系统事件 · 3</strong>
+                <span>边缘节点重试 · 无需人工干预</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🌐 区域态势 <span>实时健康度评分</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>北美 · 98</strong>
+                <span>平均响应 142ms · CDN 命中率 97%</span>
+              </div>
+              <div class="metric-item">
+                <strong>欧洲 · 95</strong>
+                <span>负载均衡转发 · 无异常警报</span>
+              </div>
+              <div class="metric-item">
+                <strong>亚太 · 91</strong>
+                <span>高峰期部署额外缓存 · 监控加强</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="safety">
+          <article class="panel">
+            <h2>🧭 审核流程 <span>待办事项 42</span></h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>算法提醒：高频举报帖子 12 条</strong>
+                <div class="meta">规则触发：仇恨言论 · 自动限流中</div>
+              </div>
+              <div class="timeline-item">
+                <strong>人工复核：社区违规升级请求 5 起</strong>
+                <div class="meta">预计耗时 30 分钟 · 待安排专员</div>
+              </div>
+              <div class="timeline-item">
+                <strong>黑名单更新：广告滥用账户 3 个</strong>
+                <div class="meta">关联广告组已暂停，需跨团队确认</div>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🔎 风险监控 <span>自动策略覆盖率 92%</span></h2>
+            <div class="table">
+              <div class="table-header">
+                <strong>策略</strong>
+                <strong>最新命中</strong>
+                <strong>状态</strong>
+                <strong>处理耗时</strong>
+              </div>
+              <div class="table-row">
+                <span>关键词过滤 · 政治敏感</span>
+                <span>18 分钟前</span>
+                <span>自动拦截</span>
+                <span>0.8s</span>
+              </div>
+              <div class="table-row">
+                <span>图像识别 · 暴力内容</span>
+                <span>27 分钟前</span>
+                <span>待人工复核</span>
+                <span>15m</span>
+              </div>
+              <div class="table-row">
+                <span>异常流量 · 机器人回复</span>
+                <span>35 分钟前</span>
+                <span>风控封禁</span>
+                <span>即刻</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="users">
+          <article class="panel">
+            <h2>👤 用户画像 <span>重点关注 320 账户</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>黑名单观察</strong>
+                <span>新增 18 · 解除 6 · 待复核 12</span>
+              </div>
+              <div class="metric-item">
+                <strong>版主反馈</strong>
+                <span>处理速度 92% 满意 · 升级 8 起</span>
+              </div>
+              <div class="metric-item">
+                <strong>信誉积分</strong>
+                <span>高风险群体占比 1.4% · 较上周下降</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🗂️ 处置记录 <span>今日新增 64</span></h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>账号封禁 · r/cryptomarket</strong>
+                <div class="meta">原因：重复诈骗引导 · 决策：永久封禁</div>
+              </div>
+              <div class="timeline-item">
+                <strong>限流处理 · r/politics</strong>
+                <div class="meta">原因：刷屏机器人 · 决策：72h 观察</div>
+              </div>
+              <div class="timeline-item">
+                <strong>内容恢复 · r/history</strong>
+                <div class="meta">原因：误判图像识别 · 决策：恢复并致歉</div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="communities">
+          <article class="panel">
+            <h2>🏛️ 社区梯队 <span>重点扶持 36</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>成长期社区</strong>
+                <span>活跃度 +42% · 提供 AI 运营助手</span>
+              </div>
+              <div class="metric-item">
+                <strong>新手引导</strong>
+                <span>上线模板 18 个 · 教程完成率 68%</span>
+              </div>
+              <div class="metric-item">
+                <strong>危机干预</strong>
+                <span>舆情监控 4 起 · 与运营联动处理</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🤝 版主支持 <span>待响应请求 12</span></h2>
+            <div class="audit-list">
+              <div class="audit-item">
+                <strong>r/healthcare · 请求升级管理工具</strong>
+                <span>需求：批量举报处理 · 进度：解决方案评估中</span>
+              </div>
+              <div class="audit-item">
+                <strong>r/edutech · 申请活动资源位</strong>
+                <span>需求：曝光资源 + 推送支持 · 进度：排期确认</span>
+              </div>
+              <div class="audit-item">
+                <strong>r/environment · 制定社区公约</strong>
+                <span>需求：法务审核 · 进度：待签署</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="ads">
+          <article class="panel">
+            <h2>💰 广告审核 <span>待处理 18</span></h2>
+            <div class="table">
+              <div class="table-header">
+                <strong>广告主</strong>
+                <strong>投放类型</strong>
+                <strong>状态</strong>
+                <strong>生效时间</strong>
+              </div>
+              <div class="table-row">
+                <span>BrandLab</span>
+                <span>社区置顶</span>
+                <span>素材复核中</span>
+                <span>T+1</span>
+              </div>
+              <div class="table-row">
+                <span>IndieGames</span>
+                <span>视频 In-feed</span>
+                <span>创意通过</span>
+                <span>今日 20:00</span>
+              </div>
+              <div class="table-row">
+                <span>FinTechGo</span>
+                <span>赞助 AMA</span>
+                <span>风控评估</span>
+                <span>待定</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>📊 投放效果追踪 <span>实时同步</span></h2>
+            <div class="metrics">
+              <div class="metric-item">
+                <strong>曝光量 · 82M</strong>
+                <span>较昨日 +12% · 热门社区贡献 58%</span>
+              </div>
+              <div class="metric-item">
+                <strong>点击率 · 2.4%</strong>
+                <span>高于行业均值 · 需关注转化漏斗</span>
+              </div>
+              <div class="metric-item">
+                <strong>合规评分 · 96</strong>
+                <span>违规预警：金融类广告需追加凭证</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="section" data-section="system">
+          <article class="panel">
+            <h2>🧩 系统配置 <span>变更窗口开放</span></h2>
+            <div class="audit-list">
+              <div class="audit-item">
+                <strong>权限矩阵更新</strong>
+                <span>计划为版主开放数据洞察 Beta 权限</span>
+              </div>
+              <div class="audit-item">
+                <strong>API 调用配额</strong>
+                <span>提高创作者工具包配额上限 30%</span>
+              </div>
+              <div class="audit-item">
+                <strong>安全策略</strong>
+                <span>上线登录风险识别 V2 · 支持风险评分</span>
+              </div>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>🗒️ 审计日志 <span>最新 6 条</span></h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>管理员 A1 调整举报策略</strong>
+                <div class="meta">15 分钟前 · 影响 12 个社区</div>
+              </div>
+              <div class="timeline-item">
+                <strong>系统自动更新缓存规则</strong>
+                <div class="meta">30 分钟前 · 执行成功</div>
+              </div>
+              <div class="timeline-item">
+                <strong>应急演练报告归档</strong>
+                <div class="meta">55 分钟前 · 结果：通过</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+      <footer>管理员界面用于展示平台治理能力，所有数据为演示用虚拟信息。</footer>
+    </main>
+    <script>
+      const buttons = document.querySelectorAll('.menu-item');
+      const sections = document.querySelectorAll('.section');
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const target = button.getAttribute('data-target');
+          buttons.forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          sections.forEach((section) => {
+            section.classList.toggle('active', section.dataset.section === target);
+          });
+        });
+      });
+    </script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

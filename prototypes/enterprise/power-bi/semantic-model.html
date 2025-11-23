@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>语义模型工作台 | 数据工程师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="engineer" data-page="semantic-model">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：数据工程师</span>
+            <strong>语义模型工作台</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>统一语义模型管理</h1>
+                <p>维护关系图、度量与行级安全，支持复用与治理。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="model-edit.html">编辑模型</a>
+                <a class="button secondary" href="dataset-detail.html">查看使用数据集</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>模型关系图</h2>
+              <div class="grid">
+                <div class="card">
+                  <h2>事实表</h2>
+                  <p>销售事实、订单事实、库存事实。</p>
+                </div>
+                <div class="card">
+                  <h2>维度表</h2>
+                  <p>客户、产品、地区、时间。</p>
+                </div>
+                <div class="card">
+                  <h2>关系</h2>
+                  <p>星型模型，关键字段：CustomerID、ProductID。</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>DAX 度量库</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>度量</th>
+                    <th>类型</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>MTD 销售额</td>
+                    <td>时间智能</td>
+                    <td>计算当月累计销售额。</td>
+                  </tr>
+                  <tr>
+                    <td>库存覆盖天数</td>
+                    <td>库存分析</td>
+                    <td>基于平均日销量计算。</td>
+                  </tr>
+                  <tr>
+                    <td>忠诚客户贡献</td>
+                    <td>客户分析</td>
+                    <td>衡量忠诚客户对营收贡献。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>安全与认证</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>认证状态</strong>
+                  <p>黄金数据集（Certified）</p>
+                </div>
+                <div class="status-tile">
+                  <strong>RLS 角色</strong>
+                  <p>区域经理、门店经理、自助分析者</p>
+                  <a class="button ghost" href="model-edit.html">编辑规则</a>
+                </div>
+                <div class="status-tile">
+                  <strong>变更记录</strong>
+                  <p>上次修改：2024-02-28</p>
+                  <a class="button ghost" href="report-versioning.html">查看影响报表</a>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>展示语义模型的核心组成，包括事实表、维度表与关系。</li>
+                <li>提供 DAX 度量库与安全设置，确保模型复用和治理。</li>
+                <li>支持跳转至模型编辑或相关报表，持续优化模型质量。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

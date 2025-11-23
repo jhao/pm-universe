@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 我的任务</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page-id="my-work">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>个人视图：李俊</strong><br />
+          今日待办：4 · 已完成：2<br />
+          关注：阻塞任务 1 个
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">我的工作 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">任务</a>
+              <a class="system-link" href="#">代码</a>
+              <a class="system-link" href="#">文档</a>
+              <a class="system-link" href="#">团队</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索工单或代码" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">工作台 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">今日任务与交付节奏</h1>
+              <p class="page-hero__subtitle">聚合待办、代码评审、阻塞提醒与知识资源，帮助开发者专注高效交付。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">今日完成度</span>
+                  <span class="hero-stat__value">60%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">待处理 MR</span>
+                  <span class="hero-stat__value">3</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">阻塞提醒</span>
+                  <span class="hero-stat__value">1</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="bug-tracker.html" data-keep-role>
+                🐞 快速处理缺陷
+              </a>
+              <a class="hero-actions__secondary" href="code-integration.html" data-keep-role>
+                🧪 查看流水线
+              </a>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">我的待办</h2>
+                  <p class="surface-card__subtitle">按优先级排序的任务列表</p>
+                </div>
+                <a class="action-link" href="sprint-board.html" data-keep-role>查看 Sprint</a>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>任务</th>
+                    <th>状态</th>
+                    <th>优先级</th>
+                    <th>预估</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="link-muted" href="issue-detail.html" data-keep-role>QL-224 AI 推荐</a></td>
+                    <td><span class="tag">进行中</span></td>
+                    <td>High</td>
+                    <td>8 pt</td>
+                  </tr>
+                  <tr>
+                    <td><a class="link-muted" href="issue-detail.html" data-keep-role>QL-210 自动回滚</a></td>
+                    <td><span class="tag">Code Review</span></td>
+                    <td>High</td>
+                    <td>13 pt</td>
+                  </tr>
+                  <tr>
+                    <td><a class="link-muted" href="issue-detail.html" data-keep-role>QL-245 仪表板性能</a></td>
+                    <td><span class="tag">未开始</span></td>
+                    <td>Medium</td>
+                    <td>5 pt</td>
+                  </tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">代码评审</h2>
+                  <p class="surface-card__subtitle">等待你审批或提交的 Merge Request</p>
+                </div>
+                <a class="action-link" href="code-integration.html" data-keep-role>打开流水线</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">MR#1087 - 自动回滚脚本</p>
+                    <p class="list-item__desc">作者：王磊 · 状态：等待 Review</p>
+                  </div>
+                  <span class="tag">截止今日</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">MR#1092 - AI 推荐 API</p>
+                    <p class="list-item__desc">作者：李俊 · 状态：等待测试</p>
+                  </div>
+                  <span class="tag">需自测</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">阻塞与提醒</h2>
+                  <p class="surface-card__subtitle">自动捕捉影响进度的事项</p>
+                </div>
+                <a class="action-link" href="automation-rules.html" data-keep-role>更新提醒</a>
+              </div>
+              <div class="alert-card">
+                QL-224 等待数据平台补丁，已超过 24 小时，请联系责任人。
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">性能测试环境排队</p>
+                    <p class="list-item__desc">预计延迟 6 小时 · 联系：Infra</p>
+                  </div>
+                  <a class="action-link" href="sprint-board.html" data-keep-role>标记阻塞</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">知识资源</h2>
+                  <p class="surface-card__subtitle">常用文档与最佳实践</p>
+                </div>
+                <a class="action-link" href="tech-docs.html" data-keep-role>前往文档</a>
+              </div>
+              <div class="stacked-list">
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">回滚操作指南</h3>
+                  <p class="stacked-item__meta">更新：7/15 · Owner：SRE</p>
+                </div>
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">事件沟通模板</h3>
+                  <p class="stacked-item__meta">更新：7/12 · Owner：CS</p>
+                </div>
+                <div class="stacked-item">
+                  <h3 class="stacked-item__title">性能优化清单</h3>
+                  <p class="stacked-item__meta">更新：7/10 · Owner：后端 Guild</p>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">我的任务工作台帮助 <span data-role-name></span> 聚焦个人待办、评审和阻塞提醒，同时快速访问相关文档与自动化规则，保持交付节奏稳定。</p>
+            <div class="page-info__actions">
+              <a href="bug-tracker.html" data-keep-role>→ 处理缺陷</a>
+              <a href="code-integration.html" data-keep-role>→ 检查流水线</a>
+              <a href="tech-docs.html" data-keep-role>→ 查阅文档</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

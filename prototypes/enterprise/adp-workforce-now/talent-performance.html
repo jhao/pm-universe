@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>人才发展 · 绩效与学习</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="talent">
+    <main class="layout">
+      <a class="back-link" href="index.html">← 返回 ADP Workforce Now</a>
+      <div class="top-bar" style="margin-bottom:24px;">
+        <div>
+          <div class="breadcrumbs">ADP Workforce Now · 人才发展</div>
+          <h1>人才发展驾驶舱</h1>
+          <p class="subtitle">统一管理绩效评估、目标进度与学习发展计划，识别关键人才。</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="secondary-button">导出绩效报表</button>
+          <button class="primary-button">创建发展计划</button>
+        </div>
+      </div>
+
+      <section class="panel" style="gap:20px;">
+        <div class="panel-header">
+          <h2 class="section-title">视图切换</h2>
+          <div class="tab-bar" data-talent-tabs>
+            <button class="active" data-tab="performance">绩效评估</button>
+            <button data-tab="goals">目标进度</button>
+            <button data-tab="learning">学习发展</button>
+          </div>
+        </div>
+        <div data-talent-panel></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">关键提醒</h2>
+        </div>
+        <ul class="feature-list">
+          <li>产品部 3 位高潜员工推荐加入领导力项目</li>
+          <li>销售部季度评估待完成：5 份</li>
+          <li>有 2 项发展计划超过 45 天未更新</li>
+        </ul>
+      </section>
+    </main>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

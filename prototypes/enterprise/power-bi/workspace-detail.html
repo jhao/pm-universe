@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>工作区详情 | 租户管理员视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="admin" data-page="workspace-admin">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：租户管理员</span>
+            <strong>工作区详情</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>市场洞察工作区</h1>
+                <p>容量使用接近上限，涉及 5 个 App 和 18 个报表。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="subscription-alerts.html">配置订阅策略</a>
+                <a class="button secondary" href="workspace-admin.html">返回治理总览</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>容量与刷新</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>容量使用</strong>
+                  <p>95%，预计 7 天后达上限</p>
+                </div>
+                <div class="status-tile">
+                  <strong>刷新频率</strong>
+                  <p>高峰时段每 30 分钟</p>
+                </div>
+                <div class="status-tile">
+                  <strong>扩容计划</strong>
+                  <p>申请新增 1 个 P1 容量</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>成员与权限</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>成员</th>
+                    <th>角色</th>
+                    <th>访问级别</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>王倩</td>
+                    <td>管理员</td>
+                    <td>完全访问</td>
+                    <td>活跃</td>
+                  </tr>
+                  <tr>
+                    <td>周航</td>
+                    <td>成员</td>
+                    <td>编辑内容</td>
+                    <td>待续订</td>
+                  </tr>
+                  <tr>
+                    <td>外部顾问</td>
+                    <td>查看者</td>
+                    <td>仅查看 App</td>
+                    <td>审核中</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>发布资产</h2>
+              <div class="flow-steps">
+                <div class="flow-step">
+                  <strong>App</strong>
+                  <p>市场洞察 App，覆盖 5 个部门</p>
+                </div>
+                <div class="flow-step">
+                  <strong>报表</strong>
+                  <p>18 个报表，关键：数字营销、客户旅程</p>
+                  <a class="button ghost" href="report-versioning.html">查看关键报表</a>
+                </div>
+                <div class="flow-step">
+                  <strong>数据集</strong>
+                  <p>客户 360、渠道销售</p>
+                  <a class="button ghost" href="dataset-detail.html">查看详情</a>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>展示单个工作区的容量、成员和资产信息，辅助治理决策。</li>
+                <li>可快速跳转至订阅配置或返回总览，完成治理闭环。</li>
+                <li>对关键资产提供链接，确保管理员了解下游影响。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

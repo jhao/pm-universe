@@ -2,83 +2,610 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Infor CloudSuite Industrial (SyteLine) 原型概览</title>
+    <title>Infor CloudSuite Industrial 云制造管理原型</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        --sidebar-width: 268px;
+        --bg-surface: #f4f7fb;
+        --bg-panel: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --accent: #2563eb;
+        --critical: #dc2626;
+        --warning: #f97316;
+        --success: #16a34a;
+        --border: #e2e8f0;
+        --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        background: var(--bg-surface);
+        color: var(--text-primary);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg-surface);
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 60%, #111827 100%);
+        color: #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        padding: 32px 24px 24px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+
+      .sidebar-logo {
+        margin-bottom: 32px;
+      }
+
+      .sidebar-logo h1 {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: 0.4px;
+      }
+
+      .sidebar-logo .product-tagline {
+        margin-top: 6px;
+        font-size: 13px;
+        opacity: 0.72;
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 6px;
+      }
+
+      .menu-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        background: rgba(148, 163, 184, 0.06);
+        color: inherit;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item:hover {
+        background: rgba(148, 163, 184, 0.18);
+      }
+
+      .menu-item.active {
+        background: rgba(59, 130, 246, 0.16);
+        border-color: rgba(59, 130, 246, 0.45);
+        color: #fff;
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+      }
+
+      .menu-icon {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+      }
+
+      .sidebar-footnote {
+        font-size: 12px;
+        opacity: 0.7;
+        line-height: 1.6;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+        padding-top: 16px;
+      }
+
+      .main-area {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: linear-gradient(180deg, rgba(226, 232, 240, 0.55) 0%, rgba(241, 245, 249, 0.8) 100%);
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 28px 40px 20px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+        backdrop-filter: blur(6px);
+      }
+
+      .persona-context {
+        max-width: 520px;
+      }
+
+      .persona-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .persona-title {
+        margin: 12px 0 6px;
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .persona-summary {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .role-switcher {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .role-switcher select {
+        margin-top: 6px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+        font-size: 14px;
+        min-width: 180px;
+      }
+
+      .persona-chip {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.08);
+        font-size: 13px;
+        color: var(--text-primary);
+      }
+
+      .content-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 32px 40px 48px;
+      }
+
+      .page-wrapper {
+        background: var(--bg-panel);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 32px;
+      }
+
+      .breadcrumbs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 18px;
+      }
+
+      .breadcrumbs span::after {
+        content: '/';
+        margin-left: 8px;
+        color: rgba(71, 85, 105, 0.5);
+      }
+
+      .breadcrumbs span:last-child::after {
+        display: none;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: #1d4ed8;
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 12px;
+        padding: 6px 10px 6px 0;
+      }
+
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      .page-subtitle {
+        margin: 8px 0 0;
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .page-metrics {
+        display: flex;
+        gap: 18px;
+      }
+
+      .metric-pill {
+        padding: 10px 16px;
+        border-radius: 12px;
+        background: rgba(37, 99, 235, 0.08);
+        color: #1d4ed8;
+        font-size: 14px;
+      }
+
+      .page-body {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .panel {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 22px 24px 24px;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+      }
+
+      .panel header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .panel-title {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .panel-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .kpi-card {
+        border-radius: 18px;
+        padding: 18px;
+        background: linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);
+        border: 1px solid rgba(59, 130, 246, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .kpi-card.critical {
+        border-color: rgba(220, 38, 38, 0.35);
+        background: linear-gradient(180deg, rgba(248, 113, 113, 0.16) 0%, rgba(248, 113, 113, 0.05) 100%);
+      }
+
+      .kpi-card.success {
+        border-color: rgba(22, 163, 74, 0.35);
+        background: linear-gradient(180deg, rgba(74, 222, 128, 0.14) 0%, rgba(74, 222, 128, 0.04) 100%);
+      }
+
+      .kpi-label {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .kpi-value {
+        font-size: 30px;
+        font-weight: 600;
+      }
+
+      .trend-up {
+        color: var(--success);
+        font-weight: 600;
+      }
+
+      .trend-down {
+        color: var(--critical);
+        font-weight: 600;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+      }
+
+      th {
+        color: var(--text-secondary);
+        font-weight: 500;
+        background: rgba(148, 163, 184, 0.12);
+      }
+
+      tr:hover td {
+        background: rgba(59, 130, 246, 0.06);
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      .status-critical {
+        background: rgba(248, 113, 113, 0.2);
+        color: #b91c1c;
+      }
+
+      .status-warning {
+        background: rgba(251, 191, 36, 0.2);
+        color: #c2410c;
+      }
+
+      .status-success {
+        background: rgba(134, 239, 172, 0.26);
+        color: #15803d;
+      }
+
+      .action-link,
+      .ghost-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: #1d4ed8;
+        text-decoration: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 4px 0;
+      }
+
+      .primary-button {
+        background: #1d4ed8;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 14px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .primary-button:hover {
+        background: #1e40af;
+      }
+
+      .split-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .chart-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        height: 180px;
+      }
+
+      .chart-bar {
+        flex: 1;
+        border-radius: 10px 10px 0 0;
+        background: rgba(37, 99, 235, 0.2);
+        position: relative;
+      }
+
+      .chart-bar span {
+        position: absolute;
+        bottom: -22px;
+        left: 0;
+        right: 0;
+        font-size: 12px;
+        text-align: center;
+        color: var(--text-secondary);
+      }
+
+      .chart-bar .value {
+        position: absolute;
+        top: -26px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.76);
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      .lane-board {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .lane-column {
+        background: rgba(226, 232, 240, 0.4);
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .lane-column h4 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text-secondary);
+      }
+
+      .card-item {
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px 14px;
+        border: 1px solid rgba(148, 163, 184, 0.38);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .card-item strong {
+        font-size: 14px;
+      }
+
+      .card-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .page-footnote {
+        margin-top: 12px;
+        padding: 18px 20px;
+        background: rgba(226, 232, 240, 0.45);
+        border-radius: 16px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .page-footnote ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: rgba(148, 163, 184, 0.2);
+        color: var(--text-secondary);
+      }
+
+      .tag-group {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 1080px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          position: relative;
+          height: auto;
+          border-right: none;
+          flex-direction: row;
+          overflow-x: auto;
+          gap: 16px;
+        }
+        .sidebar-logo {
+          min-width: 220px;
+        }
+        .sidebar-nav {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          padding-right: 0;
+          overflow-x: auto;
+        }
+        .menu-item {
+          min-width: 180px;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>Infor CloudSuite Industrial (SyteLine) 原型</h1>
-      <p class="tagline">面向离散制造的云端 ERP 解决方案。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>制造企业运营、计划、供应链团队</p>
-        <p><strong>核心痛点：</strong>复杂 BOM、订单化生产与供应链协同挑战</p>
-        <p><strong>价值主张：</strong>提供端到端制造管理、APS 计划与行业最佳实践</p>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <h1>CSI Manufacturing Cloud</h1>
+          <p class="product-tagline">Infor CloudSuite Industrial · 智能制造运营平台</p>
+        </div>
+        <nav class="sidebar-nav" id="sidebarMenu"></nav>
+        <div class="sidebar-footnote">
+          所有导航都可点击体验：从计划、生产到质量、服务，覆盖典型角色的核心工作流。
+        </div>
+      </aside>
+      <div class="main-area">
+        <header class="topbar">
+          <div class="persona-context">
+            <span class="persona-badge" id="roleBadge">角色视角</span>
+            <h2 class="persona-title" id="roleTitle">制造运营控制中心</h2>
+            <p class="persona-summary" id="roleSummary">请选择角色查看对应的功能工作台。</p>
+          </div>
+          <div class="topbar-actions">
+            <div class="role-switcher">
+              <span>当前角色</span>
+              <select id="roleSelect" aria-label="角色切换"></select>
+            </div>
+            <div class="persona-chip" id="rolePersonaTag">角色焦点</div>
+          </div>
+        </header>
+        <main class="content-area">
+          <div class="page-wrapper" id="pageWrapper">
+            <div class="page-placeholder">请选择左侧菜单进入功能页面。</div>
+          </div>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>销售接单并驱动工程配置</li><li>计划部门进行主生产计划与排程</li><li>工厂执行生产、质量与仓储</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>订单与配置</h3>
-              <p class="goal">功能目标：支持按单生产与复杂配置</p>
-              <ul>
-                <li>报价、订单与价格控制</li><li>配置器、工程变更与版本管理</li><li>客户协同门户</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>计划与排程</h3>
-              <p class="goal">功能目标：优化产能利用与交付</p>
-              <ul>
-                <li>MRP、APS 与能力规划</li><li>预测、需求管理与补货</li><li>排程模拟与可视化看板</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>制造执行</h3>
-              <p class="goal">功能目标：连接车间执行与质量</p>
-              <ul>
-                <li>工单跟踪、工时与报工</li><li>质量检验、SPC 与不良处理</li><li>设备维护与物料追溯</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>供应链与服务</h3>
-              <p class="goal">功能目标：延伸至供应与售后服务</p>
-              <ul>
-                <li>采购、供应商协同与库存管理</li><li>仓储、运输与序列追踪</li><li>售后服务、保修与现场服务</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>准时交付率与产能利用率</li><li>库存周转与缺料率</li><li>质量合格率与售后响应时间</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

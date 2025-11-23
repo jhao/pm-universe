@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · Sprint 看板</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page-id="sprint-board">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>Sprint 34 · 7/15-7/26</strong><br />
+          容量：120 pt · 已承诺：108 pt<br />
+          下次站会：明日 9:30
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">执行 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">看板</a>
+              <a class="system-link" href="#">燃尽图</a>
+              <a class="system-link" href="#">阻塞</a>
+              <a class="system-link" href="#">每日纪要</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索任务、阻塞或成员" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">Sprint 执行 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">Sprint 34 看板与节奏</h1>
+              <p class="page-hero__subtitle">监控当前 Sprint 的工作项流转、阻塞链路以及燃尽趋势，确保团队节奏健康。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">燃尽完成度</span>
+                  <span class="hero-stat__value">64%</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">阻塞工单</span>
+                  <span class="hero-stat__value">4</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">未分配</span>
+                  <span class="hero-stat__value">2</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="sprint-configuration.html" data-keep-role>
+                ⚙️ 调整 Sprint 目标
+              </a>
+              <a class="hero-actions__secondary" href="release-plan.html" data-keep-role>
+                🚀 同步发布计划
+              </a>
+            </div>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">看板视图</h2>
+                <p class="surface-card__subtitle">拖拽任务以更新状态并查看流转细节</p>
+              </div>
+              <div class="segmented-control">
+                <button class="is-active">故事视图</button>
+                <button>子任务</button>
+                <button>泳道</button>
+              </div>
+            </div>
+            <div class="board-columns">
+              <div class="board-column">
+                <div class="board-column__title">待办 · 6</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-231 多渠道同步</h3>
+                  <div class="board-card__meta">
+                    <span>13 pt</span>
+                    <a class="link-muted" href="issue-detail.html" data-keep-role>详情</a>
+                  </div>
+                </div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-240 指标库补齐</h3>
+                  <div class="board-card__meta">
+                    <span>5 pt</span>
+                    <span>黄琳</span>
+                  </div>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">进行中 · 12</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-224 AI 推荐</h3>
+                  <div class="board-card__meta">
+                    <span>8 pt</span>
+                    <span>李俊</span>
+                  </div>
+                  <div class="board-footer">阻塞：等待数据集</div>
+                </div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-233 监控仪表板</h3>
+                  <div class="board-card__meta">
+                    <span>3 pt</span>
+                    <span>王欣</span>
+                  </div>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">Code Review · 5</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-210 自动回滚</h3>
+                  <div class="board-card__meta">
+                    <span>13 pt</span>
+                    <a class="link-muted" href="code-integration.html" data-keep-role>CI 状态</a>
+                  </div>
+                </div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-237 通知优化</h3>
+                  <div class="board-card__meta">
+                    <span>5 pt</span>
+                    <span>赵倩</span>
+                  </div>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">已完成 · 9</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-218 审批流程</h3>
+                  <div class="board-card__meta">
+                    <span>8 pt</span>
+                    <span>陈峰</span>
+                  </div>
+                </div>
+                <div class="board-card">
+                  <h3 class="board-card__title">QL-220 API 限流</h3>
+                  <div class="board-card__meta">
+                    <span>5 pt</span>
+                    <span>唐悦</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">阻塞追踪</h2>
+                  <p class="surface-card__subtitle">快速联动责任团队并创建行动项</p>
+                </div>
+                <a class="action-link" href="risk-overview.html" data-keep-role>加入风险面板</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">QL-224 等待数据服务补丁</p>
+                    <p class="list-item__desc">负责人：数据平台 · 预计解决 7/20</p>
+                  </div>
+                  <a class="action-link" href="automation-rules.html" data-keep-role>提醒责任人</a>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">QL-231 环境部署失败</p>
+                    <p class="list-item__desc">负责人：Infra · 需协助</p>
+                  </div>
+                  <a class="action-link" href="code-integration.html" data-keep-role>查看流水线</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">燃尽趋势</h2>
+                  <p class="surface-card__subtitle">对比计划线与实际完成情况</p>
+                </div>
+                <a class="action-link" href="progress-report.html" data-keep-role>生成日报</a>
+              </div>
+              <div class="chart-placeholder"></div>
+              <div class="focus-banner">
+                <strong>提醒：</strong>
+                <span>当前落后 6 pt，建议将 QL-240 拆分或延后。</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">每日站会摘要</h2>
+                <p class="surface-card__subtitle">自动生成昨日进展、今日计划与阻塞</p>
+              </div>
+              <a class="action-link" href="report-detail.html" data-keep-role>分享纪要</a>
+            </div>
+            <div class="kanban-swimlane">
+              <div class="kanban-swimlane__label">前端</div>
+              <div class="kanban-swimlane__column">
+                <div class="board-card">
+                  <h3 class="board-card__title">完成：移动导航调优</h3>
+                  <p class="list-item__desc">今日：测试自动化脚本</p>
+                </div>
+              </div>
+              <div class="kanban-swimlane__column">
+                <div class="board-card">
+                  <h3 class="board-card__title">完成：部署脚本</h3>
+                  <p class="list-item__desc">今日：处理日志告警</p>
+                </div>
+              </div>
+              <div class="kanban-swimlane__column">
+                <div class="board-card">
+                  <h3 class="board-card__title">完成：自动化模板</h3>
+                  <p class="list-item__desc">阻塞：等待安全审计</p>
+                </div>
+              </div>
+              <div class="kanban-swimlane__column">
+                <div class="board-card">
+                  <h3 class="board-card__title">完成：指标 API</h3>
+                  <p class="list-item__desc">今日：验证性能回归</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">Sprint 看板帮助 <span data-role-name></span> 实时掌握任务流转、阻塞情况与燃尽趋势，并通过站会摘要推动团队协同。可以跳转至 Sprint 配置微调范围或进入发布计划确认交付节奏。</p>
+            <div class="page-info__actions">
+              <a href="sprint-configuration.html" data-keep-role>→ 配置 Sprint</a>
+              <a href="release-plan.html" data-keep-role>→ 协调发布</a>
+              <a href="automation-rules.html" data-keep-role>→ 设置自动提醒</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜运营分析实验室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="analytics">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>运营分析实验室</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>提示：</strong>分析页面支持穿透至各业务模块验证数据来源。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">Epicor ERP &gt; 运营分析</div>
+            <h1>运营分析实验室</h1>
+            <p class="role-tagline" data-role-summary>关注排程执行、产线产能与质量预警，及时协调工单与资源。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>跨部门指标模型</h2>
+              <div class="panel-actions">
+                <a class="button" href="index.html">回到驾驶舱</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card" data-role-visibility="production,supply,finance,service,admin">
+                <h3>运营 KPI 关系图</h3>
+                <p>展示生产达成率、物料齐套率、SLA 达成率、毛利率之间的关联。</p>
+                <div class="chart-placeholder">KPI 关系图占位</div>
+                <a class="button secondary" href="production.html">查看生产数据</a>
+              </div>
+              <div class="card" data-role-visibility="finance,service">
+                <h3>客户旅程数据</h3>
+                <p>从订单到回款的全流程指标，包括交付周期、服务满意度、回款周期。</p>
+                <div class="chart-placeholder">客户旅程流程图占位</div>
+                <a class="button secondary" href="service.html">查看服务视图</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="production,supply,finance">
+            <div class="panel-header">
+              <h2>预测模拟</h2>
+              <p>基于历史数据的情景模拟。</p>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>产能预测</h3>
+                <p>模拟新增夜班对产能与交付的影响。</p>
+                <a class="button" href="production-order-edit.html">调整排程</a>
+              </div>
+              <div class="card">
+                <h3>物料缺口预测</h3>
+                <p>预测未来 4 周关键物料的缺口并生成补货计划。</p>
+                <a class="button secondary" href="supply-chain.html">查看补货建议</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="finance,admin,service">
+            <div class="panel-header">
+              <h2>异常诊断</h2>
+              <p>AI 自动识别异常并建议协同动作。</p>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>异常</th>
+                    <th>影响指标</th>
+                    <th>建议动作</th>
+                    <th>跳转</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>加急运费增加</td>
+                    <td>毛利率 -0.6pt</td>
+                    <td>与供应链协商费用承担</td>
+                    <td><a href="cost-adjustment.html">查看成本调整</a></td>
+                  </tr>
+                  <tr>
+                    <td>SLA 即将超时</td>
+                    <td>客户满意度</td>
+                    <td>派遣远程专家加入</td>
+                    <td><a href="service-case-detail.html">进入服务工单</a></td>
+                  </tr>
+                  <tr>
+                    <td>库存准确率下降</td>
+                    <td>齐套率 -5%</td>
+                    <td>安排循环盘点</td>
+                    <td><a href="warehouse-transfer.html">查看库存流转</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>展示跨角色共享的分析视角。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                运营分析实验室用于演示跨部门指标模型、预测模拟与异常诊断，所有卡片都提供回跳至业务页面的链接，形成分析到执行的闭环。
+              </p>
+              <p>
+                切换角色后仅保留该角色需要的分析模块，例如财务关注异常诊断与预测模拟，生产关注产能预测，突出角色化体验。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

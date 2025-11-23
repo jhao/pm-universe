@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 报告生成中心</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="report-center">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>质量主管</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">报告模板支持多语言输出与电子签名。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">模板库</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">报告生成中心</h1>
+              <p class="hero-subtitle">从批次数据快速生成符合法规的检测报告，可定制模板并支持电子签名。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="release-detail.html?role=qa">查看放行记录</a>
+              <a class="secondary-btn" href="report-template.html?role=qa">编辑模板</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">待生成报告</span>
+              <div class="segmented">
+                <button class="active">批次</button>
+                <button>客户</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>批次</th>
+                    <th>产品</th>
+                    <th>模板</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BT-230412-07</td>
+                    <td>片剂稳定性</td>
+                    <td>药品稳定性报告</td>
+                    <td><span class="badge warning">待生成</span></td>
+                    <td class="table-actions">
+                      <a href="release-detail.html?role=qa">预览</a>
+                      <a href="report-template.html?role=qa">修改模板</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>BT-230420-06</td>
+                    <td>注射剂成品</td>
+                    <td>成品检验报告</td>
+                    <td><span class="badge success">已签发</span></td>
+                    <td class="table-actions">
+                      <a href="release-detail.html?role=qa">查看</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">报告组成</span>
+                <a class="link-btn" href="report-template.html?role=qa">配置模块</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>封面与客户信息</span>
+                    <span>自动填充</span>
+                  </div>
+                  <div class="list-item">
+                    <span>检测结果表格</span>
+                    <span>引用 LIMS 数据</span>
+                  </div>
+                  <div class="list-item">
+                    <span>偏差与 CAPA</span>
+                    <span>自动附带摘要</span>
+                  </div>
+                  <div class="list-item">
+                    <span>签名区</span>
+                    <span>支持电子签名</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">签发流程</span>
+                <a class="link-btn" href="qa-release.html?role=qa">放行批次</a>
+              </div>
+              <div class="panel-body">
+                <div class="workflow">
+                  <div class="workflow-step">
+                    <span class="step-index">1</span>
+                    <div class="step-content">
+                      <span class="step-title">生成草稿</span>
+                      <span class="step-desc">选择模板、填充数据。</span>
+                    </div>
+                  </div>
+                  <div class="workflow-step">
+                    <span class="step-index">2</span>
+                    <div class="step-content">
+                      <span class="step-title">QA 审核</span>
+                      <span class="step-desc">检查数据、偏差与附件。</span>
+                    </div>
+                  </div>
+                  <div class="workflow-step">
+                    <span class="step-index">3</span>
+                    <div class="step-content">
+                      <span class="step-title">签名 &amp; 放行</span>
+                      <span class="step-desc">完成电子签名并通知客户。</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>报告生成中心支持模板化、自动化的数据汇总与签发流程，提升 QA 工作效率。</p>
+            <ul class="clean">
+              <li>模板支持分模块配置与版本管理。</li>
+              <li>自动附加偏差、CAPA 与附件信息。</li>
+              <li>签名完成后自动发送客户通知。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

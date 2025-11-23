@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 配置工作台</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="config-workbench">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>系统管理员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">配置内容将影响所有角色的操作体验。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导出配置</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">配置工作台</h1>
+              <p class="hero-subtitle">管理系统参数、流程配置与主数据，支持版本控制与审批。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="integration-log.html?role=admin">查看变更日志</a>
+              <a class="secondary-btn" href="user-admin.html?role=admin">角色模板</a>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">系统参数</span>
+                <a class="link-btn" href="system-monitoring.html?role=admin">监控参数</a>
+              </div>
+              <div class="panel-body">
+                <div class="form-grid">
+                  <div class="form-control">
+                    <label>温控阈值</label>
+                    <input type="text" value="2-8℃" placeholder="2-8℃" />
+                  </div>
+                  <div class="form-control">
+                    <label>结果复核时限 (小时)</label>
+                    <input type="number" value="24" />
+                  </div>
+                  <div class="form-control">
+                    <label>CAPA 预警天数</label>
+                    <input type="number" value="5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">流程版本</span>
+                <a class="link-btn" href="integration-log.html?role=admin">查看审批</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>样品接收流程</span>
+                    <span>v2.3 · 生效中</span>
+                  </div>
+                  <div class="list-item">
+                    <span>测试执行流程</span>
+                    <span>v5.1 · 待审批</span>
+                  </div>
+                  <div class="list-item">
+                    <span>放行流程</span>
+                    <span>v3.0 · 生效中</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">主数据管理</span>
+              <a class="link-btn" href="sample-registration.html?role=sample">查看样品模板</a>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>主数据</th>
+                    <th>条目数</th>
+                    <th>最近更新</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>检测项目库</td>
+                    <td>186</td>
+                    <td>2023-05-17</td>
+                    <td class="table-actions">
+                      <a href="sample-registration.html?role=sample">查看</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>仪器资产库</td>
+                    <td>48</td>
+                    <td>2023-05-15</td>
+                    <td class="table-actions">
+                      <a href="instrument-integration.html?role=admin">管理</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>客户与供应商</td>
+                    <td>96</td>
+                    <td>2023-05-10</td>
+                    <td class="table-actions">
+                      <a href="release-detail.html?role=qa">关联记录</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>配置工作台集中管理系统参数、流程版本与主数据，是系统管理员的核心工具。</p>
+            <ul class="clean">
+              <li>支持版本控制与审批流程。</li>
+              <li>与监控、角色管理等模块联动。</li>
+              <li>主数据更新后可通知相关角色。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

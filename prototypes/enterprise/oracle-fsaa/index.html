@@ -2,83 +2,2643 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Oracle FSAA 原型概览</title>
+    <title>Oracle FSAA 场景化演示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg-soft: #f4f7fb;
+        --bg-card: #ffffff;
+        --bg-accent: #1d4ed8;
+        --bg-accent-soft: rgba(59, 130, 246, 0.08);
+        --text-strong: #0f172a;
+        --text-body: #334155;
+        --text-subtle: #64748b;
+        --border-soft: rgba(148, 163, 184, 0.35);
+        --border-strong: rgba(15, 23, 42, 0.12);
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        --radius-sm: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+        background: var(--bg-soft);
+        color: var(--text-body);
+        display: flex;
+      }
+
+      .app-shell {
+        flex: 1;
+        display: flex;
+        gap: 0;
+      }
+
+      .app-sidebar {
+        width: 260px;
+        background: #0f172a;
+        color: #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        padding: 28px 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .sidebar-brand {
+        margin-bottom: 28px;
+      }
+
+      .sidebar-brand h1 {
+        margin: 0;
+        font-size: 20px;
+        color: #fff;
+      }
+
+      .sidebar-brand p {
+        margin: 6px 0 0 0;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.72);
+      }
+
+      .role-profile {
+        padding: 16px;
+        border-radius: var(--radius-md);
+        background: rgba(148, 163, 184, 0.12);
+        margin-bottom: 24px;
+      }
+
+      .role-profile strong {
+        display: block;
+        color: #fff;
+        font-size: 16px;
+      }
+
+      .role-profile span {
+        display: block;
+        margin-top: 4px;
+        font-size: 13px;
+        color: rgba(226, 232, 240, 0.7);
+        line-height: 1.4;
+      }
+
+      .side-nav {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .side-nav button {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: inherit;
+        text-align: left;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        font-size: 15px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background 0.18s ease, transform 0.18s ease;
+      }
+
+      .side-nav button:hover {
+        background: rgba(148, 163, 184, 0.16);
+        transform: translateX(4px);
+      }
+
+      .side-nav button.active {
+        background: rgba(59, 130, 246, 0.26);
+        color: #fff;
+        font-weight: 600;
+        box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.35);
+      }
+
+      .side-nav button .tag {
+        font-size: 12px;
+        background: rgba(15, 23, 42, 0.4);
+        padding: 2px 8px;
+        border-radius: 999px;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      .app-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        max-height: 100vh;
+      }
+
+      .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 32px;
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border-soft);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .app-header h2 {
+        margin: 0;
+        font-size: 24px;
+        color: var(--text-strong);
+      }
+
+      .app-header p {
+        margin: 6px 0 0 0;
+        color: var(--text-subtle);
+        font-size: 14px;
+      }
+
+      .role-switcher {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .role-switcher label {
+        font-size: 14px;
+        color: var(--text-subtle);
+      }
+
+      .role-switcher select {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border-soft);
+        background: #fff;
+        font-size: 14px;
+        color: var(--text-strong);
+        cursor: pointer;
+        min-width: 200px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      }
+
+      .page-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .page-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .page-title-group h1 {
+        margin: 0;
+        font-size: 28px;
+        color: var(--text-strong);
+      }
+
+      .page-title-group p {
+        margin: 8px 0 0 0;
+        color: var(--text-subtle);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .badge-set {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        background: var(--bg-accent-soft);
+        color: var(--bg-accent);
+      }
+
+      .panel {
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: 0 18px 32px rgba(15, 23, 42, 0.05);
+        border: 1px solid var(--border-strong);
+      }
+
+      .highlight .metrics-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .metric-card {
+        padding: 18px;
+        border-radius: var(--radius-md);
+        background: rgba(59, 130, 246, 0.08);
+        color: var(--text-strong);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .metric-card h3 {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-subtle);
+        font-weight: 500;
+      }
+
+      .metric-card .metric-value {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--text-strong);
+      }
+
+      .metric-card .metric-desc {
+        margin: 0;
+        font-size: 13px;
+        color: var(--bg-accent);
+      }
+
+      .chart-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .chart-card {
+        border-radius: var(--radius-md);
+        border: 1px dashed var(--border-soft);
+        padding: 18px;
+        background: rgba(15, 23, 42, 0.02);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .chart-card header {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-strong);
+      }
+
+      .chart-placeholder {
+        flex: 1;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(226, 232, 240, 0.35),
+          rgba(226, 232, 240, 0.35) 8px,
+          rgba(255, 255, 255, 0.8) 8px,
+          rgba(255, 255, 255, 0.8) 16px
+        );
+        color: rgba(100, 116, 139, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        letter-spacing: 1px;
+        padding: 24px;
+      }
+
+      .table-panel table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .table-panel th,
+      .table-panel td {
+        padding: 12px 10px;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        text-align: left;
+        color: var(--text-body);
+      }
+
+      .table-panel th {
+        color: var(--text-subtle);
+        font-weight: 500;
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      .table-panel tbody tr:hover {
+        background: rgba(59, 130, 246, 0.08);
+      }
+
+      .section-title {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-strong);
+      }
+
+      .list-cards {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .list-card {
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: rgba(15, 23, 42, 0.015);
+      }
+
+      .list-card h4 {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text-strong);
+      }
+
+      .list-card p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--text-subtle);
+        line-height: 1.5;
+      }
+
+      .page-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .page-actions button,
+      .page-actions a {
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .btn-primary {
+        background: var(--bg-accent);
+        color: #fff;
+        border-color: var(--bg-accent);
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+      }
+
+      .btn-secondary {
+        background: #fff;
+        color: var(--bg-accent);
+        border-color: rgba(59, 130, 246, 0.35);
+      }
+
+      .btn-link {
+        background: transparent;
+        color: var(--text-subtle);
+        border-color: transparent;
+        padding-left: 0;
+      }
+
+      .business-note {
+        font-size: 13px;
+        color: var(--text-subtle);
+        line-height: 1.7;
+        background: rgba(15, 23, 42, 0.02);
+        padding: 14px 18px;
+        border-radius: var(--radius-md);
+        border: 1px dashed rgba(148, 163, 184, 0.4);
+      }
+
+      .tag-group {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+      }
+
+      .tag-chip {
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.08);
+        color: var(--text-strong);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 16px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .timeline-item strong {
+        font-size: 13px;
+        color: var(--text-subtle);
+        text-transform: uppercase;
+      }
+
+      .timeline-card {
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        border: 1px solid rgba(59, 130, 246, 0.18);
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .form-field label {
+        font-size: 13px;
+        color: var(--text-subtle);
+      }
+
+      .form-field input,
+      .form-field select,
+      .form-field textarea {
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: #fff;
+        font-size: 14px;
+        resize: vertical;
+        min-height: 40px;
+      }
+
+      .kanban {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .kanban-column {
+        background: rgba(15, 23, 42, 0.03);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: var(--text-subtle);
+      }
+
+      .kanban-card {
+        background: #fff;
+        border-radius: var(--radius-sm);
+        padding: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .kanban-card strong {
+        color: var(--text-strong);
+        font-size: 14px;
+      }
+
+      .kanban-card span {
+        font-size: 12px;
+        color: var(--text-subtle);
+      }
+
+      .badge-inline {
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.06);
+        color: var(--text-subtle);
+      }
+
+      .breadcrumb {
+        font-size: 13px;
+        color: var(--text-subtle);
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .breadcrumb button {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: none;
+        background: rgba(59, 130, 246, 0.12);
+        color: var(--bg-accent);
+        cursor: pointer;
+      }
+
+      .split-layout {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .stat-block {
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 16px;
+        background: rgba(15, 23, 42, 0.02);
+      }
+
+      .stat-block h3 {
+        margin: 0 0 10px 0;
+        font-size: 15px;
+        color: var(--text-strong);
+      }
+
+      .stat-block p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--text-subtle);
+        line-height: 1.5;
+      }
+
+      .insight-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      @media (max-width: 960px) {
+        body {
+          flex-direction: column;
+        }
+
+        .app-sidebar {
+          width: 100%;
+          flex-direction: row;
+          overflow-x: auto;
+          position: sticky;
+          top: 0;
+          z-index: 6;
+          gap: 24px;
+        }
+
+        .side-nav {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .side-nav button {
+          flex: 1 1 180px;
+        }
+
+        .app-main {
+          max-height: none;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>Oracle FSAA 原型</h1>
-      <p class="tagline">面向金融行业的风险、合规与盈利分析平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>银行风险管理、财务、合规团队</p>
-        <p><strong>核心痛点：</strong>监管要求频繁变化、数据孤岛严重、风险与绩效分析复杂</p>
-        <p><strong>价值主张：</strong>提供统一的数据模型、监管报送与风险盈利分析能力</p>
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <h1>Oracle FSAA Suite</h1>
+          <p>金融服务分析应用原型</p>
+        </div>
+        <div class="role-profile" id="roleProfile">
+          <strong>风险分析师</strong>
+          <span>监控全行风险敞口与压力测试。通过统一数据与模型，快速定位风险热点。</span>
+        </div>
+        <ul class="side-nav" id="sideNav"></ul>
+      </aside>
+      <div class="app-main">
+        <header class="app-header">
+          <div>
+            <h2>Oracle FSAA 企业金融分析平台</h2>
+            <p id="roleDescription">根据角色展示差异化的监管、风险与盈利功能。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitch">角色切换</label>
+            <select id="roleSwitch" aria-label="角色切换">
+              <option value="risk-analyst">风险分析师</option>
+              <option value="finance-lead">财务主管</option>
+              <option value="compliance-manager">合规经理</option>
+              <option value="executive">管理层高管</option>
+            </select>
+          </div>
+        </header>
+        <main class="page-container" id="pageContainer"></main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>风险团队进行资产负债表压力测试</li><li>财务团队编制监管报表</li><li>管理层查看盈利性分析与资本规划</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>数据基础与建模</h3>
-              <p class="goal">功能目标：构建金融风险统一数据平台</p>
-              <ul>
-                <li>数据整合、质量校验与血缘</li><li>金融数据模型与元数据</li><li>数据治理与权限控制</li>
-              </ul>
+    </div>
+
+    <script>
+      const roles = {
+        'risk-analyst': {
+          name: '风险分析师',
+          description: '聚焦风险敞口与压力测试的日常监控任务。',
+          blurb: '监控全行风险敞口与压力测试。通过统一数据与模型，快速定位风险热点。',
+          menu: [
+            { id: 'risk-dashboard', label: '风险总览仪表盘', tag: '实时监控' },
+            { id: 'stress-lab', label: '压力测试场景设计', tag: '模型实验' },
+            { id: 'credit-alerts', label: '信用风险预警', tag: '预警队列' },
+            { id: 'market-limit', label: '市场风险限额', tag: '限额控制' }
+          ],
+          defaultPage: 'risk-dashboard'
+        },
+        'finance-lead': {
+          name: '财务主管',
+          description: '支撑监管报送、资金定价与盈利分析。',
+          blurb: '统筹监管报表、资金转移定价与盈利分析，为资本配置提供依据。',
+          menu: [
+            { id: 'regulatory-reporting', label: '监管报表中心', tag: '报送编制' },
+            { id: 'ftp-pricing', label: '资金转移定价', tag: '规则库' },
+            { id: 'profitability-analytics', label: '盈利驱动分析', tag: '洞察模型' },
+            { id: 'budget-forecast', label: '预算与预测', tag: '滚动预测' }
+          ],
+          defaultPage: 'regulatory-reporting'
+        },
+        'compliance-manager': {
+          name: '合规经理',
+          description: '管理监管日历、内控稽核与审批流程。',
+          blurb: '对监管任务、内控稽核与审批合规进行全流程闭环管理。',
+          menu: [
+            { id: 'reporting-calendar', label: '监管报送日历', tag: '日程' },
+            { id: 'audit-tracking', label: '内控稽核跟踪', tag: '整改闭环' },
+            { id: 'approval-workflow', label: '审批工作流', tag: '流程编排' },
+            { id: 'policy-library', label: '合规政策库', tag: '制度管理' }
+          ],
+          defaultPage: 'reporting-calendar'
+        },
+        executive: {
+          name: '管理层高管',
+          description: '聚焦集团经营驾驶舱与资本规划。',
+          blurb: '实时掌握集团盈利、资本与流动性，辅助战略决策。',
+          menu: [
+            { id: 'executive-dashboard', label: '集团经营驾驶舱', tag: '全景视图' },
+            { id: 'capital-planning', label: '资本规划', tag: '情景对比' },
+            { id: 'alm-optimization', label: '资产负债匹配', tag: '利率敏感' },
+            { id: 'revenue-analysis', label: '盈亏分析', tag: '多维拆解' }
+          ],
+          defaultPage: 'executive-dashboard'
+        }
+      };
+
+      window.appPages = {};
+    </script>
+    <script>
+      Object.assign(window.appPages, {
+        'risk-dashboard': {
+          role: 'risk-analyst',
+          name: '风险总览仪表盘',
+          subtitle: '统一风险敞口监控视图',
+          badges: ['实时数据', '多维度拆解'],
+          layout: `
+            <section class="panel highlight">
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <h3>集团风险加总</h3>
+                  <p class="metric-value">¥ 1,254 亿</p>
+                  <p class="metric-desc">较上日下降 2.3%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>不良贷款率</h3>
+                  <p class="metric-value">1.58%</p>
+                  <p class="metric-desc">较监管红线 -0.42%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>风险加权资产 (RWA)</h3>
+                  <p class="metric-value">¥ 9,806 亿</p>
+                  <p class="metric-desc">资本充足率 13.2%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>预警客户</h3>
+                  <p class="metric-value">82 户</p>
+                  <p class="metric-desc">其中 9 户新增</p>
+                </div>
+              </div>
             </section>
-            
-            <section class="module">
-              <h3>风险管理</h3>
-              <p class="goal">功能目标：满足多监管框架的风险分析</p>
-              <ul>
-                <li>信用、市场、流动性风险模型</li><li>压力测试与情景分析</li><li>风险调整资本 (RAROC) 计算</li>
-              </ul>
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>风险敞口趋势 (近 12 周)</header>
+                <div class="chart-placeholder">折线图占位</div>
+              </div>
+              <div class="chart-card">
+                <header>风险贡献 Top 5 业务条线</header>
+                <div class="chart-placeholder">堆叠条形图</div>
+              </div>
+              <div class="chart-card">
+                <header>关注资产地理分布</header>
+                <div class="chart-placeholder">热力地图</div>
+              </div>
             </section>
-            
-            <section class="module">
-              <h3>监管合规</h3>
-              <p class="goal">功能目标：自动化监管报送流程</p>
-              <ul>
-                <li>报表模板与监管更新</li><li>报送流程、审批与审计</li><li>与监管平台接口</li>
-              </ul>
+            <section class="panel table-panel">
+              <h3 class="section-title">高风险组合监控</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>组合</th>
+                    <th>行业</th>
+                    <th>余额</th>
+                    <th>最新评级</th>
+                    <th>预警级别</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>大型制造业表内资产</td>
+                    <td>制造</td>
+                    <td>¥ 315 亿</td>
+                    <td>A → BBB</td>
+                    <td><span class="badge-inline">橙色</span></td>
+                  </tr>
+                  <tr>
+                    <td>新能源项目贷款</td>
+                    <td>能源</td>
+                    <td>¥ 128 亿</td>
+                    <td>BBB+</td>
+                    <td><span class="badge-inline">黄色</span></td>
+                  </tr>
+                  <tr>
+                    <td>信用卡资产证券化</td>
+                    <td>零售</td>
+                    <td>¥ 68 亿</td>
+                    <td>A-</td>
+                    <td><span class="badge-inline">红色</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
-            
-            <section class="module">
-              <h3>盈利与资金管理</h3>
-              <p class="goal">功能目标：洞察产品与客户盈利能力</p>
-              <ul>
-                <li>资金转移定价 (FTP)</li><li>成本分摊与利润分析</li><li>仪表盘与情景模拟</li>
-              </ul>
+          `,
+          actions: [
+            { label: '查看资产组合详情', target: 'risk-portfolio-detail', type: 'primary' },
+            { label: '导出当日风险快报', type: 'secondary' },
+            { label: '订阅异常推送', type: 'link' }
+          ],
+          summary: '为风险管理团队提供全行风险敞口、预警客户与高风险组合的实时视图，支持风险热点定位和后续穿透分析。'
+        },
+        'risk-portfolio-detail': {
+          role: 'risk-analyst',
+          name: '资产组合穿透分析',
+          subtitle: '查看风险组合多维指标',
+          badges: ['组合详情', '下钻分析'],
+          parent: { id: 'risk-dashboard', label: '返回风险总览仪表盘' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>组合概览</h3>
+                  <p>资产余额：¥ 315 亿</p>
+                  <p>平均评级：BBB</p>
+                  <p>违约概率 (PD)：3.2%</p>
+                  <p>预期损失 (EL)：¥ 9.2 亿</p>
+                </div>
+                <div class="stat-block">
+                  <h3>集中度</h3>
+                  <p>前十客户占比：48%</p>
+                  <p>区域集中度：长三角 38%</p>
+                  <p>行业集中度：汽车 27%</p>
+                </div>
+              </div>
             </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>监管报送准确率与及时率</li><li>风险模型覆盖率与验证频次</li><li>盈利分析周期与资本回报率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>评级迁徙矩阵</header>
+                <div class="chart-placeholder">热力矩阵</div>
+              </div>
+              <div class="chart-card">
+                <header>违约贡献分析</header>
+                <div class="chart-placeholder">瀑布图</div>
+              </div>
+              <div class="chart-card">
+                <header>抵质押物覆盖率</header>
+                <div class="chart-placeholder">雷达图</div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">重点客户列表</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>客户名称</th>
+                    <th>行业</th>
+                    <th>授信余额</th>
+                    <th>评级变化</th>
+                    <th>关注动作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>华东龙腾汽车零部件</td>
+                    <td>汽车</td>
+                    <td>¥ 32.6 亿</td>
+                    <td>A → BBB</td>
+                    <td><button class="btn-link" data-target="credit-alert-detail">查看预警</button></td>
+                  </tr>
+                  <tr>
+                    <td>盛世重工集团</td>
+                    <td>制造</td>
+                    <td>¥ 28.4 亿</td>
+                    <td>BBB- → BB+</td>
+                    <td><button class="btn-link" data-target="stress-scenario-detail">纳入场景</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '生成组合风险报告', type: 'primary' },
+            { label: '导出客户明细', type: 'secondary' }
+          ],
+          summary: '穿透至重点资产组合，查看集中度、评级迁徙与关键客户明细，为风险缓释措施提供依据。'
+        },
+        'stress-lab': {
+          role: 'risk-analyst',
+          name: '压力测试场景设计',
+          subtitle: '构建与管理多情景压力方案',
+          badges: ['情景模拟', '版本管理'],
+          layout: `
+            <section class="panel">
+              <h3 class="section-title">场景集合</h3>
+              <div class="kanban">
+                <div class="kanban-column">
+                  <h4>草稿</h4>
+                  <div class="kanban-card">
+                    <strong>宏观收缩 2024-Q3</strong>
+                    <span>覆盖信贷、市场与流动性</span>
+                    <div class="tag-group">
+                      <span class="tag-chip">GDP -3%</span>
+                      <span class="tag-chip">汇率 +6%</span>
+                    </div>
+                  </div>
+                  <div class="kanban-card">
+                    <strong>房地产再评估</strong>
+                    <span>新增抵押折扣 20%</span>
+                  </div>
+                </div>
+                <div class="kanban-column">
+                  <h4>审批中</h4>
+                  <div class="kanban-card">
+                    <strong>利率快速上行</strong>
+                    <span>由李然提交 · 等待 CRO 审批</span>
+                  </div>
+                </div>
+                <div class="kanban-column">
+                  <h4>已发布</h4>
+                  <div class="kanban-card">
+                    <strong>逆全球化冲击</strong>
+                    <span>生效日期：2024-04-01</span>
+                    <div class="tag-group">
+                      <span class="tag-chip">PD +1.5%</span>
+                      <span class="tag-chip">LGD +8%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <h3 class="section-title">关键参数配置</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>经济情景基准</label>
+                  <select>
+                    <option>逆全球化冲击</option>
+                    <option>利率快速上行</option>
+                    <option>房地产再评估</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>覆盖风险类型</label>
+                  <select multiple>
+                    <option>信用风险</option>
+                    <option>市场风险</option>
+                    <option>流动性风险</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>资本压力系数</label>
+                  <input type="number" value="1.2" />
+                </div>
+                <div class="form-field">
+                  <label>回溯验证窗口 (月)</label>
+                  <input type="number" value="12" />
+                </div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '提交审批', type: 'primary' },
+            { label: '复制为新场景', type: 'secondary' },
+            { label: '编辑场景参数', target: 'stress-scenario-detail', type: 'link' }
+          ],
+          summary: '用于构建、维护与审批压力测试场景，支撑监管与内部风险评估需求。'
+        },
+        'stress-scenario-detail': {
+          role: 'risk-analyst',
+          name: '场景参数编辑器',
+          subtitle: '利率快速上行 · 详细参数',
+          badges: ['参数维护', '版本对比'],
+          parent: { id: 'stress-lab', label: '返回场景设计' },
+          layout: `
+            <section class="panel">
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>场景名称</label>
+                  <input type="text" value="利率快速上行" />
+                </div>
+                <div class="form-field">
+                  <label>适用区域</label>
+                  <select>
+                    <option>全球</option>
+                    <option selected>亚太地区</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>场景权重</label>
+                  <input type="number" value="0.25" />
+                </div>
+                <div class="form-field">
+                  <label>触发标准</label>
+                  <input type="text" value="10Y 国债收益率上行 150bp" />
+                </div>
+              </div>
+            </section>
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>宏观指标冲击</header>
+                <div class="chart-placeholder">敏感度表</div>
+              </div>
+              <div class="chart-card">
+                <header>业务条线损益影响</header>
+                <div class="chart-placeholder">桥接图</div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">模型参数调整</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>风险类型</th>
+                    <th>参数</th>
+                    <th>当前值</th>
+                    <th>场景值</th>
+                    <th>回溯偏差</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>信用</td>
+                    <td>违约率 (PD)</td>
+                    <td>2.1%</td>
+                    <td>3.6%</td>
+                    <td>+1.2%</td>
+                  </tr>
+                  <tr>
+                    <td>市场</td>
+                    <td>VaR 置信水平</td>
+                    <td>99%</td>
+                    <td>99.5%</td>
+                    <td>+0.5%</td>
+                  </tr>
+                  <tr>
+                    <td>流动性</td>
+                    <td>LCR 下限</td>
+                    <td>110%</td>
+                    <td>105%</td>
+                    <td>-5%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '保存草稿', type: 'primary' },
+            { label: '发起审批', type: 'secondary' }
+          ],
+          summary: '维护压力测试场景的详细参数，确保覆盖宏观冲击、业务损益与模型调参等关键要素。'
+        },
+        'credit-alerts': {
+          role: 'risk-analyst',
+          name: '信用风险预警',
+          subtitle: '客户与交易预警处置工作台',
+          badges: ['客户画像', '预警分派'],
+          layout: `
+            <section class="panel">
+              <h3 class="section-title">预警概览</h3>
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <h3>待处理预警</h3>
+                  <p class="metric-value">132</p>
+                  <p class="metric-desc">较昨日 +12</p>
+                </div>
+                <div class="metric-card">
+                  <h3>已分派</h3>
+                  <p class="metric-value">64%</p>
+                  <p class="metric-desc">平均响应 3.2 天</p>
+                </div>
+                <div class="metric-card">
+                  <h3>转不良占比</h3>
+                  <p class="metric-value">4.1%</p>
+                  <p class="metric-desc">较上月下降 0.6%</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">预警队列</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>客户</th>
+                    <th>触发规则</th>
+                    <th>预警级别</th>
+                    <th>跟进人</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>华东龙腾汽车</td>
+                    <td>财务指标恶化</td>
+                    <td><span class="badge-inline">红色</span></td>
+                    <td>王丽</td>
+                    <td>14:32</td>
+                    <td><button class="btn-link" data-target="credit-alert-detail">查看详情</button></td>
+                  </tr>
+                  <tr>
+                    <td>星河科技园</td>
+                    <td>抵押物价值波动</td>
+                    <td><span class="badge-inline">橙色</span></td>
+                    <td>陈伟</td>
+                    <td>09:20</td>
+                    <td><button class="btn-link" data-target="credit-alert-detail">详情</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel chart-card">
+              <header>预警来源分布</header>
+              <div class="chart-placeholder">环形图</div>
+            </section>
+          `,
+          actions: [
+            { label: '批量分派预警', type: 'primary' },
+            { label: '同步到 CRM', type: 'secondary' }
+          ],
+          summary: '集中展示信用预警任务、分派进度与来源分布，指导风险经理快速采取行动。'
+        },
+        'credit-alert-detail': {
+          role: 'risk-analyst',
+          name: '客户预警详情',
+          subtitle: '华东龙腾汽车 · 预警编号 CA-2045',
+          badges: ['客户画像', '处置记录'],
+          parent: { id: 'credit-alerts', label: '返回预警列表' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>客户概况</h3>
+                  <p>授信余额：¥ 32.6 亿</p>
+                  <p>当前评级：BBB</p>
+                  <p>行业暴露：汽车零部件</p>
+                </div>
+                <div class="stat-block">
+                  <h3>触发信息</h3>
+                  <p>触发规则：财务指标恶化</p>
+                  <p>触发时间：2024-05-18 13:50</p>
+                  <p>触发阈值：EBITDA Margin 下降 12%</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <h3 class="section-title">处置进度</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>2024-05-18</strong>
+                  <div class="timeline-card">
+                    <p>系统自动触发预警，推送风险经理王丽。</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <strong>2024-05-19</strong>
+                  <div class="timeline-card">
+                    <p>王丽完成财务报表复核，建议上调风险分类。</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <strong>2024-05-21</strong>
+                  <div class="timeline-card">
+                    <p>资产保全团队反馈补充抵押物方案。</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">后续动作计划</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>动作</th>
+                    <th>责任人</th>
+                    <th>计划日期</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>追加抵押物评估</td>
+                    <td>资产保全部</td>
+                    <td>2024-05-28</td>
+                    <td><span class="badge-inline">执行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>召开风险例会</td>
+                    <td>王丽</td>
+                    <td>2024-05-24</td>
+                    <td><span class="badge-inline">待启动</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '标记为已完成', type: 'primary' },
+            { label: '添加后续动作', type: 'secondary' }
+          ],
+          summary: '呈现客户预警触发原因、处置进度与后续动作，方便跨团队协同。'
+        },
+        'market-limit': {
+          role: 'risk-analyst',
+          name: '市场风险限额',
+          subtitle: '交易限额监控与调整',
+          badges: ['限额树', '审批流'],
+          layout: `
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>限额使用率</header>
+                <div class="chart-placeholder">仪表盘</div>
+              </div>
+              <div class="chart-card">
+                <header>交易员占用排行</header>
+                <div class="chart-placeholder">水平条形图</div>
+              </div>
+              <div class="chart-card">
+                <header>风险因子敏感度</header>
+                <div class="chart-placeholder">热力图</div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">限额列表</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>限额类型</th>
+                    <th>维度</th>
+                    <th>当前限额</th>
+                    <th>使用率</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>利率 VaR</td>
+                    <td>交易台</td>
+                    <td>¥ 50 亿</td>
+                    <td>86%</td>
+                    <td>09:30</td>
+                    <td><button class="btn-link" data-target="market-limit-adjust">调整</button></td>
+                  </tr>
+                  <tr>
+                    <td>外汇 Delta</td>
+                    <td>交易员</td>
+                    <td>¥ 12 亿</td>
+                    <td>64%</td>
+                    <td>09:18</td>
+                    <td><button class="btn-link" data-target="market-limit-adjust">调整</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '发起限额调整', target: 'market-limit-adjust', type: 'primary' },
+            { label: '下载限额报表', type: 'secondary' }
+          ],
+          summary: '对各类市场风险限额进行实时监控与调整，确保符合内部政策与监管要求。'
+        },
+        'market-limit-adjust': {
+          role: 'risk-analyst',
+          name: '限额调整申请',
+          subtitle: '利率 VaR 限额 · 调整流程',
+          badges: ['审批流程', '变更历史'],
+          parent: { id: 'market-limit', label: '返回限额监控' },
+          layout: `
+            <section class="panel">
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>现有限额</label>
+                  <input type="text" value="¥ 50 亿" />
+                </div>
+                <div class="form-field">
+                  <label>拟调整限额</label>
+                  <input type="text" value="¥ 60 亿" />
+                </div>
+                <div class="form-field">
+                  <label>生效日期</label>
+                  <input type="date" value="2024-05-22" />
+                </div>
+                <div class="form-field">
+                  <label>调整原因</label>
+                  <textarea rows="3">季度波动率增加，需提高限额缓冲。</textarea>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">审批链路</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>环节</th>
+                    <th>角色</th>
+                    <th>时限</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>风险控制复核</td>
+                    <td>风险部经理</td>
+                    <td>1 天</td>
+                    <td><span class="badge-inline">待提交</span></td>
+                  </tr>
+                  <tr>
+                    <td>市场总监批准</td>
+                    <td>市场交易部</td>
+                    <td>2 天</td>
+                    <td><span class="badge-inline">未开始</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '提交审批', type: 'primary' },
+            { label: '下载审批单', type: 'secondary' }
+          ],
+          summary: '模拟限额调整流程的发起、审批链与文档，展示市场风险控制的闭环管理。'
+        }
+      });
+    </script>
+    <script>
+      Object.assign(window.appPages, {
+        'regulatory-reporting': {
+          role: 'finance-lead',
+          name: '监管报表中心',
+          subtitle: '编制与跟踪监管报送任务',
+          badges: ['报送进度', '质量校验'],
+          layout: `
+            <section class="panel highlight">
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <h3>本月报送任务</h3>
+                  <p class="metric-value">28</p>
+                  <p class="metric-desc">已完成 19 项</p>
+                </div>
+                <div class="metric-card">
+                  <h3>校验通过率</h3>
+                  <p class="metric-value">97.4%</p>
+                  <p class="metric-desc">较上月 +1.2%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>平均编制时长</h3>
+                  <p class="metric-value">2.6 天</p>
+                  <p class="metric-desc">较目标快 0.4 天</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">任务列表</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>报表名称</th>
+                    <th>监管机构</th>
+                    <th>截止日期</th>
+                    <th>当前状态</th>
+                    <th>负责人</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>资本充足率报表</td>
+                    <td>银保监会</td>
+                    <td>05-25</td>
+                    <td><span class="badge-inline">校验中</span></td>
+                    <td>李娜</td>
+                    <td><button class="btn-link" data-target="reg-report-validation">校验详情</button></td>
+                  </tr>
+                  <tr>
+                    <td>资产负债表 (IFRS9)</td>
+                    <td>央行</td>
+                    <td>05-28</td>
+                    <td><span class="badge-inline">编制中</span></td>
+                    <td>张伟</td>
+                    <td><button class="btn-link" data-target="reg-report-validation">查看</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '发起新报送任务', type: 'primary' },
+            { label: '查看监管日历', target: 'reporting-calendar', type: 'secondary' }
+          ],
+          summary: '集中管理监管报表编制与校验流程，实时掌握任务进度与质量。'
+        },
+        'reg-report-validation': {
+          role: 'finance-lead',
+          name: '报表校验中心',
+          subtitle: '资本充足率报表 · 校验记录',
+          badges: ['数据比对', '差异分析'],
+          parent: { id: 'regulatory-reporting', label: '返回报表中心' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>校验概览</h3>
+                  <p>差异条目：3 项</p>
+                  <p>影响额度：¥ 2.1 亿</p>
+                  <p>已完成修复：1 项</p>
+                </div>
+                <div class="stat-block">
+                  <h3>关联数据源</h3>
+                  <p>总账 · 风险数据仓 · 市场风险平台</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">差异明细</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>项目</th>
+                    <th>报表值</th>
+                    <th>系统值</th>
+                    <th>差异</th>
+                    <th>处理状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>核心一级资本</td>
+                    <td>¥ 528.3 亿</td>
+                    <td>¥ 530.1 亿</td>
+                    <td>-1.8 亿</td>
+                    <td><span class="badge-inline">处理中</span></td>
+                  </tr>
+                  <tr>
+                    <td>风险加权资产</td>
+                    <td>¥ 9,806 亿</td>
+                    <td>¥ 9,799 亿</td>
+                    <td>+7 亿</td>
+                    <td><span class="badge-inline">待复核</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '标记差异已解决', type: 'primary' },
+            { label: '生成差异说明', type: 'secondary' }
+          ],
+          summary: '展示报表校验差异、处理进度和关联数据源，保障监管口径准确。'
+        },
+        'ftp-pricing': {
+          role: 'finance-lead',
+          name: '资金转移定价',
+          subtitle: 'FTP 曲线与规则管理',
+          badges: ['曲线管理', '规则引擎'],
+          layout: `
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>FTP 基准曲线</header>
+                <div class="chart-placeholder">曲线图</div>
+              </div>
+              <div class="chart-card">
+                <header>产品加点策略</header>
+                <div class="chart-placeholder">策略矩阵</div>
+              </div>
+              <div class="chart-card">
+                <header>资金池成本拆解</header>
+                <div class="chart-placeholder">桑基图</div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">规则列表</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>规则名称</th>
+                    <th>适用产品</th>
+                    <th>期限区间</th>
+                    <th>加点</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>零售活期存款</td>
+                    <td>零售存款</td>
+                    <td>0-1 年</td>
+                    <td>+35 bp</td>
+                    <td><span class="badge-inline">启用</span></td>
+                    <td><button class="btn-link" data-target="ftp-rule-config">编辑</button></td>
+                  </tr>
+                  <tr>
+                    <td>企业一年期贷款</td>
+                    <td>对公贷款</td>
+                    <td>1-3 年</td>
+                    <td>+52 bp</td>
+                    <td><span class="badge-inline">草稿</span></td>
+                    <td><button class="btn-link" data-target="ftp-rule-config">配置</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '新增定价规则', type: 'primary' },
+            { label: '导出曲线', type: 'secondary' }
+          ],
+          summary: '维护 FTP 曲线、加点策略与规则状态，支持资金成本与利润分摊。'
+        },
+        'ftp-rule-config': {
+          role: 'finance-lead',
+          name: '定价规则配置',
+          subtitle: '企业一年期贷款 · FTP 规则',
+          badges: ['规则审批', '模拟测试'],
+          parent: { id: 'ftp-pricing', label: '返回定价规则' },
+          layout: `
+            <section class="panel">
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>适用产品</label>
+                  <input type="text" value="对公贷款" />
+                </div>
+                <div class="form-field">
+                  <label>期限区间</label>
+                  <input type="text" value="1-3 年" />
+                </div>
+                <div class="form-field">
+                  <label>基准曲线</label>
+                  <select>
+                    <option>1Y SWAP</option>
+                    <option selected>3M SHIBOR</option>
+                    <option>国债收益率</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>加点 (bp)</label>
+                  <input type="number" value="52" />
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <h3 class="section-title">模拟结果</h3>
+              <div class="chart-placeholder" style="min-height: 180px;">敏感性分析</div>
+            </section>
+          `,
+          actions: [
+            { label: '保存草稿', type: 'primary' },
+            { label: '提交审批', type: 'secondary' }
+          ],
+          summary: '配置 FTP 规则参数并模拟资金成本变化，确保通过审批后生效。'
+        },
+        'profitability-analytics': {
+          role: 'finance-lead',
+          name: '盈利驱动分析',
+          subtitle: '客户与产品盈利拆解',
+          badges: ['多维洞察', '情景分析'],
+          layout: `
+            <section class="panel highlight">
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <h3>集团 ROE</h3>
+                  <p class="metric-value">13.6%</p>
+                  <p class="metric-desc">较预算 +0.8%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>FTP 调整后净息差</h3>
+                  <p class="metric-value">2.41%</p>
+                  <p class="metric-desc">环比提升 0.12%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>高价值客户</h3>
+                  <p class="metric-value">126 户</p>
+                  <p class="metric-desc">贡献利润 57%</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>盈利贡献瀑布图</header>
+                <div class="chart-placeholder">瀑布图</div>
+              </div>
+              <div class="chart-card">
+                <header>客户盈利象限</header>
+                <div class="chart-placeholder">散点图</div>
+              </div>
+              <div class="chart-card">
+                <header>情景对比</header>
+                <div class="chart-placeholder">对比柱状图</div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '查看产品盈利详情', target: 'profitability-product-detail', type: 'primary' },
+            { label: '导出盈利报告', type: 'secondary' }
+          ],
+          summary: '拆解客户、产品与渠道的盈利驱动因素，为资源配置与定价策略提供依据。'
+        },
+        'profitability-product-detail': {
+          role: 'finance-lead',
+          name: '产品盈利详情',
+          subtitle: '零售房贷 · 盈利拆解',
+          badges: ['成本分摊', '敏感性分析'],
+          parent: { id: 'profitability-analytics', label: '返回盈利分析' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>关键指标</h3>
+                  <p>资产余额：¥ 2,180 亿</p>
+                  <p>净息差：2.15%</p>
+                  <p>RAROC：14.2%</p>
+                </div>
+                <div class="stat-block">
+                  <h3>成本分摊</h3>
+                  <p>资金成本：1.36%</p>
+                  <p>运营成本：0.42%</p>
+                  <p>资本成本：0.37%</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>客户细分盈利</header>
+                <div class="chart-placeholder">矩形树图</div>
+              </div>
+              <div class="chart-card">
+                <header>定价敏感度</header>
+                <div class="chart-placeholder">曲线图</div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '新增情景对比', type: 'primary' },
+            { label: '下载分摊明细', type: 'secondary' }
+          ],
+          summary: '展示产品级盈利指标、成本分摊结构与敏感性分析，支持精细化经营。'
+        },
+        'budget-forecast': {
+          role: 'finance-lead',
+          name: '预算与预测',
+          subtitle: '滚动预算与版本管理',
+          badges: ['版本控制', '差异分析'],
+          layout: `
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>年度预算 vs 实际</header>
+                <div class="chart-placeholder">面积图</div>
+              </div>
+              <div class="chart-card">
+                <header>费用科目差异</header>
+                <div class="chart-placeholder">条形图</div>
+              </div>
+              <div class="chart-card">
+                <header>预测模型准确度</header>
+                <div class="chart-placeholder">折线图</div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">预算版本</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>版本</th>
+                    <th>类型</th>
+                    <th>更新时间</th>
+                    <th>编制人</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2024-Rolling-05</td>
+                    <td>滚动预测</td>
+                    <td>05-18</td>
+                    <td>赵婷</td>
+                    <td><span class="badge-inline">审批中</span></td>
+                    <td><button class="btn-link" data-target="budget-version-submission">提交版本</button></td>
+                  </tr>
+                  <tr>
+                    <td>2024-Annual</td>
+                    <td>年度预算</td>
+                    <td>03-30</td>
+                    <td>财务规划部</td>
+                    <td><span class="badge-inline">已发布</span></td>
+                    <td><button class="btn-link" data-target="budget-version-submission">查看</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '创建新版本', type: 'primary' },
+            { label: '导出预算差异', type: 'secondary' }
+          ],
+          summary: '支持预算版本编制、差异分析与滚动预测，保证经营计划动态更新。'
+        },
+        'budget-version-submission': {
+          role: 'finance-lead',
+          name: '预算版本提交流程',
+          subtitle: '2024-Rolling-05 · 提交流程',
+          badges: ['审批流', '协同'],
+          parent: { id: 'budget-forecast', label: '返回预算与预测' },
+          layout: `
+            <section class="panel">
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>版本名称</label>
+                  <input type="text" value="2024-Rolling-05" />
+                </div>
+                <div class="form-field">
+                  <label>预算范围</label>
+                  <select>
+                    <option>集团</option>
+                    <option selected>零售金融</option>
+                    <option>公司金融</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>说明</label>
+                  <textarea rows="3">结合最新资产增速，对收益与费用进行滚动预测。</textarea>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">审批节点</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>节点</th>
+                    <th>角色</th>
+                    <th>时限</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>业务复核</td>
+                    <td>零售金融负责人</td>
+                    <td>2 天</td>
+                    <td><span class="badge-inline">待处理</span></td>
+                  </tr>
+                  <tr>
+                    <td>财务审批</td>
+                    <td>财务总监</td>
+                    <td>3 天</td>
+                    <td><span class="badge-inline">未开始</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '提交审批', type: 'primary' },
+            { label: '下载预算模板', type: 'secondary' }
+          ],
+          summary: '展示预算版本的提交流程、审批节点与关键说明，方便团队协同。'
+        }
+      });
+    </script>
+    <script>
+      Object.assign(window.appPages, {
+        'reporting-calendar': {
+          role: 'compliance-manager',
+          name: '监管报送日历',
+          subtitle: '监管日程与依赖任务',
+          badges: ['周期管理', '提醒机制'],
+          layout: `
+            <section class="panel highlight">
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <h3>当月监管任务</h3>
+                  <p class="metric-value">42</p>
+                  <p class="metric-desc">逾期 0 项</p>
+                </div>
+                <div class="metric-card">
+                  <h3>跨部门协同</h3>
+                  <p class="metric-value">18</p>
+                  <p class="metric-desc">涉及 6 个团队</p>
+                </div>
+                <div class="metric-card">
+                  <h3>提醒发送</h3>
+                  <p class="metric-value">126 次</p>
+                  <p class="metric-desc">覆盖所有关键节点</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">本周日程</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>任务</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                    <th>提醒</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>05-22</td>
+                    <td>银保监会压力测试材料</td>
+                    <td>风险管理部</td>
+                    <td><span class="badge-inline">进行中</span></td>
+                    <td>已发送</td>
+                    <td><button class="btn-link" data-target="reporting-calendar-detail">详情</button></td>
+                  </tr>
+                  <tr>
+                    <td>05-24</td>
+                    <td>央行流动性报送</td>
+                    <td>财务部</td>
+                    <td><span class="badge-inline">待启动</span></td>
+                    <td>计划中</td>
+                    <td><button class="btn-link" data-target="reporting-calendar-detail">设置</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '新建监管任务', type: 'primary' },
+            { label: '导出监管日历', type: 'secondary' }
+          ],
+          summary: '可视化监管任务日历，协调多团队按节点完成报送工作。'
+        },
+        'reporting-calendar-detail': {
+          role: 'compliance-manager',
+          name: '监管任务详情',
+          subtitle: '银保监会压力测试材料 · 任务卡',
+          badges: ['依赖管理', '提醒配置'],
+          parent: { id: 'reporting-calendar', label: '返回监管日历' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>任务信息</h3>
+                  <p>截止时间：2024-05-22 18:00</p>
+                  <p>责任团队：风险管理部</p>
+                  <p>协同部门：财务部、IT 数据组</p>
+                </div>
+                <div class="stat-block">
+                  <h3>提醒设置</h3>
+                  <p>T-3 天 邮件 &amp; 短信</p>
+                  <p>T-1 天 钉钉提醒</p>
+                  <p>逾期自动升级至 CRO</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">任务依赖</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>前置任务</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>压力测试场景更新</td>
+                    <td>风险建模组</td>
+                    <td><span class="badge-inline">完成</span></td>
+                    <td>已导入最新参数</td>
+                  </tr>
+                  <tr>
+                    <td>资本口径校验</td>
+                    <td>财务管理部</td>
+                    <td><span class="badge-inline">进行中</span></td>
+                    <td>待补充说明</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '发送提醒', type: 'primary' },
+            { label: '记录合规备注', type: 'secondary' }
+          ],
+          summary: '跟踪单项监管任务的依赖、提醒与协同信息，实现过程可审计。'
+        },
+        'audit-tracking': {
+          role: 'compliance-manager',
+          name: '内控稽核跟踪',
+          subtitle: '稽核发现与整改闭环',
+          badges: ['整改计划', '里程碑'],
+          layout: `
+            <section class="panel table-panel">
+              <h3 class="section-title">稽核事项列表</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>事项编号</th>
+                    <th>问题描述</th>
+                    <th>整改负责人</th>
+                    <th>计划完成</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>AUD-2024-08</td>
+                    <td>FTP 模型回溯文档缺失</td>
+                    <td>财务模型组</td>
+                    <td>06-05</td>
+                    <td><span class="badge-inline">跟进中</span></td>
+                    <td><button class="btn-link" data-target="audit-case-detail">详情</button></td>
+                  </tr>
+                  <tr>
+                    <td>AUD-2024-12</td>
+                    <td>客户数据权限管理不完整</td>
+                    <td>IT 数据治理</td>
+                    <td>06-12</td>
+                    <td><span class="badge-inline">未启动</span></td>
+                    <td><button class="btn-link" data-target="audit-case-detail">指派</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel chart-card">
+              <header>整改进度燃尽图</header>
+              <div class="chart-placeholder">燃尽图</div>
+            </section>
+          `,
+          actions: [
+            { label: '新建整改计划', type: 'primary' },
+            { label: '导出整改报告', type: 'secondary' }
+          ],
+          summary: '全程管理稽核发现的整改进度，确保按期完成并形成闭环。'
+        },
+        'audit-case-detail': {
+          role: 'compliance-manager',
+          name: '稽核事项详情',
+          subtitle: 'AUD-2024-08 · FTP 模型回溯',
+          badges: ['整改跟踪', '附件管理'],
+          parent: { id: 'audit-tracking', label: '返回稽核列表' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>整改目标</h3>
+                  <p>补齐 2023 年以来 FTP 模型回溯验证文档。</p>
+                  <p>完善审批与归档流程。</p>
+                </div>
+                <div class="stat-block">
+                  <h3>风险等级</h3>
+                  <p>影响：中</p>
+                  <p>整改优先级：高</p>
+                  <p>监管关注：是</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">整改里程碑</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>里程碑</th>
+                    <th>负责人</th>
+                    <th>计划日期</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>补录历史文档</td>
+                    <td>陈静</td>
+                    <td>05-30</td>
+                    <td><span class="badge-inline">进行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>更新审批流程</td>
+                    <td>刘强</td>
+                    <td>06-08</td>
+                    <td><span class="badge-inline">未开始</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '上传整改证明', type: 'primary' },
+            { label: '添加协同人', type: 'secondary' }
+          ],
+          summary: '记录稽核问题的整改目标、风险等级与关键里程碑，确保形成闭环。'
+        },
+        'approval-workflow': {
+          role: 'compliance-manager',
+          name: '审批工作流',
+          subtitle: '监管审批流程编排',
+          badges: ['流程建模', '节点控制'],
+          layout: `
+            <section class="panel">
+              <h3 class="section-title">审批流程列表</h3>
+              <div class="list-cards">
+                <div class="list-card">
+                  <h4>监管报送审批</h4>
+                  <p>三段式审批：编制 → 复核 → 合规确认</p>
+                  <div class="tag-group">
+                    <span class="tag-chip">SLA 48 小时</span>
+                    <span class="tag-chip">数字签名</span>
+                  </div>
+                </div>
+                <div class="list-card">
+                  <h4>模型变更审批</h4>
+                  <p>风险模型提交、验证、委员会审议</p>
+                  <div class="tag-group">
+                    <span class="tag-chip">含外部专家</span>
+                  </div>
+                </div>
+                <div class="list-card">
+                  <h4>限额调整审批</h4>
+                  <p>风险控制 → 市场部 → CRO</p>
+                  <div class="tag-group">
+                    <span class="tag-chip">需压测附件</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="panel chart-card">
+              <header>流程 SLA 达成率</header>
+              <div class="chart-placeholder">面积图</div>
+            </section>
+          `,
+          actions: [
+            { label: '设计新流程', target: 'workflow-designer', type: 'primary' },
+            { label: '下载流程模板', type: 'secondary' }
+          ],
+          summary: '统一管理各类审批流程，确保节点控制符合监管要求。'
+        },
+        'workflow-designer': {
+          role: 'compliance-manager',
+          name: '流程设计器',
+          subtitle: '限额调整审批流程设计',
+          badges: ['可视化流程', '权限配置'],
+          parent: { id: 'approval-workflow', label: '返回审批工作流' },
+          layout: `
+            <section class="panel">
+              <div class="chart-placeholder" style="min-height: 220px;">流程图占位</div>
+            </section>
+            <section class="panel">
+              <h3 class="section-title">节点设置</h3>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>节点名称</label>
+                  <input type="text" value="风险控制复核" />
+                </div>
+                <div class="form-field">
+                  <label>执行角色</label>
+                  <select>
+                    <option>风险经理</option>
+                    <option selected>市场风险主管</option>
+                    <option>CRO</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>SLA (小时)</label>
+                  <input type="number" value="24" />
+                </div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '保存流程', type: 'primary' },
+            { label: '另存为模板', type: 'secondary' }
+          ],
+          summary: '通过可视化流程与节点配置，灵活调整审批路径与权限。'
+        },
+        'policy-library': {
+          role: 'compliance-manager',
+          name: '合规政策库',
+          subtitle: '制度文档与更新记录',
+          badges: ['版本管理', '关联流程'],
+          layout: `
+            <section class="panel table-panel">
+              <h3 class="section-title">政策清单</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>政策名称</th>
+                    <th>版本</th>
+                    <th>发布日期</th>
+                    <th>责任部门</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>流动性风险管理办法</td>
+                    <td>2024.1</td>
+                    <td>04-15</td>
+                    <td>风险管理部</td>
+                    <td><span class="badge-inline">生效</span></td>
+                    <td><button class="btn-link" data-target="policy-detail">查看</button></td>
+                  </tr>
+                  <tr>
+                    <td>FTP 模型管理制度</td>
+                    <td>2023.4</td>
+                    <td>12-20</td>
+                    <td>财务部</td>
+                    <td><span class="badge-inline">修订中</span></td>
+                    <td><button class="btn-link" data-target="policy-detail">更新</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '新建政策', type: 'primary' },
+            { label: '导出制度清单', type: 'secondary' }
+          ],
+          summary: '集中管理合规政策文档及其版本，关联监管流程与审批。'
+        },
+        'policy-detail': {
+          role: 'compliance-manager',
+          name: '合规政策详情',
+          subtitle: '流动性风险管理办法 · 2024.1',
+          badges: ['变更记录', '关联流程'],
+          parent: { id: 'policy-library', label: '返回政策库' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>政策摘要</h3>
+                  <p>覆盖流动性限额、预警与应急计划。</p>
+                  <p>新增压力测试频率要求：季度。</p>
+                </div>
+                <div class="stat-block">
+                  <h3>关联流程</h3>
+                  <p>监管报送审批 · 流动性指标监测 · 应急演练</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">变更记录</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>变更说明</th>
+                    <th>责任人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2024-04-15</td>
+                    <td>新增 LCR 红线预警机制</td>
+                    <td>张磊</td>
+                  </tr>
+                  <tr>
+                    <td>2023-10-08</td>
+                    <td>更新应急资金安排</td>
+                    <td>王敏</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '下载 PDF', type: 'primary' },
+            { label: '发起修订', type: 'secondary' }
+          ],
+          summary: '呈现政策摘要、关联流程与变更记录，支持审查与修订。'
+        }
+      });
+    </script>
+    <script>
+      Object.assign(window.appPages, {
+        'executive-dashboard': {
+          role: 'executive',
+          name: '集团经营驾驶舱',
+          subtitle: '实时掌握关键经营指标',
+          badges: ['综合看板', '多维指标'],
+          layout: `
+            <section class="panel highlight">
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <h3>集团净利润</h3>
+                  <p class="metric-value">¥ 182.6 亿</p>
+                  <p class="metric-desc">较去年同期 +6.4%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>资本充足率</h3>
+                  <p class="metric-value">13.2%</p>
+                  <p class="metric-desc">高于监管要求 1.7%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>成本收入比</h3>
+                  <p class="metric-value">32.4%</p>
+                  <p class="metric-desc">较预算优化 0.9%</p>
+                </div>
+                <div class="metric-card">
+                  <h3>绿色金融占比</h3>
+                  <p class="metric-value">18.5%</p>
+                  <p class="metric-desc">年度目标 20%</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>利润驱动桥图</header>
+                <div class="chart-placeholder">桥接图</div>
+              </div>
+              <div class="chart-card">
+                <header>区域经营地图</header>
+                <div class="chart-placeholder">地图</div>
+              </div>
+              <div class="chart-card">
+                <header>战略项目进度</header>
+                <div class="chart-placeholder">项目燃尽图</div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '指标下钻', target: 'executive-kpi-drill', type: 'primary' },
+            { label: '导出董事会材料', type: 'secondary' }
+          ],
+          summary: '汇聚利润、资本、成本等核心经营指标，为管理层提供决策驾驶舱。'
+        },
+        'executive-kpi-drill': {
+          role: 'executive',
+          name: '指标下钻分析',
+          subtitle: '净利润 · 区域与业务条线',
+          badges: ['多维交叉', '趋势对比'],
+          parent: { id: 'executive-dashboard', label: '返回经营驾驶舱' },
+          layout: `
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>区域维度</header>
+                <div class="chart-placeholder">堆叠柱状图</div>
+              </div>
+              <div class="chart-card">
+                <header>业务条线维度</header>
+                <div class="chart-placeholder">矩阵图</div>
+              </div>
+            </section>
+            <section class="panel">
+              <h3 class="section-title">关键洞察</h3>
+              <div class="list-cards">
+                <div class="list-card">
+                  <h4>零售金融贡献增长 12%</h4>
+                  <p>主要得益于消费贷与信用卡交叉销售。</p>
+                </div>
+                <div class="list-card">
+                  <h4>华南地区利润回升</h4>
+                  <p>贸易金融与跨境业务恢复带动。</p>
+                </div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '保存分析视图', type: 'primary' },
+            { label: '分享给业务条线', type: 'secondary' }
+          ],
+          summary: '从区域与业务维度下钻净利润指标，输出关键洞察。'
+        },
+        'capital-planning': {
+          role: 'executive',
+          name: '资本规划',
+          subtitle: '中长期资本充足情景对比',
+          badges: ['情景模拟', '筹资决策'],
+          layout: `
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>资本充足率情景</header>
+                <div class="chart-placeholder">情景线图</div>
+              </div>
+              <div class="chart-card">
+                <header>资本缺口构成</header>
+                <div class="chart-placeholder">堆叠柱状图</div>
+              </div>
+              <div class="chart-card">
+                <header>筹资方案比较</header>
+                <div class="chart-placeholder">对比表</div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '查看情景详情', target: 'capital-scenario-detail', type: 'primary' },
+            { label: '导出规划方案', type: 'secondary' }
+          ],
+          summary: '评估不同压力情景下的资本充足情况，制定增资与分红策略。'
+        },
+        'capital-scenario-detail': {
+          role: 'executive',
+          name: '资本情景详情',
+          subtitle: '逆全球化冲击 · 资本规划',
+          badges: ['资本缺口', '行动计划'],
+          parent: { id: 'capital-planning', label: '返回资本规划' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>关键指标</h3>
+                  <p>资本缺口：¥ 86 亿</p>
+                  <p>目标资本充足率：12.5%</p>
+                  <p>压力后预计：11.1%</p>
+                </div>
+                <div class="stat-block">
+                  <h3>拟采取措施</h3>
+                  <p>发行二级资本债 40 亿</p>
+                  <p>减少高风险资产投放 30 亿</p>
+                  <p>保留盈余 16 亿</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel chart-card">
+              <header>资本缺口补齐进度</header>
+              <div class="chart-placeholder">进度条</div>
+            </section>
+          `,
+          actions: [
+            { label: '提交董事会', type: 'primary' },
+            { label: '生成行动清单', type: 'secondary' }
+          ],
+          summary: '展示资本缺口、目标水平及拟采取措施，支撑管理层决策。'
+        },
+        'alm-optimization': {
+          role: 'executive',
+          name: '资产负债匹配',
+          subtitle: '利率敏感性与缺口管理',
+          badges: ['缺口分析', '久期匹配'],
+          layout: `
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>久期缺口</header>
+                <div class="chart-placeholder">折线图</div>
+              </div>
+              <div class="chart-card">
+                <header>利率敏感度</header>
+                <div class="chart-placeholder">热力图</div>
+              </div>
+              <div class="chart-card">
+                <header>流动性覆盖率</header>
+                <div class="chart-placeholder">仪表盘</div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '查看缺口详情', target: 'alm-gap-detail', type: 'primary' },
+            { label: '导出 ALM 报告', type: 'secondary' }
+          ],
+          summary: '监控资产负债久期缺口与利率敏感度，辅助资产负债管理决策。'
+        },
+        'alm-gap-detail': {
+          role: 'executive',
+          name: '久期缺口详情',
+          subtitle: '1-3 年桶 · 缺口分析',
+          badges: ['缺口拆解', '缓释措施'],
+          parent: { id: 'alm-optimization', label: '返回资产负债匹配' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>缺口概览</h3>
+                  <p>缺口规模：¥ 58 亿</p>
+                  <p>主要来源：对公中长期贷款</p>
+                  <p>覆盖率：84%</p>
+                </div>
+                <div class="stat-block">
+                  <h3>缓释建议</h3>
+                  <p>发行 3 年期同业存单</p>
+                  <p>调整投资组合久期 -0.4</p>
+                  <p>加强利率互换对冲</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel table-panel">
+              <h3 class="section-title">关键头寸</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>头寸</th>
+                    <th>金额</th>
+                    <th>久期</th>
+                    <th>调整建议</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>对公贷款 (制造业)</td>
+                    <td>¥ 24 亿</td>
+                    <td>4.2</td>
+                    <td>压缩 5%</td>
+                  </tr>
+                  <tr>
+                    <td>政策性债券</td>
+                    <td>¥ 18 亿</td>
+                    <td>2.1</td>
+                    <td>转持短久期</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `,
+          actions: [
+            { label: '生成对冲方案', type: 'primary' },
+            { label: '分享给 ALM 团队', type: 'secondary' }
+          ],
+          summary: '透视久期缺口构成与缓释建议，推动资产负债优化。'
+        },
+        'revenue-analysis': {
+          role: 'executive',
+          name: '盈亏分析',
+          subtitle: '多维度收入与成本拆解',
+          badges: ['维度分析', '趋势洞察'],
+          layout: `
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>收入结构</header>
+                <div class="chart-placeholder">堆叠柱状图</div>
+              </div>
+              <div class="chart-card">
+                <header>成本结构</header>
+                <div class="chart-placeholder">帕累托图</div>
+              </div>
+              <div class="chart-card">
+                <header>利润趋势</header>
+                <div class="chart-placeholder">折线图</div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '查看分部详情', target: 'revenue-segment-detail', type: 'primary' },
+            { label: '导出盈亏分析', type: 'secondary' }
+          ],
+          summary: '拆解收入、成本与利润趋势，识别增长与节约空间。'
+        },
+        'revenue-segment-detail': {
+          role: 'executive',
+          name: '分部盈亏详情',
+          subtitle: '公司金融事业部 · 盈亏情况',
+          badges: ['分部分析', '行动建议'],
+          parent: { id: 'revenue-analysis', label: '返回盈亏分析' },
+          layout: `
+            <section class="panel">
+              <div class="split-layout">
+                <div class="stat-block">
+                  <h3>盈利概览</h3>
+                  <p>收入：¥ 86 亿</p>
+                  <p>成本：¥ 51 亿</p>
+                  <p>利润：¥ 35 亿</p>
+                </div>
+                <div class="stat-block">
+                  <h3>增长机会</h3>
+                  <p>跨境金融需求增加</p>
+                  <p>供应链金融渗透率提升</p>
+                </div>
+              </div>
+            </section>
+            <section class="panel chart-grid">
+              <div class="chart-card">
+                <header>产品线贡献</header>
+                <div class="chart-placeholder">矩形树图</div>
+              </div>
+              <div class="chart-card">
+                <header>费用结构</header>
+                <div class="chart-placeholder">堆叠柱状图</div>
+              </div>
+            </section>
+          `,
+          actions: [
+            { label: '制定提效计划', type: 'primary' },
+            { label: '同步到战略项目', type: 'secondary' }
+          ],
+          summary: '展示分部收入、成本及增长机会，指导战略举措落地。'
+        }
+      });
+    </script>
+    <script>
+      const sideNav = document.getElementById('sideNav');
+      const pageContainer = document.getElementById('pageContainer');
+      const roleSelect = document.getElementById('roleSwitch');
+      const roleProfile = document.getElementById('roleProfile');
+      const roleDescription = document.getElementById('roleDescription');
+
+      function renderRoleProfile(roleId) {
+        const role = roles[roleId];
+        if (!role) return;
+        roleProfile.innerHTML = `
+          <strong>${role.name}</strong>
+          <span>${role.blurb}</span>
+        `;
+        roleDescription.textContent = role.description;
+      }
+
+      function renderMenu(roleId, activePageId) {
+        const role = roles[roleId];
+        if (!role) return;
+        sideNav.innerHTML = '';
+        role.menu.forEach((item) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = item.label;
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          tag.textContent = item.tag;
+          button.appendChild(tag);
+          button.dataset.target = item.id;
+          if (item.id === activePageId) {
+            button.classList.add('active');
+          }
+          button.addEventListener('click', () => navigateTo(item.id));
+          sideNav.appendChild(button);
+        });
+      }
+
+      function createBadgeSet(badges = []) {
+        if (!badges.length) return '';
+        return `<div class="badge-set">${badges
+          .map((badge) => `<span class="badge">${badge}</span>`)
+          .join('')}</div>`;
+      }
+
+      function createBreadcrumb(page) {
+        if (!page.parent) return '';
+        return `
+          <div class="breadcrumb">
+            <button type="button" data-target="${page.parent.id}">${page.parent.label}</button>
+            <span>/</span>
+            <span>${page.name}</span>
+          </div>
+        `;
+      }
+
+      function createActions(actions = []) {
+        if (!actions.length) return '';
+        return `
+          <div class="page-actions">
+            ${actions
+              .map((action) => {
+                const baseClass = action.type === 'primary'
+                  ? 'btn-primary'
+                  : action.type === 'secondary'
+                  ? 'btn-secondary'
+                  : 'btn-link';
+                const tag = action.target
+                  ? ` data-target="${action.target}"`
+                  : action.href
+                  ? ` href="${action.href}" target="_blank" rel="noopener"`
+                  : '';
+                const element = action.href ? 'a' : 'button';
+                return `<${element} class="${baseClass}"${tag}>${action.label}</${element}>`;
+              })
+              .join('')}
+          </div>
+        `;
+      }
+
+      function renderPage(pageId) {
+        const page = window.appPages[pageId];
+        if (!page) return;
+        const role = roles[page.role];
+        if (roleSelect.value !== page.role) {
+          roleSelect.value = page.role;
+          renderRoleProfile(page.role);
+          renderMenu(page.role, pageId);
+        } else {
+          renderMenu(page.role, pageId);
+        }
+
+        document.title = `${page.name} - Oracle FSAA`;
+        pageContainer.innerHTML = `
+          ${createBreadcrumb(page)}
+          <section class="page-header">
+            <div class="page-title-group">
+              <h1>${page.name}</h1>
+              <p>${page.subtitle || ''}</p>
+            </div>
+            ${createBadgeSet(page.badges)}
+          </section>
+          ${page.layout}
+          ${createActions(page.actions)}
+          <div class="business-note">${page.summary || ''}</div>
+        `;
+
+        pageContainer
+          .querySelectorAll('[data-target]')
+          .forEach((element) => {
+            element.addEventListener('click', (event) => {
+              event.preventDefault();
+              const target = element.dataset.target;
+              if (target) {
+                navigateTo(target);
+              }
+            });
+          });
+      }
+
+      function navigateTo(pageId, skipHash) {
+        if (!window.appPages[pageId]) return;
+        const page = window.appPages[pageId];
+        if (!skipHash) {
+          window.location.hash = pageId;
+        }
+        renderPage(pageId);
+      }
+
+      roleSelect.addEventListener('change', () => {
+        const roleId = roleSelect.value;
+        const role = roles[roleId];
+        if (!role) return;
+        renderRoleProfile(roleId);
+        renderMenu(roleId, role.defaultPage);
+        navigateTo(role.defaultPage);
+      });
+
+      function init() {
+        const defaultRole = 'risk-analyst';
+        const defaultPage = roles[defaultRole].defaultPage;
+        renderRoleProfile(defaultRole);
+        renderMenu(defaultRole, defaultPage);
+        const initialHash = window.location.hash.replace('#', '');
+        const initialPage = window.appPages[initialHash] ? initialHash : defaultPage;
+        navigateTo(initialPage, true);
+        renderPage(initialPage);
+        window.location.hash = initialPage;
+      }
+
+      window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (window.appPages[hash]) {
+          renderPage(hash);
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', init);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

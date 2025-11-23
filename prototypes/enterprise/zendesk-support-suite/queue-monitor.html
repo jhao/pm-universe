@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 队列监控中心</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="queue-monitor" data-default-role="supervisor">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">主管视角聚焦队列与 SLA，切换角色可查看不同关注点。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">客服主管 · 实时运营</div>
+            <h1 class="page-title">队列监控中心</h1>
+            <p class="page-subtitle" data-role-summary>
+              实时掌握多渠道队列长度、等待时间与 SLA 风险，支持快速调度。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">渠道负载概览</h2>
+                <p class="section-subtitle">按渠道展示实时等待、占用率与 SLA 预警。</p>
+              </div>
+              <a class="button" href="sla-planning.html">打开排班与 SLA 控制塔</a>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>渠道</th>
+                    <th>等待人数</th>
+                    <th>平均等待</th>
+                    <th>在岗席位</th>
+                    <th>SLA 风险</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>聊天</td>
+                    <td>28</td>
+                    <td>02:18</td>
+                    <td>18 / 20</td>
+                    <td><span class="tag-pill warning">中度</span></td>
+                  </tr>
+                  <tr>
+                    <td>邮件</td>
+                    <td>64</td>
+                    <td>01:05</td>
+                    <td>32 / 32</td>
+                    <td><span class="tag-pill">低</span></td>
+                  </tr>
+                  <tr>
+                    <td>电话</td>
+                    <td>9</td>
+                    <td>00:42</td>
+                    <td>12 / 16</td>
+                    <td><span class="tag-pill success">可控</span></td>
+                  </tr>
+                  <tr>
+                    <td>社媒</td>
+                    <td>15</td>
+                    <td>01:58</td>
+                    <td>6 / 10</td>
+                    <td><span class="tag-pill warning">中度</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">即时动作</h2>
+                <p class="section-subtitle">一键执行调度、广播或触发宏。</p>
+              </div>
+            </div>
+            <div class="columns-3">
+              <div class="card">
+                <h3>临时调班</h3>
+                <p>将 3 名邮件客服转入聊天队列，预计 5 分钟内缓解。</p>
+              </div>
+              <div class="card">
+                <h3>广播提醒</h3>
+                <p>向聊天组推送提醒：「使用快速回复 #Refund-Quick」。</p>
+              </div>
+              <div class="card">
+                <h3>升级支援</h3>
+                <p>邀请技术支持加入队列，处理 SSO 故障相关对话。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="role-locked">当前为主管视角，客服代表仅能查看个人队列统计，请切换回“客服代表”体验。</div>
+          </section>
+
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">运营趋势洞察</h2>
+                <p class="section-subtitle">分析师可查看峰值时段与队列预测。</p>
+              </div>
+              <a class="button-secondary" href="analytics-insights.html">查看完整趋势</a>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>队列峰值预测</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">预计 16:00 达到 150 个等待请求。</p>
+              </div>
+              <div class="chart-card">
+                <h3>人力缺口</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">聊天缺口 4 席位，社媒缺口 2 席位。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心画面演示完毕，补充运营动作说明。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              队列监控中心展示主管如何快速识别风险并调度。结合“排班与 SLA 控制塔”可进一步执行排班调整；分析师则将数据同步至“运营分析仪表盘”追踪趋势，实现端到端演示流程。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>连接向导 | 数据工程师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="engineer" data-page="data-connections">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：数据工程师</span>
+            <strong>连接向导</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>新建数据连接</h1>
+                <p>引导配置数据源类型、凭据与刷新策略。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="dataflow-monitor.html">完成并创建数据流</a>
+                <a class="button secondary" href="data-connection-hub.html">返回列表</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>步骤 1：选择数据源</h2>
+              <div class="inline-list">
+                <span>SQL Server</span>
+                <span>Oracle</span>
+                <span>Azure Data Lake</span>
+                <span>Salesforce</span>
+                <span>自定义 API</span>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>步骤 2：配置凭据</h2>
+              <div class="flow-steps">
+                <div class="flow-step">
+                  <strong>认证方式</strong>
+                  <p>OAuth2 / 基本身份验证</p>
+                </div>
+                <div class="flow-step">
+                  <strong>凭据有效期</strong>
+                  <p>90 天，提前 7 天提醒</p>
+                </div>
+                <div class="flow-step">
+                  <strong>安全设置</strong>
+                  <p>启用行级安全映射，绑定 Azure AD 组。</p>
+                </div>
+              </div>
+            </section>
+            <section class="segment">
+              <h2>步骤 3：刷新策略</h2>
+              <div class="status-row">
+                <div class="status-tile">
+                  <strong>刷新频率</strong>
+                  <p>每 30 分钟增量刷新</p>
+                </div>
+                <div class="status-tile">
+                  <strong>失败重试</strong>
+                  <p>3 次重试，间隔 5 分钟</p>
+                </div>
+                <div class="status-tile">
+                  <strong>通知</strong>
+                  <p>失败时通知数据工程团队</p>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>以向导方式串联数据源选择、凭据配置与刷新策略。</li>
+                <li>强调敏感凭据的有效期与安全策略设置。</li>
+                <li>完成后可直接进入数据流监控，确认刷新运行状况。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

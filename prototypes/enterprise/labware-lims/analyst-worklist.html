@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>LabWare LIMS - 分析人员工作清单</title>
+    <link rel="stylesheet" href="labware.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="analyst-worklist">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-name">LabWare LIMS</span>
+          <span class="brand-subtitle">实验室信息管理平台</span>
+        </div>
+        <div class="sidebar-role">
+          <span class="label">当前角色</span>
+          <span class="value" data-role-label>分析人员</span>
+        </div>
+        <nav class="menu" data-menu></nav>
+        <div class="sidebar-footer">工作清单根据资质与仪器排程自动分配任务。</div>
+      </aside>
+      <div class="main-area">
+        <header class="main-header">
+          <nav class="system-menu" data-system-menu></nav>
+          <div class="header-actions">
+            <button class="ghost-btn">导入实验记录</button>
+            <div class="role-switcher">
+              <label for="roleSwitcher">切换角色</label>
+              <select id="roleSwitcher" data-role-switcher></select>
+            </div>
+          </div>
+        </header>
+        <main class="page-content">
+          <section class="page-hero">
+            <div>
+              <h1 class="hero-title">个人工作清单</h1>
+              <p class="hero-subtitle">集中显示今日和未来几日的测试任务、仪器预约与复核要求，可快速跳转至执行或录入页面。</p>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-btn" href="test-execution.html?role=analyst">进入测试执行</a>
+              <a class="secondary-btn" href="result-entry.html?role=analyst">录入结果</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <span class="panel-title">今日任务</span>
+              <div class="segmented">
+                <button class="active">全部</button>
+                <button>高优先级</button>
+                <button>待复核</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>任务</th>
+                    <th>批次</th>
+                    <th>仪器</th>
+                    <th>截止时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>稳定性 Day 14 - 溶出</td>
+                    <td>BT-230412-07</td>
+                    <td>HPLC-02</td>
+                    <td>今天 16:00</td>
+                    <td><span class="badge warning">待执行</span></td>
+                    <td class="table-actions">
+                      <a href="test-execution.html?role=analyst">执行</a>
+                      <a href="test-batch-detail.html?role=analyst">详情</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>微生物限度复检</td>
+                    <td>BT-230505-02</td>
+                    <td>洁净室 B</td>
+                    <td>今天 18:00</td>
+                    <td><span class="badge info">培养中</span></td>
+                    <td class="table-actions">
+                      <a href="result-entry.html?role=analyst">录入</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>含量测定结果复核</td>
+                    <td>BT-230507-05</td>
+                    <td>--</td>
+                    <td>今天 19:30</td>
+                    <td><span class="badge warning">待复核</span></td>
+                    <td class="table-actions">
+                      <a href="result-entry.html?role=analyst">复核</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">仪器排程</span>
+                <a class="link-btn" href="system-monitoring.html?role=admin">查看状态</a>
+              </div>
+              <div class="panel-body">
+                <ul class="timeline">
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>09:00 - HPLC-02</strong>
+                      <span class="meta">稳定性溶出 · 预计 2 小时</span>
+                    </div>
+                  </li>
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>11:30 - GC-MS-01</strong>
+                      <span class="meta">有机残留 · 预计 1.5 小时</span>
+                    </div>
+                  </li>
+                  <li class="timeline-item">
+                    <div class="timeline-content">
+                      <strong>15:00 - ICP-OES</strong>
+                      <span class="meta">重金属检测 · 预计 2 小时</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">任务提醒</span>
+                <a class="link-btn" href="deviation-report.html?role=analyst">报告偏差</a>
+              </div>
+              <div class="panel-body">
+                <div class="list">
+                  <div class="list-item">
+                    <span>危化品操作需双人确认</span>
+                    <span>已安排</span>
+                  </div>
+                  <div class="list-item">
+                    <span>补充原始记录扫描件</span>
+                    <span>3 项</span>
+                  </div>
+                  <div class="list-item">
+                    <span>偏差草稿需完善</span>
+                    <span>1 项</span>
+                  </div>
+                </div>
+                <div class="business-notes">
+                  <h3>提示</h3>
+                  <p>执行前确认仪器状态与校准有效期。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="business-notes">
+            <h3>业务说明</h3>
+            <p>工作清单帮助分析人员规划每日任务并跟踪执行状态，自动关联仪器排程和复核要求。</p>
+            <ul class="clean">
+              <li>任务优先级基于批次 SLA 和风险等级。</li>
+              <li>可直接跳转到测试执行或结果录入页面。</li>
+              <li>偏差与提醒信息同步至 QA。</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="labware.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

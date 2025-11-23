@@ -2,83 +2,1166 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>Pinterest 灵感发现 原型概览</title>
+    <title>Pinterest 多角色体验原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f4f6fb;
+        --text: #0f172a;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --card: #ffffff;
+        --accent: #ef4444;
+        --shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+      }
+
+      .prototype-shell {
+        width: min(1280px, 100%);
+        padding: 40px;
+      }
+
+      header {
+        margin-bottom: 28px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 34px;
+        letter-spacing: 0.02em;
+      }
+
+      .tagline {
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .role-switcher {
+        display: inline-flex;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 999px;
+        padding: 6px;
+        margin-top: 24px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+        backdrop-filter: blur(8px);
+      }
+
+      .role-switcher button {
+        position: relative;
+        border: none;
+        background: transparent;
+        padding: 10px 22px;
+        border-radius: 999px;
+        font-size: 15px;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+
+      .role-switcher button::before {
+        content: attr(data-emoji);
+        margin-right: 8px;
+      }
+
+      .role-switcher button.active {
+        background: #0ea5e9;
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: 0 12px 24px rgba(14, 165, 233, 0.28);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 28px;
+      }
+
+      .sidebar {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 24px;
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .role-meta h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .role-meta p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .menu-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .menu-button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid transparent;
+        background: rgba(248, 250, 252, 0.9);
+        color: var(--text);
+        cursor: pointer;
+        font-size: 15px;
+        transition: all 0.2s ease;
+      }
+
+      .menu-button:hover {
+        border-color: #38bdf8;
+        box-shadow: 0 12px 24px rgba(14, 165, 233, 0.16);
+      }
+
+      .menu-button.active {
+        background: #0ea5e9;
+        color: #ffffff;
+        border-color: transparent;
+        box-shadow: 0 16px 28px rgba(14, 165, 233, 0.24);
+      }
+
+      .menu-button .meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .menu-button .icon {
+        font-size: 18px;
+      }
+
+      .menu-button .badge {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.35);
+        color: inherit;
+      }
+
+      main {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+      }
+
+      .content-header h3 {
+        margin: 0 0 6px;
+        font-size: 24px;
+      }
+
+      .content-header p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 22px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card h4 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .inline-list {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.12);
+        color: #0369a1;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 24px;
+      }
+
+      .preview-pane {
+        border-radius: 24px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #fee2e2, #fce7f3, #e0f2fe);
+        aspect-ratio: 3 / 4;
+        display: flex;
+        align-items: flex-end;
+        padding: 24px;
+        color: #1f2937;
+        font-weight: 600;
+        font-size: 20px;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+      }
+
+      .data-table thead {
+        background: #0ea5e9;
+        color: #fff;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 14px 18px;
+        font-size: 14px;
+        text-align: left;
+      }
+
+      .data-table tbody tr:nth-child(even) {
+        background: rgba(148, 163, 184, 0.12);
+      }
+
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .kanban-column {
+        background: rgba(148, 163, 184, 0.12);
+        border-radius: 20px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .kanban-column h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .kanban-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px;
+        font-size: 13px;
+        line-height: 1.4;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 16px;
+      }
+
+      .stat-card {
+        background: rgba(14, 165, 233, 0.08);
+        border-radius: 18px;
+        padding: 16px;
+      }
+
+      .stat-card h5 {
+        margin: 0 0 6px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #0c4a6e;
+      }
+
+      .stat-card strong {
+        font-size: 22px;
+      }
+
+      .timeline {
+        border-left: 2px solid var(--line);
+        padding-left: 18px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .timeline-item {
+        position: relative;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: -28px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #0ea5e9;
+        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.18);
+      }
+
+      .timeline-item strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 1080px) {
+        .prototype-shell {
+          padding: 24px;
+        }
+
+        .workspace {
+          grid-template-columns: 100%;
+        }
+
+        main {
+          max-height: none;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>Pinterest 灵感发现 原型</h1>
-      <p class="tagline">灵感收藏与视觉搜索的平台，帮助用户规划生活与购物决策。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>设计爱好者、家居装饰人群、品牌营销团队</p>
-        <p><strong>核心痛点：</strong>用户需要在规划项目时收集灵感，品牌希望触达高意向用户</p>
-        <p><strong>价值主张：</strong>通过 Pin 收藏与主题板组织，串联灵感发现、创意管理与购物跳转</p>
+    <div class="prototype-shell">
+      <header>
+        <h1>Pinterest 多角色体验原型</h1>
+        <p class="tagline">演示灵感平台在用户、管理员、运营角色下的关键流程与界面布局。</p>
+        <div class="role-switcher">
+          <button type="button" class="active" data-role="user" data-emoji="🧑🏻">用户端</button>
+          <button type="button" data-role="admin" data-emoji="🛡️">管理员端</button>
+          <button type="button" data-role="ops" data-emoji="🧩">运营端</button>
+        </div>
+      </header>
+      <div class="workspace">
+        <aside class="sidebar">
+          <section class="role-meta">
+            <h2 id="role-name">用户端体验</h2>
+            <p id="role-desc">面向灵感探索与收藏的个人用户，突出沉浸式浏览、收藏协作与购物决策支持。</p>
+          </section>
+          <ul class="menu-list" id="menu-list"></ul>
+        </aside>
+        <main id="content"></main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>用户搜索灵感关键词并收藏图片</li><li>创作者上传原创内容并关联主题板</li><li>品牌投放推广 Pin 并引导至官网下单</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>灵感搜索与推荐</h3>
-              <p class="goal">功能目标：让用户快速发现相关且个性化的灵感内容</p>
-              <ul>
-                <li>视觉搜索与相似推荐</li><li>主题 Feed 与个性化今日灵感</li><li>标签、颜色、素材等维度过滤</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>收藏与协作</h3>
-              <p class="goal">功能目标：帮助用户将灵感整理成可执行的计划</p>
-              <ul>
-                <li>主题板创建、权限设置与协作者邀请</li><li>项目阶段标记与待办清单</li><li>跨设备同步与分享链接</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>创作者工具</h3>
-              <p class="goal">功能目标：支持内容创作者与品牌高效发布</p>
-              <ul>
-                <li>Idea Pin、视频 Pin 多格式支持</li><li>数据洞察与粉丝互动分析</li><li>品牌店铺与商品目录同步</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>商业化解决方案</h3>
-              <p class="goal">功能目标：驱动灵感到购买的转化</p>
-              <ul>
-                <li>推广 Pin、购物广告与重定向</li><li>购物意向数据与转化归因</li><li>与 Shopify 等电商平台集成</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>月活跃用户与灵感板创建量</li><li>推广 Pin 点击率与转化率</li><li>创作者内容曝光与粉丝增长</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script>
+      const roles = {
+        user: {
+          name: '用户端体验',
+          description:
+            '面向灵感探索与收藏的个人用户，突出沉浸式浏览、收藏协作与购物决策支持。',
+          menus: [
+            {
+              id: 'user-home',
+              icon: '🌊',
+              name: '灵感首页',
+              badge: 'AI 推荐',
+              content: `
+                <section class="content-header">
+                  <h3>灵感首页瀑布流</h3>
+                  <p>结合 AI 推荐、趋势精选与季节主题的个性化首页。</p>
+                </section>
+                <section class="stat-grid">
+                  <div class="stat-card">
+                    <h5>今日灵感刷新</h5>
+                    <strong>+36</strong>
+                    <p>围绕「夏日露台」「极简收纳」等主题更新。</p>
+                  </div>
+                  <div class="stat-card">
+                    <h5>待整理 Pin</h5>
+                    <strong>12</strong>
+                    <p>建议加入「度假计划」和「婚礼策划」主题板。</p>
+                  </div>
+                  <div class="stat-card">
+                    <h5>与我相关</h5>
+                    <strong>7</strong>
+                    <p>好友协作邀请与私密评论提醒。</p>
+                  </div>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>沉浸式灵感流</h4>
+                    <p>继续浏览与「北欧风客厅」相关的 120+ 灵感，自动按配色、面积划分。</p>
+                    <div class="inline-list">
+                      <span class="pill">即时保存</span>
+                      <span class="pill">一键发送微信</span>
+                      <span class="pill">可购商品</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>趋势热榜</h4>
+                    <p>根据关注创作者与热门关键词生成「夏日度假穿搭」「露营灵感」合集。</p>
+                    <div class="inline-list">
+                      <span class="pill">趋势图谱</span>
+                      <span class="pill">关注创作者</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>灵感任务清单</h4>
+                    <p>为「新家装修」项目生成阶段性任务，提醒上传预算与实拍对比。</p>
+                    <div class="inline-list">
+                      <span class="pill">项目模板</span>
+                      <span class="pill">进度 60%</span>
+                      <span class="pill">协作 2 人</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'user-pin-detail',
+              icon: '📌',
+              name: 'Pin 详情',
+              badge: '互动升级',
+              content: `
+                <section class="content-header">
+                  <h3>Pin 深度信息卡片</h3>
+                  <p>展示图像、标签、评论与一键购买入口，帮助用户快速决策。</p>
+                </section>
+                <section class="split">
+                  <div class="preview-pane">夏日晚风天台布置</div>
+                  <div class="card" style="gap: 18px;">
+                    <div>
+                      <h4>灵感笔记</h4>
+                      <p>来自创作者 @空间设计研究所 · 收藏量 12.4k · 互动率 8.3%。</p>
+                    </div>
+                    <div class="inline-list">
+                      <span class="pill">#露台布置</span>
+                      <span class="pill">#氛围灯</span>
+                      <span class="pill">#夏日聚会</span>
+                    </div>
+                    <div class="timeline">
+                      <div class="timeline-item">
+                        <strong>加入「庭院焕新」主题板</strong>
+                        <p>系统推荐相关主题板，并建议邀请伴侣协作。</p>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>AI 提示</strong>
+                        <p>自动拆解为灯串、座椅、植物三类商品，并推荐淘宝/京东购买链接。</p>
+                      </div>
+                      <div class="timeline-item">
+                        <strong>互动评论</strong>
+                        <p>展示 32 条热门问答，支持 @ 创作者、附图回复与表情反应。</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'user-board',
+              icon: '🗂️',
+              name: '主题板管理',
+              badge: '协作',
+              content: `
+                <section class="content-header">
+                  <h3>主题板工作区</h3>
+                  <p>集中管理灵感收藏、阶段任务与协作者权限。</p>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>项目阶段</h4>
+                    <p>装修板块按「灵感收集」「预算确认」「施工执行」阶段拆解，支持甘特视图。</p>
+                    <div class="inline-list">
+                      <span class="pill">新增阶段</span>
+                      <span class="pill">导出 PDF</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>协作成员</h4>
+                    <p>查看可编辑/仅评论权限，支持一键邀请微信好友加入协作。</p>
+                    <div class="inline-list">
+                      <span class="pill">权限矩阵</span>
+                      <span class="pill">评论提醒</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>素材整理</h4>
+                    <p>智能标签识别颜色、风格、品牌，可按 AI 自动生成的子分类展示。</p>
+                    <div class="inline-list">
+                      <span class="pill">批量移动</span>
+                      <span class="pill">版本对比</span>
+                    </div>
+                  </div>
+                </section>
+                <section class="kanban">
+                  <div class="kanban-column">
+                    <h4>待整理</h4>
+                    <div class="kanban-card">AI 建议：为 3 个 Pin 添加预算标签</div>
+                    <div class="kanban-card">创作者留言：是否需要线下顾问？</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>进行中</h4>
+                    <div class="kanban-card">与「生活家」板关联 · 正在同步 8 张图片</div>
+                    <div class="kanban-card">协作者已上传装修平面图待确认</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>已完成</h4>
+                    <div class="kanban-card">完成 5 项代办：预算表、采购清单、供应商名单</div>
+                    <div class="kanban-card">导出阶段成果并发送给设计师</div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'user-message',
+              icon: '💬',
+              name: '消息中心',
+              content: `
+                <section class="content-header">
+                  <h3>消息与社区互动</h3>
+                  <p>整合通知、私信与协作提醒，突出重要事件。</p>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>协作提醒</h4>
+                    <p>设计师 Linda 更新了「北欧卧室」方案草图，并附带 4 条建议。</p>
+                    <div class="inline-list">
+                      <span class="pill">查看草图</span>
+                      <span class="pill">同步反馈</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>创作者回复</h4>
+                    <p>@光影摄影师 回复了你的问题「如何在夜景拍摄中提升氛围感？」</p>
+                    <div class="inline-list">
+                      <span class="pill">收藏回答</span>
+                      <span class="pill">继续提问</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>系统通知</h4>
+                    <p>「家装灵感周」专题上线，收藏任意 3 个 Pin 解锁 AR 预览体验。</p>
+                    <div class="inline-list">
+                      <span class="pill">查看专题</span>
+                      <span class="pill">开启提醒</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'user-shopping',
+              icon: '🛍️',
+              name: '购物清单',
+              content: `
+                <section class="content-header">
+                  <h3>灵感到购买的转化清单</h3>
+                  <p>自动汇总收藏 Pin 中的商品，支持价格追踪与购买进度。</p>
+                </section>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>商品</th>
+                      <th>来源 Pin</th>
+                      <th>当前价格</th>
+                      <th>心愿价</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>户外防水灯串</td>
+                      <td>夏日晚风天台布置</td>
+                      <td>￥189</td>
+                      <td>￥169</td>
+                      <td>正在关注 · 预计 3 天内到心愿价</td>
+                    </tr>
+                    <tr>
+                      <td>柚木折叠餐桌</td>
+                      <td>庭院晚宴场景</td>
+                      <td>￥1,299</td>
+                      <td>￥1,150</td>
+                      <td>待确认物流 · 已加入购物车</td>
+                    </tr>
+                    <tr>
+                      <td>氛围音响</td>
+                      <td>夜幕露营装备</td>
+                      <td>￥799</td>
+                      <td>￥750</td>
+                      <td>好友已购买 · 推荐查看实拍</td>
+                    </tr>
+                  </tbody>
+                </table>
+              `,
+            },
+            {
+              id: 'user-settings',
+              icon: '⚙️',
+              name: '账户设置',
+              content: `
+                <section class="content-header">
+                  <h3>账户偏好设置</h3>
+                  <p>管理通知、隐私与兴趣标签，优化推荐体验。</p>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>通知中心</h4>
+                    <p>自定义推送节奏，分频道订阅创作者直播、主题板更新。</p>
+                    <div class="inline-list">
+                      <span class="pill">每日摘要</span>
+                      <span class="pill">重点提醒</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>隐私控制</h4>
+                    <p>管理公开/私密主题板、屏蔽关键词与创作者黑名单。</p>
+                    <div class="inline-list">
+                      <span class="pill">一键私密</span>
+                      <span class="pill">备份下载</span>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h4>兴趣画像</h4>
+                    <p>可视化查看推荐标签：家居 32%、旅行 24%、婚礼 18%、美食 12%。</p>
+                    <div class="inline-list">
+                      <span class="pill">调整权重</span>
+                      <span class="pill">导入淘宝心愿单</span>
+                    </div>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+        admin: {
+          name: '管理员控制台',
+          description:
+            '负责平台安全合规与系统治理，聚焦风险预警、审核队列与权限策略配置。',
+          menus: [
+            {
+              id: 'admin-dashboard',
+              icon: '📊',
+              name: '平台仪表盘',
+              badge: '实时',
+              content: `
+                <section class="content-header">
+                  <h3>安全与健康度总览</h3>
+                  <p>实时监控违规内容、账号风险与系统性能。</p>
+                </section>
+                <section class="stat-grid">
+                  <div class="stat-card">
+                    <h5>违规内容拦截</h5>
+                    <strong>98%</strong>
+                    <p>近 24 小时自动识别 4,320 条，人工复核 210 条。</p>
+                  </div>
+                  <div class="stat-card">
+                    <h5>高风险账号</h5>
+                    <strong>37</strong>
+                    <p>涉及刷粉、频繁外链，建议进一步限制。</p>
+                  </div>
+                  <div class="stat-card">
+                    <h5>系统可用性</h5>
+                    <strong>99.97%</strong>
+                    <p>推荐服务平均延迟 120ms，上传服务 98ms。</p>
+                  </div>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>内容风控雷达</h4>
+                    <p>按类型展示「广告违规」「版权疑似」「低质重复」等标签，支持一键跳转审核。</p>
+                  </div>
+                  <div class="card">
+                    <h4>异常波动提醒</h4>
+                    <p>「家居装修」垂类疑似被刷量，触发流量阈值报警并自动降权。</p>
+                  </div>
+                  <div class="card">
+                    <h4>系统任务面板</h4>
+                    <p>监控日志堆积、CDN 命中率与数据库写入压力，提供扩容建议。</p>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'admin-user',
+              icon: '👥',
+              name: '用户管理',
+              content: `
+                <section class="content-header">
+                  <h3>用户与角色权限</h3>
+                  <p>支持快速检索、封禁、角色调整与申诉处理。</p>
+                </section>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>用户</th>
+                      <th>角色</th>
+                      <th>状态</th>
+                      <th>风险等级</th>
+                      <th>最近操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>@设计星球</td>
+                      <td>创作者</td>
+                      <td>正常</td>
+                      <td>低</td>
+                      <td>提交品牌合作认证 · 待审核</td>
+                    </tr>
+                    <tr>
+                      <td>@灵感搬运工</td>
+                      <td>普通用户</td>
+                      <td>限制中</td>
+                      <td>高</td>
+                      <td>AI 检测重复搬运 · 进入复核队列</td>
+                    </tr>
+                    <tr>
+                      <td>@品牌号Home+</td>
+                      <td>广告主</td>
+                      <td>正常</td>
+                      <td>中</td>
+                      <td>预算异常波动 · 建议复盘</td>
+                    </tr>
+                  </tbody>
+                </table>
+              `,
+            },
+            {
+              id: 'admin-review',
+              icon: '🧾',
+              name: '内容审核',
+              badge: '优先',
+              content: `
+                <section class="content-header">
+                  <h3>审核工作台</h3>
+                  <p>结合 AI 预判与人工复核，实现高效可追溯的流程。</p>
+                </section>
+                <section class="kanban">
+                  <div class="kanban-column">
+                    <h4>待分配</h4>
+                    <div class="kanban-card">版权疑似 · 原图来自 IG · 需比对</div>
+                    <div class="kanban-card">推广 Pin 标题夸大功效 · 推荐退回</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>复核中</h4>
+                    <div class="kanban-card">AI 标记成人内容 · 人工二审中</div>
+                    <div class="kanban-card">敏感词「私信加微信」 · 检测中</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>已处理</h4>
+                    <div class="kanban-card">用户申诉通过 · 恢复曝光</div>
+                    <div class="kanban-card">广告违规确认 · 扣减信誉分</div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'admin-security',
+              icon: '🛡️',
+              name: '安全策略',
+              content: `
+                <section class="content-header">
+                  <h3>安全策略中心</h3>
+                  <p>管理登陆风控、外链拦截、数据访问等策略。</p>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>登录保护</h4>
+                    <p>异常登录地触发二次验证，敏感操作强制短信 + 邮箱双验证。</p>
+                  </div>
+                  <div class="card">
+                    <h4>外链白名单</h4>
+                    <p>更新品牌自建站域名 18 个，自动同步至推广审核。</p>
+                  </div>
+                  <div class="card">
+                    <h4>数据脱敏</h4>
+                    <p>客服端查询接口已脱敏用户隐私字段，生成访问审计日志。</p>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'admin-analytics',
+              icon: '📈',
+              name: '数据报表',
+              content: `
+                <section class="content-header">
+                  <h3>平台健康指标</h3>
+                  <p>追踪内容生态、广告转化与审核效率的核心指标。</p>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>内容生态</h4>
+                    <p>优质创作者周留存 87%，Pin 发布量环比 +18%。</p>
+                  </div>
+                  <div class="card">
+                    <h4>审核效率</h4>
+                    <p>平均处理时长 16 分钟，自动化覆盖率 72%，人工复核满意度 4.6/5。</p>
+                  </div>
+                  <div class="card">
+                    <h4>收入结构</h4>
+                    <p>推广 Pin 占 64%，品牌合作 22%，电商分成 14%。</p>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'admin-system',
+              icon: '🧰',
+              name: '系统设置',
+              content: `
+                <section class="content-header">
+                  <h3>平台配置中心</h3>
+                  <p>管理模块开关、灰度发布与团队权限。</p>
+                </section>
+                <section class="timeline">
+                  <div class="timeline-item">
+                    <strong>灰度发布 · 新版灵感搜索</strong>
+                    <p>当前覆盖 8% 用户，监测点击率提升 +6.4%。</p>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>团队权限</strong>
+                    <p>新增「反作弊分析师」角色，可访问日志与风险模型配置。</p>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>配置审计</strong>
+                    <p>最近 7 天 18 项变更，全部完成审批与回滚预案登记。</p>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+        ops: {
+          name: '运营指挥台',
+          description:
+            '负责内容运营、品牌合作与活动策划，强调增长指标与跨团队协作。',
+          menus: [
+            {
+              id: 'ops-overview',
+              icon: '🚀',
+              name: '增长总览',
+              badge: '目标',
+              content: `
+                <section class="content-header">
+                  <h3>增长与用户触达总览</h3>
+                  <p>追踪核心指标并给出即时策略建议。</p>
+                </section>
+                <section class="stat-grid">
+                  <div class="stat-card">
+                    <h5>月新增创作者</h5>
+                    <strong>+2,430</strong>
+                    <p>环比 +22%，主要来源于生活方式与婚礼垂类。</p>
+                  </div>
+                  <div class="stat-card">
+                    <h5>互动率</h5>
+                    <strong>6.8%</strong>
+                    <p>连续三周增长，AI 推荐命中率提升。</p>
+                  </div>
+                  <div class="stat-card">
+                    <h5>商业化收入</h5>
+                    <strong>¥ 12.6M</strong>
+                    <p>推广 Pin 贡献 8.1M，品牌活动 4.5M。</p>
+                  </div>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>增长建议</h4>
+                    <p>建议在七夕前推出「告白灵感挑战」，联动 20 位头部创作者。</p>
+                  </div>
+                  <div class="card">
+                    <h4>触达路径</h4>
+                    <p>小红书、抖音联合话题曝光 1.2 亿，导流进站 240k。</p>
+                  </div>
+                  <div class="card">
+                    <h4>风险提醒</h4>
+                    <p>「DIY 礼物」话题热度下降 12%，建议补充优质内容。</p>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'ops-campaign',
+              icon: '🎯',
+              name: '活动策划',
+              content: `
+                <section class="content-header">
+                  <h3>活动策划工作台</h3>
+                  <p>管理活动进度、预算与素材协作。</p>
+                </section>
+                <section class="kanban">
+                  <div class="kanban-column">
+                    <h4>筹备中</h4>
+                    <div class="kanban-card">七夕灵感挑战 · 素材征集 60%</div>
+                    <div class="kanban-card">家装季专题 · 签约品牌 4/6</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>执行中</h4>
+                    <div class="kanban-card">毕业季灵感展 · DAU +8%</div>
+                    <div class="kanban-card">「寻找下一位创作者」招募 · 报名 1,280</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>复盘中</h4>
+                    <div class="kanban-card">春季家居节 · GMV 目标达成 112%</div>
+                    <div class="kanban-card">婚礼灵感周 · 口碑得分 4.7/5</div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'ops-distribution',
+              icon: '🧭',
+              name: '内容分发',
+              badge: '智能',
+              content: `
+                <section class="content-header">
+                  <h3>分发策略调度</h3>
+                  <p>调节推荐、搜索、push 的资源分配与 AB 试验。</p>
+                </section>
+                <section class="content-grid">
+                  <div class="card">
+                    <h4>推荐位排期</h4>
+                    <p>首页瀑布流置顶：创作者 @慢生活研究所 · 点击率预计 +12%。</p>
+                  </div>
+                  <div class="card">
+                    <h4>搜索趋势</h4>
+                    <p>「亲子旅行计划」「度假穿搭」搜索指数持续上涨，建议置顶精选合集。</p>
+                  </div>
+                  <div class="card">
+                    <h4>Push 策略</h4>
+                    <p>即将投放「周末灵感随心选」AI 个性化推送，覆盖 320k 用户。</p>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'ops-brand',
+              icon: '🤝',
+              name: '品牌合作',
+              content: `
+                <section class="content-header">
+                  <h3>品牌合作中台</h3>
+                  <p>追踪合作进度、投放效果与合同状态。</p>
+                </section>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>品牌</th>
+                      <th>合作形式</th>
+                      <th>曝光量</th>
+                      <th>转化率</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>宜家家居</td>
+                      <td>主题板共创 + 直播</td>
+                      <td>18.4M</td>
+                      <td>3.2%</td>
+                      <td>执行中 · 待上传复盘报告</td>
+                    </tr>
+                    <tr>
+                      <td>Dyson</td>
+                      <td>推广 Pin + 达人短片</td>
+                      <td>9.6M</td>
+                      <td>4.1%</td>
+                      <td>执行中 · 预算消耗 56%</td>
+                    </tr>
+                    <tr>
+                      <td>MUJI</td>
+                      <td>灵感挑战赛</td>
+                      <td>12.1M</td>
+                      <td>2.7%</td>
+                      <td>已完成 · 复盘评分 4.6</td>
+                    </tr>
+                  </tbody>
+                </table>
+              `,
+            },
+            {
+              id: 'ops-support',
+              icon: '🎧',
+              name: '客服工作台',
+              content: `
+                <section class="content-header">
+                  <h3>客服运营视图</h3>
+                  <p>整合用户反馈、处理进度与常见问题。</p>
+                </section>
+                <section class="kanban">
+                  <div class="kanban-column">
+                    <h4>高优先级</h4>
+                    <div class="kanban-card">品牌合作权益未到账 · 协调财务处理中</div>
+                    <div class="kanban-card">用户投诉：推广 Pin 标题夸大 · 已转风控</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>处理中</h4>
+                    <div class="kanban-card">主题板丢失内容 · 正在恢复历史版本</div>
+                    <div class="kanban-card">支付失败 · 与支付网关对接排查</div>
+                  </div>
+                  <div class="kanban-column">
+                    <h4>已解决</h4>
+                    <div class="kanban-card">建议新增「家有萌宠」模板 · 已加入规划</div>
+                    <div class="kanban-card">创作者提现延迟 · 财务已打款</div>
+                  </div>
+                </section>
+              `,
+            },
+            {
+              id: 'ops-announcement',
+              icon: '📣',
+              name: '公告中心',
+              content: `
+                <section class="content-header">
+                  <h3>公告与知识库</h3>
+                  <p>统一发布更新策略、操作指南与素材包。</p>
+                </section>
+                <section class="timeline">
+                  <div class="timeline-item">
+                    <strong>2024-07-01 · 活动运营手册 v3.2</strong>
+                    <p>新增灵感挑战赛模板、达人激励发放流程。</p>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2024-06-25 · 品牌合规提醒</strong>
+                    <p>推广素材需提前 5 日提交审核，新增食品类认证要求。</p>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2024-06-18 · 推荐策略更新</strong>
+                    <p>上线创作者成长模型，自动提示运营介入节奏。</p>
+                  </div>
+                </section>
+              `,
+            },
+          ],
+        },
+      };
+
+      const menuList = document.getElementById('menu-list');
+      const content = document.getElementById('content');
+      const roleName = document.getElementById('role-name');
+      const roleDesc = document.getElementById('role-desc');
+      const roleButtons = Array.from(document.querySelectorAll('[data-role]'));
+
+      let currentRole = 'user';
+      let currentMenu = null;
+
+      function renderRole(roleKey) {
+        const role = roles[roleKey];
+        if (!role) return;
+        currentRole = roleKey;
+        roleName.textContent = role.name;
+        roleDesc.textContent = role.description;
+        menuList.innerHTML = '';
+
+        roleButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.role === roleKey);
+        });
+
+        role.menus.forEach((item, index) => {
+          const li = document.createElement('li');
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'menu-button';
+          button.dataset.menuId = item.id;
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+          const icon = document.createElement('span');
+          icon.className = 'icon';
+          icon.textContent = item.icon;
+          const label = document.createElement('span');
+          label.textContent = item.name;
+          meta.appendChild(icon);
+          meta.appendChild(label);
+          button.appendChild(meta);
+          if (item.badge) {
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = item.badge;
+            button.appendChild(badge);
+          }
+          button.addEventListener('click', () => setActiveMenu(item.id));
+          li.appendChild(button);
+          menuList.appendChild(li);
+          if (index === 0) {
+            currentMenu = item.id;
+          }
+        });
+
+        setActiveMenu(currentMenu);
+      }
+
+      function setActiveMenu(menuId) {
+        const role = roles[currentRole];
+        if (!role) return;
+        const menu = role.menus.find((item) => item.id === menuId) || role.menus[0];
+        if (!menu) return;
+        currentMenu = menu.id;
+        Array.from(menuList.querySelectorAll('.menu-button')).forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.menuId === currentMenu);
+        });
+        content.innerHTML = menu.content;
+        content.scrollTop = 0;
+      }
+
+      roleButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          renderRole(button.dataset.role);
+        });
+      });
+
+      renderRole(currentRole);
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

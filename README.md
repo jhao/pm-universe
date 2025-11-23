@@ -8,7 +8,7 @@
 
 ## 🧭 目录结构
 - `/docs` — 讲解文档
-- `/prototypes` — Figma / Axure 原型
+- `/prototypes` — Figma / Axure 原型（[浏览索引页](./prototypes/index.html)）
 - `/slides` — 培训课件
 - `/data` — 功能矩阵与行业数据
 - `/assets` — 图片、图标、截图

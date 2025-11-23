@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>报表调度中心 - Honeywell PHD</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="nav-logo">
+          <h1>Honeywell PHD</h1>
+          <p>过程历史数据库与分析平台</p>
+        </div>
+        <div class="nav-section">
+          <h2>主导航</h2>
+          <ul class="nav-links">
+            <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span>概览首页</a></li>
+            <li><a class="nav-link" href="operations-dashboard.html"><span class="nav-icon">📊</span>运行驾驶舱</a></li>
+            <li><a class="nav-link" href="data-collection.html"><span class="nav-icon">🛠️</span>数据采集</a></li>
+            <li><a class="nav-link" href="trend-analysis.html"><span class="nav-icon">📈</span>趋势分析</a></li>
+            <li><a class="nav-link" href="alarm-management.html"><span class="nav-icon">🚨</span>报警管理</a></li>
+            <li><a class="nav-link is-active" href="report-center.html"><span class="nav-icon">🗂️</span>报表中心</a></li>
+            <li><a class="nav-link" href="model-lab.html"><span class="nav-icon">🧪</span>模型实验室</a></li>
+          </ul>
+        </div>
+        <div class="nav-footer">
+          <strong>返回</strong>
+          <div>• <a href="report-center.html">返回报表中心</a></div>
+        </div>
+      </aside>
+      <div class="content-area">
+        <header class="top-bar">
+          <div class="top-bar-title">
+            <h2>报表调度中心</h2>
+            <span class="breadcrumb">Honeywell PHD / 报表中心 / 调度</span>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSwitcher">角色视角：</label>
+            <select id="roleSwitcher" data-role-switcher>
+              <option value="工艺工程师">工艺工程师</option>
+              <option value="运维主管">运维主管</option>
+              <option value="管理层">管理层</option>
+            </select>
+            <span class="role-badge">当前：<span data-role-label>工艺工程师</span></span>
+          </div>
+        </header>
+        <main class="main-content">
+          <section class="section-card" id="approval">
+            <h3>审批中心</h3>
+            <table class="table">
+              <thead>
+                <tr><th>调度名称</th><th>提交人</th><th>角色</th><th>状态</th><th>截止时间</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr data-role="管理层">
+                  <td>高层经营简报 · 周报</td>
+                  <td>刘洋</td>
+                  <td>管理层</td>
+                  <td><span class="badge warning"><span class="status-dot"></span> 待审批</span></td>
+                  <td>今天 17:00</td>
+                  <td><a href="#" onclick="return false;">审批</a></td>
+                </tr>
+                <tr data-role="运维主管">
+                  <td>报警合规月报 · 2024-04</td>
+                  <td>张伟</td>
+                  <td>运维</td>
+                  <td><span class="badge success"><span class="status-dot"></span> 已提交</span></td>
+                  <td>2024-04-05</td>
+                  <td><a href="alarm-management.html#critical">补充说明</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="section-card" id="rerun">
+            <h3>调度配置</h3>
+            <div class="split-layout">
+              <div>
+                <h4>当前调度</h4>
+                <ul class="checklist">
+                  <li><span class="check-icon">✓</span>运行日报：每日 06:00，来源 <a href="trend-analysis.html">趋势工作台</a></li>
+                  <li><span class="check-icon">✓</span>能耗周报：每周一 08:00，来源 <a href="model-training-detail.html">模型实验室</a></li>
+                  <li><span class="check-icon">✓</span>安全月报：每月 01 日，引用 <a href="alarm-management.html">报警中心</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4>新建调度</h4>
+                <div class="role-section" data-role="工艺工程师">
+                  <p>选择趋势模板与数据窗口，生成新的日报调度。</p>
+                  <div class="action-buttons">
+                    <a class="button" href="trend-template-editor.html">选择模板</a>
+                    <a class="button secondary" href="report-center.html#kpi">预览报表</a>
+                  </div>
+                </div>
+                <div class="role-section" data-role="管理层">
+                  <p>对新建调度进行审批，确认发布范围。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-card" id="archive">
+            <h3>归档中心</h3>
+            <table class="table">
+              <thead>
+                <tr><th>报表</th><th>周期</th><th>归档日期</th><th>责任人</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr data-role="工艺工程师,运维主管">
+                  <td>运行日报</td>
+                  <td>2024-04-21</td>
+                  <td>2024-04-21</td>
+                  <td>张伟</td>
+                  <td><a href="#" onclick="return false;">下载</a></td>
+                </tr>
+                <tr data-role="管理层">
+                  <td>节能 KPI 周报</td>
+                  <td>2024 第 15 周</td>
+                  <td>2024-04-15</td>
+                  <td>王梅</td>
+                  <td><a href="operations-dashboard.html">查看驾驶舱</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="section-card" id="log">
+            <h3>应急日志</h3>
+            <div class="timeline">
+              <article class="timeline-item" data-role="运维主管">
+                <div class="timeline-meta">
+                  <span>2024-04-22 09:45 · F-301 温度报警</span>
+                  <span class="badge danger"><span class="status-dot"></span> 高优</span>
+                </div>
+                <p>记录应急步骤并同步至 <a href="alarm-investigation.html#f301">应急响应</a> 页面。</p>
+              </article>
+              <article class="timeline-item" data-role="工艺工程师">
+                <div class="timeline-meta">
+                  <span>2024-04-20 11:10 · 能耗模板更新</span>
+                  <span class="badge success"><span class="status-dot"></span> 完成</span>
+                </div>
+                <p>模板已同步至 <a href="trend-analysis.html">趋势工作台</a> 与 <a href="report-center.html#kpi">报表中心</a>。</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-explainer">
+            <strong>页面说明：</strong>
+            报表调度中心支撑审批、调度配置、归档与应急日志管理。通过跨页面链接，用户可快速进入相关模块完成审批、趋势配置或报警追踪。
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

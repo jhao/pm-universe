@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jira Software · 缺陷追踪</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page-id="bugs">
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__logo">JS</div>
+          <div class="sidebar-brand__meta">
+            <span class="sidebar-brand__title">Jira Software</span>
+            <span class="sidebar-brand__subtitle">Agile Platform</span>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-menu" data-region="side-nav"></nav>
+        <div class="sidebar-footer">
+          <strong>缺陷看板</strong><br />
+          未解决：18 · 临界：4<br />
+          SLA 预警：2 条
+        </div>
+      </aside>
+      <div class="app-surface">
+        <header class="app-header">
+          <div class="system-menu">
+            <span class="system-chip">质量保障 · <span data-role-name></span></span>
+            <div class="system-links">
+              <a class="system-link" href="#">缺陷</a>
+              <a class="system-link" href="#">趋势</a>
+              <a class="system-link" href="#">SLA</a>
+              <a class="system-link" href="#">发布阻塞</a>
+            </div>
+          </div>
+          <div class="app-header__actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="搜索缺陷或组件" />
+            </div>
+            <div class="role-switcher" data-region="role-switcher"></div>
+          </div>
+        </header>
+        <main class="app-main">
+          <section class="page-hero">
+            <div class="page-hero__meta">
+              <span class="role-badge">缺陷面板 · <span data-role-name></span></span>
+              <h1 class="page-hero__title">关键缺陷与 SLA 控制</h1>
+              <p class="page-hero__subtitle">集中查看关键缺陷、影响范围和处理进度，确保发布质量。</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat__label">阻塞缺陷</span>
+                  <span class="hero-stat__value">4</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">平均修复时间</span>
+                  <span class="hero-stat__value">18h</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat__label">SLA 达标率</span>
+                  <span class="hero-stat__value">92%</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a class="hero-actions__primary" href="issue-detail.html" data-keep-role>
+                📝 提交新缺陷
+              </a>
+              <a class="hero-actions__secondary" href="code-integration.html" data-keep-role>
+                🧪 检查流水线
+              </a>
+            </div>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">缺陷列表</h2>
+                <p class="surface-card__subtitle">按严重程度排序</p>
+              </div>
+              <div class="segmented-control">
+                <button class="is-active">所有</button>
+                <button>阻塞</button>
+                <button>待验证</button>
+              </div>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>编号</th>
+                  <th>标题</th>
+                  <th>优先级</th>
+                  <th>状态</th>
+                  <th>负责人</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>BUG-782</td>
+                  <td>API 错误率飙升</td>
+                  <td><span class="tag">阻塞</span></td>
+                  <td>In Progress</td>
+                  <td>李俊</td>
+                </tr>
+                <tr>
+                  <td>BUG-776</td>
+                  <td>多渠道同步数据错位</td>
+                  <td><span class="tag">高</span></td>
+                  <td>Code Review</td>
+                  <td>王磊</td>
+                </tr>
+                <tr>
+                  <td>BUG-770</td>
+                  <td>移动端推送延迟</td>
+                  <td><span class="tag">中</span></td>
+                  <td>待验证</td>
+                  <td>赵倩</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="page-grid page-grid--two">
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">缺陷漏斗</h2>
+                  <p class="surface-card__subtitle">识别各阶段积压</p>
+                </div>
+                <a class="action-link" href="sprint-board.html" data-keep-role>同步 Sprint</a>
+              </div>
+              <div class="chart-placeholder"></div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">待分配</p>
+                    <p class="list-item__desc">3 条 · 需确认模块归属</p>
+                  </div>
+                  <span class="tag">提醒</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">开发中</p>
+                    <p class="list-item__desc">9 条 · 平均 18h</p>
+                  </div>
+                  <span class="tag">正常</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card">
+              <div class="surface-card__header">
+                <div>
+                  <h2 class="surface-card__title">SLA 预警</h2>
+                  <p class="surface-card__subtitle">即将超时的缺陷</p>
+                </div>
+                <a class="action-link" href="automation-rules.html" data-keep-role>设置提醒</a>
+              </div>
+              <div class="list">
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">BUG-768 - 审批流程失败</p>
+                    <p class="list-item__desc">剩余 2 小时 · 负责人：陈峰</p>
+                  </div>
+                  <span class="tag">红色</span>
+                </div>
+                <div class="list-item">
+                  <div class="list-item__meta">
+                    <p class="list-item__title">BUG-765 - 报表导出异常</p>
+                    <p class="list-item__desc">剩余 5 小时 · 负责人：唐悦</p>
+                  </div>
+                  <span class="tag">黄色</span>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="surface-card">
+            <div class="surface-card__header">
+              <div>
+                <h2 class="surface-card__title">缺陷详情预览</h2>
+                <p class="surface-card__subtitle">快速查看上下文</p>
+              </div>
+              <a class="action-link" href="issue-detail.html" data-keep-role>打开详情</a>
+            </div>
+            <div class="board-columns">
+              <div class="board-column">
+                <div class="board-column__title">描述</div>
+                <div class="board-card">
+                  <h3 class="board-card__title">BUG-782 API 错误率飙升</h3>
+                  <p class="list-item__desc">在高并发请求下报 500，疑似缓存失效</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">复现步骤</div>
+                <div class="board-card">
+                  <p class="list-item__desc">1. 导入 10w 条数据 2. 触发批量同步 3. 观察响应</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">影响范围</div>
+                <div class="board-card">
+                  <p class="list-item__desc">影响企业旗舰客户 · 日志显示 12% 请求失败</p>
+                </div>
+              </div>
+              <div class="board-column">
+                <div class="board-column__title">缓解方案</div>
+                <div class="board-card">
+                  <p class="list-item__desc">增加缓存命中监控，准备回滚脚本</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-info">
+            <h2 class="page-info__title">主要业务说明</h2>
+            <p class="page-info__desc">缺陷追踪中心帮助 <span data-role-name></span> 快速定位阻塞缺陷、SLA 预警与修复进度，并支持跳转到详情页、自动化提醒或 Sprint 看板进行协同。</p>
+            <div class="page-info__actions">
+              <a href="issue-detail.html" data-keep-role>→ 查看缺陷详情</a>
+              <a href="sprint-board.html" data-keep-role>→ 协作修复</a>
+              <a href="automation-rules.html" data-keep-role>→ 设置 SLA 提醒</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="../../menu.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

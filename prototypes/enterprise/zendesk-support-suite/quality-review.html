@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 质量审核面板</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="quality-review" data-default-role="supervisor">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">主管聚焦服务质量评分，切换角色查看不同关注点。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">客服主管 · 质量管理</div>
+            <h1 class="page-title">质量审核面板</h1>
+            <p class="page-subtitle" data-role-summary>
+              审核客服录音、聊天与邮件内容，输出质检结果并反馈指导建议。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">质检队列</h2>
+                <p class="section-subtitle">优先显示近期满意度波动的会话，便于快速审核。</p>
+              </div>
+              <a class="button" href="ticket-detail.html">查看对应工单</a>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>渠道</th>
+                    <th>客服</th>
+                    <th>满意度</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>06-12</td>
+                    <td>聊天</td>
+                    <td>Alice</td>
+                    <td>3 / 5</td>
+                    <td><span class="tag-pill warning">待审核</span></td>
+                  </tr>
+                  <tr>
+                    <td>06-12</td>
+                    <td>邮件</td>
+                    <td>Leo</td>
+                    <td>5 / 5</td>
+                    <td><span class="tag-pill success">已通过</span></td>
+                  </tr>
+                  <tr>
+                    <td>06-11</td>
+                    <td>电话</td>
+                    <td>Mira</td>
+                    <td>4 / 5</td>
+                    <td><span class="tag-pill">复核中</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">评分细则</h2>
+                <p class="section-subtitle">维度包括沟通技巧、流程遵循、合规与体验评分。</p>
+              </div>
+            </div>
+            <div class="columns-3">
+              <div class="card">
+                <h3>沟通技巧</h3>
+                <p>语气专业、同理心、明确下一步动作。</p>
+              </div>
+              <div class="card">
+                <h3>流程遵循</h3>
+                <p>核实身份、记录关键信息、按流程处理。</p>
+              </div>
+              <div class="card">
+                <h3>合规检查</h3>
+                <p>敏感信息遮蔽、遵守政策、适当告知。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">个人反馈</h2>
+                <p class="section-subtitle">客服代表可查看专属反馈与提升建议。</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3>近期质检摘要</h3>
+              <p>平均得分 4.6/5 · 重点关注：结束语需提醒客户满意度调查。</p>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="analyst">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">质量趋势</h2>
+                <p class="section-subtitle">分析师可对比各渠道的质检得分与满意度。</p>
+              </div>
+              <a class="button-secondary" href="analytics-insights.html">跳转至运营分析仪表盘</a>
+            </div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <h3>渠道质检得分</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">聊天 4.3、邮件 4.6、电话 4.7。</p>
+              </div>
+              <div class="chart-card">
+                <h3>满意度关联</h3>
+                <div class="chart-placeholder"></div>
+                <p style="margin-top: 12px;">质检低于 4.0 的会话满意度平均 3.2。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心界面之后补充说明，便于演示串联。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              质量审核面板补充了主管对服务质量的把控方式，并与“工单详情示例”及“客户 360 视图”互联，体现完整的闭环管理。客服代表通过角色切换可查看个人反馈，分析师则可继续在“运营分析仪表盘”追踪趋势。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

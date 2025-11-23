@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Epicor ERP｜工单详情 MO-4821</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="production">
+    <div class="app-shell">
+      <nav class="app-nav">
+        <div class="app-logo">
+          <span>EP</span>
+          <div>
+            <div>Epicor 智能制造云</div>
+            <small>生产控制中心</small>
+          </div>
+        </div>
+        <div class="nav-section">
+          <h3>运营驾驶舱</h3>
+          <ul class="nav-list">
+            <li><a href="index.html" data-nav="dashboard"><span class="nav-dot"></span>运营概览</a></li>
+            <li><a href="production.html" data-nav="production"><span class="nav-dot"></span>生产排程</a></li>
+            <li><a href="supply-chain.html" data-nav="supply"><span class="nav-dot"></span>供应链协同</a></li>
+            <li><a href="finance.html" data-nav="finance"><span class="nav-dot"></span>财务与成本</a></li>
+            <li><a href="service.html" data-nav="service"><span class="nav-dot"></span>客户服务</a></li>
+            <li><a href="analytics.html" data-nav="analytics"><span class="nav-dot"></span>运营分析</a></li>
+            <li><a href="admin.html" data-nav="admin"><span class="nav-dot"></span>系统配置</a></li>
+          </ul>
+        </div>
+        <div class="nav-footnote">
+          <strong>说明：</strong>此页面展示单一工单的执行追踪、物料与财务关联信息。
+        </div>
+      </nav>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumb">生产排程 &gt; 工单详情</div>
+            <h1>工单 MO-4821｜工业控制柜</h1>
+            <p class="role-tagline" data-role-summary>关注排程执行、产线产能与质量预警，及时协调工单与资源。</p>
+          </div>
+          <div class="role-switcher">
+            <label for="roleSelect">角色视角</label>
+            <select id="roleSelect" data-role-select></select>
+          </div>
+        </header>
+        <div class="main-content">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>执行概览</h2>
+              <div class="panel-actions">
+                <a class="button" href="production-order-edit.html">调整排程</a>
+                <a class="button secondary" href="finance.html">查看成本分摊</a>
+              </div>
+            </div>
+            <dl class="description-list">
+              <div>
+                <dt>排程窗口</dt>
+                <dd>2024-05-18 08:00 - 2024-05-19 18:00</dd>
+              </div>
+              <div>
+                <dt>负责人</dt>
+                <dd data-role-visibility="production,admin" class="is-visible">班组长：王建｜QC：李静</dd>
+              </div>
+              <div>
+                <dt>当前状态</dt>
+                <dd><span class="badge warning">暂停待检</span></dd>
+              </div>
+              <div>
+                <dt>成本偏差</dt>
+                <dd data-role-visibility="finance,admin" class="is-visible">+3.2%（人工工时增加）</dd>
+              </div>
+            </dl>
+            <div class="timeline">
+              <div class="timeline-item">
+                <h4>07:45 | 领料完成</h4>
+                <p>关键件 PCB#SMT-24 从仓库 W1 调拨，<a href="warehouse-transfer.html">查看调拨单</a></p>
+              </div>
+              <div class="timeline-item">
+                <h4>09:12 | 首件检验</h4>
+                <p>发现按钮模块错位，已生成质量事件 <a href="service-case-detail.html">QE-556</a></p>
+              </div>
+              <div class="timeline-item">
+                <h4>09:30 | 产线暂停</h4>
+                <p>等待供应链补充 SMT 板，预计影响 45 分钟交付。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="production,supply,finance">
+            <div class="panel-header">
+              <h2>物料与成本关联</h2>
+              <div class="panel-actions">
+                <a class="button secondary" href="purchase-order-detail.html">打开采购订单</a>
+              </div>
+            </div>
+            <div class="table-card">
+              <table>
+                <thead>
+                  <tr>
+                    <th>物料</th>
+                    <th>需求数量</th>
+                    <th>到位</th>
+                    <th>责任角色</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SMT 主板</td>
+                    <td>24</td>
+                    <td>20</td>
+                    <td>供应链主管</td>
+                    <td><a href="purchase-order-detail.html">催交供应商</a></td>
+                  </tr>
+                  <tr>
+                    <td>铝合金外壳</td>
+                    <td>24</td>
+                    <td>24</td>
+                    <td>采购专员</td>
+                    <td><span class="badge positive">已到货</span></td>
+                  </tr>
+                  <tr data-role-visibility="finance">
+                    <td>外协加工</td>
+                    <td>1 批</td>
+                    <td>待结算</td>
+                    <td>财务总监</td>
+                    <td><a href="invoice-detail.html">核对发票</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" data-role-visibility="production,service,admin">
+            <div class="panel-header">
+              <h2>质量与协同</h2>
+              <div class="panel-actions">
+                <a class="button" href="service-case-detail.html">质量事件 QE-556</a>
+                <a class="button secondary" href="service.html">派工售后支持</a>
+              </div>
+            </div>
+            <div class="grid-two">
+              <div class="card">
+                <h3>质量处置流程</h3>
+                <p>质检异常触发三方协同：生产、供应链、客户服务。</p>
+                <ol>
+                  <li>QC 记录缺陷并拍照上传。</li>
+                  <li>系统通知供应链确认补料计划。</li>
+                  <li>必要时通知客户服务调整交付承诺。</li>
+                </ol>
+              </div>
+              <div class="card">
+                <h3>影响评估</h3>
+                <p>预计交期延迟 45 分钟，对客户 SLA 无影响；成本影响 2,600 CNY。</p>
+                <a class="button secondary" href="analytics.html">查看趋势分析</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>页面业务说明</h2>
+              <p>用于演示单工单的端到端追踪。</p>
+            </div>
+            <div class="business-notes">
+              <p>
+                工单详情页面汇聚排程、物料、成本与质量信息，顶部按钮可演示排程调整及财务联动；各表格与时间线条目提供跳转至采购、仓库、服务等页面的入口，实现业务串联。
+              </p>
+              <p>
+                切换至不同角色后仅展示该角色需关注的数据，例如财务总监会看到外协加工成本、供应链主管看到物料催交任务，突出权限控制效果。
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" defer></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

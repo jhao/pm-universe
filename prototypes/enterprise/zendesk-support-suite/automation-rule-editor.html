@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zendesk Support Suite · 自动化规则编辑器</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-page="automation-rule-editor" data-default-role="analyst">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">Zendesk Support Suite</div>
+        <div class="role-hint">编辑器示例展示规则配置流程，角色切换以查看权限差异。</div>
+        <nav data-menu></nav>
+      </aside>
+      <div class="main-area">
+        <header class="app-header">
+          <div>
+            <div class="breadcrumbs">自动化 · 配置示例</div>
+            <h1 class="page-title">自动化规则编辑器</h1>
+            <p class="page-subtitle" data-role-summary>
+              通过可视化步骤配置触发条件、动作与测试，演示自动化上线流程。
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="role-switcher" data-role-switcher></div>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="section" data-role-view="analyst,supervisor">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">规则配置步骤</h2>
+                <p class="section-subtitle">从触发条件到执行动作，展示标准配置流程。</p>
+              </div>
+              <a class="button" href="automation-performance.html">返回自动化成效中心</a>
+            </div>
+            <div class="timeline">
+              <div class="timeline-entry">
+                <h4>步骤 1 · 选择触发条件</h4>
+                <p>当工单主题包含“退款”且状态为「新建」。</p>
+              </div>
+              <div class="timeline-entry">
+                <h4>步骤 2 · 设置筛选</h4>
+                <p>客户类型 = 企业，满意度为空，渠道为邮件或聊天。</p>
+              </div>
+              <div class="timeline-entry">
+                <h4>步骤 3 · 定义动作</h4>
+                <p>添加标签 refund、指派至财务支持组、发送宏「退款流程」。</p>
+              </div>
+              <div class="timeline-entry">
+                <h4>步骤 4 · 测试与上线</h4>
+                <p>使用历史 20 个工单回放验证，命中率预估 84%。</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-role-view="agent">
+            <div class="role-locked">客服代表仅可查看已发布的自动化规则详情，无法编辑。</div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">业务说明</h2>
+                <p class="section-subtitle">核心界面后补充说明，帮助演示者串联场景。</p>
+              </div>
+            </div>
+            <div class="helper-text">
+              规则编辑器示例补充了自动化配置流程，与“自动化成效中心”形成闭环。演示者可先查看成效，再切换到本页展示配置细节，最后返回工单或渠道页面验证效果，确保角色切换与跨页面联动体验完整。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

@@ -93,6 +93,15 @@
         font-size: 14px;
       }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
     <header>
@@ -102,16 +111,17 @@
     <main>
       <section class="about">
         <h2>关于项目</h2>
-        <p>PM Universe 致力于为产品经理提供系统化的产品原型资料库，覆盖企业级与消费级标杆产品。</p>
-        <p>
-          项目仓库：<a href="https://github.com/haojin-dev/pm-universe" target="_blank" rel="noopener">https://github.com/haojin-dev/pm-universe</a><br />
-          作者主页：<a href="http://haoj.in" target="_blank" rel="noopener">http://haoj.in</a>
-        </p>
-        <p>发布到 GitHub Pages 后，即可通过此索引页快速跳转至任意原型页面。</p>
+        <p>PM Universe 致力于为产品经理提供系统化的产品原型资料库，每一个定制化软件公司的产品工程师或需求分析工程师都应该掌握的各系统业务功能原型和需求。</p>
       </section>
       <div id="catalog"></div>
     </main>
-    <footer>© 2025 PM Universe. 保留署名与共享协议。</footer>
+    <footer>
+      <p>© 2025 PM Universe. 保留署名与共享协议。</p>
+      <p>
+        项目仓库：<a href="https://github.com/haojin-dev/pm-universe" target="_blank" rel="noopener">https://github.com/haojin-dev/pm-universe</a><br />
+        作者主页：<a href="http://haoj.in" target="_blank" rel="noopener">http://haoj.in</a>
+      </p>
+    </footer>
     <script type="module">
       const container = document.getElementById('catalog');
       const pathSegments = window.location.pathname.split('/').filter(Boolean);

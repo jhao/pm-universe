@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Asana · 项目工作台</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <main class="layout">
+      <div class="top-bar">
+        <div>
+          <div class="breadcrumbs">Asana 原型 · 项目执行</div>
+          <h1>项目工作台</h1>
+          <p class="subtitle">以迭代为节奏的协同空间，支持项目经理调度、团队执行和高层监督。</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a class="ghost-button" href="index.html">返回概览</a>
+          <button class="primary-button">导出排期</button>
+        </div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">角色视角切换</h2>
+          <div class="role-switcher" data-role-switcher data-target="#workspace-role-panels">
+            <button data-role="manager">项目经理</button>
+            <button data-role="member">团队成员</button>
+            <button data-role="executive">项目赞助人</button>
+          </div>
+        </div>
+        <div class="role-panels" id="workspace-role-panels">
+          <div class="role-panel" data-role-panel="manager">
+            <h3>项目经理控制台</h3>
+            <p class="subtitle">通过动态排期、工作负载和风险提醒确保迭代按计划推进。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>迭代排期</h4>
+                <div class="view-toggle" data-view-toggle data-view-target="#iteration-views">
+                  <button data-view="timeline">时间线</button>
+                  <button data-view="capacity">工作负载</button>
+                </div>
+                <div id="iteration-views">
+                  <div data-view-panel="timeline">
+                    <div class="timeline">
+                      <div class="timeline-event">
+                        <strong>Sprint 24</strong>
+                        <span class="status-pill success">完成 85%</span>
+                        <p>剩余任务 6 个，其中 2 个存在依赖冲突。</p>
+                      </div>
+                      <div class="timeline-event">
+                        <strong>Sprint 25</strong>
+                        <span class="status-pill warning">排期冲突</span>
+                        <p>开发与数据团队资源冲突，已建议调整优先级。</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div data-view-panel="capacity" hidden>
+                    <div class="table-preview">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>成员</th>
+                            <th>计划工时</th>
+                            <th>实际负载</th>
+                            <th>备注</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>王静</td>
+                            <td>32h</td>
+                            <td>28h</td>
+                            <td><span class="status-pill success">正常</span></td>
+                          </tr>
+                          <tr>
+                            <td>陈立</td>
+                            <td>32h</td>
+                            <td>40h</td>
+                            <td><span class="status-pill warning">需减负</span></td>
+                          </tr>
+                          <tr>
+                            <td>刘薇</td>
+                            <td>24h</td>
+                            <td>20h</td>
+                            <td><span class="status-pill">可支援</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>风险与依赖</h4>
+                <ul class="feature-list">
+                  <li>上线审批等待法务确认，已触发提醒链路</li>
+                  <li>数据埋点脚本延迟，建议启用备选方案</li>
+                  <li>每日报表自动生成，标记阻塞任务</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>协同动作</h4>
+                <div class="quick-actions">
+                  <span class="quick-action">📅 调整里程碑</span>
+                  <span class="quick-action">👥 调整人力</span>
+                  <span class="quick-action">⚠️ 创建风险</span>
+                </div>
+                <p class="subtitle">使用模板一键同步至 Slack/邮件，保持沟通透明。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="member">
+            <h3>执行成员任务板</h3>
+            <p class="subtitle">关注自己负责的任务、依赖沟通和审批状态。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>我的任务列表</h4>
+                <div class="table-preview">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>任务</th>
+                        <th>状态</th>
+                        <th>截止</th>
+                        <th>下一步</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>完善交互稿</td>
+                        <td><span class="status-pill">进行中</span></td>
+                        <td>6月13日</td>
+                        <td>等待产品确认</td>
+                      </tr>
+                      <tr>
+                        <td>更新数据埋点</td>
+                        <td><span class="status-pill warning">阻塞</span></td>
+                        <td>6月14日</td>
+                        <td>等待后端合并</td>
+                      </tr>
+                      <tr>
+                        <td>站会记录整理</td>
+                        <td><span class="status-pill success">完成</span></td>
+                        <td>6月12日</td>
+                        <td>已同步 Slack</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>协作对话</h4>
+                <p>最近 24 小时沟通摘要。</p>
+                <ul class="feature-list">
+                  <li>产品经理在讨论串中澄清验收标准</li>
+                  <li>法务对审批流程追加附件要求</li>
+                  <li>AI 摘要助手生成会议纪要并创建行动项</li>
+                </ul>
+              </div>
+              <div class="view-card">
+                <h4>知识与支持</h4>
+                <p>自动推荐与当前任务相关的文档与专家。</p>
+                <ul class="feature-list">
+                  <li>《上线检查清单》文档</li>
+                  <li>联系：运营支持 - 李娜（在线）</li>
+                  <li>自助服务：FAQ &amp; 模板库</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-panel" data-role-panel="executive">
+            <h3>赞助人概览</h3>
+            <p class="subtitle">快速了解项目价值、预算消耗与关键风险。</p>
+            <div class="view-grid">
+              <div class="view-card">
+                <h4>价值里程碑</h4>
+                <div class="timeline">
+                  <div class="timeline-event">
+                    <strong>核心功能上线</strong>
+                    <span class="status-pill success">预计 6月18日</span>
+                    <p>上线后预计带来新增收入 120 万元 / 季。</p>
+                  </div>
+                  <div class="timeline-event">
+                    <strong>市场推广联动</strong>
+                    <span class="status-pill">6月28日</span>
+                    <p>跨部门活动准备就绪，等待设计交付。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>预算与资源</h4>
+                <div class="table-preview">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>项目项</th>
+                        <th>预算</th>
+                        <th>已用</th>
+                        <th>差异</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>外包设计</td>
+                        <td>¥180,000</td>
+                        <td>¥140,000</td>
+                        <td><span class="status-pill success">节省 22%</span></td>
+                      </tr>
+                      <tr>
+                        <td>推广预算</td>
+                        <td>¥260,000</td>
+                        <td>¥230,000</td>
+                        <td><span class="status-pill">按计划</span></td>
+                      </tr>
+                      <tr>
+                        <td>技术资源</td>
+                        <td>¥320,000</td>
+                        <td>¥315,000</td>
+                        <td><span class="status-pill warning">紧张</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="view-card">
+                <h4>决策建议</h4>
+                <ul class="feature-list">
+                  <li>批准追加 1 位前端资源支援 Sprint 25</li>
+                  <li>同步营销团队提前准备上线公告</li>
+                  <li>维持预算节奏，关注技术成本上升</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2 class="section-title">标准工作流</h2>
+          <span class="badge">模板驱动</span>
+        </div>
+        <div class="dual-column">
+          <div>
+            <h3>迭代启动流程</h3>
+            <div class="stepper">
+              <div class="step">
+                <strong>1. 套用模板</strong>
+                <p>选择“产品功能上线”模板，自动生成任务结构与角色权限。</p>
+              </div>
+              <div class="step">
+                <strong>2. 调整排期</strong>
+                <p>在时间线视图中拖拽更新里程碑，与目标自动联动。</p>
+              </div>
+              <div class="step">
+                <strong>3. 发布协作节奏</strong>
+                <p>自动同步站会、复盘会议至团队日历与 Slack 频道。</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>完成与复盘</h3>
+            <div class="stepper">
+              <div class="step">
+                <strong>1. 交付检查</strong>
+                <p>自动触发 QA、法务、运营的检查清单。</p>
+              </div>
+              <div class="step">
+                <strong>2. 数据回收</strong>
+                <p>发布后 48 小时自动拉取核心指标并生成仪表盘。</p>
+              </div>
+              <div class="step">
+                <strong>3. 知识沉淀</strong>
+                <p>AI 总结复盘亮点与改进项，写入知识库并关联后续项目。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>页面用于展示 Asana 项目执行场景的端到端能力。</footer>
+    <script type="module" src="scripts.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>

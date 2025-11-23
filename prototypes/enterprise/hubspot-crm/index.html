@@ -2,83 +2,2006 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>HubSpot CRM 原型概览</title>
+    <title>HubSpot CRM 多角色原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        --bg: #f4f6fb;
+        --panel: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --accent: #2563eb;
+        --accent-soft: rgba(37, 99, 235, 0.08);
+        --shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 248px;
+        background: var(--panel);
+        border-right: 1px solid var(--border);
+        box-shadow: 8px 0 32px rgba(15, 23, 42, 0.04);
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ff7a59, #ffb75c);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .role-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .role-select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #f8fafc;
+        font-size: 14px;
+      }
+      .menu-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .menu-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
+      .menu-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: transparent;
+        font-size: 14px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+      .menu-button:hover,
+      .menu-button:focus {
+        background: var(--accent-soft);
+        border-color: rgba(37, 99, 235, 0.2);
+        outline: none;
+      }
+      .menu-button-active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+      }
+      .menu-button span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .layout-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 36px 0 36px;
+      }
+      .topbar .quick-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+        font-size: 12px;
+      }
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--panel);
+        border-radius: 999px;
+        padding: 8px 16px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      }
+      .search-box input {
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background: transparent;
+        width: 220px;
+      }
+      .content-area {
+        padding: 24px 36px 48px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .page-header h2 {
+        margin: 0;
+        font-size: 28px;
+      }
+      .page-header p {
+        margin: 6px 0 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .page-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .btn {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.18s ease;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 14px 24px rgba(37, 99, 235, 0.28);
+      }
+      .btn-secondary {
+        background: #e0e7ff;
+        color: #1e3a8a;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+      .panel {
+        background: var(--panel);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+      }
+      .panel h3 {
+        margin: 0 0 12px 0;
+        font-size: 18px;
+      }
+      .metric {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .metric strong {
+        font-size: 22px;
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .table th,
+      .table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .table tbody tr:hover {
+        background: rgba(15, 23, 42, 0.04);
+        cursor: pointer;
+      }
+      .kanban {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .kanban-column {
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 18px;
+        padding: 16px;
+      }
+      .kanban-column h4 {
+        margin: 0 0 12px 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+      .kanban-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 14px;
+        margin-bottom: 12px;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+      }
+      .kanban-card strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+      .chart-placeholder {
+        height: 200px;
+        border-radius: 16px;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(37, 99, 235, 0.1),
+          rgba(37, 99, 235, 0.1) 12px,
+          rgba(37, 99, 235, 0.06) 12px,
+          rgba(37, 99, 235, 0.06) 24px
+        );
+        display: grid;
+        place-items: center;
+        color: #1d4ed8;
+        font-weight: 600;
+      }
+      .summary-card {
+        background: rgba(37, 99, 235, 0.1);
+        border: 1px dashed rgba(37, 99, 235, 0.4);
+        border-radius: 16px;
+        padding: 16px;
+      }
+      .summary-card h4 {
+        margin: 0 0 8px 0;
+        font-size: 15px;
+      }
+      .page-footnote {
+        margin-top: 12px;
+        padding: 16px 20px;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.05);
+        color: #1f2937;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .badge {
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: rgba(15, 23, 42, 0.08);
+        color: var(--muted);
+      }
+      .status-positive {
+        color: #16a34a;
+      }
+      .status-warning {
+        color: #d97706;
+      }
+      .status-negative {
+        color: #dc2626;
+      }
+      .timeline {
+        display: grid;
+        gap: 12px;
+      }
+      .timeline-item {
+        display: grid;
+        gap: 4px;
+        padding-bottom: 12px;
+        border-bottom: 1px dashed rgba(148, 163, 184, 0.4);
+      }
+      .timeline-item:last-child {
+        border-bottom: none;
+      }
+      .link-inline {
+        color: #2563eb;
+        cursor: pointer;
+        text-decoration: underline;
+        font-weight: 500;
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>HubSpot CRM 原型</h1>
-      <p class="tagline">面向增长团队的营销、销售与服务一体化平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>中小企业市场、销售、客服团队</p>
-        <p><strong>核心痛点：</strong>缺乏统一的客户数据与自动化工具</p>
-        <p><strong>价值主张：</strong>提供免费的 CRM 基座并拓展 Marketing/Sales/Service Hub</p>
-      </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>市场团队进行内容营销与线索获取</li><li>销售跟进潜客并管理管道</li><li>客服通过知识库与工单工具服务客户</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>CRM 与联系人</h3>
-              <p class="goal">功能目标：建立统一的客户数据库</p>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div>
+          <div class="brand">
+            <div class="brand-logo">HS</div>
+            <div>
+              <h1>HubSpot CRM</h1>
+              <span class="badge">全角色体验版</span>
+            </div>
+          </div>
+        </div>
+        <div class="role-meta">
+          <span>当前角色</span>
+          <select id="role-select" class="role-select"></select>
+          <small>切换角色后，左侧功能会自动按岗位重构。</small>
+        </div>
+        <nav id="role-menu" class="menu-group"></nav>
+      </aside>
+      <main class="layout-main">
+        <header class="topbar">
+          <div>
+            <div class="chip">智能增长引擎</div>
+            <h2 style="margin: 8px 0 0 0; font-size: 24px">统一客户数据 + 自动化触达</h2>
+          </div>
+          <div class="quick-actions">
+            <div class="search-box">
+              🔍
+              <input type="search" placeholder="查找联系人、公司或活动" />
+            </div>
+            <button class="btn btn-secondary" data-navigate="global-notifications">🔔 通知中心</button>
+            <button class="btn btn-primary" data-navigate="workspace-settings">⚙️ 工作区设置</button>
+          </div>
+        </header>
+        <section id="content" class="content-area"></section>
+      </main>
+    </div>
+    <script>
+      const roles = {
+        marketing: {
+          label: '市场经理 / Marketing Manager',
+          menuTitle: '营销增长',
+          menu: [
+            { id: 'marketing-dashboard', label: '营销仪表盘', icon: '📈' },
+            { id: 'campaign-planner', label: '活动管理', icon: '🎯' },
+            { id: 'lead-nurture-studio', label: '线索培育剧本', icon: '🧠' },
+            { id: 'content-center', label: '内容资产中心', icon: '🗂️' }
+          ]
+        },
+        sales: {
+          label: '销售总监 / Sales Director',
+          menuTitle: '销售执行',
+          menu: [
+            { id: 'pipeline-overview', label: '销售管道总览', icon: '🚀' },
+            { id: 'deal-room', label: '交易协同室', icon: '🤝' },
+            { id: 'sequence-automation', label: '跟进自动化', icon: '⏱️' },
+            { id: 'quote-workbench', label: '报价工作台', icon: '💼' }
+          ]
+        },
+        service: {
+          label: '客服主管 / Service Lead',
+          menuTitle: '客户成功',
+          menu: [
+            { id: 'service-dashboard', label: '服务运营仪表盘', icon: '🛟' },
+            { id: 'ticket-queue', label: '智能工单中心', icon: '🎫' },
+            { id: 'knowledge-base', label: '知识库搭建', icon: '📚' },
+            { id: 'csat-insights', label: '满意度洞察', icon: '💬' }
+          ]
+        },
+        admin: {
+          label: '运营管理员 / Operations Admin',
+          menuTitle: '平台配置',
+          menu: [
+            { id: 'global-notifications', label: '通知与协作', icon: '🔔' },
+            { id: 'workspace-settings', label: '工作区设置', icon: '⚙️' },
+            { id: 'data-governance', label: '数据治理', icon: '🧩' },
+            { id: 'integration-hub', label: '集成中心', icon: '🔗' }
+          ]
+        }
+      };
+
+      const pages = {
+        'marketing-dashboard': {
+          title: '营销仪表盘',
+          subtitle: '实时监控线索漏斗、渠道贡献与自动化触发状态。',
+          actions: [
+            { label: '创建新活动', target: 'campaign-planner' },
+            { label: '查看渠道报告', target: 'marketing-channel-report' }
+          ],
+          core: `
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>本周新增线索</h3>
+                <div class="metric"><span>MQL</span><strong>278</strong></div>
+                <div class="metric"><span>SQL</span><strong>96</strong></div>
+                <div class="chart-placeholder" data-navigate="lead-timeline">漏斗趋势</div>
+              </div>
+              <div class="panel">
+                <h3>渠道贡献度</h3>
+                <div class="chart-placeholder" data-navigate="marketing-channel-report">互动热力</div>
+              </div>
+              <div class="panel">
+                <h3>自动化健康度</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>欢迎旅程</strong>
+                    <span class="status-positive">活跃 · 28% 转化</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>线索评分提醒</strong>
+                    <span class="status-warning">需优化 · 触达率 42%</span>
+                    <span class="link-inline" data-navigate="lead-nurture-studio">查看剧本</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>再营销广告同步</strong>
+                    <span>预算使用 68%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>渠道明细</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>渠道</th>
+                    <th>线索数</th>
+                    <th>转化率</th>
+                    <th>线索质量</th>
+                    <th>趋势</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-navigate="campaign-planner">
+                    <td>内容营销</td>
+                    <td>142</td>
+                    <td>12.4%</td>
+                    <td><span class="status-positive">A</span></td>
+                    <td>↗︎</td>
+                  </tr>
+                  <tr data-navigate="paid-media-drilldown">
+                    <td>付费广告</td>
+                    <td>86</td>
+                    <td>7.2%</td>
+                    <td>B</td>
+                    <td>→</td>
+                  </tr>
+                  <tr data-navigate="webinar-performance">
+                    <td>线上活动</td>
+                    <td>50</td>
+                    <td>19.6%</td>
+                    <td><span class="status-positive">A+</span></td>
+                    <td>↗︎</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: '用于周会复盘的核心仪表盘，聚焦线索漏斗、渠道效果与自动化旅程健康情况。'
+        },
+        'campaign-planner': {
+          title: '活动管理中心',
+          subtitle: '规划多渠道营销活动，统一协作、预算与投放节奏。',
+          actions: [
+            { label: '创建活动模板', target: 'campaign-template-editor' },
+            { label: '生成投放预算', target: 'paid-media-drilldown' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>活动日历</h3>
+                <div class="chart-placeholder" data-navigate="campaign-calendar">活动排期</div>
+                <div class="summary-card">
+                  <h4>即将上线</h4>
+                  <ul>
+                    <li>AI 主题 Webinar · 预计 480 报名</li>
+                    <li>线索培育邮件 · 4 封序列</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="panel">
+                <h3>活动列表</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>名称</th>
+                      <th>负责人</th>
+                      <th>预算</th>
+                      <th>阶段</th>
+                      <th>ROI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-navigate="campaign-detail-webinar">
+                      <td>生成式 AI 体验周</td>
+                      <td>王欣</td>
+                      <td>¥120,000</td>
+                      <td><span class="badge">执行中</span></td>
+                      <td class="status-positive">132%</td>
+                    </tr>
+                    <tr data-navigate="campaign-detail-abm">
+                      <td>ABM 顶级客群触达</td>
+                      <td>陈立</td>
+                      <td>¥80,000</td>
+                      <td><span class="badge">设计中</span></td>
+                      <td class="status-warning">待定</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          footnote: '覆盖活动生命周期管理：策略评审、预算审批、节奏执行与实时回传。'
+        },
+        'lead-nurture-studio': {
+          title: '线索培育剧本',
+          subtitle: '基于线索评分和行为触点，编排邮件、短信与广告的自动旅程。',
+          actions: [
+            { label: '优化评分模型', target: 'lead-scoring-lab' },
+            { label: '预览旅程', target: 'lead-journey-preview' }
+          ],
+          core: `
+            <div class="panel">
+              <h3>旅程画布</h3>
+              <div class="chart-placeholder" style="height: 280px" data-navigate="lead-journey-preview">可视化编排</div>
+            </div>
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>触发条件</h3>
+                <ul>
+                  <li>线索评分 ≥ 60</li>
+                  <li>填写官网试用申请</li>
+                  <li>近 48 小时打开邮件</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>旅程节点</h3>
+                <ol>
+                  <li>发送价值介绍邮件</li>
+                  <li>等待 2 天 · 条件分支</li>
+                  <li>触发销售提醒或推送案例库</li>
+                </ol>
+              </div>
+              <div class="panel">
+                <h3>绩效摘要</h3>
+                <div class="metric"><span>打开率</span><strong>48%</strong></div>
+                <div class="metric"><span>点击率</span><strong>12%</strong></div>
+                <div class="metric"><span>SQL 提升</span><strong class="status-positive">+18%</strong></div>
+              </div>
+            </div>
+          `,
+          footnote: '旅程自动化帮助市场与销售协同，以分支逻辑提升高意向线索的响应速度。'
+        },
+        'content-center': {
+          title: '内容资产中心',
+          subtitle: '统一管理博客、白皮书、表单等资产，支持按渠道授权。',
+          actions: [
+            { label: '上传新资产', target: 'content-upload-flow' },
+            { label: '查看表现', target: 'content-performance' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>资产标签库</h3>
+                <div class="chart-placeholder" style="height: 160px">标签矩阵</div>
+                <div class="summary-card">
+                  <h4>热门内容</h4>
+                  <p>《AI CRM 白皮书》 · 下载 1,280 次</p>
+                  <p class="link-inline" data-navigate="content-performance">查看转化路径 →</p>
+                </div>
+              </div>
+              <div class="panel">
+                <h3>资产列表</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>名称</th>
+                      <th>类型</th>
+                      <th>状态</th>
+                      <th>访问量</th>
+                      <th>最近更新</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-navigate="content-detail-blog">
+                      <td>入站营销指南</td>
+                      <td>博客</td>
+                      <td>已发布</td>
+                      <td>6,420</td>
+                      <td>昨天</td>
+                    </tr>
+                    <tr data-navigate="content-detail-ebook">
+                      <td>SaaS 定价白皮书</td>
+                      <td>电子书</td>
+                      <td>草稿</td>
+                      <td>840</td>
+                      <td>3 天前</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          footnote: '支持跨团队协作的资产仓库，确保内容审批、授权与绩效回传闭环。'
+        },
+        'pipeline-overview': {
+          title: '销售管道总览',
+          subtitle: '集中展示各阶段交易额、预测达成与团队效率。',
+          actions: [
+            { label: '新建交易', target: 'deal-room' },
+            { label: '导出预测', target: 'forecast-export' }
+          ],
+          core: `
+            <div class="kanban">
+              <div class="kanban-column">
+                <h4>线索 (MQL)</h4>
+                <div class="kanban-card" data-navigate="deal-room"><strong>Acme Ltd</strong>预计 ¥180k · 来自营销自动化</div>
+                <div class="kanban-card" data-navigate="deal-room"><strong>CloudWave</strong>预计 ¥90k · 演示预约</div>
+              </div>
+              <div class="kanban-column">
+                <h4>已呈现</h4>
+                <div class="kanban-card" data-navigate="deal-room"><strong>Nova Retail</strong>预计 ¥120k · Demo 完成</div>
+              </div>
+              <div class="kanban-column">
+                <h4>谈判</h4>
+                <div class="kanban-card" data-navigate="deal-room"><strong>Insight BI</strong>预计 ¥240k · 正在对齐价格</div>
+              </div>
+              <div class="kanban-column">
+                <h4>签约</h4>
+                <div class="kanban-card" data-navigate="deal-room"><strong>Zen Logistics</strong>预计 ¥320k · 法务审核</div>
+              </div>
+            </div>
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>预测达成</h3>
+                <div class="chart-placeholder" data-navigate="forecast-export">季度趋势</div>
+              </div>
+              <div class="panel">
+                <h3>团队活动</h3>
+                <ul>
+                  <li>拜访 36 次</li>
+                  <li>邮件 420 封</li>
+                  <li>电话 198 通</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>本周提醒</h3>
+                <p class="link-inline" data-navigate="sequence-automation">查看自动跟进任务 →</p>
+                <p>高优先级交易 4 个，预计总额 ¥560k。</p>
+              </div>
+            </div>
+          `,
+          footnote: '销售早会核心看板，用于跟踪各阶段交易进展、预测准确性与团队动作。'
+        },
+        'deal-room': {
+          title: '交易协同室',
+          subtitle: '集中展示交易背景、邮件往来、报价和协作任务。',
+          actions: [
+            { label: '更新交易阶段', target: 'pipeline-overview' },
+            { label: '发送报价', target: 'quote-workbench' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>交易摘要</h3>
+                <ul>
+                  <li>客户：Acme Ltd</li>
+                  <li>金额：¥180,000</li>
+                  <li>阶段：谈判</li>
+                  <li>关闭概率：65%</li>
+                </ul>
+                <div class="summary-card">
+                  <h4>协作清单</h4>
+                  <ul>
+                    <li>等待法务审核合同</li>
+                    <li>准备实施方案 Demo</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="panel">
+                <h3>互动时间线</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>昨天 · 销售发送报价草稿</strong>
+                    <span>客户打开 2 次 · 点击价格页</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2 天前 · 市场触发案例邮件</strong>
+                    <span>点击率 32%</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>4 天前 · 客户提交需求表单</strong>
+                    <span class="link-inline" data-navigate="content-center">查看提交内容</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>报价与审批</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>版本</th>
+                    <th>总额</th>
+                    <th>折扣</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>报价 V3</td>
+                    <td>¥180,000</td>
+                    <td>10%</td>
+                    <td><span class="status-warning">待审批</span></td>
+                    <td><span class="link-inline" data-navigate="quote-workbench">查看</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: '面向销售跨职能协作的实时页面，聚合财务、法务、客服等信息流。'
+        },
+        'sequence-automation': {
+          title: '跟进自动化序列',
+          subtitle: '监控邮件、电话与任务的自动化编排，及时干预高价值线索。',
+          actions: [
+            { label: '新建序列', target: 'sequence-builder' },
+            { label: '查看效果', target: 'sequence-analytics' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>序列列表</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>名称</th>
+                      <th>线索数</th>
+                      <th>完成率</th>
+                      <th>回复率</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-navigate="sequence-analytics">
+                      <td>试用激活</td>
+                      <td>120</td>
+                      <td>86%</td>
+                      <td class="status-positive">24%</td>
+                    </tr>
+                    <tr data-navigate="sequence-builder">
+                      <td>冷启动外呼</td>
+                      <td>80</td>
+                      <td>62%</td>
+                      <td>12%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="panel">
+                <h3>实时提醒</h3>
+                <ul>
+                  <li>5 条高评分线索未完成首轮电话</li>
+                  <li>自动暂停序列：客户回复「考虑中」</li>
+                  <li class="link-inline" data-navigate="deal-room">转入交易协同室 →</li>
+                </ul>
+              </div>
+            </div>
+          `,
+          footnote: '自动化驱动销售动作，确保线索在 SLA 内得到响应并沉淀最佳实践。'
+        },
+        'quote-workbench': {
+          title: '报价工作台',
+          subtitle: '配置产品包、折扣策略与审批流，确保快速准确发出报价。',
+          actions: [
+            { label: '导出 PDF', target: 'quote-export' },
+            { label: '配置审批', target: 'workspace-settings' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>产品组合</h3>
+                <ul>
+                  <li>CRM Pro 套餐 · ¥120,000</li>
+                  <li>Marketing Hub Add-on · ¥36,000</li>
+                  <li>实施服务 · ¥24,000</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>审批进度</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>销售经理</strong>
+                    <span class="status-positive">已通过</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>财务</strong>
+                    <span class="status-warning">待审</span>
+                    <span class="link-inline" data-navigate="workspace-settings">调整折扣权限</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>报价预览</h3>
+              <div class="chart-placeholder" style="height: 220px" data-navigate="quote-export">PDF 预览</div>
+            </div>
+          `,
+          footnote: '连接产品定价、审批与签署流程，帮助销售快速输出专业报价方案。'
+        },
+        'service-dashboard': {
+          title: '服务运营仪表盘',
+          subtitle: '监测服务渠道 SLA、工单趋势和机器人分流效率。',
+          actions: [
+            { label: '查看队列', target: 'ticket-queue' },
+            { label: '配置 SLA', target: 'workspace-settings' }
+          ],
+          core: `
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>SLA 完成率</h3>
+                <div class="metric"><span>响应 SLA</span><strong class="status-positive">92%</strong></div>
+                <div class="metric"><span>解决 SLA</span><strong>84%</strong></div>
+                <div class="chart-placeholder" data-navigate="sla-trend">趋势</div>
+              </div>
+              <div class="panel">
+                <h3>渠道分布</h3>
+                <div class="chart-placeholder" data-navigate="channel-distribution">渠道对比</div>
+              </div>
+              <div class="panel">
+                <h3>自动化分流</h3>
+                <p>机器人解决率 38%</p>
+                <p>高优先级工单 12 个</p>
+                <p class="link-inline" data-navigate="ticket-queue">查看详情</p>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>客户心声</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>来源</th>
+                    <th>评分</th>
+                    <th>主题</th>
+                    <th>处理人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-navigate="ticket-queue">
+                    <td>邮箱</td>
+                    <td>4.6</td>
+                    <td>产品集成咨询</td>
+                    <td>王悦</td>
+                  </tr>
+                  <tr data-navigate="csat-insights">
+                    <td>应用内</td>
+                    <td>3.8</td>
+                    <td>响应速度偏慢</td>
+                    <td>智能助手</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: '客服运营的总控台，聚焦 SLA、渠道与客户满意度的即时反馈。'
+        },
+        'ticket-queue': {
+          title: '智能工单中心',
+          subtitle: '按优先级与技能组分配工单，实时协作与知识推荐。',
+          actions: [
+            { label: '新建工单', target: 'ticket-create' },
+            { label: '分配队列', target: 'workspace-settings' }
+          ],
+          core: `
+            <div class="panel">
+              <h3>工单视图</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>主题</th>
+                    <th>优先级</th>
+                    <th>当前处理人</th>
+                    <th>SLA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-navigate="ticket-detail-1024">
+                    <td>1024</td>
+                    <td>API 集成失败</td>
+                    <td><span class="status-negative">高</span></td>
+                    <td>刘畅</td>
+                    <td>剩余 1h</td>
+                  </tr>
+                  <tr data-navigate="ticket-detail-1025">
+                    <td>1025</td>
+                    <td>账单重复扣费</td>
+                    <td><span class="status-warning">中</span></td>
+                    <td>王悦</td>
+                    <td>剩余 4h</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>推荐知识</h3>
+                <ul>
+                  <li class="link-inline" data-navigate="knowledge-base">Webhook 常见错误排查</li>
+                  <li>账单争议处理流程</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>协作区</h3>
+                <p>标记 @产品团队 查看 API 日志</p>
+                <p>发送状态给客户</p>
+              </div>
+            </div>
+          `,
+          footnote: '智能分配与知识推荐帮助客服快速响应关键工单，保障 SLA 达成。'
+        },
+        'knowledge-base': {
+          title: '知识库搭建',
+          subtitle: '维护自助文档、视频教程与机器人话术，驱动客户自助率。',
+          actions: [
+            { label: '发布新文章', target: 'kb-editor' },
+            { label: '查看评价', target: 'csat-insights' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>分类结构</h3>
+                <div class="chart-placeholder" style="height: 180px">知识树</div>
+                <div class="summary-card">
+                  <h4>机器人推荐热度</h4>
+                  <p>「集成指南」连续 3 天热度第一</p>
+                </div>
+              </div>
+              <div class="panel">
+                <h3>文章列表</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>标题</th>
+                      <th>评分</th>
+                      <th>发布状态</th>
+                      <th>更新人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-navigate="kb-editor">
+                      <td>如何连接第三方 CRM</td>
+                      <td>4.8</td>
+                      <td>已发布</td>
+                      <td>刘畅</td>
+                    </tr>
+                    <tr data-navigate="kb-translation">
+                      <td>账单问题 FAQ</td>
+                      <td>4.1</td>
+                      <td>翻译中</td>
+                      <td>王悦</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `,
+          footnote: '构建多语言自助内容，提升客户自助解决率并降低人工工单量。'
+        },
+        'csat-insights': {
+          title: '满意度洞察',
+          subtitle: '汇总 CSAT/NPS 反馈，定位关键痛点并触发改善任务。',
+          actions: [
+            { label: '发起回访', target: 'ticket-queue' },
+            { label: '生成报告', target: 'csat-export' }
+          ],
+          core: `
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>CSAT 趋势</h3>
+                <div class="chart-placeholder" data-navigate="csat-export">满意度趋势</div>
+              </div>
+              <div class="panel">
+                <h3>NPS 反馈</h3>
+                <p>推荐者 46%</p>
+                <p>中立者 32%</p>
+                <p>贬低者 22%</p>
+              </div>
+              <div class="panel">
+                <h3>整改任务</h3>
+                <ul>
+                  <li class="link-inline" data-navigate="ticket-queue">优化账单处理 SLA</li>
+                  <li>增强机器人引导话术</li>
+                </ul>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>客户原声</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>客户 A</strong>
+                  <span>「客服响应快，希望有更多使用案例」</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>客户 B</strong>
+                  <span class="link-inline" data-navigate="content-center">「希望提供自动化教程」</span>
+                </div>
+              </div>
+            </div>
+          `,
+          footnote: '实时洞察客户满意度，驱动跨团队协作的改进闭环。'
+        },
+        'global-notifications': {
+          title: '通知与协作中心',
+          subtitle: '整合任务提醒、审批与系统广播，保证协作不遗漏。',
+          actions: [
+            { label: '设置偏好', target: 'workspace-settings' },
+            { label: '查看日志', target: 'audit-log' }
+          ],
+          core: `
+            <div class="panel">
+              <h3>待处理事项</h3>
               <ul>
-                <li>联系人、公司、交易与活动时间线</li><li>表单、聊天与邮件同步</li><li>属性管理、分段与自动化触发</li>
+                <li data-navigate="quote-workbench">审批报价 V3 · 来自销售部</li>
+                <li data-navigate="campaign-planner">活动预算调额申请</li>
+                <li data-navigate="ticket-queue">高优先级工单提醒</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>Marketing Hub</h3>
-              <p class="goal">功能目标：驱动入站营销与线索培育</p>
+            </div>
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>通知偏好</h3>
+                <div class="summary-card">
+                  <h4>渠道</h4>
+                  <p>邮件、应用内、Slack 集成</p>
+                  <p class="link-inline" data-navigate="workspace-settings">调整规则 →</p>
+                </div>
+              </div>
+              <div class="panel">
+                <h3>系统广播</h3>
+                <p>2024-07-01 · 新增 AI 旅程功能</p>
+                <p>2024-06-25 · SLA 配置项升级</p>
+              </div>
+            </div>
+          `,
+          footnote: '为所有角色提供统一的待办入口，保障关键通知与审批流畅通。'
+        },
+        'workspace-settings': {
+          title: '工作区设置',
+          subtitle: '配置团队、权限、SLA 与集成策略，保障平台治理。',
+          actions: [
+            { label: '创建用户', target: 'role-permission-matrix' },
+            { label: '配置 SLA', target: 'sla-trend' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>角色权限矩阵</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>角色</th>
+                      <th>营销</th>
+                      <th>销售</th>
+                      <th>服务</th>
+                      <th>管理员</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>市场经理</td>
+                      <td>读写</td>
+                      <td>只读</td>
+                      <td>只读</td>
+                      <td>无</td>
+                    </tr>
+                    <tr>
+                      <td>销售总监</td>
+                      <td>只读</td>
+                      <td>读写</td>
+                      <td>只读</td>
+                      <td>审批</td>
+                    </tr>
+                    <tr>
+                      <td>客服主管</td>
+                      <td>只读</td>
+                      <td>只读</td>
+                      <td>读写</td>
+                      <td>审批</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="panel">
+                <h3>集成状态</h3>
+                <ul>
+                  <li class="status-positive">Salesforce 同步正常</li>
+                  <li>Slack 消息推送 · 检测到延迟</li>
+                  <li class="link-inline" data-navigate="integration-hub">打开集成中心 →</li>
+                </ul>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>治理看板</h3>
+              <div class="chart-placeholder" data-navigate="audit-log">审计趋势</div>
+            </div>
+          `,
+          footnote: '平台管理员的配置中心，统一管理角色权限、集成连接与治理策略。'
+        },
+        'data-governance': {
+          title: '数据治理中心',
+          subtitle: '管理字段、同步策略与合规规则，保持数据一致性。',
+          actions: [
+            { label: '字段字典', target: 'field-dictionary' },
+            { label: '查看审计', target: 'audit-log' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>字段控制</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>对象</th>
+                      <th>字段</th>
+                      <th>类型</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>联系人</td>
+                      <td>行业</td>
+                      <td>下拉</td>
+                      <td>锁定</td>
+                    </tr>
+                    <tr>
+                      <td>公司</td>
+                      <td> ARR</td>
+                      <td>数值</td>
+                      <td>校验中</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="panel">
+                <h3>合规规则</h3>
+                <ul>
+                  <li>GDPR · 自动匿名化闲置线索</li>
+                  <li>数据驻留：上海节点</li>
+                  <li class="link-inline" data-navigate="audit-log">查看最近审计</li>
+                </ul>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>数据健康评分</h3>
+              <div class="chart-placeholder">重复率 1.8%</div>
+            </div>
+          `,
+          footnote: '统一数据字典与合规策略，确保多团队协作的客户数据准确可控。'
+        },
+        'integration-hub': {
+          title: '集成中心',
+          subtitle: '集中管理第三方应用、数据同步与触发规则。',
+          actions: [
+            { label: '添加集成', target: 'integration-marketplace' },
+            { label: '查看同步日志', target: 'audit-log' }
+          ],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>已连接应用</h3>
+                <ul>
+                  <li>Salesforce · 双向同步</li>
+                  <li>Slack · 通知与指令</li>
+                  <li>Zendesk · 工单回传</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>同步状态</h3>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>15:20 Salesforce</strong>
+                    <span class="status-positive">同步成功</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>15:05 Slack</strong>
+                    <span class="status-warning">延迟 · 重试中</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>触发规则</h3>
               <ul>
-                <li>内容管理、Landing Page 与博客</li><li>邮件自动化、A/B 测试与广告管理</li><li>线索评分与转化报告</li>
+                <li>新建高意向线索 → 通知销售群</li>
+                <li>合同签署完成 → 推送 ERP</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>Sales Hub</h3>
-              <p class="goal">功能目标：提升销售效率</p>
+            </div>
+          `,
+          footnote: '统一集成编排平台，确保跨系统数据和流程实时同步。'
+        },
+        'marketing-channel-report': {
+          title: '渠道贡献报告',
+          subtitle: '评估各渠道带来的线索、转化与收入贡献。',
+          actions: [
+            { label: '返回仪表盘', target: 'marketing-dashboard' },
+            { label: '导出报告', target: 'channel-export' }
+          ],
+          core: `
+            <div class="panel">
+              <h3>渠道矩阵</h3>
+              <div class="chart-placeholder" style="height: 260px">多维分析</div>
+            </div>
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>内容营销</h3>
+                <p>MQL 142 · 转化率 12.4%</p>
+              </div>
+              <div class="panel">
+                <h3>付费广告</h3>
+                <p>MQL 86 · 转化率 7.2%</p>
+              </div>
+              <div class="panel">
+                <h3>线上活动</h3>
+                <p>MQL 50 · 转化率 19.6%</p>
+              </div>
+            </div>
+          `,
+          footnote: '用于渠道优化与预算调配的细分分析页面，可直接返回仪表盘或导出。'
+        },
+        'lead-timeline': {
+          title: '漏斗趋势分析',
+          subtitle: '追踪不同阶段线索在时间维度的变化趋势。',
+          actions: [{ label: '返回仪表盘', target: 'marketing-dashboard' }],
+          core: `
+            <div class="panel">
+              <h3>阶段转化</h3>
+              <div class="chart-placeholder" style="height: 280px">阶段曲线</div>
+            </div>
+            <div class="panel">
+              <h3>关键洞察</h3>
               <ul>
-                <li>管道管理、交易阶段</li><li>序列、任务与会议排程</li><li>报价单与电子签名</li>
+                <li>MQL 转 SQL 时间缩短 1.2 天</li>
+                <li>需关注试用申请转化率波动</li>
               </ul>
-            </section>
-            
-            <section class="module">
-              <h3>Service Hub</h3>
-              <p class="goal">功能目标：提升客户满意度</p>
+            </div>
+          `,
+          footnote: '帮助市场快速定位漏斗瓶颈并触发跟进动作。'
+        },
+        'paid-media-drilldown': {
+          title: '付费媒体明细',
+          subtitle: '拆解广告活动的消耗、线索与转化成本。',
+          actions: [{ label: '生成预算建议', target: 'campaign-planner' }],
+          core: `
+            <div class="panel">
+              <h3>渠道表现</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>渠道</th>
+                    <th>花费</th>
+                    <th>线索</th>
+                    <th>CPL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Google Ads</td>
+                    <td>¥36,000</td>
+                    <td>32</td>
+                    <td>¥1,125</td>
+                  </tr>
+                  <tr>
+                    <td>LinkedIn</td>
+                    <td>¥24,000</td>
+                    <td>28</td>
+                    <td>¥857</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: '支持广告投放策略复盘，及时调整预算与投放组合。'
+        },
+        'webinar-performance': {
+          title: '线上活动表现',
+          subtitle: '分析 Webinar 的报名、参与与后续转化。',
+          actions: [{ label: '返回活动管理', target: 'campaign-planner' }],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>参与漏斗</h3>
+                <div class="chart-placeholder" style="height: 240px">报名 → 出席 → SQL</div>
+              </div>
+              <div class="panel">
+                <h3>互动看板</h3>
+                <ul>
+                  <li>问答互动 58 次</li>
+                  <li>Demo 预约 24 次</li>
+                </ul>
+              </div>
+            </div>
+          `,
+          footnote: '用于复盘线上活动的转化链路和互动深度。'
+        },
+        'campaign-detail-webinar': {
+          title: '活动详情 · 生成式 AI 体验周',
+          subtitle: '查看活动触达、报名与执行排期。',
+          actions: [{ label: '编辑活动', target: 'campaign-template-editor' }],
+          core: `
+            <div class="panel">
+              <h3>执行概览</h3>
               <ul>
-                <li>工单管理与 SLA</li><li>知识库与客户门户</li><li>反馈调查与客服自动化</li>
+                <li>覆盖 15,800 人</li>
+                <li>报名 820 · 出席 520</li>
+                <li>影响交易额 ¥640,000</li>
               </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>线索转化率与营销贡献</li><li>销售周期与赢单率</li><li>客户满意度与续约率</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+            </div>
+            <div class="panel">
+              <h3>触点时间线</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>T-7 天</strong>
+                  <span>邮件邀请 · 打开率 46%</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>活动当天</strong>
+                  <span>直播互动 · 参会峰值 520</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>T+1 天</strong>
+                  <span class="link-inline" data-navigate="lead-nurture-studio">自动化跟进启动</span>
+                </div>
+              </div>
+            </div>
+          `,
+          footnote: '活动详情页面聚合了执行指标和后续动作联动情况。'
+        },
+        'campaign-detail-abm': {
+          title: '活动详情 · ABM 顶级客群',
+          subtitle: '聚焦关键账户的个性化触达策略。',
+          actions: [{ label: '分配销售', target: 'pipeline-overview' }],
+          core: `
+            <div class="panel">
+              <h3>账户列表</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>公司</th>
+                    <th>行业</th>
+                    <th>阶段</th>
+                    <th>下一步</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Insight BI</td>
+                    <td>软件</td>
+                    <td>评估</td>
+                    <td>安排技术交流</td>
+                  </tr>
+                  <tr>
+                    <td>Zen Logistics</td>
+                    <td>物流</td>
+                    <td>谈判</td>
+                    <td>报价优化</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: 'ABM 活动通过账户级洞察支撑销售策略执行。'
+        },
+        'campaign-template-editor': {
+          title: '活动模板编辑器',
+          subtitle: '拖拽搭建活动流程并同步跨团队协作。',
+          actions: [{ label: '返回活动', target: 'campaign-planner' }],
+          core: `
+            <div class="panel">
+              <h3>流程画布</h3>
+              <div class="chart-placeholder" style="height: 280px">拖拽节点</div>
+            </div>
+          `,
+          footnote: '沉淀可复用的活动模板，提升执行效率。'
+        },
+        'campaign-calendar': {
+          title: '活动排期日历',
+          subtitle: '按月查看市场活动与关键节点。',
+          actions: [{ label: '回到活动中心', target: 'campaign-planner' }],
+          core: `
+            <div class="panel">
+              <h3>七月日历</h3>
+              <div class="chart-placeholder" style="height: 320px">Calendar</div>
+            </div>
+          `,
+          footnote: '市场团队协同排期与资源冲突检测的视图。'
+        },
+        'content-performance': {
+          title: '内容表现分析',
+          subtitle: '衡量内容资产的曝光、互动与线索贡献。',
+          actions: [{ label: '返回资产中心', target: 'content-center' }],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>转化路径</h3>
+                <div class="chart-placeholder">路径分析</div>
+              </div>
+              <div class="panel">
+                <h3>下载来源</h3>
+                <ul>
+                  <li>广告再营销 · 38%</li>
+                  <li>邮件序列 · 26%</li>
+                </ul>
+              </div>
+            </div>
+          `,
+          footnote: '帮助内容团队定位最具转化价值的资产。'
+        },
+        'content-detail-blog': {
+          title: '内容详情 · 入站营销指南',
+          subtitle: '查看文章结构、SEO 表现与线索贡献。',
+          actions: [{ label: '返回资产', target: 'content-center' }],
+          core: `
+            <div class="panel">
+              <h3>SEO 表现</h3>
+              <div class="chart-placeholder" style="height: 220px">关键词</div>
+            </div>
+            <div class="panel">
+              <h3>关联线索</h3>
+              <ul>
+                <li>触发线索 78 · 转 SQL 18</li>
+                <li>关联交易额 ¥420,000</li>
+              </ul>
+            </div>
+          `,
+          footnote: '细化内容在 SEO 与转化上的贡献。'
+        },
+        'content-detail-ebook': {
+          title: '内容详情 · SaaS 定价白皮书',
+          subtitle: '草稿状态，等待审批与翻译。',
+          actions: [{ label: '编辑内容', target: 'content-upload-flow' }],
+          core: `
+            <div class="panel">
+              <h3>审批进度</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>内容校对</strong>
+                  <span class="status-positive">完成</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>法务审核</strong>
+                  <span class="status-warning">进行中</span>
+                </div>
+              </div>
+            </div>
+          `,
+          footnote: '跟踪内容上线前的审批流程与阻塞点。'
+        },
+        'content-upload-flow': {
+          title: '上传新资产',
+          subtitle: '上传文件、设置标签并关联自动化。',
+          actions: [{ label: '返回资产中心', target: 'content-center' }],
+          core: `
+            <div class="panel">
+              <h3>上传步骤</h3>
+              <ol>
+                <li>上传文件 · 支持多语言</li>
+                <li>设置标签与分类</li>
+                <li>关联旅程或活动</li>
+              </ol>
+            </div>
+          `,
+          footnote: '保障内容上线流程规范化与数据可追踪。'
+        },
+        'lead-scoring-lab': {
+          title: '线索评分实验室',
+          subtitle: '调整评分模型权重并模拟命中率。',
+          actions: [{ label: '应用模型', target: 'marketing-dashboard' }],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>权重调整</h3>
+                <ul>
+                  <li>职位级别 · 25%</li>
+                  <li>网站行为 · 30%</li>
+                  <li>邮件互动 · 20%</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>模拟结果</h3>
+                <div class="chart-placeholder">命中率</div>
+              </div>
+            </div>
+          `,
+          footnote: '快速评估评分模型调整对 SQL 触发的影响。'
+        },
+        'lead-journey-preview': {
+          title: '旅程预览',
+          subtitle: '以线索视角体验自动化旅程触点。',
+          actions: [{ label: '返回剧本', target: 'lead-nurture-studio' }],
+          core: `
+            <div class="panel">
+              <h3>触点模拟</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>T+0</strong>
+                  <span>欢迎邮件</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>T+2</strong>
+                  <span>案例推送 · 条件满足</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>T+5</strong>
+                  <span class="link-inline" data-navigate="sequence-automation">销售跟进任务生成</span>
+                </div>
+              </div>
+            </div>
+          `,
+          footnote: '确保旅程体验符合预期并及时触发销售动作。'
+        },
+        'forecast-export': {
+          title: '预测导出',
+          subtitle: '选择周期与团队，导出预测数据供分析。',
+          actions: [{ label: '返回管道', target: 'pipeline-overview' }],
+          core: `
+            <div class="panel">
+              <h3>导出选项</h3>
+              <ul>
+                <li>周期：本季度</li>
+                <li>范围：全球企业销售</li>
+                <li>格式：Excel / CSV</li>
+              </ul>
+            </div>
+          `,
+          footnote: '满足销售预测对外部分析需求的导出界面。'
+        },
+        'sequence-builder': {
+          title: '序列构建器',
+          subtitle: '拖拽邮件、任务、条件节点，打造标准化跟进剧本。',
+          actions: [{ label: '返回序列', target: 'sequence-automation' }],
+          core: `
+            <div class="panel">
+              <h3>可视化流程</h3>
+              <div class="chart-placeholder" style="height: 280px">拖拽节点</div>
+            </div>
+          `,
+          footnote: '帮助销售团队沉淀最佳实践并快速复用。'
+        },
+        'sequence-analytics': {
+          title: '序列效果分析',
+          subtitle: '查看序列触达、回复与转化表现。',
+          actions: [{ label: '返回序列', target: 'sequence-automation' }],
+          core: `
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>触达率</h3>
+                <strong>94%</strong>
+              </div>
+              <div class="panel">
+                <h3>回复率</h3>
+                <strong class="status-positive">24%</strong>
+              </div>
+              <div class="panel">
+                <h3>转 SQL</h3>
+                <strong>18%</strong>
+              </div>
+            </div>
+          `,
+          footnote: '及时评估序列表现并指导优化。'
+        },
+        'quote-export': {
+          title: '报价导出',
+          subtitle: '选择模板与品牌样式生成最终报价文件。',
+          actions: [{ label: '返回工作台', target: 'quote-workbench' }],
+          core: `
+            <div class="panel">
+              <h3>样式设置</h3>
+              <ul>
+                <li>品牌主题：HubSpot Orange</li>
+                <li>签署方式：电子签</li>
+              </ul>
+            </div>
+          `,
+          footnote: '输出客户可签署的正式报价文件。'
+        },
+        'ticket-create': {
+          title: '新建工单',
+          subtitle: '录入客户问题、优先级并分配技能组。',
+          actions: [{ label: '返回工单中心', target: 'ticket-queue' }],
+          core: `
+            <div class="panel">
+              <h3>基础信息</h3>
+              <ol>
+                <li>选择客户与渠道</li>
+                <li>描述问题</li>
+                <li>设置 SLA 与分配组</li>
+              </ol>
+            </div>
+          `,
+          footnote: '确保工单创建流程标准化。'
+        },
+        'ticket-detail-1024': {
+          title: '#1024 · API 集成失败',
+          subtitle: '高优先级工单，关联开发排查与客户沟通。',
+          actions: [{ label: '返回工单', target: 'ticket-queue' }],
+          core: `
+            <div class="grid grid-2">
+              <div class="panel">
+                <h3>工单摘要</h3>
+                <ul>
+                  <li>客户：Acme Ltd</li>
+                  <li>优先级：高</li>
+                  <li>SLA 剩余：1 小时</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>协作记录</h3>
+                <p>@开发团队 上传日志分析</p>
+                <p class="link-inline" data-navigate="knowledge-base">关联知识条目</p>
+              </div>
+            </div>
+          `,
+          footnote: '聚合高优工单所需的上下文与协作线索。'
+        },
+        'ticket-detail-1025': {
+          title: '#1025 · 账单重复扣费',
+          subtitle: '中优先级工单，需要财务确认并回复客户。',
+          actions: [{ label: '返回工单', target: 'ticket-queue' }],
+          core: `
+            <div class="panel">
+              <h3>处理进度</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <strong>客服确认</strong>
+                  <span>已核对账单</span>
+                </div>
+                <div class="timeline-item">
+                  <strong>财务处理</strong>
+                  <span class="status-warning">待退款</span>
+                </div>
+              </div>
+            </div>
+          `,
+          footnote: '帮助客服跟踪跨部门协作的账单类问题。'
+        },
+        'kb-editor': {
+          title: '知识库编辑器',
+          subtitle: '在线编辑支持多语言版本与机器人要点。',
+          actions: [{ label: '返回知识库', target: 'knowledge-base' }],
+          core: `
+            <div class="panel">
+              <h3>编辑画布</h3>
+              <div class="chart-placeholder" style="height: 240px">富文本编辑</div>
+            </div>
+          `,
+          footnote: '支持协作编辑与版本控制的知识库编辑器。'
+        },
+        'kb-translation': {
+          title: '知识库翻译进度',
+          subtitle: '协调多语言翻译与审核流程。',
+          actions: [{ label: '返回知识库', target: 'knowledge-base' }],
+          core: `
+            <div class="panel">
+              <h3>翻译状态</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>语言</th>
+                    <th>进度</th>
+                    <th>审核人</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>英文</td>
+                    <td>已完成</td>
+                    <td>David</td>
+                  </tr>
+                  <tr>
+                    <td>日文</td>
+                    <td>进行中</td>
+                    <td>Yuki</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: '管理知识库多语言发布节奏。'
+        },
+        'csat-export': {
+          title: '满意度报告导出',
+          subtitle: '生成 CSAT/NPS 报告并与领导层分享。',
+          actions: [{ label: '返回洞察', target: 'csat-insights' }],
+          core: `
+            <div class="panel">
+              <h3>导出选项</h3>
+              <ul>
+                <li>周期：近 30 天</li>
+                <li>维度：渠道 / 团队</li>
+              </ul>
+            </div>
+          `,
+          footnote: '方便客户成功团队沉淀月度报告。'
+        },
+        'sla-trend': {
+          title: 'SLA 配置与趋势',
+          subtitle: '调整响应/解决 SLA 并查看历史表现。',
+          actions: [{ label: '返回设置', target: 'workspace-settings' }],
+          core: `
+            <div class="panel">
+              <h3>SLA 规则</h3>
+              <ul>
+                <li>高优先级：1h 响应 · 8h 解决</li>
+                <li>中优先级：4h 响应 · 24h 解决</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>趋势图</h3>
+              <div class="chart-placeholder">SLA 达成率</div>
+            </div>
+          `,
+          footnote: 'SLA 管理的专属视图，支持策略迭代。'
+        },
+        'channel-distribution': {
+          title: '渠道分布详情',
+          subtitle: '了解客服渠道的占比与趋势变化。',
+          actions: [{ label: '返回仪表盘', target: 'service-dashboard' }],
+          core: `
+            <div class="panel">
+              <h3>渠道占比</h3>
+              <div class="chart-placeholder" style="height: 240px">饼图</div>
+            </div>
+          `,
+          footnote: '辅助渠道策略优化，提升机器人分流效率。'
+        },
+        'role-permission-matrix': {
+          title: '角色与权限',
+          subtitle: '快速创建新用户并应用角色模板。',
+          actions: [{ label: '返回设置', target: 'workspace-settings' }],
+          core: `
+            <div class="panel">
+              <h3>角色模板</h3>
+              <ul>
+                <li>市场经理 · 启用营销自动化</li>
+                <li>销售总监 · 启用预测权限</li>
+              </ul>
+            </div>
+          `,
+          footnote: '帮助管理员快速分配角色与权限集。'
+        },
+        'field-dictionary': {
+          title: '字段字典',
+          subtitle: '统一字段含义与同步策略。',
+          actions: [{ label: '返回治理中心', target: 'data-governance' }],
+          core: `
+            <div class="panel">
+              <h3>字段列表</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>字段</th>
+                    <th>对象</th>
+                    <th>描述</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Lifecycle Stage</td>
+                    <td>联系人</td>
+                    <td>标记线索所处生命周期阶段</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: '保持字段标准化，避免多系统同步冲突。'
+        },
+        'audit-log': {
+          title: '审计日志',
+          subtitle: '记录平台关键操作，支持追溯。',
+          actions: [{ label: '返回设置', target: 'workspace-settings' }],
+          core: `
+            <div class="panel">
+              <h3>最近记录</h3>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>用户</th>
+                    <th>动作</th>
+                    <th>对象</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>15:32</td>
+                    <td>王欣</td>
+                    <td>更新活动预算</td>
+                    <td>Campaign</td>
+                  </tr>
+                  <tr>
+                    <td>14:58</td>
+                    <td>刘畅</td>
+                    <td>修改 SLA</td>
+                    <td>Service Hub</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `,
+          footnote: '保障系统可审计性，满足合规要求。'
+        },
+        'integration-marketplace': {
+          title: '集成市场',
+          subtitle: '浏览可用应用并一键安装。',
+          actions: [{ label: '返回集成中心', target: 'integration-hub' }],
+          core: `
+            <div class="grid grid-3">
+              <div class="panel">
+                <h3>Zoom</h3>
+                <p>同步会议与活动</p>
+              </div>
+              <div class="panel">
+                <h3>QuickBooks</h3>
+                <p>账单与收入对接</p>
+              </div>
+              <div class="panel">
+                <h3>Slack</h3>
+                <p>推送通知与命令</p>
+              </div>
+            </div>
+          `,
+          footnote: '拓展生态能力，满足多系统协同。'
+        },
+        'channel-export': {
+          title: '渠道报告导出',
+          subtitle: '选择渠道与指标生成可分享的报告。',
+          actions: [{ label: '返回渠道报告', target: 'marketing-channel-report' }],
+          core: `
+            <div class="panel">
+              <h3>导出设置</h3>
+              <ul>
+                <li>指标：线索数 / 转化率 / ROI</li>
+                <li>周期：近 4 周</li>
+              </ul>
+            </div>
+          `,
+          footnote: '方便对外沟通的渠道绩效导出界面。'
+        }
+      };
+
+      const roleSelect = document.getElementById('role-select');
+      const menuContainer = document.getElementById('role-menu');
+      const contentArea = document.getElementById('content');
+
+      let currentRole = 'marketing';
+      let currentPage = 'marketing-dashboard';
+
+      const renderRoleOptions = () => {
+        roleSelect.innerHTML = '';
+        Object.entries(roles).forEach(([value, cfg]) => {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = cfg.label;
+          if (value === currentRole) option.selected = true;
+          roleSelect.appendChild(option);
+        });
+      };
+
+      const renderMenu = () => {
+        const { menuTitle, menu } = roles[currentRole];
+        menuContainer.innerHTML = `<div class="menu-title">${menuTitle}</div>`;
+        menu.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'menu-button' + (currentPage === item.id ? ' menu-button-active' : '');
+          btn.dataset.navigate = item.id;
+          btn.innerHTML = `<span>${item.icon} ${item.label}</span>`;
+          btn.addEventListener('click', () => navigate(item.id));
+          menuContainer.appendChild(btn);
+        });
+      };
+
+      const bindInteractiveElements = (root) => {
+        root.querySelectorAll('[data-navigate]').forEach((element) => {
+          element.addEventListener('click', () => {
+            const target = element.getAttribute('data-navigate');
+            if (target) navigate(target);
+          });
+        });
+      };
+
+      const renderPage = () => {
+        const page = pages[currentPage];
+        if (!page) {
+          contentArea.innerHTML = `
+            <div class="panel">
+              <h2>即将上线的原型</h2>
+              <p>此页面正在设计中，请从菜单选择其他功能。</p>
+            </div>
+          `;
+          return;
+        }
+        const actions = (page.actions || [])
+          .map(
+            (action) =>
+              `<button class="btn btn-secondary" data-navigate="${action.target}">${action.label}</button>`
+          )
+          .join('');
+        contentArea.innerHTML = `
+          <div class="page-header">
+            <div>
+              <h2>${page.title}</h2>
+              <p>${page.subtitle}</p>
+            </div>
+            <div class="page-actions">${actions}</div>
+          </div>
+          ${page.core}
+          <div class="page-footnote">${page.footnote}</div>
+        `;
+        bindInteractiveElements(contentArea);
+        renderMenu();
+      };
+
+      const navigate = (pageId) => {
+        currentPage = pageId;
+        renderPage();
+      };
+
+      roleSelect.addEventListener('change', (event) => {
+        currentRole = event.target.value;
+        const roleConfig = roles[currentRole];
+        if (roleConfig && roleConfig.menu.length) {
+          currentPage = roleConfig.menu[0].id;
+        }
+        renderMenu();
+        renderPage();
+      });
+
+      renderRoleOptions();
+      renderMenu();
+      renderPage();
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

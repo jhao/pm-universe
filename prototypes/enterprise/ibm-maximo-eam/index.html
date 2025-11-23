@@ -2,83 +2,1040 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>IBM Maximo EAM 原型概览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IBM Maximo EAM 明亮体验原型</title>
     <style>
-      body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 40px; background: #f4f6fb; color: #1f2933; }
-      header { border-bottom: 2px solid #dbe2ef; margin-bottom: 32px; }
-      h1 { margin: 0 0 8px 0; font-size: 32px; }
-      .tagline { font-size: 18px; color: #52606d; margin-bottom: 16px; }
-      .overview, .scenarios, .modules, .metrics { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
-      h2 { margin-top: 0; color: #334155; }
-      .meta p { margin: 0 0 8px 0; }
-      .modules section { border-top: 1px solid #e5e9f2; padding-top: 16px; margin-top: 16px; }
-      .modules section:first-child { border-top: none; margin-top: 0; padding-top: 0; }
-      ul { padding-left: 20px; }
-      footer { text-align: center; color: #9aa5b1; font-size: 14px; margin-top: 24px; }
+      :root {
+        color-scheme: light;
+        font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        --bg-soft: #f2f7ff;
+        --bg-card: #ffffff;
+        --bg-gradient: linear-gradient(135deg, #6fd6ff 0%, #89f0c2 100%);
+        --accent-blue: #1d4ed8;
+        --accent-cyan: #0ea5e9;
+        --accent-green: #10b981;
+        --accent-amber: #f59e0b;
+        --accent-rose: #f43f5e;
+        --text-main: #0f172a;
+        --text-subtle: #475569;
+        --border-soft: rgba(148, 163, 184, 0.35);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg-soft);
+        color: var(--text-main);
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        background: var(--bg-gradient);
+        color: var(--text-main);
+        padding: 24px 40px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        box-shadow: 0 18px 40px rgba(15, 118, 110, 0.18);
+      }
+
+      .topbar h1 {
+        margin: 0;
+        font-size: 32px;
+        letter-spacing: 0.04em;
+      }
+
+      .topbar p {
+        margin: 0;
+        max-width: 720px;
+        font-size: 16px;
+        color: rgba(15, 23, 42, 0.78);
+      }
+
+      .topbar-highlight {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .highlight-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--accent-blue);
+        font-weight: 600;
+      }
+
+      .layout {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 28px;
+        padding: 32px 40px 48px;
+      }
+
+      .sidebar {
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 24px;
+        border: 1px solid var(--border-soft);
+        padding: 26px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        box-shadow: 0 18px 32px rgba(148, 163, 184, 0.16);
+      }
+
+      .sidebar h2 {
+        margin: 0 0 8px;
+        font-size: 22px;
+      }
+
+      .sidebar p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-subtle);
+        line-height: 1.7;
+      }
+
+      .nav-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-button {
+        appearance: none;
+        border: 1px solid rgba(14, 165, 233, 0.25);
+        background: rgba(125, 211, 252, 0.24);
+        color: var(--accent-blue);
+        border-radius: 18px;
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .nav-button span {
+        display: block;
+        font-size: 12px;
+        color: var(--text-subtle);
+        font-weight: 400;
+        margin-top: 6px;
+      }
+
+      .nav-button:hover {
+        transform: translateX(4px);
+        box-shadow: 0 12px 24px rgba(14, 165, 233, 0.18);
+      }
+
+      .nav-button.active {
+        background: linear-gradient(120deg, rgba(14, 165, 233, 0.95), rgba(45, 212, 191, 0.95));
+        color: #ffffff;
+        border-color: transparent;
+        box-shadow: 0 16px 28px rgba(14, 165, 233, 0.35);
+      }
+
+      .nav-button.active span {
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .sidebar-tip {
+        margin-top: auto;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: rgba(241, 245, 249, 0.9);
+        border: 1px solid rgba(125, 211, 252, 0.35);
+        font-size: 13px;
+        color: var(--text-subtle);
+        line-height: 1.7;
+      }
+
+      .content-area {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .content-view {
+        display: none;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .content-view.active {
+        display: flex;
+      }
+
+      .view-card {
+        background: var(--bg-card);
+        border-radius: 24px;
+        padding: 28px 32px;
+        box-shadow: 0 24px 48px rgba(148, 163, 184, 0.18);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .view-header h3 {
+        margin: 0;
+        font-size: 28px;
+      }
+
+      .view-header p {
+        margin: 8px 0 0;
+        color: var(--text-subtle);
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .goal-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.12);
+        color: var(--accent-cyan);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .feature-card {
+        border-radius: 20px;
+        background: rgba(125, 211, 252, 0.16);
+        border: 1px solid rgba(14, 165, 233, 0.25);
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .feature-card strong {
+        font-size: 16px;
+      }
+
+      .feature-card p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-subtle);
+        line-height: 1.7;
+      }
+
+      .data-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 18px;
+      }
+
+      .data-panel {
+        border-radius: 20px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        background: #ffffff;
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .data-panel h4 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .data-panel p {
+        margin: 0;
+        color: var(--text-subtle);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .metrics-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .metric {
+        flex: 1 1 180px;
+        min-width: 160px;
+        border-radius: 16px;
+        padding: 16px 18px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .metric small {
+        display: block;
+        font-size: 12px;
+        color: var(--text-subtle);
+        margin-bottom: 6px;
+      }
+
+      .metric strong {
+        font-size: 22px;
+        display: block;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .status-emerald {
+        background: rgba(16, 185, 129, 0.18);
+        color: var(--accent-green);
+      }
+
+      .status-amber {
+        background: rgba(245, 158, 11, 0.18);
+        color: var(--accent-amber);
+      }
+
+      .status-rose {
+        background: rgba(244, 63, 94, 0.18);
+        color: var(--accent-rose);
+      }
+
+      .table-wrapper {
+        overflow-x: auto;
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        text-align: left;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        font-size: 14px;
+      }
+
+      tbody tr:hover {
+        background: rgba(191, 219, 254, 0.25);
+      }
+
+      .list {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--text-subtle);
+        line-height: 1.8;
+        font-size: 14px;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.14);
+        color: var(--accent-blue);
+        font-size: 12px;
+      }
+
+      .timeline {
+        border-left: 2px solid rgba(14, 165, 233, 0.3);
+        padding-left: 18px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 8px;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -27px;
+        top: 6px;
+        width: 12px;
+        height: 12px;
+        background: var(--accent-cyan);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.45);
+      }
+
+      .timeline-item strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 1080px) {
+        .layout {
+          grid-template-columns: 1fr;
+          padding: 24px 24px 40px;
+        }
+
+        .sidebar {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .nav-list {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .nav-button {
+          flex: 1 1 220px;
+        }
+
+        .sidebar-tip {
+          order: 3;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .topbar {
+          padding: 24px;
+        }
+
+        .layout {
+          padding: 24px;
+        }
+
+        .view-card {
+          padding: 22px;
+        }
+
+        .feature-grid,
+        .data-grid {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
   </head>
   <body>
-    <header>
-      <h1>IBM Maximo EAM 原型</h1>
-      <p class="tagline">企业资产管理与运维优化平台。</p>
-    </header>
-    <section class="overview">
-      <h2>整体需求概述</h2>
-      <div class="meta">
-        <p><strong>目标用户：</strong>设备运维团队、资产经理、能源与公用事业企业</p>
-        <p><strong>核心痛点：</strong>关键资产维护成本高、数据分散、停机风险大</p>
-        <p><strong>价值主张：</strong>通过资产全生命周期管理与预测性维护，降低停机与成本</p>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>IBM Maximo EAM 数字化运营驾驶舱</h1>
+          <p>
+            在这里统一规划资产、维护、库存与安全，所有核心页面通过左侧导航快速切换，展示业务目标、关键特性与实时数据示意。
+          </p>
+        </div>
+        <div class="topbar-highlight" aria-label="核心关注点">
+          <span class="highlight-pill">💡 资产全生命周期透明</span>
+          <span class="highlight-pill">📱 移动维护闭环</span>
+          <span class="highlight-pill">🔐 安全与合规守护</span>
+        </div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar">
+          <div>
+            <h2>功能导航</h2>
+            <p>选择需要关注的业务领域，右侧展示对应的原型页面与数据布局示例。</p>
+          </div>
+          <ul class="nav-list" role="tablist">
+            <li>
+              <button class="nav-button active" data-target="asset-config" role="tab" aria-selected="true">
+                资产登记与配置
+                <span>构建资产基线数据与审计轨迹</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" data-target="maintenance-orders" role="tab" aria-selected="false">
+                维护工单
+                <span>标准化预防性与预测性维护流程</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" data-target="spare-inventory" role="tab" aria-selected="false">
+                备件与库存
+                <span>保障物料供应与库存优化</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" data-target="analytics-safety" role="tab" aria-selected="false">
+                分析与安全
+                <span>监控资产健康、合规与 IoT 洞察</span>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" data-target="key-metrics" role="tab" aria-selected="false">
+                关键指标
+                <span>聚焦可用率、工单达成率与库存周转</span>
+              </button>
+            </li>
+          </ul>
+          <div class="sidebar-tip">
+            小贴士：点击按钮即可切换到对应功能页面；每个页面均包含“功能目标”标识、关键特性卡片与数据组件示例，方便与业务方对齐需求。
+          </div>
+        </aside>
+        <main class="content-area" role="region" aria-live="polite">
+          <section class="content-view active" id="asset-config" aria-labelledby="asset-config">
+            <article class="view-card">
+              <header class="view-header">
+                <div class="goal-tag">功能目标：构建资产基线数据</div>
+                <h3>资产登记与配置中心</h3>
+                <p>
+                  以资产台账为核心，覆盖分类、层级、位置、技术规格与合同保修，实现变更可追踪与审计闭环。
+                </p>
+              </header>
+              <div class="feature-grid" aria-label="关键特性">
+                <div class="feature-card">
+                  <strong>资产分类、层级与位置</strong>
+                  <p>通过树状结构快速导航到厂区、生产线与设备，支持 GIS 与楼层平面定位。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>技术规格、保修与合同</strong>
+                  <p>集中管理技术参数、供应商与服务级别协议，自动提醒关键合同节点。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>变更管理与审计轨迹</strong>
+                  <p>记录资产属性变更、审批人与时间戳，满足合规审计要求。</p>
+                </div>
+              </div>
+              <div class="data-grid">
+                <div class="data-panel">
+                  <h4>资产基线状态</h4>
+                  <p>分类与位置层级一览，展示资产数量与健康度分布。</p>
+                  <div class="metrics-row">
+                    <div class="metric">
+                      <small>注册资产数</small>
+                      <strong>4,326</strong>
+                      <span class="status-pill status-emerald">99% 已完成基线</span>
+                    </div>
+                    <div class="metric">
+                      <small>层级完整率</small>
+                      <strong>97.4%</strong>
+                    </div>
+                    <div class="metric">
+                      <small>定位同步</small>
+                      <strong>128</strong>
+                      <span class="status-pill status-amber">需确认楼层</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="data-panel">
+                  <h4>合同与保修仪表</h4>
+                  <p>保修期限、服务级别与合同价值可视化提醒。</p>
+                  <div class="metrics-row">
+                    <div class="metric">
+                      <small>保修到期（90 天内）</small>
+                      <strong>42</strong>
+                      <span class="status-pill status-amber">自动生成续保任务</span>
+                    </div>
+                    <div class="metric">
+                      <small>合同执行率</small>
+                      <strong>88%</strong>
+                    </div>
+                    <div class="metric">
+                      <small>SLA 达成率</small>
+                      <strong>96%</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-wrapper" role="table">
+                <table aria-label="变更与审计记录">
+                  <thead>
+                    <tr>
+                      <th>时间</th>
+                      <th>资产</th>
+                      <th>变更内容</th>
+                      <th>责任人</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2024-03-28</td>
+                      <td>MX-204 炼油压缩机</td>
+                      <td>保修期调整至 2025-06-30</td>
+                      <td>张敏</td>
+                      <td><span class="status-pill status-emerald">已归档</span></td>
+                    </tr>
+                    <tr>
+                      <td>2024-03-16</td>
+                      <td>冷却塔 #B2</td>
+                      <td>位置变更：厂房 A3 → A5</td>
+                      <td>系统同步</td>
+                      <td><span class="status-pill status-amber">待复核</span></td>
+                    </tr>
+                    <tr>
+                      <td>2024-03-04</td>
+                      <td>备用发电机 #G12</td>
+                      <td>新增技术参数：燃料消耗曲线</td>
+                      <td>王建</td>
+                      <td><span class="status-pill status-emerald">已归档</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+
+          <section class="content-view" id="maintenance-orders" aria-labelledby="maintenance-orders">
+            <article class="view-card">
+              <header class="view-header">
+                <div class="goal-tag">功能目标：标准化维护流程</div>
+                <h3>维护工单指挥舱</h3>
+                <p>
+                  通过预防性与预测性计划驱动工单派工、工时与材料管理，实现移动巡检与离线作业的闭环协同。
+                </p>
+              </header>
+              <div class="feature-grid">
+                <div class="feature-card">
+                  <strong>预防性、预测性维护计划</strong>
+                  <p>按风险等级生成计划工单，结合 IoT 数据动态调整频次。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>工单派工、工时与材料</strong>
+                  <p>可视化派工队列与技能匹配，实时记录工时消耗与备件使用。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>移动巡检与离线作业</strong>
+                  <p>移动端同步检查项、支持离线采集并自动回传现场数据。</p>
+                </div>
+              </div>
+              <div class="data-grid">
+                <div class="data-panel">
+                  <h4>计划执行概况</h4>
+                  <div class="metrics-row">
+                    <div class="metric">
+                      <small>预防性计划</small>
+                      <strong>186</strong>
+                      <span class="status-pill status-emerald">准时率 93%</span>
+                    </div>
+                    <div class="metric">
+                      <small>预测性告警</small>
+                      <strong>28</strong>
+                      <span class="status-pill status-amber">待评估 6</span>
+                    </div>
+                    <div class="metric">
+                      <small>超期工单</small>
+                      <strong>9</strong>
+                      <span class="status-pill status-rose">需立即处理</span>
+                    </div>
+                  </div>
+                  <ul class="list">
+                    <li>AI 建议将三台压缩机纳入预测性振动分析。</li>
+                    <li>下周计划新增夜班巡检路线以覆盖能源中心。</li>
+                  </ul>
+                </div>
+                <div class="data-panel">
+                  <h4>派工队列</h4>
+                  <div class="table-wrapper">
+                    <table aria-label="派工队列">
+                      <thead>
+                        <tr>
+                          <th>工单</th>
+                          <th>设备</th>
+                          <th>优先级</th>
+                          <th>指派给</th>
+                          <th>计划完成</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>WO-240318</td>
+                          <td>MX-204 炼油压缩机</td>
+                          <td><span class="status-pill status-rose">紧急</span></td>
+                          <td>刘涵 (振动专家)</td>
+                          <td>2024-03-30</td>
+                        </tr>
+                        <tr>
+                          <td>WO-240322</td>
+                          <td>冷却塔 #B2</td>
+                          <td><span class="status-pill status-amber">高</span></td>
+                          <td>移动班组 A</td>
+                          <td>2024-04-02</td>
+                        </tr>
+                        <tr>
+                          <td>WO-240325</td>
+                          <td>输电线路 5#</td>
+                          <td><span class="status-pill status-emerald">中</span></td>
+                          <td>检修中心</td>
+                          <td>2024-04-05</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="data-panel">
+                <h4>移动巡检行程</h4>
+                <p>展示本周巡检路线、离线采集状态与现场反馈。</p>
+                <div class="chip-row">
+                  <span class="chip">📍 炼化一车间 · 完成 12/12</span>
+                  <span class="chip">📶 离线采集 3 条记录待回传</span>
+                  <span class="chip">🛠️ 问题闭环：5 条已处理</span>
+                  <span class="chip">📸 图片上传 26 份</span>
+                </div>
+                <div class="timeline" aria-label="巡检时间线">
+                  <div class="timeline-item">
+                    <strong>2024-03-27 09:30</strong>
+                    <span>振动监测异常 → 自动生成预测性工单 WO-240318。</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2024-03-27 14:15</strong>
+                    <span>移动端离线巡检完成，回传 12 项测温数据。</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2024-03-28 08:20</strong>
+                    <span>物料申请已审批，轴承套件预计 48 小时到货。</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="content-view" id="spare-inventory" aria-labelledby="spare-inventory">
+            <article class="view-card">
+              <header class="view-header">
+                <div class="goal-tag">功能目标：确保物料供应</div>
+                <h3>备件与库存运营面板</h3>
+                <p>
+                  集成备件目录、库存水位、采购计划与供应商绩效，驱动库存优化与成本控制。
+                </p>
+              </header>
+              <div class="feature-grid">
+                <div class="feature-card">
+                  <strong>备件目录、库存与采购</strong>
+                  <p>统一管理备件多层次编码、兼容件与采购策略。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>库存优化与最小库存</strong>
+                  <p>依据消耗与交期自动计算再订货点，标记高风险库存。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>供应商绩效与成本控制</strong>
+                  <p>跟踪交付准时率、价格波动与服务质量，辅助谈判。</p>
+                </div>
+              </div>
+              <div class="metrics-row">
+                <div class="metric">
+                  <small>库存总额</small>
+                  <strong>¥18.6M</strong>
+                  <span class="status-pill status-amber">较目标高 6%</span>
+                </div>
+                <div class="metric">
+                  <small>缺料告警</small>
+                  <strong>7</strong>
+                  <span class="status-pill status-rose">需立即补货</span>
+                </div>
+                <div class="metric">
+                  <small>供应商准时率</small>
+                  <strong>94%</strong>
+                </div>
+                <div class="metric">
+                  <small>节省金额（YTD）</small>
+                  <strong>¥1.3M</strong>
+                </div>
+              </div>
+              <div class="table-wrapper">
+                <table aria-label="库存列表">
+                  <thead>
+                    <tr>
+                      <th>备件</th>
+                      <th>现存量</th>
+                      <th>最小库存</th>
+                      <th>平均消耗 (月)</th>
+                      <th>供应商</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>轴承组件 MX-BR-18</td>
+                      <td>42</td>
+                      <td>35</td>
+                      <td>28</td>
+                      <td>SKF</td>
+                      <td><span class="status-pill status-emerald">安全</span></td>
+                    </tr>
+                    <tr>
+                      <td>密封圈套件 MX-SE-07</td>
+                      <td>18</td>
+                      <td>24</td>
+                      <td>20</td>
+                      <td>派克汉尼汾</td>
+                      <td><span class="status-pill status-amber">低于警戒</span></td>
+                    </tr>
+                    <tr>
+                      <td>传感器模块 MX-SN-21</td>
+                      <td>9</td>
+                      <td>16</td>
+                      <td>12</td>
+                      <td>西门子</td>
+                      <td><span class="status-pill status-rose">缺料</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="data-grid">
+                <div class="data-panel">
+                  <h4>补货计划</h4>
+                  <ul class="list">
+                    <li>MX-SN-21 传感器模块：已创建采购申请，预计到货 2024-04-03。</li>
+                    <li>密封圈套件：建议增加安全库存 20%，与供应商协商快速补货。</li>
+                    <li>新增可替代件 4 条，等待工程团队验证。</li>
+                  </ul>
+                </div>
+                <div class="data-panel">
+                  <h4>供应商绩效</h4>
+                  <div class="chip-row">
+                    <span class="chip">ABB · 准时率 97%</span>
+                    <span class="chip">西门子 · 准时率 92%</span>
+                    <span class="chip">SKF · 成本节省 12%</span>
+                    <span class="chip">中石化物流 · 缺料响应 6h</span>
+                  </div>
+                  <p>对关键供应商建立联合预测，提升交期与成本谈判优势。</p>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="content-view" id="analytics-safety" aria-labelledby="analytics-safety">
+            <article class="view-card">
+              <header class="view-header">
+                <div class="goal-tag">功能目标：监控资产健康与合规</div>
+                <h3>分析与安全监测中心</h3>
+                <p>
+                  汇聚资产健康评分、KPI、安环事件与 IoT 数据，支持预测分析和合规管控。
+                </p>
+              </header>
+              <div class="feature-grid">
+                <div class="feature-card">
+                  <strong>资产健康评分与 KPI</strong>
+                  <p>通过多维 KPI 仪表盘实时评估关键资产状况。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>安全、环境与合规管理</strong>
+                  <p>整合风险事件、许可与整改闭环，确保符合监管要求。</p>
+                </div>
+                <div class="feature-card">
+                  <strong>IoT 数据集成与预测分析</strong>
+                  <p>结合传感器数据、AI 模型给出故障预测与建议。</p>
+                </div>
+              </div>
+              <div class="metrics-row">
+                <div class="metric">
+                  <small>资产健康均值</small>
+                  <strong>89 / 100</strong>
+                </div>
+                <div class="metric">
+                  <small>高风险资产</small>
+                  <strong>12</strong>
+                  <span class="status-pill status-amber">需重点巡检</span>
+                </div>
+                <div class="metric">
+                  <small>安全事件 (季度)</small>
+                  <strong>2</strong>
+                  <span class="status-pill status-emerald">均已闭环</span>
+                </div>
+                <div class="metric">
+                  <small>IoT 预测准确率</small>
+                  <strong>91%</strong>
+                </div>
+              </div>
+              <div class="data-grid">
+                <div class="data-panel">
+                  <h4>健康评分雷达</h4>
+                  <p>生产线维度的健康评分与趋势对比，突出关注资产。</p>
+                  <div class="chip-row">
+                    <span class="chip">压缩机系统 · 82</span>
+                    <span class="chip">蒸汽供应 · 88</span>
+                    <span class="chip">输电线路 · 76</span>
+                    <span class="chip">能效系统 · 92</span>
+                  </div>
+                  <p>系统建议对评分低于 80 的资产触发预测性诊断。</p>
+                </div>
+                <div class="data-panel">
+                  <h4>安全合规面板</h4>
+                  <table aria-label="安全合规面板">
+                    <thead>
+                      <tr>
+                        <th>项目</th>
+                        <th>状态</th>
+                        <th>负责人</th>
+                        <th>截止日期</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>动火许可流程优化</td>
+                        <td><span class="status-pill status-emerald">已完成</span></td>
+                        <td>王敏</td>
+                        <td>2024-03-15</td>
+                      </tr>
+                      <tr>
+                        <td>VOC 排放在线监测</td>
+                        <td><span class="status-pill status-amber">进行中</span></td>
+                        <td>刘强</td>
+                        <td>2024-04-10</td>
+                      </tr>
+                      <tr>
+                        <td>年度安全培训</td>
+                        <td><span class="status-pill status-rose">待安排</span></td>
+                        <td>李倩</td>
+                        <td>2024-04-30</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="data-panel">
+                <h4>IoT 预警时间线</h4>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <strong>2024-03-26 07:20</strong>
+                    <span>压缩机振动趋势异常 → 预测 36 小时内故障，自动生成 WO-240318。</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2024-03-27 11:05</strong>
+                    <span>冷却塔水质传感器偏离 → 触发化学处理计划。</span>
+                  </div>
+                  <div class="timeline-item">
+                    <strong>2024-03-28 16:40</strong>
+                    <span>输电线路温度升高 → 建议夜间负荷调节与现场巡检。</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="content-view" id="key-metrics" aria-labelledby="key-metrics">
+            <article class="view-card">
+              <header class="view-header">
+                <div class="goal-tag">核心运营指标</div>
+                <h3>关键指标监控墙</h3>
+                <p>
+                  聚焦企业最关心的运营指标，追踪设备可用率、维护工单按时完成率与库存周转情况，为决策提供量化依据。
+                </p>
+              </header>
+              <div class="metrics-row">
+                <div class="metric">
+                  <small>设备可用率</small>
+                  <strong>97.2%</strong>
+                  <span class="status-pill status-emerald">较上月 +1.8%</span>
+                </div>
+                <div class="metric">
+                  <small>停机时间 (月)</small>
+                  <strong>128 h</strong>
+                  <span class="status-pill status-amber">主要集中在压缩机线</span>
+                </div>
+                <div class="metric">
+                  <small>工单按时完成率</small>
+                  <strong>93%</strong>
+                </div>
+                <div class="metric">
+                  <small>备件库存周转</small>
+                  <strong>3.6 次</strong>
+                  <span class="status-pill status-emerald">同比 +0.4</span>
+                </div>
+                <div class="metric">
+                  <small>库存成本节省</small>
+                  <strong>¥1.3M</strong>
+                </div>
+              </div>
+              <div class="data-grid">
+                <div class="data-panel">
+                  <h4>可用率趋势</h4>
+                  <p>展示近 6 个月的可用率变化与主要停机事件。</p>
+                  <ul class="list">
+                    <li>1 月份因蒸汽系统故障造成 18 小时停机。</li>
+                    <li>引入预测性维护后，可用率持续回升。</li>
+                    <li>计划在 Q2 对输电线路实施升级项目。</li>
+                  </ul>
+                </div>
+                <div class="data-panel">
+                  <h4>工单绩效分析</h4>
+                  <p>按工单类型展示准时率与资源瓶颈。</p>
+                  <div class="chip-row">
+                    <span class="chip">预防性 · 准时率 95%</span>
+                    <span class="chip">预测性 · 准时率 88%</span>
+                    <span class="chip">纠正性 · 准时率 81%</span>
+                    <span class="chip">移动巡检 · 完成率 97%</span>
+                  </div>
+                </div>
+                <div class="data-panel">
+                  <h4>库存成本洞察</h4>
+                  <p>识别高价值库存与过慢周转物料，制定优化策略。</p>
+                  <ul class="list">
+                    <li>高价值备件占库存金额 42%，重点监控。</li>
+                    <li>低周转备件 126 项，建议与供应商建立 VMI 模式。</li>
+                    <li>本季度通过集中采购节省成本 6%。</li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+          </section>
+        </main>
       </div>
-    </section>
-    <section class="scenarios">
-      <h2>核心使用场景</h2>
-      <ol>
-        <li>资产登记、巡检与工单处理</li><li>维护计划与备件库存管理</li><li>管理层查看资产健康与风险</li>
-      </ol>
-    </section>
-    <section class="modules">
-      <h2>功能模块</h2>
-      
-            <section class="module">
-              <h3>资产登记与配置</h3>
-              <p class="goal">功能目标：构建资产基线数据</p>
-              <ul>
-                <li>资产分类、层级与位置</li><li>技术规格、保修与合同</li><li>变更管理与审计轨迹</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>维护工单</h3>
-              <p class="goal">功能目标：标准化维护流程</p>
-              <ul>
-                <li>预防性、预测性维护计划</li><li>工单派工、工时与材料</li><li>移动巡检与离线作业</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>备件与库存</h3>
-              <p class="goal">功能目标：确保物料供应</p>
-              <ul>
-                <li>备件目录、库存与采购</li><li>库存优化与最小库存</li><li>供应商绩效与成本控制</li>
-              </ul>
-            </section>
-            
-            <section class="module">
-              <h3>分析与安全</h3>
-              <p class="goal">功能目标：监控资产健康与合规</p>
-              <ul>
-                <li>资产健康评分与 KPI</li><li>安全、环境与合规管理</li><li>IoT 数据集成与预测分析</li>
-              </ul>
-            </section>
-            
-    </section>
-    <section class="metrics">
-      <h2>关键指标</h2>
-      <ul>
-        <li>设备可用率与停机时间</li><li>维护工单按时完成率</li><li>备件库存周转与成本节省</li>
-      </ul>
-    </section>
-    <footer>基于 PM Universe README.md 中的目标整理</footer>
-      <script type="module" src="../../menu.js"></script>
+    </div>
+    <script>
+      const navButtons = document.querySelectorAll('.nav-button');
+      const views = document.querySelectorAll('.content-view');
+
+      function activateView(targetId) {
+        views.forEach((view) => {
+          view.classList.toggle('active', view.id === targetId);
+        });
+
+        navButtons.forEach((button) => {
+          const isTarget = button.dataset.target === targetId;
+          button.classList.toggle('active', isTarget);
+          button.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+        });
+      }
+
+      navButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activateView(button.dataset.target);
+        });
+      });
+    </script>
+    <script type="module" src="../../menu.js"></script>
   </body>
 </html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>数据集浏览 | 业务分析师视角</title>
+    <link rel="stylesheet" href="styles.css" />
+      <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?86213e9327b18cf9170d6fd6c5ba57ee";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </head>
+  <body data-role="analyst" data-page="dataset-explorer">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>Power BI 企业原型</strong>
+          <span>角色化导航演示</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul></ul>
+        </nav>
+      </aside>
+      <div class="main-column">
+        <header class="top-bar">
+          <div class="product">
+            <span>角色：业务分析师</span>
+            <strong>数据集浏览</strong>
+          </div>
+          <div class="role-switch">
+            <label for="roleSelect">切换角色</label>
+            <select id="roleSelect"></select>
+          </div>
+        </header>
+        <div class="content-scroll">
+          <div class="content-area">
+            <div class="content-header">
+              <div>
+                <h1>共享数据集目录</h1>
+                <p>统一查看认证与推荐数据集，支持查看血缘、字段和刷新状态。</p>
+              </div>
+              <div class="page-actions">
+                <a class="button primary" href="report-builder.html">基于选定数据集建模</a>
+                <a class="button secondary" href="dataset-detail.html">查看示例详情</a>
+              </div>
+            </div>
+            <section class="segment">
+              <h2>认证数据集</h2>
+              <div class="table-actions">
+                <a href="dataset-detail.html">订单履约数据集</a>
+                <a href="dataset-detail.html">渠道销量数据集</a>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>数据集名称</th>
+                    <th>领域</th>
+                    <th>刷新频率</th>
+                    <th>负责人</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="dataset-detail.html">渠道销售绩效</a></td>
+                    <td>销售</td>
+                    <td>每 1 小时</td>
+                    <td>张敏</td>
+                    <td><span class="metric-badge gain">正常</span></td>
+                  </tr>
+                  <tr>
+                    <td><a href="dataset-detail.html">订单履约与库存</a></td>
+                    <td>供应链</td>
+                    <td>每日凌晨</td>
+                    <td>李伟</td>
+                    <td><span class="metric-badge gain">正常</span></td>
+                  </tr>
+                  <tr>
+                    <td><a href="dataset-detail.html">客户 360</a></td>
+                    <td>市场</td>
+                    <td>每 4 小时</td>
+                    <td>王倩</td>
+                    <td><span class="metric-badge loss">需刷新</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="segment">
+              <h2>血缘与共享概览</h2>
+              <div class="flow-steps">
+                <div class="flow-step">
+                  <strong>数据源</strong>
+                  <p>CRM、ERP、在线埋点</p>
+                  <div class="badge-list">
+                    <span class="badge">SQL</span>
+                    <span class="badge">SAP</span>
+                    <span class="badge">API</span>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <strong>数据流</strong>
+                  <p>Power Query 清洗，增量刷新。</p>
+                  <a class="button ghost" href="dataflow-monitor.html">查看刷新日志</a>
+                </div>
+                <div class="flow-step">
+                  <strong>数据集</strong>
+                  <p>模型包含 34 个度量，支持行级安全。</p>
+                  <a class="button ghost" href="dataset-detail.html">字段定义</a>
+                </div>
+                <div class="flow-step">
+                  <strong>报表 & 应用</strong>
+                  <p>8 个报表已发布至销售应用。</p>
+                  <a class="button ghost" href="report-versioning.html">查看发布记录</a>
+                </div>
+              </div>
+            </section>
+            <section class="page-notes">
+              <h2>页面功能说明</h2>
+              <ul>
+                <li>列表呈现经治理的数据集，便于分析师快速定位可信数据源。</li>
+                <li>支持查看数据血缘、刷新状态与负责人信息，保障分析质量。</li>
+                <li>可跳转至数据集详情查看更多字段定义，或继续前往报表创作。</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module" src="../../menu.js"></script>
+  </body>
+</html>
