@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>技术交流会 · 桌游式玩法演示 Demo</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f5f7;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .card.highlight {
+      border: 2px solid #007aff;
+    }
+
+    .section-title {
+      font-size: 18px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eee;
+      color: #555;
+    }
+
+    .badge-primary {
+      background: #007aff22;
+      color: #007aff;
+    }
+
+    .badge-secondary {
+      background: #34c75922;
+      color: #34c759;
+    }
+
+    .badge-danger {
+      background: #ff3b3022;
+      color: #ff3b30;
+    }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .step-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e5e5ea;
+      font-size: 12px;
+    }
+
+    .step-pill.active {
+      background: #007aff;
+      color: #fff;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #007aff;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button.secondary {
+      background: #e5e5ea;
+      color: #333;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    textarea, input, select {
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 6px 10px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    label {
+      font-size: 13px;
+      color: #555;
+      display: block;
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #eee;
+      padding: 6px 4px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #fafafa;
+      font-weight: 600;
+    }
+
+    .role-tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+
+    .role-core {
+      background: #ffcc0022;
+      color: #b58200;
+    }
+
+    .role-main {
+      background: #34c75922;
+      color: #1d9040;
+    }
+
+    .role-observer {
+      background: #e5e5ea;
+      color: #555;
+    }
+
+    .skill-tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin: 1px 2px;
+      font-size: 12px;
+    }
+
+    .skill-attack {
+      background: #ff3b3022;
+      color: #ff3b30;
+    }
+
+    .skill-support {
+      background: #007aff22;
+      color: #007aff;
+    }
+
+    .skill-chaos {
+      background: #af52de22;
+      color: #af52de;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .guide-box {
+      border-radius: 12px;
+      background: #f2f2f7;
+      padding: 10px 12px;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .guide-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .log-box {
+      background: #000;
+      color: #0f0;
+      font-family: "SF Mono", "Menlo", monospace;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 12px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .log-entry {
+      margin-bottom: 2px;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin: 4px 0;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .map-item {
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: #f2f2f7;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .map-title {
+      font-weight: 600;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        padding: 12px 14px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>技术交流会 · 桌游式玩法演示 Demo</h1>
+
+    <!-- Step indicator -->
+    <div class="card">
+      <div class="steps">
+        <span id="step-pill-1" class="step-pill active">1️⃣ 了解玩法</span>
+        <span id="step-pill-2" class="step-pill">2️⃣ 分配角色与技能</span>
+        <span id="step-pill-3" class="step-pill">3️⃣ 回合流程演示</span>
+        <span id="step-pill-4" class="step-pill">4️⃣ 总结与落地</span>
+      </div>
+      <div id="global-guide" class="guide-box">
+        <div class="guide-title">当前引导</div>
+        <div id="global-guide-text">
+          本 Demo 用来向参与者演示本次“桌游式技术交流会”的完整玩法。请按下方按钮逐步体验流程。
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Intro -->
+    <div id="section-1" class="card">
+      <div class="section-title">
+        1️⃣ 玩法概览
+        <span class="badge badge-primary">3 分钟可讲清</span>
+      </div>
+      <p>本次技术交流会采用<strong>桌游式攻防 + 技能系统</strong>：</p>
+      <ul>
+        <li>所有人围绕技术主题进行观点攻防，不闲聊、不跑题；</li>
+        <li>每人有 3 张“技能卡”，在讨论过程中可随机触发，增强趣味性；</li>
+        <li>每个回合按：<strong>出题 → 分阵营 → 发言 → 触发技能 → 投票 → 记录技术地图</strong> 进行；</li>
+        <li>会议结束会形成一张“技术地图白板”，帮助所有人记住讨论结果。</li>
+      </ul>
+
+      <div class="guide-box">
+        <div class="guide-title">现场讲解话术示例（可照读）</div>
+        <div style="font-size:13px;">
+          「今天我们不用传统汇报的方式，而是用一套类似桌游的交流形式。<br>
+          每个人会被分配角色和技能，我们通过几个攻击/防守回合，把技术问题讲清楚、讲透彻。<br>
+          你只要跟着系统和主持人的指引走，就能很快熟悉节奏。」</div>
+      </div>
+
+      <div class="btn-row">
+        <button id="btn-go-step-2">下一步：开始输入参与者 ➜</button>
+      </div>
+    </div>
+
+    <!-- Section 2: Setup Participants -->
+    <div id="section-2" class="card hidden">
+      <div class="section-title">
+        2️⃣ 分配角色与技能
+        <span class="badge badge-secondary">核心 3–5 人 / 参与 5–8 人</span>
+      </div>
+
+      <label for="names-input">请输入参与者姓名（用中文逗号或英文逗号分隔），例如：张三, 李四, 王五...</label>
+      <textarea id="names-input" placeholder="示例：张三, 李四, 王五, 赵六, 孙七, 周八, 吴九"></textarea>
+      <div class="hint">如果不输入，后面可以用系统默认的「玩家1、玩家2...」来演示。</div>
+
+      <div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:150px;">
+          <label for="core-count">核心攻防者人数（3–5）</label>
+          <input id="core-count" type="number" min="3" max="5" value="3">
+        </div>
+        <div style="flex:1; min-width:150px;">
+          <label for="main-count">主要参与者人数（5–8）</label>
+          <input id="main-count" type="number" min="5" max="8" value="5">
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:10px;">
+        <button id="btn-generate-roles">生成角色与技能</button>
+        <button id="btn-use-demo-names" class="secondary">使用示例名单快速演示</button>
+      </div>
+
+      <div id="setup-result" class="hidden" style="margin-top:14px;">
+        <h3 style="font-size:16px; margin-bottom:6px;">角色与技能分配结果</h3>
+        <p style="font-size:13px; color:#666;">请大家对号入座：确认自己是「核心」「主要参与」还是「旁观评审」，并看一下自己的 3 个技能。</p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>姓名</th>
+                <th>角色</th>
+                <th>技能卡 ×3</th>
+              </tr>
+            </thead>
+            <tbody id="players-table-body"></tbody>
+          </table>
+        </div>
+
+        <div class="guide-box">
+          <div class="guide-title">主持人提示（现场可照读）</div>
+          <div style="font-size:13px;">
+            「请大家在名单里找到自己的名字，看一下自己属于哪一类角色。<br>
+            每个人有 3 个技能，在后面的讨论过程中，系统会随机触发，你就根据提示来使用对应技能即可，不用现在记住所有细节。」</div>
+        </div>
+
+        <div class="btn-row">
+          <button id="btn-go-step-3">下一步：进入回合流程演示 ➜</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Round Simulation -->
+    <div id="section-3" class="card hidden">
+      <div class="section-title">
+        3️⃣ 回合流程演示
+        <span class="badge badge-primary">出题 → 分阵营 → 发言 → 技能 → 投票 → 地图</span>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:12px;">
+        <div style="flex: 2 1 260px;">
+          <div class="card" style="padding:10px 12px;">
+            <div class="section-title" style="font-size:15px;">
+              当前回合
+              <span id="current-round-index" class="badge">第 1 回合</span>
+            </div>
+            <div style="font-size:13px; margin-bottom:6px;">
+              <strong>主题任务卡：</strong> <span id="current-topic-text"></span>
+            </div>
+            <div style="font-size:13px; margin-bottom:6px;">
+              <strong>阵营示例：</strong>蓝方（支持）、红方（反对）、中立（提问 / 抓关键）。
+            </div>
+            <div style="font-size:13px;">
+              <strong>当前步骤：</strong> <span id="current-phase-title"></span>
+            </div>
+            <div class="guide-box" style="margin-top:8px;">
+              <div class="guide-title">演示引导</div>
+              <div id="current-phase-desc" style="font-size:13px;"></div>
+            </div>
+            <div class="btn-row">
+              <button id="btn-next-phase">下一步（演示下一环节） ➜</button>
+              <button id="btn-trigger-skill" class="secondary">随机触发一个技能 ✦</button>
+            </div>
+          </div>
+
+          <div class="card" style="padding:10px 12px; margin-top:8px;">
+            <div class="section-title" style="font-size:15px;">
+              技能触发日志
+              <span class="badge badge-secondary">模拟效果</span>
+            </div>
+            <div id="log-box" class="log-box"></div>
+          </div>
+        </div>
+
+        <div style="flex: 1.4 1 240px;">
+          <div class="card" style="padding:10px 12px;">
+            <div class="section-title" style="font-size:15px;">
+              技术地图（回合结果记录）
+              <span class="badge">可对应白板</span>
+            </div>
+            <div id="tech-map-list"></div>
+            <div class="hint">实际会议中，这部分会对应实体白板/便签，本 Demo 用卡片列表代替。</div>
+          </div>
+
+          <div class="card" style="padding:10px 12px; margin-top:8px;">
+            <div class="section-title" style="font-size:15px;">
+              阶段回顾提示
+            </div>
+            <div style="font-size:13px;">
+              每完成一个回合，你可以停顿 10–20 秒，对大家说：
+              <ul>
+                <li>这轮主题是什么？</li>
+                <li>支持方/反对方分别强调了什么？</li>
+                <li>哪一个观点被写进了技术地图？</li>
+              </ul>
+              这样能帮大家在脑子里“过一遍”，加深记忆。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:10px;">
+        <button id="btn-finish-sim" class="secondary">结束演示，查看总结 ➜</button>
+      </div>
+    </div>
+
+    <!-- Section 4: Summary -->
+    <div id="section-4" class="card hidden">
+      <div class="section-title">
+        4️⃣ 总结与落地
+        <span class="badge">让所有人“记住玩法”</span>
+      </div>
+      <p>至此，整个“桌游式技术交流会”的流程已经演示完毕。你可以让参与者复述：</p>
+      <ul>
+        <li>你分别扮演了什么角色？核心 / 参与 / 观察？</li>
+        <li>你有哪些技能？印象最深的是哪个技能？</li>
+        <li>回合流程大致是哪几个步骤？</li>
+        <li>技术地图上的几个关键结论是什么？</li>
+      </ul>
+      <div class="guide-box">
+        <div class="guide-title">主持人现场收尾话术示例</div>
+        <div style="font-size:13px;">
+          「刚才我们完整走了一遍规则演示，真实会议时，就是用同样的节奏，只是把主题换成我们今天真正要讨论的问题。<br>
+          回合数可以根据时间调整，但不变的是：<strong>每轮都有明确的主题、有攻有守、有技能带来的变化，最后都会沉淀在技术地图里。</strong>」</div>
+      </div>
+
+      <div class="btn-row">
+        <button id="btn-restart" class="secondary">重新演示一遍 🔁</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== 工具函数 =====
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function shuffle(array) {
+      const arr = array.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function randomChoice(arr) {
+      if (!arr.length) return null;
+      const idx = Math.floor(Math.random() * arr.length);
+      return arr[idx];
+    }
+
+    function appendLog(text) {
+      const box = $("log-box");
+      const entry = document.createElement("div");
+      entry.className = "log-entry";
+      const time = new Date().toLocaleTimeString("zh-CN", { hour12: false });
+      entry.textContent = "[" + time + "] " + text;
+      box.appendChild(entry);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // ===== 全局状态 =====
+    let players = []; // {name, role, skills:[{type,name,desc}]}
+    let rounds = [];
+    let currentRoundIndex = 0;
+    let currentPhaseIndex = 0;
+
+    const phases = [
+      {
+        title: "① 抽取主题任务卡",
+        desc: "主持人从预先准备好的技术议题中抽取一个，向大家宣读。所有人先花几秒在脑子里过一遍：这个问题对我们有什么意义？"
+      },
+      {
+        title: "② 划分阵营（支持 / 反对 / 中立）",
+        desc: "核心攻防者自动分成蓝方（支持）与红方（反对），中立角色负责提问和抓重点。你可以现场指定或由系统随机分配。"
+      },
+      {
+        title: "③ 依次发言（每人 1 分钟）",
+        desc: "轮到你发言时，先选择一张观点卡（支持/反对/补充），然后用 1 分钟时间讲述你的要点。时间到了必须结束，避免跑题。"
+      },
+      {
+        title: "④ 触发技能事件（增加趣味性）",
+        desc: "主持人或系统随机点名一位玩家，要求他使用一张技能卡。例如“沉默之刃”“时间赐福”“卡片交换”等，引导交锋更有趣。"
+      },
+      {
+        title: "⑤ 大众评审团投票（贴纸 / 筹码）",
+        desc: "旁观与辅助参与者作为“大众评审”，为他们认为本轮最有价值的观点投票。票数最高的观点，将被写入技术地图。"
+      },
+      {
+        title: "⑥ 记录到技术地图（白板）",
+        desc: "主持人在白板上，用一句话记录本轮投票胜出的观点以及对应的解决思路。回合结束，进入下一轮。"
+      }
+    ];
+
+    const sampleTopics = [
+      "是否应该在现有业务系统中全面引入大模型能力？",
+      "我们的数据平台，下一年度优先优化的是“性能”还是“易用性”？",
+      "在当前阶段，微服务拆分是否已经过度？要不要适度回归单体/模块化？"
+    ];
+
+    const sampleMapSummaries = [
+      "在安全和成本可控的前提下，小范围试点大模型，优先改造内部开发/运维工具。",
+      "先解决可观测性和易用性，再在关键链路上针对性做性能优化。",
+      "禁止“为拆而拆”，按照业务边界和团队能力重新梳理服务颗粒度。"
+    ];
+
+    const skillPool = {
+      attack: [
+        {
+          name: "沉默之刃",
+          desc: "中断当前发言者的剩余时间，强制结束本轮发言。"
+        },
+        {
+          name: "点破盲区",
+          desc: "要求发言人必须回答一个风险问题，否则本轮失去投票资格。"
+        },
+        {
+          name: "观点反转",
+          desc: "强制某位玩家从反方向角度继续阐述他的观点。"
+        }
+      ],
+      support: [
+        {
+          name: "时间赐福",
+          desc: "为某位发言者增加 30 秒发言时间。"
+        },
+        {
+          name: "协作共鸣",
+          desc: "强制指定一人加入你的阵营（支持/反对）。"
+        },
+        {
+          name: "观点整理者",
+          desc: "要求主持人立即在白板上总结当前讨论的关键要点。"
+        }
+      ],
+      chaos: [
+        {
+          name: "卡片交换",
+          desc: "随机与一位玩家交换观点卡，使其立场发生变化。"
+        },
+        {
+          name: "召唤旁观者",
+          desc: "随机从观察者中拉一位加入本轮发言。"
+        },
+        {
+          name: "主题重投",
+          desc: "发动一次，要求本轮投票重新进行。"
+        }
+      ]
+    };
+
+    function createDemoNames() {
+      return ["张三", "李四", "王五", "赵六", "孙七", "周八", "吴九", "郑十", "小刘", "小陈", "小黄", "小周"];
+    }
+
+    function generatePlayers(names, coreCount, mainCount) {
+      const maxTotal = 20;
+      let list = names && names.length ? names : createDemoNames();
+      if (list.length > maxTotal) {
+        list = list.slice(0, maxTotal);
+      }
+      // 如果人数不足，自动补齐虚拟玩家
+      while (list.length < coreCount + mainCount + 1) {
+        list.push("玩家" + (list.length + 1));
+      }
+      const shuffled = shuffle(list);
+      const playersData = [];
+      shuffled.forEach((name, index) => {
+        let role;
+        if (index < coreCount) role = "core";
+        else if (index < coreCount + mainCount) role = "main";
+        else role = "observer";
+
+        const skills = [];
+        for (let i = 0; i < 3; i++) {
+          const typeKey = randomChoice(["attack", "support", "chaos"]);
+          const pool = skillPool[typeKey];
+          skills.push({ type: typeKey, ...randomChoice(pool) });
+        }
+
+        playersData.push({ name, role, skills });
+      });
+      return playersData;
+    }
+
+    function renderPlayersTable() {
+      const tbody = $("players-table-body");
+      tbody.innerHTML = "";
+      players.forEach(p => {
+        const tr = document.createElement("tr");
+        const roleMap = {
+          core: { text: "核心攻防者", cls: "role-core" },
+          main: { text: "主要参与者", cls: "role-main" },
+          observer: { text: "观察/评审", cls: "role-observer" }
+        };
+        const roleInfo = roleMap[p.role];
+
+        const tdName = document.createElement("td");
+        tdName.textContent = p.name;
+
+        const tdRole = document.createElement("td");
+        const spanRole = document.createElement("span");
+        spanRole.className = "role-tag " + roleInfo.cls;
+        spanRole.textContent = roleInfo.text;
+        tdRole.appendChild(spanRole);
+
+        const tdSkills = document.createElement("td");
+        p.skills.forEach(s => {
+          const spanSkill = document.createElement("span");
+          let cls = "skill-tag ";
+          if (s.type === "attack") cls += "skill-attack";
+          else if (s.type === "support") cls += "skill-support";
+          else cls += "skill-chaos";
+          spanSkill.className = cls;
+          spanSkill.textContent = s.name;
+          spanSkill.title = s.desc;
+          tdSkills.appendChild(spanSkill);
+        });
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdRole);
+        tr.appendChild(tdSkills);
+        tbody.appendChild(tr);
+      });
+    }
+
+    function initRounds() {
+      rounds = sampleTopics.map((topic, idx) => ({
+        topic,
+        summary: sampleMapSummaries[idx] || "本轮的关键观点将写在这里。",
+        done: false
+      }));
+      currentRoundIndex = 0;
+      currentPhaseIndex = 0;
+    }
+
+    function updateStepPills(active) {
+      for (let i = 1; i <= 4; i++) {
+        const pill = $("step-pill-" + i);
+        if (i === active) pill.classList.add("active");
+        else pill.classList.remove("active");
+      }
+    }
+
+    function showSection(index) {
+      ["section-1", "section-2", "section-3", "section-4"].forEach((id, i) => {
+        $(id).classList.toggle("hidden", i !== index - 1);
+      });
+      updateStepPills(index);
+      const guideText = $("global-guide-text");
+      if (index === 1) {
+        guideText.textContent = "先向大家介绍整个交流会的玩法和目标，让所有人知道：这个会议既严肃又好玩。";
+      } else if (index === 2) {
+        guideText.textContent = "现在请大家输入或确认参与者名单，系统会自动分配角色和技能，让每个人对号入座。";
+      } else if (index === 3) {
+        guideText.textContent = "下面我们通过 2–3 个示例回合，演示整个会议的流程。你只需要想象：如果是真实会议，刚刚这些动作就会发生在你们周围。";
+      } else if (index === 4) {
+        guideText.textContent = "最后，对整个桌游式会议做一个总结，并说明真实会议落地时仅需要替换具体技术主题。";
+      }
+    }
+
+    function loadCurrentRound() {
+      const round = rounds[currentRoundIndex];
+      $("current-round-index").textContent = "第 " + (currentRoundIndex + 1) + " 回合";
+      $("current-topic-text").textContent = round.topic;
+      currentPhaseIndex = 0;
+      updatePhaseUI();
+    }
+
+    function updatePhaseUI() {
+      const phase = phases[currentPhaseIndex];
+      $("current-phase-title").textContent = phase.title;
+      $("current-phase-desc").textContent = phase.desc;
+
+      // 当前步骤高亮一下 card 效果（简单：切换 highlight）
+      const card = $("section-3");
+      if (card) {
+        card.classList.add("highlight");
+        setTimeout(() => card.classList.remove("highlight"), 300);
+      }
+    }
+
+    function goToNextPhase() {
+      if (!rounds.length) return;
+      if (currentPhaseIndex < phases.length - 1) {
+        currentPhaseIndex++;
+        updatePhaseUI();
+      } else {
+        // 当前回合结束，写入技术地图
+        const round = rounds[currentRoundIndex];
+        if (!round.done) {
+          round.done = true;
+          const mapList = $("tech-map-list");
+          const div = document.createElement("div");
+          div.className = "map-item";
+          const title = document.createElement("div");
+          title.className = "map-title";
+          title.textContent = "第 " + (currentRoundIndex + 1) + " 回合：" + round.topic;
+          const content = document.createElement("div");
+          content.style.fontSize = "13px";
+          content.textContent = "共识结论：" + round.summary;
+          div.appendChild(title);
+          div.appendChild(content);
+          mapList.appendChild(div);
+        }
+
+        // 切换到下一回合或结束
+        if (currentRoundIndex < rounds.length - 1) {
+          currentRoundIndex++;
+          loadCurrentRound();
+          appendLog("✅ 已结束上一回合，自动进入下一回合演示。");
+        } else {
+          appendLog("🎉 所有演示回合已结束，可以点击“结束演示”进入总结。");
+          alert("示例的 3 个回合已经演示完毕，你可以点击下方“结束演示，查看总结”。");
+        }
+      }
+    }
+
+    function triggerRandomSkill() {
+      if (!players.length) {
+        alert("请先完成角色和技能分配。");
+        return;
+      }
+      const player = randomChoice(players);
+      const skill = randomChoice(player.skills);
+      const roleText = player.role === "core" ? "核心攻防者"
+                    : player.role === "main" ? "主要参与者"
+                    : "观察/评审";
+
+      const typeLabel =
+        skill.type === "attack" ? "【攻击类】" :
+        skill.type === "support" ? "【辅助类】" :
+        "【变数类】";
+
+      const text = `${player.name}（${roleText}）触发了 ${typeLabel}技能「${skill.name}」：${skill.desc}`;
+      appendLog(text);
+    }
+
+    // ===== 事件绑定 =====
+    window.addEventListener("DOMContentLoaded", () => {
+      // Step navigation
+      $("btn-go-step-2").addEventListener("click", () => showSection(2));
+
+      $("btn-use-demo-names").addEventListener("click", () => {
+        $("names-input").value = createDemoNames().join(", ");
+      });
+
+      $("btn-generate-roles").addEventListener("click", () => {
+        let namesText = $("names-input").value.trim();
+        let names = [];
+        if (namesText) {
+          names = namesText.split(/[,，]/).map(s => s.trim()).filter(Boolean);
+        }
+        let coreCount = parseInt($("core-count").value, 10) || 3;
+        let mainCount = parseInt($("main-count").value, 10) || 5;
+        if (coreCount < 3) coreCount = 3;
+        if (coreCount > 5) coreCount = 5;
+        if (mainCount < 5) mainCount = 5;
+        if (mainCount > 8) mainCount = 8;
+
+        players = generatePlayers(names, coreCount, mainCount);
+        renderPlayersTable();
+        $("setup-result").classList.remove("hidden");
+      });
+
+      $("btn-go-step-3").addEventListener("click", () => {
+        if (!players.length) {
+          alert("请先完成角色与技能分配。");
+          return;
+        }
+        showSection(3);
+        $("log-box").innerHTML = "";
+        $("tech-map-list").innerHTML = "";
+        initRounds();
+        loadCurrentRound();
+        appendLog("🚀 回合演示开始。请按照引导，逐步想象真实会议中的每一步动作。");
+      });
+
+      $("btn-next-phase").addEventListener("click", () => {
+        goToNextPhase();
+      });
+
+      $("btn-trigger-skill").addEventListener("click", () => {
+        triggerRandomSkill();
+      });
+
+      $("btn-finish-sim").addEventListener("click", () => {
+        showSection(4);
+      });
+
+      $("btn-restart").addEventListener("click", () => {
+        // 重置状态，回到第 2 步（保留名单，但清空地图与日志）
+        $("log-box").innerHTML = "";
+        $("tech-map-list").innerHTML = "";
+        rounds = [];
+        currentRoundIndex = 0;
+        currentPhaseIndex = 0;
+        showSection(2);
+      });
+    });
+  </script>
+</body>
+</html>
